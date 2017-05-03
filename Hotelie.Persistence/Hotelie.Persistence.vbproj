@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{44E6829A-7C20-4851-9CA9-969FAABC2013}</ProjectGuid>
+    <ProjectGuid>{A74D47FE-984A-4EFB-83FA-DE23F848927D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Hotelie.Persistence</RootNamespace>
     <AssemblyName>Hotelie.Persistence</AssemblyName>
@@ -117,7 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Hotelie.Domain\Hotelie.Domain.vbproj">
-      <Project>{490CDDD6-1D75-43C7-972E-52569504050C}</Project>
+      <Project>{490cddd6-1d75-43c7-972e-52569504050c}</Project>
       <Name>Hotelie.Domain</Name>
     </ProjectReference>
   </ItemGroup>
