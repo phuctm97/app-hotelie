@@ -76,6 +76,11 @@
   <ItemGroup>
     <Compile Include="Common\DatabaseContext.vb" />
     <Compile Include="Common\DatabaseInitializer.vb" />
+    <Compile Include="Migrations\201705030754061_DbMigration_Initial.Designer.vb">
+      <DependentUpon>201705030754061_DbMigration_Initial.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705030754061_DbMigration_Initial.vb" />
+    <Compile Include="Migrations\Configuration.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -95,6 +100,9 @@
     <Compile Include="Rooms\RoomConfiguration.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Migrations\201705030754061_DbMigration_Initial.resx">
+      <DependentUpon>201705030754061_DbMigration_Initial.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
