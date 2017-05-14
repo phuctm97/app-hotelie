@@ -24,8 +24,3 @@ Namespace Common
 		End Sub
 	End Class
 End Namespace
-
-'Public Class MyEntity
-'    Public Property Id() As Int32
-'    Public Property Name() As String
-'End Class

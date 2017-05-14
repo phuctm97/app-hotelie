@@ -5,9 +5,9 @@ Namespace Services.Persistence
 
 		Function GetOne( id As Object ) As TEntity
 
-		Function GetAll() As IEnumerable(Of TEntity)
+		Function GetAll() As IQueryable(Of TEntity)
 
-		Function Find( predicate As Expression(Of Func(Of TEntity, Boolean)) ) As IEnumerable(Of TEntity)
+		Function Find( predicate As Expression(Of Func(Of TEntity, Boolean)) ) As IQueryable(Of TEntity)
 
 		Sub Add( entity As TEntity )
 

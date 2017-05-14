@@ -16,13 +16,12 @@ Namespace Common
 
 		Public ReadOnly Property RoomRepository As IRoomRepository Implements IUnitOfWork.RoomRepository
 
-		Public Function Commit() As Int32 Implements IUnitOfWork.Commit
-			Throw New NotImplementedException()
-		End Function
+		Public Sub Commit() Implements IUnitOfWork.Commit
+			_context.SaveChanges()
+		End Sub
 
-		Public Function Rollback() As Int32 Implements IUnitOfWork.Rollback
-			Throw New NotImplementedException()
-		End Function
+		Public Sub Rollback() Implements IUnitOfWork.Rollback
+		End Sub
 
 		Public Sub Dispose() Implements IDisposable.Dispose
 			_context.Dispose()

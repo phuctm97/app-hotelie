@@ -29,7 +29,7 @@ Namespace Rooms.Queries.GetRoomsList
 
 			' fake the repo
 			_repoMock = New Mock(Of IRoomRepository)
-			_repoMock.Setup( Function( r ) r.GetAll() ).Returns( _rooms )
+			_repoMock.Setup( Function( r ) r.GetAll() ).Returns( _rooms.AsQueryable() )
 
 			' create query
 			_query = New GetRoomsListQuery( _repoMock.Object )

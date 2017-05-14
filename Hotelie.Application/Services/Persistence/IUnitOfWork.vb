@@ -4,8 +4,8 @@
 
 		ReadOnly Property RoomRepository As IRoomRepository
 
-		Function Commit() As Integer
+		Sub Commit()
 
-		Function Rollback() As Integer
+		Sub Rollback()
 	End Interface
 End Namespace
