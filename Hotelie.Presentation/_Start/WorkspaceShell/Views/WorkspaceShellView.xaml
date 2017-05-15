@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="Start.WorkspaceShell.Views.WorkspaceShellView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:local="clr-namespace:Hotelie.Presentation"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dd="clr-namespace:Hotelie.Presentation.Start.WorkspaceShell.Design"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="600"
+             d:DataContext="{d:DesignInstance Type=dd:WorkspaceShellViewModel, IsDesignTimeCreatable=True}">
+    <Grid ShowGridLines="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0">
+            <TextBlock DockPanel.Dock="Left" Text="{Binding DisplayName}" FontSize="20" />
+            <ListBox HorizontalAlignment="Right" ItemsSource="{Binding Items}" SelectedItem="{Binding ActiveItem}">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding DisplayName}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DockPanel>
+
+        <ContentControl Grid.Row="1" cal:View.Model="{Binding ActiveItem, Mode=OneWay}" />
+    </Grid>
+</UserControl>
