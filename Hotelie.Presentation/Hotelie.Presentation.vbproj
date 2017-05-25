@@ -99,6 +99,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Class1.vb" />
     <Compile Include="Dashboard\Design\DashboardViewModel.vb" />
     <Compile Include="Dashboard\ViewModels\DashboardViewModel.vb" />
     <Compile Include="Dashboard\Views\DashboardView.xaml.vb">
