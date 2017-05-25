@@ -2,6 +2,7 @@
 Imports Hotelie.Application.Services.Authentication
 Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Dashboard.ViewModels
+Imports Hotelie.Presentation.Rooms.ViewModels
 Imports Hotelie.Presentation.Settings.ViewModels
 
 Namespace Start.WorkspaceShell.ViewModels
@@ -26,6 +27,7 @@ Namespace Start.WorkspaceShell.ViewModels
 
 		Private Sub InitializeWorkspaces()
 			Items.Add( New DashboardViewModel )
+            Items.Add(IoC.Get(Of RoomsViewModel))
 			Items.Add( New SettingsViewModel )
 		End Sub
 	End Class

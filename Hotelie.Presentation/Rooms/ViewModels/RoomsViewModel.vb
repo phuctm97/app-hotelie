@@ -1,7 +1,6 @@
 ﻿Imports System.Windows.Automation
 Imports Caliburn.Micro
 Imports Hotelie.Presentation.Common
-Imports Hotelie.Presentation.Rooms.Models
 Imports Hotelie.Application.Rooms.Queries.GetRoomsList
 
 Namespace Rooms.ViewModels
