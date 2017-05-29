@@ -1,4 +1,6 @@
-﻿Imports Caliburn.Micro
+﻿Imports System.ComponentModel
+Imports Caliburn.Micro
+Imports Hotelie.Application.Rooms.Queries.GetRoomsList
 Imports Hotelie.Application.Services.Authentication
 Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Start.LoginShell.ViewModels
@@ -29,7 +31,9 @@ Namespace Start
 
 			_container.RegisterType(Of IShell, LoginShellViewModel)( "login-shell", New TransientLifetimeManager() )
 			_container.RegisterType(Of IShell, WorkspaceShellViewModel)( "workspace-shell", New TransientLifetimeManager() )
-		End Sub
+
+            _container.RegisterType(Of IGetRoomsListQuery, ExampleRoomsListItem)(new ContainerControlledLifetimeManager())
+        End Sub
 
 		Protected Overrides Function GetInstance( service As Type,
 		                                          key As String ) As Object
@@ -54,7 +58,7 @@ Namespace Start
 		Protected Overrides Sub OnStartup( sender As Object,
 		                                   e As StartupEventArgs )
 			MyBase.OnStartup( sender, e )
-
+           
 			DisplayRootViewFor(Of IMainWindow)()
 		End Sub
 	End Class

@@ -1,0 +1,89 @@
+﻿<UserControl x:Class="Rooms.Views.RoomDetailView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:dd="clr-namespace:Hotelie.Presentation.Rooms.Design"
+             xmlns:converters="clr-namespace:Hotelie.Presentation.Rooms.Converters"
+             xmlns:local="clr-namespace:Hotelie.Presentation"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance Type=dd:RoomDetailViewModel, IsDesignTimeCreatable=True}">
+    <UserControl.Resources>
+        <converters:StateConverter x:Key="StateIntToStringConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="300" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition Height="10" />
+                <RowDefinition Height="40" />
+                <RowDefinition Height="40" />
+                <RowDefinition Height="40" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <!--#region Room Name -->
+            <TextBlock Grid.Column="0" Text="Room"
+                       FontSize="40" FontWeight="Bold"
+                       TextAlignment="Right"
+                       Margin="20,0,0,0"
+                       FontFamily="Footlight MT light" />
+            <TextBlock Grid.Row="0" Grid.Column="1"
+                       FontSize="40" FontWeight="Bold"
+                       Text="{Binding Room.Name}"
+                       FontFamily="Footlight MT light"
+                       Margin="10,0,0,0" />
+            <!--#endregion-->
+            <!--#region Room Category-->
+            <TextBlock Grid.Row="2" Grid.Column="0"
+                       FontSize="24" FontWeight="Bold"
+                       Margin="0,15,0,0"
+                       TextAlignment="Right"
+                       FontFamily="Footlight Mt Light"
+                       Text="Category" />
+            <TextBlock Grid.Row="2" Grid.Column="1"
+                       FontSize="24"
+                       Margin="20,15,0,0"
+                       FontFamily="Footlight MT Light"
+                       Text="{Binding Room.Category}" />
+            <!--#endregion-->
+            <!--#region Room Price-->
+            <TextBlock Grid.Row="3" Grid.Column="0"
+                       FontSize="24" FontWeight="Bold"
+                       Margin="0,15,0,0"
+                       TextAlignment="Right"
+                       FontFamily="Footlight Mt Light"
+                       Text="Price" />
+            <TextBlock Grid.Row="3" Grid.Column="1"
+                       FontSize="24"
+                       Margin="20,15,0,0"
+                       FontFamily="Footlight MT Light"
+                       Text="*Room Price" />
+            <!--#endregion Room State-->
+            <!--#region Room State-->
+            <TextBlock Grid.Row="4" Grid.Column="0"
+                       FontSize="24" FontWeight="Bold"
+                       Margin="0,15,0,0"
+                       TextAlignment="Right"
+                       FontFamily="Footlight Mt Light"
+                       Text="State" />
+            <TextBlock Grid.Row="4" Grid.Column="1"
+                       FontSize="24"
+                       Margin="20,15,0,0"
+                       FontFamily="Footlight MT Light"
+                       Text="{Binding Room.State, Converter={StaticResource StateIntToStringConverter}}" />
+            <!--#endregion Room State-->
+
+        </Grid>
+        <Grid Grid.Row="1"/>
+    </Grid>
+</UserControl>

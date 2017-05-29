@@ -32,9 +32,6 @@
                                          Style="{DynamicResource MaterialDesignMultiFloatingActionLightPopupBox}"
                                          Width="25" Height="25" Margin="0 0 16 0"
                                          Loaded="OnPopupBoxLoaded">
-                    <materialDesign:PopupBox.ToggleContent>
-                        <materialDesign:PackIcon Kind="DotsVertical" />
-                    </materialDesign:PopupBox.ToggleContent>
 
                     <StackPanel Orientation="Vertical">
                         <Button x:Name="ButtonZoom" Click="OnZoomButtonClick">
