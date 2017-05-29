@@ -91,30 +91,14 @@
                                         <DockPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
                                             <Button DockPanel.Dock="Left"
                                                     HorizontalAlignment="Left"
-                                                    Margin="8 4 4 8"
-                                                    Style="{DynamicResource MaterialDesignFlatButton}"
-                                                    Content="SỬA" />
-                                            <Button DockPanel.Dock="Left"
-                                                    HorizontalAlignment="Left"
                                                     Margin="4 4 4 8"
                                                     Style="{DynamicResource MaterialDesignFlatButton}"
-                                                    Content="XÓA" />
+                                                    Content="CHI TIẾT" />
                                             <Button DockPanel.Dock="Left"
                                                     HorizontalAlignment="Left"
                                                     Margin="4 4 4 8"
                                                     Style="{DynamicResource MaterialDesignFlatAccentButton}"
                                                     Content="THUÊ" />
-                                            <ToggleButton DockPanel.Dock="Right"
-                                                          HorizontalAlignment="Right"
-                                                          Style="{DynamicResource MaterialDesignFlatToggleButton}"
-                                                          Margin="4 4 8 8">
-                                                <ToggleButton.Content>
-                                                    <materialDesign:PackIcon Kind="ChevronDown" Height="24" Width="24" />
-                                                </ToggleButton.Content>
-                                                <materialDesign:ToggleButtonAssist.OnContent>
-                                                    <materialDesign:PackIcon Kind="ChevronUp" Height="24" Width="24"/>
-                                                </materialDesign:ToggleButtonAssist.OnContent>
-                                            </ToggleButton>
                                         </DockPanel>
                                     </Grid>
                                 </materialDesign:Card>

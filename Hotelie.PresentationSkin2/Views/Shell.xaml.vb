@@ -91,7 +91,8 @@ Public Class Shell
 
 	Private Sub OnTitleBarMouseDoubleClick( sender As Object,
 	                                        e As MouseButtonEventArgs )
-		If e.ChangedButton = MouseButton.Left And e.GetPosition(Me).Y < 76
+		If e.ChangedButton = MouseButton.Left And
+		   e.GetPosition( TabItems ).X < 0 And e.GetPosition( TabItems ).Y < TabItems.ActualHeight
 			OnZoomButtonClick( Nothing, Nothing )
 		End If
 	End Sub
