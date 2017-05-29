@@ -30,5 +30,10 @@ Namespace Start.WorkspaceShell.ViewModels
             Items.Add(IoC.Get(Of RoomsViewModel))
 			Items.Add( New SettingsViewModel )
 		End Sub
+
+		Protected Overrides Sub OnViewLoaded(view As Object)
+		    MyBase.OnViewLoaded(view)
+            ActivateItem(Items(0))
+		End Sub
 	End Class
 End Namespace

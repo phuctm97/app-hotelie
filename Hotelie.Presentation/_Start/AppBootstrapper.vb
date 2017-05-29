@@ -58,7 +58,7 @@ Namespace Start
 		Protected Overrides Sub OnStartup( sender As Object,
 		                                   e As StartupEventArgs )
 			MyBase.OnStartup( sender, e )
-
+           
 			DisplayRootViewFor(Of IMainWindow)()
 		End Sub
 	End Class
