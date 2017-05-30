@@ -124,7 +124,12 @@
     <Compile Include="Leases\Views\LeasesWorkspaceView.xaml.vb">
       <DependentUpon>LeasesWorkspaceView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Rooms\Converters\NullableValueConverter.vb" />
+    <Compile Include="Rooms\ViewModels\RoomDetailViewModel.vb" />
     <Compile Include="Rooms\ViewModels\RoomsWorkspaceViewModel.vb" />
+    <Compile Include="Rooms\Views\RoomDetailView.xaml.vb">
+      <DependentUpon>RoomDetailView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Rooms\Views\RoomsWorkspaceView.xaml.vb">
       <DependentUpon>RoomsWorkspaceView.xaml</DependentUpon>
     </Compile>
@@ -199,6 +204,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Leases\Views\LeasesWorkspaceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Rooms\Views\RoomDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
