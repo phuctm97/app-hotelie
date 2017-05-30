@@ -86,12 +86,45 @@
                         </Button>
                     </StackPanel>
                 </materialDesign:PopupBox>
+
+                <!--Button settings-->
+                <Button x:Name="ButtonSettings" DockPanel.Dock="Right" HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Content="Thiết lập kết nối"
+                        Margin="8 0 8 0"
+                        Click="OnButtonSettingsClick" />
+
+                <!--Button login-->
+                <Button x:Name="ButtonLogin" DockPanel.Dock="Right" HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Style="{DynamicResource MaterialDesignRaisedAccentButton}"
+                        Content="Đăng nhập"
+                        Margin="8 0 8 0" Visibility="Collapsed"
+                        Click="OnButtonLoginClick" />
+
+                <!--Description settings-->
+                <TextBlock x:Name="DescriptionSettings" DockPanel.Dock="Right" HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource MaterialDesignBody1TextBlock}"
+                           Foreground="{DynamicResource PrimaryHueLightBrush}"
+                           Text="Gặp sự cố kết nối?" />
+
+                <!--Description login-->
+                <TextBlock x:Name="DescriptionLogin" DockPanel.Dock="Right" HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource MaterialDesignBody1TextBlock}"
+                           Foreground="{DynamicResource PrimaryHueLightBrush}"
+                           Text="Kết nối thành công?" Visibility="Collapsed" />
+
             </DockPanel>
         </materialDesign:ColorZone>
 
-        <!--Login form-->
+        <!--Content-->
         <Grid Grid.Row="1" Background="{DynamicResource MaterialDesignPaper}">
-            <materialDesign:Card HorizontalAlignment="Center" VerticalAlignment="Center"
+
+            <!--Login form-->
+            <materialDesign:Card x:Name="FormLogin"
+                                 HorizontalAlignment="Center" VerticalAlignment="Center"
                                  Width="400" Height="Auto">
                 <StackPanel Orientation="Vertical">
 
@@ -106,20 +139,34 @@
                     </StackPanel>
 
                     <!--Account-->
-                    <TextBox materialDesign:HintAssist.Hint="Tài khoản"
-                             materialDesign:HintAssist.FloatingOffset="0, -24"
+                    <TextBox materialDesign:HintAssist.FloatingOffset="0, -24"
                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                              FontSize="18"
                              Margin="40 0 40 16"
-                             TextChanged="OnAccountChanged" />
+                             TextChanged="OnAccountChanged">
+                        <materialDesign:HintAssist.Hint>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon VerticalAlignment="Center"
+                                                         Kind="Account" Margin="0 0 4 0" />
+                                <TextBlock VerticalAlignment="Center" Text="Tài khoản" />
+                            </StackPanel>
+                        </materialDesign:HintAssist.Hint>
+                    </TextBox>
 
                     <!--Password-->
-                    <PasswordBox materialDesign:HintAssist.Hint="Mật khẩu"
-                                 materialDesign:HintAssist.FloatingOffset="0, -24"
+                    <PasswordBox materialDesign:HintAssist.FloatingOffset="0, -24"
                                  Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
                                  FontSize="18"
                                  Margin="40 0 40 32"
-                                 PasswordChanged="OnPasswordChanged" />
+                                 PasswordChanged="OnPasswordChanged">
+                        <materialDesign:HintAssist.Hint>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon VerticalAlignment="Center"
+                                                         Kind="Key" Margin="0 0 4 0" />
+                                <TextBlock VerticalAlignment="Center" Text="Mật khẩu" />
+                            </StackPanel>
+                        </materialDesign:HintAssist.Hint>
+                    </PasswordBox>
 
                     <!--Submit-->
                     <DockPanel Margin="40 0 40 32">
@@ -136,6 +183,72 @@
 
                 </StackPanel>
             </materialDesign:Card>
+
+            <!--Connection settings-->
+            <materialDesign:Card x:Name="FormSettings"
+                                 HorizontalAlignment="Center" VerticalAlignment="Center"
+                                 Width="400" Height="Auto" Visibility="Collapsed">
+                <StackPanel Orientation="Vertical">
+
+                    <!--Title-->
+                    <StackPanel Orientation="Horizontal" Margin="0 48 0 32">
+                        <Rectangle Width="8" Fill="{DynamicResource PrimaryHueMidBrush}" />
+                        <TextBlock Text="THIẾT LẬP KẾT NỐI"
+                                   FontSize="21"
+                                   FontWeight="Bold"
+                                   Foreground="{DynamicResource PrimaryHueMidBrush}"
+                                   Margin="32 8 8 8" />
+                    </StackPanel>
+
+                    <!--Server name-->
+                    <TextBox materialDesign:HintAssist.FloatingOffset="0, -24"
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                             FontSize="18"
+                             Margin="40 0 40 16"
+                             TextChanged="OnServerChanged">
+                        <materialDesign:HintAssist.Hint>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon VerticalAlignment="Center"
+                                                         Kind="Server" Margin="0 0 4 0" />
+                                <TextBlock VerticalAlignment="Center" Text="Máy chủ" />
+                            </StackPanel>
+                        </materialDesign:HintAssist.Hint>
+                    </TextBox>
+
+                    <!--Database name-->
+                    <TextBox materialDesign:HintAssist.FloatingOffset="0, -24"
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                             FontSize="18"
+                             Margin="40 0 40 32"
+                             TextChanged="OnDatabaseChanged">
+                        <materialDesign:HintAssist.Hint>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon VerticalAlignment="Center"
+                                                         Kind="Database" Margin="0 0 4 0" />
+                                <TextBlock VerticalAlignment="Center" Text="Cơ sở dữ liệu" />
+                            </StackPanel>
+                        </materialDesign:HintAssist.Hint>
+                    </TextBox>
+
+                    <!--Submit-->
+                    <DockPanel Margin="40 0 40 32">
+                        <!--Save-->
+                        <Button DockPanel.Dock="Left" HorizontalAlignment="Left"
+                                Content="Lưu"
+                                Style="{DynamicResource MaterialDesignRaisedButton}"
+                                FontSize="16"
+                                IsDefault="True" />
+                        <!--Test-->
+                        <Button DockPanel.Dock="Right" HorizontalAlignment="Right"
+                                Content="Thử kết nối"
+                                Style="{DynamicResource MaterialDesignToolButton}"
+                                FontSize="16"
+                                IsDefault="True" />
+                    </DockPanel>
+
+                </StackPanel>
+            </materialDesign:Card>
+
         </Grid>
     </Grid>
 </UserControl>
