@@ -32,7 +32,7 @@
         <materialDesign:ColorZone x:Name="TitleBar"
                                   Grid.Row="0"
                                   Height="76"
-                                  materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                                  materialDesign:ShadowAssist.ShadowDepth="Depth2"
                                   Mode="PrimaryDark"
                                   MouseLeftButtonDown="OnTitleBarLeftMouseDown"
                                   MouseDoubleClick="OnTitleBarMouseDoubleClick">

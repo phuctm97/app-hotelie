@@ -33,7 +33,7 @@
         <materialDesign:ColorZone x:Name="TitleBar"
                                   Grid.Row="0"
                                   Height="76"
-                                  materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                                  materialDesign:ShadowAssist.ShadowDepth="Depth2"
                                   Mode="PrimaryDark"
                                   MouseLeftButtonDown="OnTitleBarLeftMouseDown"
                                   MouseDoubleClick="OnTitleBarMouseDoubleClick">
@@ -120,7 +120,7 @@
         </materialDesign:ColorZone>
 
         <!--Content-->
-        <Grid Grid.Row="1" Background="{DynamicResource MaterialDesignPaper}">
+        <Grid Grid.Row="1">
 
             <!--Login form-->
             <materialDesign:Card x:Name="FormLogin"
