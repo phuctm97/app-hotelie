@@ -33,7 +33,7 @@
         <materialDesign:ColorZone x:Name="TitleBar"
                                   Grid.Row="0"
                                   Height="76"
-                                  materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                                  materialDesign:ShadowAssist.ShadowDepth="Depth1"
                                   Mode="PrimaryDark"
                                   MouseLeftButtonDown="OnTitleBarLeftMouseDown"
                                   MouseDoubleClick="OnTitleBarMouseDoubleClick">
@@ -41,7 +41,7 @@
                 <!--Icon-->
                 <Image DockPanel.Dock="Left" HorizontalAlignment="Left"
                        Source="/_Resources/Icons/icon.png" Height="58"
-                       Margin="20 0 0 0" />
+                       Margin="16 0 0 0" />
 
                 <!--Title-->
                 <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" HorizontalAlignment="Left"

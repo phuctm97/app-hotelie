@@ -138,6 +138,7 @@
     <Compile Include="_Start\MainWindow\Views\MainWindowView.xaml.vb">
       <DependentUpon>MainWindowView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="_Start\WorkspaceShell\Converters\CapitalizeConverter.vb" />
     <Compile Include="_Start\WorkspaceShell\ViewModels\WorkspaceShellViewModel.vb" />
     <Compile Include="_Start\WorkspaceShell\Views\WorkspaceShellView.xaml.vb">
       <DependentUpon>WorkspaceShellView.xaml</DependentUpon>

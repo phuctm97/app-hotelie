@@ -19,7 +19,7 @@
 		Private Sub OnTitleBarLeftMouseDown( sender As Object,
 		                                     e As MouseButtonEventArgs )
 			If e.GetPosition( TitleBar ).Y > TitleBar.ActualHeight Then Return
-			If e.GetPosition( UserCommandsPopupBox ).X > 0 Then Return
+			If e.GetPosition( TabItems ).X > 0 Then Return
 
 			Windows.Application.Current.MainWindow.DragMove()
 		End Sub
@@ -28,7 +28,7 @@
 		                                        e As MouseButtonEventArgs )
 			If Not e.ChangedButton = MouseButton.Left Then Return
 			If e.GetPosition( TitleBar ).Y > TitleBar.ActualHeight Then Return
-			If e.GetPosition( UserCommandsPopupBox ).X > 0 Then Return
+			If e.GetPosition( TabItems ).X > 0 Then Return
 
 			OnZoomButtonClick( Nothing, Nothing )
 		End Sub
