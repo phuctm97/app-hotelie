@@ -1,11 +1,7 @@
-﻿Imports System.ComponentModel
-Imports Caliburn.Micro
-Imports Hotelie.Application.Rooms.Queries.GetRoomsList
-Imports Hotelie.Application.Services.Authentication
+﻿Imports Caliburn.Micro
 Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Start.LoginShell.ViewModels
 Imports Hotelie.Presentation.Start.MainWindow.ViewModels
-Imports Hotelie.Presentation.Start.WorkspaceShell.ViewModels
 Imports Microsoft.Practices.Unity
 
 Namespace Start
@@ -26,14 +22,15 @@ Namespace Start
 			_container.RegisterType(Of IWindowManager, WindowManager)( New ContainerControlledLifetimeManager() )
 			_container.RegisterType(Of IEventAggregator, EventAggregator)( New ContainerControlledLifetimeManager() )
 
-			_container.RegisterType(Of IMainWindow, MainWindowViewModel)( New ContainerControlledLifetimeManager() )
-			_container.RegisterType(Of IAuthentication, Authentication)( New ContainerControlledLifetimeManager() )
-
+			_container.RegisterType(Of IMainWindow, MainWindowViewModel)(New ContainerControlledLifetimeManager())
 			_container.RegisterType(Of IShell, LoginShellViewModel)( "login-shell", New TransientLifetimeManager() )
-			_container.RegisterType(Of IShell, WorkspaceShellViewModel)( "workspace-shell", New TransientLifetimeManager() )
+			
+			'_container.RegisterType(Of IAuthentication, Authentication)( New ContainerControlledLifetimeManager() )
 
-            _container.RegisterType(Of IGetRoomsListQuery, ExampleRoomsListItem)(new ContainerControlledLifetimeManager())
-        End Sub
+			'_container.RegisterType(Of IShell, WorkspaceShellViewModel)( "workspace-shell", New TransientLifetimeManager() )
+
+			'_container.RegisterType(Of IGetRoomsListQuery, ExampleRoomsListItem)( new ContainerControlledLifetimeManager() )
+		End Sub
 
 		Protected Overrides Function GetInstance( service As Type,
 		                                          key As String ) As Object
@@ -58,7 +55,7 @@ Namespace Start
 		Protected Overrides Sub OnStartup( sender As Object,
 		                                   e As StartupEventArgs )
 			MyBase.OnStartup( sender, e )
-           
+
 			DisplayRootViewFor(Of IMainWindow)()
 		End Sub
 	End Class

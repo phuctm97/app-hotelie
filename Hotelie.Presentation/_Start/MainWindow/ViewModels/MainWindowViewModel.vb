@@ -13,6 +13,10 @@ Namespace Start.MainWindow.ViewModels
 
 		Public Sub New()
 			Title = "Hotelie"
+
+			Width = 1000
+
+			Height = 600
 		End Sub
 
 		Public Property Title As String Implements IMainWindow.Title
@@ -63,12 +67,18 @@ Namespace Start.MainWindow.ViewModels
 			End Set
 		End Property
 
+		Public ReadOnly Property Shell As IShell Implements IMainWindow.Shell
+			Get
+				Return ActiveItem
+			End Get
+		End Property
+
 		Public Sub ShowLoginShell() Implements IMainWindow.ShowLoginShell
 			Title = "Hotelie - Login"
 
-			Width = 960
+			Width = 1000
 
-			Height = 540
+			Height = 600
 
 			WindowState = WindowState.Normal
 
@@ -81,6 +91,13 @@ Namespace Start.MainWindow.ViewModels
 			WindowState = WindowState.Maximized
 
 			ActivateItem( IoC.Get(Of IShell)( "workspace-shell" ) )
+		End Sub
+
+		Protected Overrides Sub ChangeActiveItem( newItem As IShell,
+		                                          closePrevious As Boolean )
+			MyBase.ChangeActiveItem( newItem, closePrevious )
+
+			NotifyOfPropertyChange( Function() Shell )
 		End Sub
 	End Class
 End Namespace
