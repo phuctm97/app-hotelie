@@ -9,6 +9,7 @@ Namespace Rooms
 
 			HasKey( Function( p ) p.Id )
 
+
 			[Property]( Function( p ) p.Id ).
 				IsRequired().
 				IsUnicode( False ).
@@ -19,6 +20,9 @@ Namespace Rooms
 				IsRequired().
 				IsUnicode().
 				HasMaxLength( 50 )
+
+            [Property](Function(p)p.State).
+                IsRequired()
 
 			[Property]( Function( p ) p.Note ).
 				IsOptional().

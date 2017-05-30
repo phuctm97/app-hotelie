@@ -63,6 +63,9 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Leases\Bill.vb" />
+    <Compile Include="Leases\CustomerCategory.vb" />
+    <Compile Include="Leases\LeaseDetail.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -78,8 +81,13 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Leases\Lease.vb" />
+    <Compile Include="Parameters\Parameter.vb" />
+    <Compile Include="Users\Permission.vb" />
     <Compile Include="Rooms\Room.vb" />
     <Compile Include="Rooms\RoomCategory.vb" />
+    <Compile Include="Users\User.vb" />
+    <Compile Include="Users\UserCategory.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
