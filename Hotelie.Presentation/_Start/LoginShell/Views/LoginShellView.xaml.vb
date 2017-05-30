@@ -30,10 +30,13 @@ Namespace Start.LoginShell.Views
 
 		Private Sub OnTitleBarLeftMouseDown( sender As Object,
 		                                     e As MouseButtonEventArgs )
-			If e.GetPosition( TitleBar ).Y < TitleBar.ActualHeight And
-			   e.GetPosition( WindowCommandPopups ).X < 0
-				Windows.Application.Current.MainWindow.DragMove()
-			End If
+			If e.GetPosition( TitleBar ).Y > TitleBar.ActualHeight Then Return
+			If ButtonSettings.Visibility = Visibility.Visible And
+			   e.GetPosition( ButtonSettings ).X > 0 Then Return
+			If ButtonLogin.Visibility = Visibility.Visible And
+			   e.GetPosition( ButtonLogin ).X > 0 Then Return
+
+			Windows.Application.Current.MainWindow.DragMove()
 		End Sub
 
 		Private Sub OnTitleBarMouseDoubleClick( sender As Object,

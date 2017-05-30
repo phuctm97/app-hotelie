@@ -18,16 +18,17 @@
 
 		Private Sub OnTitleBarLeftMouseDown( sender As Object,
 		                                     e As MouseButtonEventArgs )
-			If e.GetPosition( TitleBar ).Y < TitleBar.ActualHeight And
-			   e.GetPosition( WindowCommandPopups ).X < 0
-				Windows.Application.Current.MainWindow.DragMove()
-			End If
+			If e.GetPosition( TitleBar ).Y > TitleBar.ActualHeight Then Return
+			If e.GetPosition( UserCommandsPopupBox ).X > 0 Then Return
+
+			Windows.Application.Current.MainWindow.DragMove()
 		End Sub
 
 		Private Sub OnTitleBarMouseDoubleClick( sender As Object,
 		                                        e As MouseButtonEventArgs )
 			If Not e.ChangedButton = MouseButton.Left Then Return
 			If e.GetPosition( TitleBar ).Y > TitleBar.ActualHeight Then Return
+			If e.GetPosition( UserCommandsPopupBox ).X > 0 Then Return
 
 			OnZoomButtonClick( Nothing, Nothing )
 		End Sub
@@ -53,6 +54,5 @@
 		                                e As RoutedEventArgs )
 			Windows.Application.Current.MainWindow.Close()
 		End Sub
-
 	End Class
 End Namespace

@@ -84,7 +84,7 @@
                 </materialDesign:PopupBox>
 
                 <!--User commands-->
-                <materialDesign:PopupBox DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
+                <materialDesign:PopupBox x:Name="UserCommandsPopupBox" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
                                          Margin="8 0 8 0"
                                          PlacementMode="BottomAndAlignRightEdges"
                                          StaysOpen="False">
