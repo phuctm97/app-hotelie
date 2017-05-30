@@ -26,12 +26,11 @@
     <!--Shell selector-->
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
-            <cal:ActionMessage MethodName="ShowLoginShell" />
+            <cal:ActionMessage MethodName="ShowWorkspaceShell" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
     <!--Shell-->
-    <!--TODO: add transition effect-->
     <ContentControl cal:View.Model="{Binding Shell}" />
 
 </Window>

@@ -1,0 +1,150 @@
+﻿<UserControl x:Class="Start.WorkspaceShell.Views.WorkspaceShellView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Hotelie.Presentation"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="1000">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--Titlebar-->
+        <materialDesign:ColorZone x:Name="TitleBar"
+                                  Grid.Row="0"
+                                  Height="76"
+                                  materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                                  Mode="PrimaryDark"
+                                  MouseLeftButtonDown="OnTitleBarLeftMouseDown"
+                                  MouseDoubleClick="OnTitleBarMouseDoubleClick">
+            <DockPanel>
+                <!--Icon-->
+                <Image DockPanel.Dock="Left" HorizontalAlignment="Left"
+                       Source="/_Resources/Icons/icon.png" Height="58"
+                       Margin="20 0 0 0" />
+
+                <!--Title-->
+                <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" HorizontalAlignment="Left"
+                           FontSize="23" FontWeight="UltraBold"
+                           Margin="16 0 50 0"
+                           Text="HOTELIE" />
+
+                <!--Window commands-->
+                <materialDesign:PopupBox x:Name="WindowCommandPopups"
+                                         DockPanel.Dock="Right"
+                                         HorizontalAlignment="Right" VerticalAlignment="Center"
+                                         PlacementMode="BottomAndAlignRightEdges"
+                                         Margin="0 0 8 0"
+                                         StaysOpen="False">
+                    <StackPanel Orientation="Vertical">
+                        <Button Click="OnZoomButtonClick">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="WindowMaximize"
+                                                         VerticalAlignment="Center"
+                                                         Width="24" Height="24"
+                                                         Margin="0 0 8 0" />
+                                <TextBlock x:Name="ButtonZoomDisplay" Text="Phóng to" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button Click="OnHideButtonClick">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="WindowMinimize"
+                                                         VerticalAlignment="Center"
+                                                         Width="24" Height="24"
+                                                         Margin="0 0 8 0" />
+                                <TextBlock Text="Ẩn" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button Click="OnCloseButtonClick">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="ExitToApp"
+                                                         VerticalAlignment="Center"
+                                                         Width="24" Height="24"
+                                                         Margin="0 0 8 0" />
+                                <TextBlock Text="Thoát" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </materialDesign:PopupBox>
+
+                <!--User commands-->
+                <materialDesign:PopupBox DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                         Margin="8 0 8 0"
+                                         PlacementMode="BottomAndAlignRightEdges"
+                                         StaysOpen="False">
+                    <materialDesign:PopupBox.ToggleContent>
+                        <materialDesign:Card Background="{DynamicResource SecondaryAccentBrush}"
+                                             Foreground="{DynamicResource SecondaryAccentForegroundBrush}"
+                                             MinWidth="100" MaxWidth="200" Height="32">
+                            <TextBlock HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       FontSize="15"
+                                       FontWeight="Medium"
+                                       Foreground="{DynamicResource SecondaryAccentForegroundBrush}"
+                                       Margin="8 0 8 0"
+                                       Text="username" />
+                        </materialDesign:Card>
+                    </materialDesign:PopupBox.ToggleContent>
+
+                    <StackPanel Orientation="Vertical">
+
+                        <!--Account detail-->
+                        <Button>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="AccountCardDetails"
+                                                         VerticalAlignment="Center"
+                                                         Width="24" Height="24"
+                                                         Margin="0 0 8 0" />
+                                <TextBlock Text="Thông tin tài khoản" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+
+                        <!--Settings-->
+                        <Button>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Settings"
+                                                         VerticalAlignment="Center"
+                                                         Width="24" Height="24"
+                                                         Margin="0 0 8 0" />
+                                <TextBlock Text="Thay đổi quy định" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+
+                        <!--Log out-->
+                        <Button>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Logout"
+                                                         VerticalAlignment="Center"
+                                                         Width="24" Height="24"
+                                                         Margin="0 0 8 0" />
+                                <TextBlock Text="Đăng xuất" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+
+                    </StackPanel>
+                </materialDesign:PopupBox>
+
+            </DockPanel>
+        </materialDesign:ColorZone>
+
+        <!--Content-->
+        <ContentControl Grid.Row="1" cal:View.Model="{Binding ActiveWorkspace}" />
+
+    </Grid>
+</UserControl>

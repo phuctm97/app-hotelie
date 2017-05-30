@@ -1,7 +1,10 @@
 ﻿Imports Caliburn.Micro
 Imports Hotelie.Presentation.Common
+Imports Hotelie.Presentation.Leases.ViewModels
+Imports Hotelie.Presentation.Rooms.ViewModels
 Imports Hotelie.Presentation.Start.LoginShell.ViewModels
 Imports Hotelie.Presentation.Start.MainWindow.ViewModels
+Imports Hotelie.Presentation.Start.WorkspaceShell.ViewModels
 Imports Microsoft.Practices.Unity
 
 Namespace Start
@@ -22,12 +25,17 @@ Namespace Start
 			_container.RegisterType(Of IWindowManager, WindowManager)( New ContainerControlledLifetimeManager() )
 			_container.RegisterType(Of IEventAggregator, EventAggregator)( New ContainerControlledLifetimeManager() )
 
-			_container.RegisterType(Of IMainWindow, MainWindowViewModel)(New ContainerControlledLifetimeManager())
+			' Start
+			_container.RegisterType(Of IMainWindow, MainWindowViewModel)( New ContainerControlledLifetimeManager() )
 			_container.RegisterType(Of IShell, LoginShellViewModel)( "login-shell", New TransientLifetimeManager() )
-			
-			'_container.RegisterType(Of IAuthentication, Authentication)( New ContainerControlledLifetimeManager() )
+			_container.RegisterType(Of IShell, WorkspaceShellViewModel)( "workspace-shell", New TransientLifetimeManager() )
 
-			'_container.RegisterType(Of IShell, WorkspaceShellViewModel)( "workspace-shell", New TransientLifetimeManager() )
+			' Workspaces
+			_container.RegisterType(Of IWorkspace, RoomsWorkspaceViewModel)( "rooms-workspace", New TransientLifetimeManager() )
+			_container.RegisterType(Of IWorkspace, LeasesWorkspaceViewModel)( "leases-workspace",
+			                                                                  New TransientLifetimeManager() )
+
+			'_container.RegisterType(Of IAuthentication, Authentication)( New ContainerControlledLifetimeManager() )
 
 			'_container.RegisterType(Of IGetRoomsListQuery, ExampleRoomsListItem)( new ContainerControlledLifetimeManager() )
 		End Sub

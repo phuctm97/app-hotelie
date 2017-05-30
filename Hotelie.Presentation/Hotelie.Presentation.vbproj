@@ -119,6 +119,15 @@
     </Compile>
     <Compile Include="Common\IMainWindow.vb" />
     <Compile Include="Common\IShell.vb" />
+    <Compile Include="Common\IWorkspace.vb" />
+    <Compile Include="Leases\ViewModels\LeasesWorkspaceViewModel.vb" />
+    <Compile Include="Leases\Views\LeasesWorkspaceView.xaml.vb">
+      <DependentUpon>LeasesWorkspaceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Rooms\ViewModels\RoomsWorkspaceViewModel.vb" />
+    <Compile Include="Rooms\Views\RoomsWorkspaceView.xaml.vb">
+      <DependentUpon>RoomsWorkspaceView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="_Start\AppBootstrapper.vb" />
     <Compile Include="_Start\LoginShell\Converters\TextLengthConverter.vb" />
     <Compile Include="_Start\LoginShell\ViewModels\LoginShellViewModel.vb" />
@@ -128,6 +137,10 @@
     <Compile Include="_Start\MainWindow\ViewModels\MainWindowViewModel.vb" />
     <Compile Include="_Start\MainWindow\Views\MainWindowView.xaml.vb">
       <DependentUpon>MainWindowView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="_Start\WorkspaceShell\ViewModels\WorkspaceShellViewModel.vb" />
+    <Compile Include="_Start\WorkspaceShell\Views\WorkspaceShellView.xaml.vb">
+      <DependentUpon>WorkspaceShellView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -184,11 +197,23 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Leases\Views\LeasesWorkspaceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Rooms\Views\RoomsWorkspaceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="_Start\LoginShell\Views\LoginShellView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="_Start\MainWindow\Views\MainWindowView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="_Start\WorkspaceShell\Views\WorkspaceShellView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

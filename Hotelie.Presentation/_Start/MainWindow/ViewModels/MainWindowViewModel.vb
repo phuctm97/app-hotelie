@@ -98,6 +98,12 @@ Namespace Start.MainWindow.ViewModels
 			MyBase.ChangeActiveItem( newItem, closePrevious )
 
 			NotifyOfPropertyChange( Function() Shell )
+
+			If Shell Is Nothing
+				Title = "Hotelie"
+			Else
+				Title = $"Hotelie - {Shell.DisplayName}"
+			End If
 		End Sub
 	End Class
 End Namespace

@@ -26,14 +26,8 @@ Namespace Start.LoginShell.Views
 				If( Application.Current.MainWindow.WindowState = WindowState.Maximized, "Thu nhỏ", "Phóng to" )
 		End Sub
 
-		Private Sub InitEffectParameters()
-			_previousPasswordLength = 0
-			_previousAccountLength = 0
-			_previousServerNameLength = 0
-			_previousDatabaseNameLength = 0
-		End Sub
+		' Window command
 
-		' Drag window
 		Private Sub OnTitleBarLeftMouseDown( sender As Object,
 		                                     e As MouseButtonEventArgs )
 			If e.GetPosition( TitleBar ).Y < TitleBar.ActualHeight And
@@ -74,6 +68,15 @@ Namespace Start.LoginShell.Views
 		Private Sub OnCloseButtonClick( sender As Object,
 		                                e As RoutedEventArgs )
 			Windows.Application.Current.MainWindow.Close()
+		End Sub
+
+		' Textbox effects
+
+		Private Sub InitEffectParameters()
+			_previousPasswordLength = 0
+			_previousAccountLength = 0
+			_previousServerNameLength = 0
+			_previousDatabaseNameLength = 0
 		End Sub
 
 		Private Sub OnPasswordChanged( sender As Object,
@@ -155,6 +158,8 @@ Namespace Start.LoginShell.Views
 
 			_previousDatabaseNameLength = databaseBox.Text.Length
 		End Sub
+
+		' Form switch
 
 		Private Sub OnButtonSettingsClick( sender As Object,
 		                                   e As RoutedEventArgs )
