@@ -8,6 +8,11 @@ Namespace Tests
 
 		Public Property LoggedIn As Boolean Implements IAuthentication.LoggedIn
 
+		Public Sub Logout() Implements IAuthentication.Logout
+			LoggedAccount = Nothing
+			LoggedIn = False
+		End Sub
+
 		Public Iterator Function TryLogin( account As Account ) As IEnumerable(Of String) Implements IAuthentication.TryLogin
 			If account.Username <> "username"
 				Yield "Tài khoản không tồn tại"

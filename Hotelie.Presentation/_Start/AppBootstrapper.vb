@@ -6,7 +6,6 @@ Imports Hotelie.Presentation.Rooms.ViewModels
 Imports Hotelie.Presentation.Start.LoginShell.ViewModels
 Imports Hotelie.Presentation.Start.MainWindow.ViewModels
 Imports Hotelie.Presentation.Start.WorkspaceShell.ViewModels
-Imports Hotelie.Presentation.Tests
 Imports Microsoft.Practices.Unity
 
 Namespace Start
@@ -38,7 +37,7 @@ Namespace Start
 			                                                                  New TransientLifetimeManager() )
 
 			' Authentication
-			_container.RegisterType(Of IAuthentication, Authentication)( New ContainerControlledLifetimeManager() )
+			_container.RegisterType(Of IAuthentication, Tests.Authentication)( New ContainerControlledLifetimeManager() )
 
 			'_container.RegisterType(Of IGetRoomsListQuery, ExampleRoomsListItem)( new ContainerControlledLifetimeManager() )
 		End Sub
