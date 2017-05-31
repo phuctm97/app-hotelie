@@ -7,11 +7,10 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              MinWidth="500"
              MaxWidth="700"
-             MaxHeight="500"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignHeight="600" d:DesignWidth="300">
+             d:DesignHeight="700" d:DesignWidth="300">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -23,9 +22,9 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -50,7 +49,6 @@
 
                 <!--Close button-->
                 <Button Grid.Column="0"
-                        Padding="0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Style="{DynamicResource MaterialDesignToolButton}"
@@ -91,17 +89,18 @@
         </materialDesign:ColorZone>
 
         <!--Room name-->
-        <TextBox Grid.Row="1"
-                 materialDesign:HintAssist.Hint="Tên phòng"
-                 materialDesign:HintAssist.FloatingScale="0.43"
-                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                 FontSize="35"
-                 Margin="16 20 16 0" />
+        <StackPanel Grid.Row="1" Margin="16 24 16 0">
+            <TextBlock Text="Tên phòng" IsEnabled="False"
+                       Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                       FontSize="15" Margin="0 0 0 4" />
+            <TextBox materialDesign:HintAssist.Hint="Tên phòng"
+                     FontSize="35" />
+        </StackPanel>
 
         <!--Room category-->
-        <StackPanel Grid.Row="2" Margin="16 20 16 0">
+        <StackPanel Grid.Row="2" Margin="16 24 16 0">
             <TextBlock Text="Loại phòng" IsEnabled="False"
-                       Foreground="{DynamicResource MaterialDesignBody}"
+                       Foreground="{DynamicResource PrimaryHueDarkBrush}"
                        FontSize="15" Margin="0 0 0 4" />
             <ComboBox
                 materialDesign:HintAssist.Hint="Loại phòng"
@@ -114,20 +113,37 @@
         </StackPanel>
 
         <!--Room note-->
-        <StackPanel Grid.Row="3" Margin="16 20 16 0">
+        <StackPanel Grid.Row="3" Margin="16 24 16 0">
             <TextBlock Text="Ghi chú" IsEnabled="False"
-                       Foreground="{DynamicResource MaterialDesignBody}"
+                       Foreground="{DynamicResource PrimaryHueDarkBrush}"
                        FontSize="15" Margin="0 0 0 4" />
             <TextBox materialDesign:HintAssist.Hint="Thông tin thêm về phòng"
                      TextWrapping="Wrap"
                      AcceptsReturn="True"
                      VerticalScrollBarVisibility="Auto"
                      FontSize="15"
-                     Height="Auto" />
+                     Padding="0 0 4 0"
+                     Height="Auto"
+                     MaxHeight="130" />
+        </StackPanel>
+
+        <!--Room state-->
+        <StackPanel Grid.Row="4" Margin="16 24 16 0">
+            <TextBlock Text="Tình trạng" IsEnabled="False"
+                       Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                       FontSize="15" Margin="0 0 0 4" />
+            <materialDesign:Chip Content="Trống"
+                                 FontSize="15"
+                                 IconBackground="#FF00C853"
+                                 IconForeground="White">
+                <materialDesign:Chip.Icon>
+                    <materialDesign:PackIcon Kind="Check" Width="24" Height="24" />
+                </materialDesign:Chip.Icon>
+            </materialDesign:Chip>
         </StackPanel>
 
         <!--Commands-->
-        <DockPanel Grid.Row="5">
+        <DockPanel Grid.Row="6">
             <Button DockPanel.Dock="Right" HorizontalAlignment="Right"
                     Style="{DynamicResource MaterialDesignFlatAccentButton}"
                     Content="THUÊ PHÒNG"
