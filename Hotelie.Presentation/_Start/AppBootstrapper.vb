@@ -1,10 +1,12 @@
 ﻿Imports Caliburn.Micro
+Imports Hotelie.Application.Services.Authentication
 Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Leases.ViewModels
 Imports Hotelie.Presentation.Rooms.ViewModels
 Imports Hotelie.Presentation.Start.LoginShell.ViewModels
 Imports Hotelie.Presentation.Start.MainWindow.ViewModels
 Imports Hotelie.Presentation.Start.WorkspaceShell.ViewModels
+Imports Hotelie.Presentation.Tests
 Imports Microsoft.Practices.Unity
 
 Namespace Start
@@ -35,7 +37,8 @@ Namespace Start
 			_container.RegisterType(Of IWorkspace, LeasesWorkspaceViewModel)( "leases-workspace",
 			                                                                  New TransientLifetimeManager() )
 
-			'_container.RegisterType(Of IAuthentication, Authentication)( New ContainerControlledLifetimeManager() )
+			' Authentication
+			_container.RegisterType(Of IAuthentication, Authentication)( New ContainerControlledLifetimeManager() )
 
 			'_container.RegisterType(Of IGetRoomsListQuery, ExampleRoomsListItem)( new ContainerControlledLifetimeManager() )
 		End Sub

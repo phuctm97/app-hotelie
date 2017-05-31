@@ -158,6 +158,7 @@
     <Compile Include="_Start\WorkspaceShell\Views\WorkspaceShellView.xaml.vb">
       <DependentUpon>WorkspaceShellView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="_Tests\Authentication.vb" />
   </ItemGroup>
   <ItemGroup>
     <Import Include="System.Threading.Tasks" />
