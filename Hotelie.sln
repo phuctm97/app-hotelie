@@ -19,6 +19,8 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Hotelie.Persistence.Test", 
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Hotelie.Presentation", "Hotelie.Presentation\Hotelie.Presentation.vbproj", "{957B7877-A0A8-4C96-81B3-53F6FBD075EF}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Hotelie.Persistence.EF.Test", "Tests\Hotelie.Persistence.EF.Test\Hotelie.Persistence.EF.Test.vbproj", "{CF3F0037-EF1D-43A2-B4EB-BD896E85F4D3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{957B7877-A0A8-4C96-81B3-53F6FBD075EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{957B7877-A0A8-4C96-81B3-53F6FBD075EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{957B7877-A0A8-4C96-81B3-53F6FBD075EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF3F0037-EF1D-43A2-B4EB-BD896E85F4D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF3F0037-EF1D-43A2-B4EB-BD896E85F4D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF3F0037-EF1D-43A2-B4EB-BD896E85F4D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF3F0037-EF1D-43A2-B4EB-BD896E85F4D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -61,5 +67,6 @@ Global
 		{78EDBE8C-98B6-48C9-BEB4-0E3F90F7A3F0} = {62C076DB-B1B8-4478-B0DF-CF70D0C3A715}
 		{19DA08C3-E744-4BF4-BB38-57F9CBA04162} = {62C076DB-B1B8-4478-B0DF-CF70D0C3A715}
 		{A855A91D-3917-40FA-BD14-FFFCF4EFA9EC} = {62C076DB-B1B8-4478-B0DF-CF70D0C3A715}
+		{CF3F0037-EF1D-43A2-B4EB-BD896E85F4D3} = {62C076DB-B1B8-4478-B0DF-CF70D0C3A715}
 	EndGlobalSection
 EndGlobal

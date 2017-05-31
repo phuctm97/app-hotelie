@@ -26,7 +26,7 @@
     <!--Shell selector-->
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
-            <cal:ActionMessage MethodName="ShowWorkspaceShell" />
+            <cal:ActionMessage MethodName="ShowLoginShell" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
