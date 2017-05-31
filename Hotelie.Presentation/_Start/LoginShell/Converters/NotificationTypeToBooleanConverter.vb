@@ -1,18 +1,18 @@
 ﻿Imports System.Globalization
+Imports Hotelie.Presentation.Start.Login.Models
 
 Namespace Start.LoginShell.Converters
-	Public Class TextLengthConverter
+	Public Class NotificationTypeToBooleanConverter
 		Implements IValueConverter
 
 		Public Function Convert(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.Convert
-			Dim text = CType(value, String)
-
-			Return text.Length > 0
+			If Equals(value, NotificationType.None) Then Return False
+			Return True
 		End Function
 
 		Public Function ConvertBack(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.ConvertBack
-			Throw New NotImplementedException()
+			If Equals(value, False) Then Return NotificationType.None
+			Return NotificationType.Information
 		End Function
-
 	End Class
 End Namespace

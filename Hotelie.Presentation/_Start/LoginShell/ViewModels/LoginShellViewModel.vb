@@ -1,13 +1,18 @@
 ﻿Imports Caliburn.Micro
+Imports Hotelie.Application.Services.Authentication
 Imports Hotelie.Presentation.Common
+Imports Hotelie.Presentation.Start.Login.Models
 
 Namespace Start.LoginShell.ViewModels
 	Public Class LoginShellViewModel
 		Inherits Screen
 		Implements IShell
 
+		Private _authentication As IAuthentication
+
 		Private _isLoginFormVisible As Boolean
 		Private _isSettingsFormVisible As Boolean
+		Private _notification As Notification
 
 		Public Property ParentWindow As IMainWindow Implements IChild(Of IMainWindow).Parent
 			Get
@@ -20,9 +25,25 @@ Namespace Start.LoginShell.ViewModels
 
 		Public Sub New()
 			DisplayName = "Login"
+
 			IsLoginFormVisible = True
 			IsSettingsFormVisible = False
+
+			Notification = New Notification With {.Text=String.Empty, .Type=NotificationType.None}
 		End Sub
+
+		' Notification
+		Public Property Notification As Notification
+			Get
+				Return _notification
+			End Get
+			Set
+				If Equals( Value, _notification ) Then Return
+
+				_notification = value
+				NotifyOfPropertyChange( Function() Notification )
+			End Set
+		End Property
 
 		' Forms display
 		Public Property IsLoginFormVisible As Boolean
@@ -63,6 +84,11 @@ Namespace Start.LoginShell.ViewModels
 
 		Public Sub CloseWindow()
 			ParentWindow.Close()
+		End Sub
+
+		' Login
+		Public Sub TryLogin(username As String, password As String)
+
 		End Sub
 	End Class
 End Namespace

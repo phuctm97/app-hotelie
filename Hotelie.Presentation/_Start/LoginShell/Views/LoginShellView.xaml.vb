@@ -55,6 +55,7 @@ Namespace Start.LoginShell.Views
 		Private Sub OnPasswordChanged( sender As Object,
 		                               e As RoutedEventArgs )
 			Dim passwordBox = CType(sender, PasswordBox)
+			PasswordStorage.Text = passwordBox.Password
 
 			If _previousPasswordLength = 0 And passwordBox.Password.Length > 0
 				' animate box down
