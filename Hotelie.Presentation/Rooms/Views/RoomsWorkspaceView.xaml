@@ -27,6 +27,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="1" />
             </Grid.RowDefinitions>
 
             <!--Rooms list-->
@@ -119,7 +120,7 @@
                                                         Content="CHI TIẾT">
                                                     <i:Interaction.Triggers>
                                                         <i:EventTrigger EventName="Click">
-                                                            <cal:ActionMessage MethodName="ShowRoomDetail" />
+                                                            <cal:ActionMessage MethodName="ShowRoomDetailDialog" />
                                                         </i:EventTrigger>
                                                     </i:Interaction.Triggers>
                                                 </Button>
@@ -151,6 +152,17 @@
                 <ListBoxItem />
                 <ListBoxItem />
             </ListBox>
+
+            <Button Grid.Row="2" Style="{DynamicResource MaterialDesignFloatingActionAccentButton}" 
+                    HorizontalAlignment="Right"
+                    Margin="0 -119 32 0">
+                <materialDesign:PackIcon Kind="Plus" Width="24" Height="24"/>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <cal:ActionMessage MethodName="ShowAddRoomDialog" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
         </Grid>
     </materialDesign:DialogHost>
 </UserControl>

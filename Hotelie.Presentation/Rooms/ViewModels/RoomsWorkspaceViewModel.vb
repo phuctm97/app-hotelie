@@ -24,10 +24,14 @@ Namespace Rooms.ViewModels
 			IsDialogOpen = False
 		End Sub
 
-		Public Sub ShowRoomDetail()
+		Public Sub ShowRoomDetailDialog()
 			ActivateItem( New RoomDetailViewModel() )
 			IsDialogOpen = True
 		End Sub
 
+		Public Sub ShowAddRoomDialog()
+			ActivateItem( New AddRoomViewModel() )
+			IsDialogOpen = True
+		End Sub
 	End Class
 End Namespace
