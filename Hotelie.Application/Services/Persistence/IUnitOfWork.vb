@@ -3,6 +3,7 @@
 		Inherits IDisposable
 
 		ReadOnly Property RoomRepository As IRoomRepository
+		ReadOnly Property UserRepository As IUserRepository
 
 		Sub Commit()
 

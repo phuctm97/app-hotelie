@@ -113,6 +113,7 @@
     <Compile Include="Rooms\RoomRepository.vb" />
     <Compile Include="Users\UserCategoryConfiguration.vb" />
     <Compile Include="Users\UserConfiguration.vb" />
+    <Compile Include="Users\UserRepository.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201705301447357_DbInitialize_FirstComplete.resx">
