@@ -8,7 +8,7 @@ Namespace Start.LoginShell.ViewModels
 		Inherits Screen
 		Implements IShell
 
-		Private _authentication As IAuthentication
+		Private ReadOnly _authentication As IAuthentication
 
 		Private _isLoginFormVisible As Boolean
 		Private _isSettingsFormVisible As Boolean
@@ -23,13 +23,19 @@ Namespace Start.LoginShell.ViewModels
 			End Set
 		End Property
 
-		Public Sub New()
+		Public Sub New( authentication As IAuthentication )
+			_authentication = authentication
+
+			InitializeComponents()
+		End Sub
+
+		Private Sub InitializeComponents()
 			DisplayName = "Login"
 
 			IsLoginFormVisible = True
 			IsSettingsFormVisible = False
 
-			Notification = New Notification With {.Text=String.Empty, .Type=NotificationType.None}
+			Notification = New Notification With {.Text=String.Empty, .Type=NotificationType.None}			
 		End Sub
 
 		' Notification
@@ -87,8 +93,34 @@ Namespace Start.LoginShell.ViewModels
 		End Sub
 
 		' Login
-		Public Sub TryLogin(username As String, password As String)
+		Public Sub TryLogin( username As String,
+		                     password As String )
 
+			' short username
+			If username.Length = 0
+				Notification.Type = NotificationType.Information
+				Notification.Text = "Nhập tên tài khoản để đăng nhập"
+				Return
+			End If
+
+			' short password
+			If password.Length = 0
+				Notification.Type = NotificationType.Information
+				Notification.Text = "Nhập mật khẩu để đăng nhập"
+				Return
+			End If
+
+			' login
+			Dim err = _authentication.TryLogin( New Account With {.Username=username, .Password=password} ).FirstOrDefault()
+
+			If String.IsNullOrEmpty( err )
+				' success
+				ParentWindow.ShowWorkspaceShell()
+			Else
+				' fail
+				Notification.Type = NotificationType.Error
+				Notification.Text = err
+			End If
 		End Sub
 	End Class
 End Namespace
