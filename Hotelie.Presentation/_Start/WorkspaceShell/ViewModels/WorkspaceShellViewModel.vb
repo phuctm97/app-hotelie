@@ -8,7 +8,7 @@ Namespace Start.WorkspaceShell.ViewModels
 
 		Private _activeWorkspace As IWorkspace
 
-		Public Property IChild_Parent As IMainWindow Implements IChild(Of IMainWindow).Parent
+		Public Property ParentWindow As IMainWindow Implements IChild(Of IMainWindow).Parent
 			Get
 				Return CType(Parent, IMainWindow)
 			End Get

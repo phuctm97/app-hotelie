@@ -151,12 +151,16 @@
                 <ListBoxItem />
                 <ListBoxItem />
                 <ListBoxItem />
+                <ListBoxItem />
+                <ListBoxItem />
+                <ListBoxItem />
             </ListBox>
 
-            <Button Grid.Row="2" Style="{DynamicResource MaterialDesignFloatingActionAccentButton}" 
+            <Button Grid.Row="2" Style="{DynamicResource MaterialDesignFloatingActionAccentButton}"
                     HorizontalAlignment="Right"
+                    ToolTip="Thêm phòng"
                     Margin="0 -119 32 0">
-                <materialDesign:PackIcon Kind="Plus" Width="24" Height="24"/>
+                <materialDesign:PackIcon Kind="Plus" Width="24" Height="24" />
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
                         <cal:ActionMessage MethodName="ShowAddRoomDialog" />

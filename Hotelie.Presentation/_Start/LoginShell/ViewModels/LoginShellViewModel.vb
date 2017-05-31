@@ -9,7 +9,7 @@ Namespace Start.LoginShell.ViewModels
 
 		Public Property Parent As Object Implements IChild.Parent
 
-		Public Property IChild_Parent As IMainWindow Implements IChild(Of IMainWindow).Parent
+		Public Property ParentWindow As IMainWindow Implements IChild(Of IMainWindow).Parent
 			Get
 				Return CType(Parent, IMainWindow)
 			End Get
