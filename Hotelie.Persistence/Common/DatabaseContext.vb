@@ -27,6 +27,7 @@ Namespace Common
             MyBase.New("name=DatabaseContext")
 
             Database.SetInitializer(New DatabaseInitializer)
+            
         End Sub
 
         Public Sub New(connectionString As String)
@@ -34,7 +35,6 @@ Namespace Common
             MyBase.New(connectionString)
 
             Database.SetInitializer(New DatabaseInitializer)
-        
         End Sub
 
         Protected Overrides Sub OnModelCreating(modelBuilder As DbModelBuilder)

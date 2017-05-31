@@ -64,5 +64,13 @@ Namespace Rooms
             Assert.IsTrue(rc.Count=0)
 
         End Sub
+
+        <TestMethod>
+        Public Sub TestNumberOfRoomInitialize()
+
+            Dim rc = _context.RoomCategories.Where(Function(r)r.Id="NOR01").ToList()
+            Assert.IsTrue(rc.Count>0)
+
+        End Sub
     End Class
 End NameSpace

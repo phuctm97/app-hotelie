@@ -132,11 +132,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Hotelie.Domain\Hotelie.Domain.vbproj">
+    <ProjectReference Include="..\..\Hotelie.Domain\Hotelie.Domain.vbproj">
       <Project>{490cddd6-1d75-43c7-972e-52569504050c}</Project>
       <Name>Hotelie.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Hotelie.Persistence\Hotelie.Persistence.vbproj">
+    <ProjectReference Include="..\..\Hotelie.Persistence\Hotelie.Persistence.vbproj">
       <Project>{A74D47FE-984A-4EFB-83FA-DE23F848927D}</Project>
       <Name>Hotelie.Persistence</Name>
     </ProjectReference>
