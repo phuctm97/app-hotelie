@@ -3,6 +3,7 @@ Imports System.Windows.Media.Animation
 
 Namespace Start.LoginShell.Views
 	Public Class LoginShellView
+		' For textbox effects
 		Private _previousPasswordLength As Integer
 		Private _previousAccountLength As Integer
 		Private _previousServerNameLength As Integer
@@ -14,20 +15,10 @@ Namespace Start.LoginShell.Views
 			InitializeComponent()
 
 			' Add any initialization after the InitializeComponent() call.
-			InitWindowState()
-
 			InitEffectParameters()
 		End Sub
 
-		Private Sub InitWindowState()
-			If Application.Current.MainWindow.WindowState = WindowState.Minimized Then _
-				Application.Current.MainWindow.WindowState = WindowState.Normal
-			ButtonZoomDisplay.Text =
-				If( Application.Current.MainWindow.WindowState = WindowState.Maximized, "Thu nhỏ", "Phóng to" )
-		End Sub
-
 		' Window command
-
 		Private Sub OnTitleBarLeftMouseDown( sender As Object,
 		                                     e As MouseButtonEventArgs )
 			If e.GetPosition( TitleBar ).Y > TitleBar.ActualHeight Then Return
@@ -48,29 +39,8 @@ Namespace Start.LoginShell.Views
 			If ButtonLogin.Visibility = Visibility.Visible And
 			   e.GetPosition( ButtonLogin ).X > 0 Then Return
 
-			OnZoomButtonClick( Nothing, Nothing )
-		End Sub
-
-		Private Sub OnZoomButtonClick( sender As Object,
-		                               e As RoutedEventArgs )
-			Select Case Application.Current.MainWindow.WindowState
-				Case WindowState.Normal
-					Windows.Application.Current.MainWindow.WindowState = WindowState.Maximized
-					ButtonZoomDisplay.Text = "Thu nhỏ"
-				Case Else
-					Windows.Application.Current.MainWindow.WindowState = WindowState.Normal
-					ButtonZoomDisplay.Text = "Phóng to"
-			End Select
-		End Sub
-
-		Private Sub OnHideButtonClick( sender As Object,
-		                               e As RoutedEventArgs )
-			Windows.Application.Current.MainWindow.WindowState = WindowState.Minimized
-		End Sub
-
-		Private Sub OnCloseButtonClick( sender As Object,
-		                                e As RoutedEventArgs )
-			Windows.Application.Current.MainWindow.Close()
+			' send click event to button toggle zoom state
+			ButtonToggleWindowZoomState.RaiseEvent( New RoutedEventArgs( Primitives.ButtonBase.ClickEvent ) )
 		End Sub
 
 		' Textbox effects
@@ -162,30 +132,5 @@ Namespace Start.LoginShell.Views
 			_previousDatabaseNameLength = databaseBox.Text.Length
 		End Sub
 
-		' Form switch
-
-		Private Sub OnButtonSettingsClick( sender As Object,
-		                                   e As RoutedEventArgs )
-			ButtonSettings.Visibility = Visibility.Collapsed
-			DescriptionSettings.Visibility = Visibility.Collapsed
-
-			ButtonLogin.Visibility = Visibility.Visible
-			DescriptionLogin.Visibility = Visibility.Visible
-
-			FormLogin.Visibility = Visibility.Collapsed
-			FormSettings.Visibility = Visibility.Visible
-		End Sub
-
-		Private Sub OnButtonLoginClick( sender As Object,
-		                                e As RoutedEventArgs )
-			ButtonLogin.Visibility = Visibility.Collapsed
-			DescriptionLogin.Visibility = Visibility.Collapsed
-
-			ButtonSettings.Visibility = Visibility.Visible
-			DescriptionSettings.Visibility = Visibility.Visible
-
-			FormLogin.Visibility = Visibility.Visible
-			FormSettings.Visibility = Visibility.Collapsed
-		End Sub
 	End Class
 End Namespace

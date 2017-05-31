@@ -2,7 +2,7 @@
 
 Namespace Common
 	Public Interface IShell
-		Inherits IHaveDisplayName, IChild(Of IMainWindow)
+		Inherits IScreen, IChild(Of IMainWindow)
 
 	End Interface
 End Namespace

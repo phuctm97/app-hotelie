@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Hotelie.Presentation"
              xmlns:converters="clr-namespace:Hotelie.Presentation.Start.WorkspaceShell.Converters"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -19,6 +20,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <converters:CapitalizeConverter x:Key="CapitalizeConverter" />
+            <converters:WindowStateReverseNameConverter x:Key="WindowStateReverseNameConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -49,23 +51,34 @@
                            Text="HOTELIE" />
 
                 <!--Window commands-->
-                <materialDesign:PopupBox x:Name="WindowCommandPopups"
-                                         DockPanel.Dock="Right"
+                <materialDesign:PopupBox DockPanel.Dock="Right"
                                          HorizontalAlignment="Right" VerticalAlignment="Center"
                                          PlacementMode="BottomAndAlignRightEdges"
                                          Margin="0 0 8 0"
                                          StaysOpen="False">
                     <StackPanel Orientation="Vertical">
-                        <Button Click="OnZoomButtonClick">
+
+                        <!--Toggle fullscreen-->
+                        <Button x:Name="ButtonToggleWindowZoomState">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="WindowMaximize"
                                                          VerticalAlignment="Center"
                                                          Width="24" Height="24"
                                                          Margin="0 0 8 0" />
-                                <TextBlock x:Name="ButtonZoomDisplay" Text="Phóng to" VerticalAlignment="Center" />
+                                <TextBlock
+                                    Text="{Binding Path=Parent.WindowState, Converter={StaticResource WindowStateReverseNameConverter}}"
+                                    VerticalAlignment="Center" />
                             </StackPanel>
+
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <cal:ActionMessage MethodName="ToggleWindowZoomState" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
                         </Button>
-                        <Button Click="OnHideButtonClick">
+
+                        <!--Hide window-->
+                        <Button>
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="WindowMinimize"
                                                          VerticalAlignment="Center"
@@ -73,8 +86,16 @@
                                                          Margin="0 0 8 0" />
                                 <TextBlock Text="Ẩn" VerticalAlignment="Center" />
                             </StackPanel>
+
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <cal:ActionMessage MethodName="HideWindow" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
                         </Button>
-                        <Button Click="OnCloseButtonClick">
+
+                        <!--Close window-->
+                        <Button>
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="ExitToApp"
                                                          VerticalAlignment="Center"
@@ -82,12 +103,18 @@
                                                          Margin="0 0 8 0" />
                                 <TextBlock Text="Thoát" VerticalAlignment="Center" />
                             </StackPanel>
+
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <cal:ActionMessage MethodName="CloseWindow" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
                         </Button>
                     </StackPanel>
                 </materialDesign:PopupBox>
 
                 <!--User commands-->
-                <materialDesign:PopupBox x:Name="UserCommandsPopupBox" DockPanel.Dock="Right"
+                <materialDesign:PopupBox DockPanel.Dock="Right"
                                          HorizontalAlignment="Right" VerticalAlignment="Center"
                                          Margin="56 0 8 0"
                                          PlacementMode="BottomAndAlignRightEdges"

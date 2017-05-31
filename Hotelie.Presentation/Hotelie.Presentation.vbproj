@@ -138,7 +138,9 @@
       <DependentUpon>RoomsWorkspaceView.xaml</DependentUpon>
     </Compile>
     <Compile Include="_Start\AppBootstrapper.vb" />
+    <Compile Include="_Start\LoginShell\Converters\BooleanToVisibilityConverter.vb" />
     <Compile Include="_Start\LoginShell\Converters\TextLengthConverter.vb" />
+    <Compile Include="_Start\LoginShell\Converters\WindowStateReverseNameConverter.vb" />
     <Compile Include="_Start\LoginShell\ViewModels\LoginShellViewModel.vb" />
     <Compile Include="_Start\LoginShell\Views\LoginShellView.xaml.vb">
       <DependentUpon>LoginShellView.xaml</DependentUpon>
@@ -148,6 +150,7 @@
       <DependentUpon>MainWindowView.xaml</DependentUpon>
     </Compile>
     <Compile Include="_Start\WorkspaceShell\Converters\CapitalizeConverter.vb" />
+    <Compile Include="_Start\WorkspaceShell\Converters\WindowStateReverseNameConverter.vb" />
     <Compile Include="_Start\WorkspaceShell\ViewModels\WorkspaceShellViewModel.vb" />
     <Compile Include="_Start\WorkspaceShell\Views\WorkspaceShellView.xaml.vb">
       <DependentUpon>WorkspaceShellView.xaml</DependentUpon>

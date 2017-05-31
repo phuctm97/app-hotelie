@@ -13,5 +13,12 @@
 		Sub ShowLoginShell()
 
 		Sub ShowWorkspaceShell()
+
+		Sub ToggleZoomState()
+
+		Sub Hide()
+
+		Sub Close()
+
 	End Interface
 End Namespace

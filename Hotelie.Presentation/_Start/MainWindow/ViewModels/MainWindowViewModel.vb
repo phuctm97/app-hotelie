@@ -97,13 +97,27 @@ Namespace Start.MainWindow.ViewModels
 		                                          closePrevious As Boolean )
 			MyBase.ChangeActiveItem( newItem, closePrevious )
 
+			' update view
 			NotifyOfPropertyChange( Function() Shell )
 
+			' update window title
 			If Shell Is Nothing
 				Title = "Hotelie"
 			Else
 				Title = $"Hotelie - {Shell.DisplayName}"
 			End If
+		End Sub
+
+		Public Sub ToggleZoomState() Implements IMainWindow.ToggleZoomState
+			WindowState = 2 - WindowState
+		End Sub
+
+		Public Sub Hide() Implements IMainWindow.Hide
+			WindowState = WindowState.Minimized
+		End Sub
+
+		Public Sub Close() Implements IMainWindow.Close
+			Windows.Application.Current.MainWindow.Close()
 		End Sub
 	End Class
 End Namespace

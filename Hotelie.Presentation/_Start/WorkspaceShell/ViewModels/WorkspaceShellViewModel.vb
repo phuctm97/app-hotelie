@@ -22,10 +22,10 @@ Namespace Start.WorkspaceShell.ViewModels
 				Return _activeWorkspace
 			End Get
 			Set
-				If Equals(Value, _activeWorkspace) Then Return
+				If Equals( Value, _activeWorkspace ) Then Return
 
 				_activeWorkspace = value
-				NotifyOfPropertyChange(Function() ActiveWorkspace)
+				NotifyOfPropertyChange( Function() ActiveWorkspace )
 			End Set
 		End Property
 
@@ -57,6 +57,19 @@ Namespace Start.WorkspaceShell.ViewModels
 			MyBase.ChangeActiveItem( newItem, closePrevious )
 
 			ActiveWorkspace = newItem
+		End Sub
+
+		' Window commands
+		Public Sub ToggleWindowZoomState()
+			ParentWindow.ToggleZoomState()
+		End Sub
+
+		Public Sub HideWindow()
+			ParentWindow.Hide()
+		End Sub
+
+		Public Sub CloseWindow()
+			ParentWindow.Close()
 		End Sub
 	End Class
 End Namespace

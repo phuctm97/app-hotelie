@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Hotelie.Presentation"
              xmlns:converters="clr-namespace:Hotelie.Presentation.Start.LoginShell.Converters"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cal="http://www.caliburnproject.org"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -20,6 +22,8 @@
             </ResourceDictionary.MergedDictionaries>
 
             <converters:TextLengthConverter x:Key="TextLengthConverter" />
+            <converters:WindowStateReverseNameConverter x:Key="WindowStateReverseNameConverter" />
+            <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -50,23 +54,34 @@
                            Text="HOTELIE" />
 
                 <!--Window commands-->
-                <materialDesign:PopupBox x:Name="WindowCommandPopups"
-                                         DockPanel.Dock="Right"
+                <materialDesign:PopupBox DockPanel.Dock="Right"
                                          HorizontalAlignment="Right" VerticalAlignment="Center"
                                          PlacementMode="BottomAndAlignRightEdges"
                                          Margin="0 0 8 0"
                                          StaysOpen="False">
                     <StackPanel Orientation="Vertical">
-                        <Button Click="OnZoomButtonClick">
+
+                        <!--Toggle fullscreen-->
+                        <Button x:Name="ButtonToggleWindowZoomState">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="WindowMaximize"
                                                          VerticalAlignment="Center"
                                                          Width="24" Height="24"
                                                          Margin="0 0 8 0" />
-                                <TextBlock x:Name="ButtonZoomDisplay" Text="Phóng to" VerticalAlignment="Center" />
+                                <TextBlock
+                                    Text="{Binding Path=Parent.WindowState, Converter={StaticResource WindowStateReverseNameConverter}}"
+                                    VerticalAlignment="Center" />
                             </StackPanel>
+
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <cal:ActionMessage MethodName="ToggleWindowZoomState" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
                         </Button>
-                        <Button Click="OnHideButtonClick">
+
+                        <!--Hide window-->
+                        <Button>
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="WindowMinimize"
                                                          VerticalAlignment="Center"
@@ -74,8 +89,16 @@
                                                          Margin="0 0 8 0" />
                                 <TextBlock Text="Ẩn" VerticalAlignment="Center" />
                             </StackPanel>
+
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <cal:ActionMessage MethodName="HideWindow" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
                         </Button>
-                        <Button Click="OnCloseButtonClick">
+
+                        <!--Close window-->
+                        <Button>
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="ExitToApp"
                                                          VerticalAlignment="Center"
@@ -83,6 +106,12 @@
                                                          Margin="0 0 8 0" />
                                 <TextBlock Text="Thoát" VerticalAlignment="Center" />
                             </StackPanel>
+
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <cal:ActionMessage MethodName="CloseWindow" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
                         </Button>
                     </StackPanel>
                 </materialDesign:PopupBox>
@@ -92,29 +121,43 @@
                         VerticalAlignment="Center"
                         Content="Thiết lập kết nối"
                         Margin="8 0 8 0"
-                        Click="OnButtonSettingsClick" />
+                        Visibility="{Binding IsLoginFormVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ToggleDisplayForm" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
 
                 <!--Button login-->
                 <Button x:Name="ButtonLogin" DockPanel.Dock="Right" HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         Style="{DynamicResource MaterialDesignRaisedAccentButton}"
                         Content="Đăng nhập"
-                        Margin="8 0 8 0" Visibility="Collapsed"
-                        Click="OnButtonLoginClick" />
+                        Margin="8 0 8 0"
+                        Visibility="{Binding IsSettingsFormVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ToggleDisplayForm" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
 
                 <!--Description settings-->
-                <TextBlock x:Name="DescriptionSettings" DockPanel.Dock="Right" HorizontalAlignment="Right"
+                <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right"
                            VerticalAlignment="Center"
                            Style="{DynamicResource MaterialDesignBody1TextBlock}"
                            Foreground="{DynamicResource PrimaryHueLightBrush}"
-                           Text="Gặp sự cố kết nối?" />
+                           Text="Gặp sự cố kết nối?"
+                           Visibility="{Binding IsLoginFormVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
                 <!--Description login-->
-                <TextBlock x:Name="DescriptionLogin" DockPanel.Dock="Right" HorizontalAlignment="Right"
+                <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right"
                            VerticalAlignment="Center"
                            Style="{DynamicResource MaterialDesignBody1TextBlock}"
                            Foreground="{DynamicResource PrimaryHueLightBrush}"
-                           Text="Kết nối thành công?" Visibility="Collapsed" />
+                           Text="Kết nối thành công?"
+                           Visibility="{Binding IsSettingsFormVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
             </DockPanel>
         </materialDesign:ColorZone>
@@ -123,9 +166,9 @@
         <Grid Grid.Row="1">
 
             <!--Login form-->
-            <materialDesign:Card x:Name="FormLogin"
-                                 HorizontalAlignment="Center" VerticalAlignment="Center"
-                                 Width="400" Height="Auto">
+            <materialDesign:Card HorizontalAlignment="Center" VerticalAlignment="Center"
+                                 Width="400" Height="Auto"
+                                 Visibility="{Binding IsLoginFormVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <StackPanel Orientation="Vertical">
 
                     <!--Title-->
@@ -184,10 +227,10 @@
                 </StackPanel>
             </materialDesign:Card>
 
-            <!--Connection settings-->
-            <materialDesign:Card x:Name="FormSettings"
-                                 HorizontalAlignment="Center" VerticalAlignment="Center"
-                                 Width="400" Height="Auto" Visibility="Collapsed">
+            <!--Connection settings form-->
+            <materialDesign:Card HorizontalAlignment="Center" VerticalAlignment="Center"
+                                 Width="400" Height="Auto"
+                                 Visibility="{Binding IsSettingsFormVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <StackPanel Orientation="Vertical">
 
                     <!--Title-->
