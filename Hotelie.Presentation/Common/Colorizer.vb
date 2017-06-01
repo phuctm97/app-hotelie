@@ -42,8 +42,7 @@
 		Public Shared ReadOnly PresetColors As CategoryColor()
 
 		Shared Sub New()
-			PresetColors = {New CategoryColor With {.Name="C0", .BackColor=B0, .ForeColor=F0},
-			                New CategoryColor With {.Name="C1", .BackColor=B1, .ForeColor=F1},
+			PresetColors = {New CategoryColor With {.Name="C1", .BackColor=B1, .ForeColor=F1},
 			                New CategoryColor With {.Name="C2", .BackColor=B2, .ForeColor=F2},
 			                New CategoryColor With {.Name="C3", .BackColor=B3, .ForeColor=F3},
 			                New CategoryColor With {.Name="C4", .BackColor=B4, .ForeColor=F4},
@@ -52,8 +51,7 @@
 			                New CategoryColor With {.Name="C7", .BackColor=B7, .ForeColor=F7},
 			                New CategoryColor With {.Name="C8", .BackColor=B8, .ForeColor=F8},
 			                New CategoryColor With {.Name="C9", .BackColor=B9, .ForeColor=F9},
-			                New CategoryColor With {.Name="C10", .BackColor=B10, .ForeColor=F10},
-			                New CategoryColor With {.Name="C11", .BackColor=B11, .ForeColor=F11}}
+			                New CategoryColor With {.Name="C10", .BackColor=B10, .ForeColor=F10}}
 		End Sub
 
 #End Region
