@@ -7,14 +7,14 @@ Namespace Rooms.ViewModels
 		Inherits Conductor(Of IScreen)
 		Implements IWorkspace
 
-		Private _isDialogOpen As Boolean
+		Private _isTopDrawerOpen As Boolean
 		Private ReadOnly _getRoomsListQuery As IGetRoomsListQuery
 
 		Public Sub New( getRoomsListQuery As IGetRoomsListQuery )
 			_getRoomsListQuery = getRoomsListQuery
 
 			DisplayName = "Danh sách phòng"
-			IsDialogOpen = False
+			IsTopDrawerOpen = False
 
 			Rooms = New BindableCollection(Of RoomModel)
 		End Sub
@@ -30,25 +30,23 @@ Namespace Rooms.ViewModels
 
 		' Dialog
 
-		Public Property IsDialogOpen As Boolean
+		Public Property IsTopDrawerOpen As Boolean
 			Get
-				Return _isDialogOpen
+				Return _isTopDrawerOpen
 			End Get
 			Set
-				If Equals( Value, _isDialogOpen ) Then Return
-				_isDialogOpen = value
-				NotifyOfPropertyChange( Function() IsDialogOpen )
+				If Equals( Value, _isTopDrawerOpen ) Then Return
+				_isTopDrawerOpen = value
+				NotifyOfPropertyChange( Function() IsTopDrawerOpen )
 			End Set
 		End Property
 
 		Public Sub ShowRoomDetailDialog()
 			ActivateItem( New RoomDetailViewModel() )
-			IsDialogOpen = True
 		End Sub
 
 		Public Sub ShowAddRoomDialog()
 			ActivateItem( New AddRoomViewModel() )
-			IsDialogOpen = True
 		End Sub
 	End Class
 End Namespace

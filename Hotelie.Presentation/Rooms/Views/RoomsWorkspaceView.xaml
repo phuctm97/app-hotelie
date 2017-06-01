@@ -22,10 +22,10 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <materialDesign:DialogHost IsOpen="{Binding IsDialogOpen}">
-        <materialDesign:DialogHost.DialogContent>
+    <materialDesign:DrawerHost IsTopDrawerOpen="{Binding IsTopDrawerOpen}">
+        <materialDesign:DrawerHost.TopDrawerContent>
             <ContentControl cal:View.Model="{Binding ActiveItem, Converter={StaticResource NullableValueConverter}}" />
-        </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DrawerHost.TopDrawerContent>
 
         <Grid>
             <Grid.RowDefinitions>
@@ -166,5 +166,5 @@
                 </i:Interaction.Triggers>
             </Button>
         </Grid>
-    </materialDesign:DialogHost>
+    </materialDesign:DrawerHost>
 </UserControl>
