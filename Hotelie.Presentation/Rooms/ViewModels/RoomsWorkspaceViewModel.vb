@@ -19,14 +19,17 @@ Namespace Rooms.ViewModels
 			Rooms = New BindableCollection(Of RoomModel)
 		End Sub
 
-		Protected Overrides Sub OnViewLoaded( view As Object )
-			MyBase.OnViewLoaded( view )
+		Protected Overrides Sub OnInitialize()
+			MyBase.OnInitialize()
 
 			Rooms.AddRange( _getRoomsListQuery.Execute() )
 		End Sub
 
 		' Rooms
 		Public ReadOnly Property Rooms As IObservableCollection(Of RoomModel)
+
+		Public Sub FilterRooms( namePrefix As String )
+		End Sub
 
 		' Dialog
 

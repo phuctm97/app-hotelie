@@ -12,7 +12,7 @@
         d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel,IsDesignTimeCreatable=True}"
         Title="{Binding Title}"
         MinHeight="700" Height="{Binding Width}"
-        MinWidth="1000" Width="{Binding Height}"
+        MinWidth="1024" Width="{Binding Height}"
         WindowState="{Binding WindowState}"
         WindowStyle="None"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
