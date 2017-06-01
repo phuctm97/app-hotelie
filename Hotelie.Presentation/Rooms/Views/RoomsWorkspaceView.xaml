@@ -95,21 +95,28 @@
                                                 <!--Room category-->
                                                 <Button Margin="0 0 8 8" Padding="3" BorderThickness="0">
                                                     <Button.Background>
-                                                        <SolidColorBrush Color="{Binding CategoryId, Converter={StaticResource CategoryToBackColorConverter}}" />
+                                                        <SolidColorBrush
+                                                            Color="{Binding CategoryId, Converter={StaticResource CategoryToBackColorConverter}}" />
                                                     </Button.Background>
                                                     <Viewbox StretchDirection="DownOnly" Stretch="Uniform">
                                                         <TextBlock Text="{Binding CategoryName}" FontSize="14">
                                                             <TextBlock.Foreground>
-                                                                <SolidColorBrush Color="{Binding CategoryId, Converter={StaticResource CategoryToForeColorConverter}}" />
+                                                                <SolidColorBrush
+                                                                    Color="{Binding CategoryId, Converter={StaticResource CategoryToForeColorConverter}}" />
                                                             </TextBlock.Foreground>
                                                         </TextBlock>
                                                     </Viewbox>
                                                 </Button>
                                                 <!--Room state-->
                                                 <Button Margin="0 0 8 0" Padding="3"
-                                                        Background="{Binding State, Converter={StaticResource StateToBackColorConverter}}" BorderThickness="0">
+                                                        BorderThickness="0">
+                                                    <Button.Background>
+                                                        <SolidColorBrush Color="{Binding State, Converter={StaticResource StateToBackColorConverter}}"/>
+                                                    </Button.Background>
                                                     <Viewbox StretchDirection="DownOnly" Stretch="Uniform">
-                                                        <TextBlock Text="{Binding State, Converter={StaticResource StateToStateStringConverter}}" FontSize="14" />
+                                                        <TextBlock
+                                                            Text="{Binding State, Converter={StaticResource StateToStateStringConverter}}"
+                                                            FontSize="14" />
                                                     </Viewbox>
                                                 </Button>
                                             </StackPanel>
