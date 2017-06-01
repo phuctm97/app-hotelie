@@ -1,4 +1,5 @@
 ﻿Imports System.Linq.Expressions
+Imports System.Data.Entity
 Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Domain.Rooms
 Imports Hotelie.Persistence.Common
@@ -44,13 +45,20 @@ Namespace Rooms
             Return _context.RoomCategories
         End Function
 
-        Public Overridable Function GetRoomCategory(id As Object) As RoomCategory _
+        Public Function GetRoomCategory(id As Object) As RoomCategory _
             Implements IRoomRepository.GetRoomCategory
 
             Dim idString = CType(id, String)
             If idString Is Nothing Then Throw New InvalidCastException("Id must be string")
 
-            Return _context.RoomCategories.FirstOrDefault(Function (p) String.Equals(p.Id, idString))
+            Return _context.RoomCategories.FirstOrDefault(Function(p) String.Equals(p.Id, idString))
+        End Function
+
+        Public Overrides Function GetOne(id As Object) As Room
+            Dim idString = CType(id, String)
+            If idString Is Nothing Then Throw New InvalidCastException("Id must be string")
+
+            Return _context.Rooms.FirstOrDefault(Function(p) String.Equals(p.Id, idString))
         End Function
     End Class
 End Namespace
