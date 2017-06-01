@@ -16,8 +16,6 @@
         <ResourceDictionary>
             <converters:NullableValueConverter x:Key="NullableValueConverter" />
             <converters:DecimalToCurrencyStringConverter x:Key="DecimalToCurrencyStringConverter" />
-            <converters:CategoryToBackColorConverter x:Key="CategoryToBackColorConverter" />
-            <converters:CategoryToForeColorConverter x:Key="CategoryToForeColorConverter" />
             <converters:StateToStateStringConverter x:Key="StateToStateStringConverter" />
             <converters:StateToBackColorConverter x:Key="StateToBackColorConverter" />
         </ResourceDictionary>
@@ -95,14 +93,12 @@
                                                 <!--Room category-->
                                                 <Button Margin="0 0 8 8" Padding="3" BorderThickness="0">
                                                     <Button.Background>
-                                                        <SolidColorBrush
-                                                            Color="{Binding CategoryId, Converter={StaticResource CategoryToBackColorConverter}}" />
+                                                        <SolidColorBrush Color="Black" />
                                                     </Button.Background>
                                                     <Viewbox StretchDirection="DownOnly" Stretch="Uniform">
                                                         <TextBlock Text="{Binding CategoryName}" FontSize="14">
                                                             <TextBlock.Foreground>
-                                                                <SolidColorBrush
-                                                                    Color="{Binding CategoryId, Converter={StaticResource CategoryToForeColorConverter}}" />
+                                                                <SolidColorBrush Color="White"/>
                                                             </TextBlock.Foreground>
                                                         </TextBlock>
                                                     </Viewbox>

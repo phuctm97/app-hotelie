@@ -126,7 +126,6 @@
       <DependentUpon>Application.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Common\Colorizer.vb" />
     <Compile Include="Common\IMainWindow.vb" />
     <Compile Include="Common\IShell.vb" />
     <Compile Include="Common\IWorkspace.vb" />
@@ -134,8 +133,6 @@
     <Compile Include="Leases\Views\LeasesWorkspaceView.xaml.vb">
       <DependentUpon>LeasesWorkspaceView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Rooms\Converters\CategoryToBackColorConverter.vb" />
-    <Compile Include="Rooms\Converters\CategoryToForeColorConverter.vb" />
     <Compile Include="Rooms\Converters\NullableValueConverter.vb" />
     <Compile Include="Rooms\Converters\DecimalToCurrencyStringConverter.vb" />
     <Compile Include="Rooms\Converters\StateToBackColorConverter.vb" />
