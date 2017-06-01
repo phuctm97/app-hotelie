@@ -25,6 +25,12 @@ Namespace Rooms.ViewModels
 			Rooms.AddRange( _getRoomsListQuery.Execute() )
 		End Sub
 
+		Protected Overrides Sub OnViewReady(view As Object)
+			MyBase.OnViewReady(view)
+
+			FilterRooms( String.Empty )
+		End Sub
+
 		' Rooms
 		Public ReadOnly Property Rooms As IObservableCollection(Of RoomModel)
 
