@@ -1,4 +1,5 @@
 ﻿Imports Caliburn.Micro
+Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
 Imports Hotelie.Application.Rooms.Queries.GetRoomsList
 Imports Hotelie.Presentation.Common
 
@@ -9,20 +10,25 @@ Namespace Rooms.ViewModels
 
 		Private _isTopDrawerOpen As Boolean
 		Private ReadOnly _getRoomsListQuery As IGetRoomsListQuery
+		Private ReadOnly _getRoomCategoriesListQuery As IGetRoomCategoriesList
 
-		Public Sub New( getRoomsListQuery As IGetRoomsListQuery )
+		Public Sub New( getRoomsListQuery As IGetRoomsListQuery,
+		                getRoomCategoriesListQuery As IGetRoomCategoriesList )
 			_getRoomsListQuery = getRoomsListQuery
+			_getRoomCategoriesListQuery = getRoomCategoriesListQuery
 
 			DisplayName = "Danh sách phòng"
 			IsTopDrawerOpen = False
 
 			Rooms = New BindableCollection(Of RoomModel)
+			RoomCategories = New BindableCollection(Of RoomCategoryModel)
 		End Sub
 
 		Protected Overrides Sub OnInitialize()
 			MyBase.OnInitialize()
 
 			Rooms.AddRange( _getRoomsListQuery.Execute() )
+			RoomCategories.AddRange( _getRoomCategoriesListQuery.Execute() )
 		End Sub
 
 		Protected Overrides Sub OnViewReady( view As Object )
@@ -45,6 +51,9 @@ Namespace Rooms.ViewModels
 				End If
 			Next
 		End Sub
+
+		' Room categories
+		Public ReadOnly Property RoomCategories As IObservableCollection(Of RoomCategoryModel)
 
 		' Dialog
 
