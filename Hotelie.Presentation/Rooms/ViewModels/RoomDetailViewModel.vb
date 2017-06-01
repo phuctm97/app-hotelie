@@ -14,8 +14,10 @@ Namespace Rooms.ViewModels
 			End Set
 		End Property
 
-		Public Sub Close()
-			ParentWorkspace.IsDialogOpen = False
+		Protected Overrides Sub OnViewReady(view As Object)
+			MyBase.OnViewReady(view)
+
+			ParentWorkspace.IsTopDrawerOpen = True
 		End Sub
 
 	End Class

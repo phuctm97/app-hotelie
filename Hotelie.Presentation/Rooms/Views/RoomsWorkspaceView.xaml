@@ -3,29 +3,36 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Hotelie.Presentation"
              xmlns:converters="clr-namespace:Hotelie.Presentation.Rooms.Converters"
-             xmlns:viewModels="clr-namespace:Hotelie.Presentation.Rooms.ViewModels"
+             xmlns:design="clr-namespace:Hotelie.Presentation.Rooms.Design"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignHeight="600" d:DesignWidth="1000"
-             d:DataContext="{d:DesignInstance Type=viewModels:RoomsWorkspaceViewModel, IsDesignTimeCreatable=True}">
+             d:DesignHeight="600" d:DesignWidth="1024"
+             d:DataContext="{d:DesignInstance Type=design:RoomsWorkspaceDesignModel, IsDesignTimeCreatable=True}">
     <UserControl.Resources>
         <ResourceDictionary>
-            <converters:NullableValueConverter x:Key="NullableValueConverter" />
-            <converters:NullableColorConverter x:Key="NullableColorConverter" />
-            <converters:DecimalToCurrencyStringConverter x:Key="DecimalToCurrencyStringConverter" />
-            <converters:StateToStateStringConverter x:Key="StateToStateStringConverter" />
-            <converters:StateToBackColorConverter x:Key="StateToBackColorConverter" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+                <ResourceDictionary>
+                    <converters:NullableValueConverter x:Key="NullableValueConverter" />
+                    <converters:NullableColorConverter x:Key="NullableColorConverter" />
+                    <converters:DecimalToCurrencyStringConverter x:Key="DecimalToCurrencyStringConverter" />
+                    <converters:StateToStateStringConverter x:Key="StateToStateStringConverter" />
+                    <converters:StateToBackColorConverter x:Key="StateToBackColorConverter" />
+                    <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <materialDesign:DialogHost IsOpen="{Binding IsDialogOpen}">
-        <materialDesign:DialogHost.DialogContent>
+    <materialDesign:DrawerHost IsTopDrawerOpen="{Binding IsTopDrawerOpen}">
+        <materialDesign:DrawerHost.TopDrawerContent>
             <ContentControl cal:View.Model="{Binding ActiveItem, Converter={StaticResource NullableValueConverter}}" />
-        </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DrawerHost.TopDrawerContent>
 
         <Grid>
             <Grid.RowDefinitions>
@@ -33,6 +40,104 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="1" />
             </Grid.RowDefinitions>
+
+            <!--Toolbar-->
+            <DockPanel Margin="24 24 24 8">
+
+                <!--Clear button-->
+                <Button DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
+                        Style="{DynamicResource MaterialDesignToolButton}"
+                        ToolTip="Reset thông tin tra cứu"
+                        Padding="0" Margin="0"
+                        Click="OnButtonResetSearchClicked">
+                    <materialDesign:PackIcon Kind="Magnify" Width="20" Height="20" />
+                </Button>
+
+                <!--Room name-->
+                <TextBox x:Name="TextBoxSearchName" Margin="16 0 16 0" DockPanel.Dock="Left"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Center"
+                         FontSize="15" Width="150"
+                         materialDesign:HintAssist.Hint="Tên phòng">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="TextChanged">
+                            <cal:ActionMessage MethodName="FilterRooms">
+                                <cal:Parameter Value="{Binding Path=Text, ElementName=TextBoxSearchName}" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </TextBox>
+
+                <!--Room category-->
+                <ComboBox x:Name="ComboBoxSearchCategory" DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
+                          materialDesign:HintAssist.Hint="Loại phòng"
+                          FontSize="15" Width="120"
+                          Margin="0 0 16 0">
+                    <ComboBoxItem Content="Loại 1" />
+                    <ComboBoxItem Content="Loại 2" />
+                    <ComboBoxItem Content="Loại 3" />
+                </ComboBox>
+
+                <!--Room state-->
+                <ComboBox x:Name="ComboBoxSearchState" 
+                          DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
+                          materialDesign:HintAssist.Hint="Tình trạng"
+                          FontSize="15" Width="120"
+                          Margin="0 0 32 0">
+                    <ComboBoxItem Content="Trống" />
+                    <ComboBoxItem Content="Đã thuê" />
+                    <ComboBoxItem Content="Chưa dọn" />
+                </ComboBox>
+
+                <!--Search icon-->
+                <materialDesign:PackIcon DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                         Kind="CashMultiple" Width="20" Height="20" />
+
+                <!--Min price-->
+                <ComboBox DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
+                          materialDesign:HintAssist.Hint="Từ"
+                          FontSize="15" Width="100"
+                          Margin="16 0 8 0">
+                    <ComboBoxItem Content="100,000" />
+                    <ComboBoxItem Content="200,000" />
+                    <ComboBoxItem Content="300,000" />
+                </ComboBox>
+
+                <!--Max Price-->
+                <ComboBox DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
+                          materialDesign:HintAssist.Hint="Đến"
+                          FontSize="15" Width="100"
+                          Margin="0 0 32 0">
+                    <ComboBoxItem Content="400,000" />
+                    <ComboBoxItem Content="500,000" />
+                    <ComboBoxItem Content="600,000" />
+                </ComboBox>
+
+                <!--Sort field-->
+                <ComboBox DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
+                          materialDesign:HintAssist.Hint="Dựa trên"
+                          FontSize="15" Width="120"
+                          Margin="16 0 8 0">
+                    <ComboBoxItem Content="Tên phòng" />
+                    <ComboBoxItem Content="Loại phòng" />
+                    <ComboBoxItem Content="Giá" />
+                    <ComboBoxItem Content="Trạng thái" />
+                </ComboBox>
+
+                <!--Sort toggle-->
+                <ToggleButton DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
+                              Style="{StaticResource MaterialDesignActionToggleButton}"
+                              Background="Transparent" Foreground="Black"
+                              ToolTip="Đảo thứ tự sắp xếp">
+                    <ToggleButton.Content>
+                        <materialDesign:PackIcon Kind="SortAscending" Width="20" Height="20" />
+                    </ToggleButton.Content>
+                    <materialDesign:ToggleButtonAssist.OnContent>
+                        <materialDesign:PackIcon Kind="SortDescending" Width="24" Height="24" />
+                    </materialDesign:ToggleButtonAssist.OnContent>
+                </ToggleButton>
+
+            </DockPanel>
 
             <!--Rooms list-->
             <ListBox Grid.Row="1" ItemsSource="{Binding Rooms}">
@@ -48,6 +153,7 @@
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
                         <Setter Property="Margin" Value="10" />
+                        <Setter Property="Visibility" Value="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="ListBoxItem">
@@ -94,17 +200,20 @@
                                                 <!--Room category-->
                                                 <Button Margin="0 0 8 8" Padding="3" BorderThickness="0">
                                                     <Button.Background>
-                                                        <SolidColorBrush Color="{Binding CategoryDisplayColor, Converter={StaticResource NullableColorConverter}}" />
+                                                        <SolidColorBrush
+                                                            Color="{Binding CategoryDisplayColor, Converter={StaticResource NullableColorConverter}}" />
                                                     </Button.Background>
                                                     <Viewbox StretchDirection="DownOnly" Stretch="Uniform">
-                                                        <TextBlock Text="{Binding CategoryName}" FontSize="14" Foreground="White"/>
+                                                        <TextBlock Text="{Binding CategoryName}" FontSize="14"
+                                                                   Foreground="White" />
                                                     </Viewbox>
                                                 </Button>
                                                 <!--Room state-->
                                                 <Button Margin="0 0 8 0" Padding="3"
                                                         BorderThickness="0">
                                                     <Button.Background>
-                                                        <SolidColorBrush Color="{Binding State, Converter={StaticResource StateToBackColorConverter}}"/>
+                                                        <SolidColorBrush
+                                                            Color="{Binding State, Converter={StaticResource StateToBackColorConverter}}" />
                                                     </Button.Background>
                                                     <Viewbox StretchDirection="DownOnly" Stretch="Uniform">
                                                         <TextBlock
@@ -154,6 +263,7 @@
 
             </ListBox>
 
+            <!--Add button-->
             <Button Grid.Row="2" Style="{DynamicResource MaterialDesignFloatingActionAccentButton}"
                     HorizontalAlignment="Right"
                     ToolTip="Thêm phòng"
@@ -166,5 +276,5 @@
                 </i:Interaction.Triggers>
             </Button>
         </Grid>
-    </materialDesign:DialogHost>
+    </materialDesign:DrawerHost>
 </UserControl>

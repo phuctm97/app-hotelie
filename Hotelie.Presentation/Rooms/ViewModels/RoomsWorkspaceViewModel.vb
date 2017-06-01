@@ -7,48 +7,64 @@ Namespace Rooms.ViewModels
 		Inherits Conductor(Of IScreen)
 		Implements IWorkspace
 
-		Private _isDialogOpen As Boolean
+		Private _isTopDrawerOpen As Boolean
 		Private ReadOnly _getRoomsListQuery As IGetRoomsListQuery
 
 		Public Sub New( getRoomsListQuery As IGetRoomsListQuery )
 			_getRoomsListQuery = getRoomsListQuery
 
 			DisplayName = "Danh sách phòng"
-			IsDialogOpen = False
+			IsTopDrawerOpen = False
 
 			Rooms = New BindableCollection(Of RoomModel)
 		End Sub
 
-		Protected Overrides Sub OnViewLoaded( view As Object )
-			MyBase.OnViewLoaded( view )
+		Protected Overrides Sub OnInitialize()
+			MyBase.OnInitialize()
 
 			Rooms.AddRange( _getRoomsListQuery.Execute() )
+		End Sub
+
+		Protected Overrides Sub OnViewReady( view As Object )
+			MyBase.OnViewReady( view )
+
+			FilterRooms( String.Empty )
 		End Sub
 
 		' Rooms
 		Public ReadOnly Property Rooms As IObservableCollection(Of RoomModel)
 
+		Public Sub FilterRooms( namePrefix As String )
+			namePrefix = namePrefix.ToLower()
+
+			For Each room As RoomModel In Rooms
+				If room.Name.ToLower().Contains( namePrefix )
+					room.IsVisible = True
+				Else
+					room.IsVisible = False
+				End If
+			Next
+		End Sub
+
 		' Dialog
 
-		Public Property IsDialogOpen As Boolean
+		Public Property IsTopDrawerOpen As Boolean
 			Get
-				Return _isDialogOpen
+				Return _isTopDrawerOpen
 			End Get
 			Set
-				If Equals( Value, _isDialogOpen ) Then Return
-				_isDialogOpen = value
-				NotifyOfPropertyChange( Function() IsDialogOpen )
+				If Equals( Value, _isTopDrawerOpen ) Then Return
+				_isTopDrawerOpen = value
+				NotifyOfPropertyChange( Function() IsTopDrawerOpen )
 			End Set
 		End Property
 
 		Public Sub ShowRoomDetailDialog()
 			ActivateItem( New RoomDetailViewModel() )
-			IsDialogOpen = True
 		End Sub
 
 		Public Sub ShowAddRoomDialog()
 			ActivateItem( New AddRoomViewModel() )
-			IsDialogOpen = True
 		End Sub
 	End Class
 End Namespace
