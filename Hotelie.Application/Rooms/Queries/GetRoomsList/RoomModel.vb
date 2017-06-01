@@ -15,5 +15,12 @@ Namespace Rooms.Queries.GetRoomsList
 		Property Price As Decimal
 
 		Property Note As String
+
+		Property IsVisible As Boolean
+
+		Public Sub New()
+			CategoryDisplayColor = Colors.Black
+			IsVisible = False
+		End Sub
 	End Class
 End Namespace
