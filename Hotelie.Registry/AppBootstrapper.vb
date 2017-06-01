@@ -22,7 +22,7 @@ Public Class AppBootstrapper
 	Protected Overridable Sub ComposeDependencies()
 		_container.RegisterType(Of IWindowManager, WindowManager)( New ContainerControlledLifetimeManager() )
 		_container.RegisterType(Of IEventAggregator, EventAggregator)( New ContainerControlledLifetimeManager() )
-		_container.RegisterType(Of IAuthentication, Tests.Authentication)( New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IAuthentication, Tests.Services.Authentication.Authentication)( New ContainerControlledLifetimeManager() )
 	End Sub
 
 	Protected Overrides Function GetInstance( service As Type,

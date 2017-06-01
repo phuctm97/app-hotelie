@@ -1,6 +1,6 @@
 ﻿Imports Hotelie.Application.Services.Authentication
 
-Namespace Tests
+Namespace Tests.Services.Authentication
 	Public Class Authentication
 		Implements IAuthentication
 
