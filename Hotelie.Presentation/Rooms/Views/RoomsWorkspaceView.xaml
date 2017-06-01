@@ -31,7 +31,7 @@
             </Grid.RowDefinitions>
 
             <!--Rooms list-->
-            <ListBox Grid.Row="1">
+            <ListBox Grid.Row="1" ItemsSource="{Binding Rooms}">
 
                 <!--panel style-->
                 <ListBox.ItemsPanel>
@@ -75,7 +75,7 @@
                                                 <!--Title-->
                                                 <!--TODO: Binding name-->
                                                 <TextBlock Style="{DynamicResource MaterialDesignHeadlineTextBlock}"
-                                                           Text="Room name"
+                                                           Text="{Binding Name}"
                                                            Margin="0 0 0 8" />
 
                                                 <!--Subtitle-->
@@ -83,7 +83,7 @@
                                                 <TextBlock TextWrapping="Wrap"
                                                            Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
                                                            Foreground="{DynamicResource MaterialDesignBodyLight}"
-                                                           Text="đ XXX,XXX" />
+                                                           Text="{Binding Price}" />
                                             </StackPanel>
 
                                             <!--Action area 1-->
@@ -94,7 +94,7 @@
                                                         Background="Gray" BorderThickness="0">
                                                     <Viewbox StretchDirection="DownOnly" Stretch="Uniform">
                                                         <!--TODO: Binding category-->
-                                                        <TextBlock Text="Category" FontSize="14" />
+                                                        <TextBlock Text="{Binding CategoryName}" FontSize="14" />
                                                     </Viewbox>
                                                 </Button>
                                                 <!--Room state-->
@@ -102,7 +102,7 @@
                                                         Background="Green" BorderThickness="0">
                                                     <Viewbox StretchDirection="DownOnly" Stretch="Uniform">
                                                         <!--TODO: Binding state-->
-                                                        <TextBlock Text="State" FontSize="14" />
+                                                        <TextBlock Text="{Binding State}" FontSize="14" />
                                                     </Viewbox>
                                                 </Button>
                                             </StackPanel>
@@ -145,15 +145,6 @@
                     </Style>
                 </ListBox.ItemContainerStyle>
 
-                <ListBoxItem />
-                <ListBoxItem />
-                <ListBoxItem />
-                <ListBoxItem />
-                <ListBoxItem />
-                <ListBoxItem />
-                <ListBoxItem />
-                <ListBoxItem />
-                <ListBoxItem />
             </ListBox>
 
             <Button Grid.Row="2" Style="{DynamicResource MaterialDesignFloatingActionAccentButton}"
