@@ -2,8 +2,8 @@
 Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
 
 Namespace Tests.Rooms.Queries.GetRoomCategoriesList
-	Public Class GetRoomCategoriesList
-		Implements IGetRoomCategoriesList
+	Public Class GetRoomCategoriesListQuery
+		Implements IGetRoomCategoriesListQuery
 
 		Dim ReadOnly _categories As List(Of RoomCategoryModel)
 
@@ -15,7 +15,7 @@ Namespace Tests.Rooms.Queries.GetRoomCategoriesList
 				New RoomCategoryModel With {.Id="4", .Name="Phòng Vip 2", .DisplayColor=Colors.Black}}
 		End Sub
 
-		Public Function Execute() As IEnumerable(Of RoomCategoryModel) Implements IGetRoomCategoriesList.Execute
+		Public Function Execute() As IEnumerable(Of RoomCategoryModel) Implements IGetRoomCategoriesListQuery.Execute
 			Return _categories
 		End Function
 	End Class
