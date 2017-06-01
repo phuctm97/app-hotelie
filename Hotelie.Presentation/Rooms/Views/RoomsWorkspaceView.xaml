@@ -47,7 +47,7 @@
                 <!--Clear button-->
                 <Button DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
                         Style="{DynamicResource MaterialDesignToolButton}"
-                        ToolTip="Nhấp đển xóa tất cả điều kiện lọc"
+                        ToolTip="Nhấp để xóa tất cả điều kiện lọc"
                         Padding="0" Margin="0"
                         Click="OnButtonResetSearchClicked">
                     <materialDesign:PackIcon Kind="Magnify" Width="20" Height="20" />
@@ -73,7 +73,8 @@
                         <i:EventTrigger EventName="TextChanged">
                             <cal:ActionMessage MethodName="FilterRooms">
                                 <cal:Parameter Value="{Binding ElementName=TextBoxSearchName, Path=Text}" />
-                                <cal:Parameter Value="{Binding ElementName=ComboBoxSearchCategory, Path=SelectedValue.Id}" />
+                                <cal:Parameter
+                                    Value="{Binding ElementName=ComboBoxSearchCategory, Path=SelectedValue.Id}" />
                                 <cal:Parameter Value="{Binding ElementName=ComboBoxSearchState, Path=SelectedIndex}" />
                             </cal:ActionMessage>
                         </i:EventTrigger>
@@ -93,7 +94,8 @@
                         <i:EventTrigger EventName="SelectionChanged">
                             <cal:ActionMessage MethodName="FilterRooms">
                                 <cal:Parameter Value="{Binding ElementName=TextBoxSearchName, Path=Text}" />
-                                <cal:Parameter Value="{Binding ElementName=ComboBoxSearchCategory, Path=SelectedValue.Id}" />
+                                <cal:Parameter
+                                    Value="{Binding ElementName=ComboBoxSearchCategory, Path=SelectedValue.Id}" />
                                 <cal:Parameter Value="{Binding ElementName=ComboBoxSearchState, Path=SelectedIndex}" />
                             </cal:ActionMessage>
                         </i:EventTrigger>
@@ -112,7 +114,8 @@
                         <i:EventTrigger EventName="SelectionChanged">
                             <cal:ActionMessage MethodName="FilterRooms">
                                 <cal:Parameter Value="{Binding ElementName=TextBoxSearchName, Path=Text}" />
-                                <cal:Parameter Value="{Binding ElementName=ComboBoxSearchCategory, Path=SelectedValue.Id}" />
+                                <cal:Parameter
+                                    Value="{Binding ElementName=ComboBoxSearchCategory, Path=SelectedValue.Id}" />
                                 <cal:Parameter Value="{Binding ElementName=ComboBoxSearchState, Path=SelectedIndex}" />
                             </cal:ActionMessage>
                         </i:EventTrigger>
@@ -150,7 +153,8 @@
                 </ComboBox>
 
                 <!--Sort field-->
-                <ComboBox x:Name="ComboBoxSortField" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
+                <ComboBox x:Name="ComboBoxSortField" DockPanel.Dock="Right" HorizontalAlignment="Right"
+                          VerticalAlignment="Center"
                           materialDesign:HintAssist.Hint="Dựa trên"
                           FontSize="15" Width="120"
                           Margin="16 0 8 0">
@@ -170,7 +174,8 @@
                 </ComboBox>
 
                 <!--Sort toggle-->
-                <ToggleButton x:Name="ToggleSortDirection" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
+                <ToggleButton x:Name="ToggleSortDirection" DockPanel.Dock="Right" HorizontalAlignment="Right"
+                              VerticalAlignment="Center"
                               Style="{StaticResource MaterialDesignActionToggleButton}"
                               Background="Transparent" Foreground="Black"
                               ToolTip="Đảo thứ tự sắp xếp">
@@ -253,7 +258,7 @@
                                             <StackPanel Grid.Row="0" Grid.Column="2"
                                                         Width="100" Margin="0 16 0 0">
                                                 <!--Room category-->
-                                                <Button Margin="0 0 8 8" Padding="3" BorderThickness="0">
+                                                <Button Margin="0 0 8 8" Padding="3" BorderThickness="0" Click="OnButtonRoomCategoryDisplayClicked">
                                                     <Button.Background>
                                                         <SolidColorBrush
                                                             Color="{Binding CategoryDisplayColor, Converter={StaticResource NullableColorConverter}}" />
@@ -265,7 +270,7 @@
                                                 </Button>
                                                 <!--Room state-->
                                                 <Button Margin="0 0 8 0" Padding="3"
-                                                        BorderThickness="0">
+                                                        BorderThickness="0" Click="OnButtonRoomStateDisplayClicked">
                                                     <Button.Background>
                                                         <SolidColorBrush
                                                             Color="{Binding State, Converter={StaticResource StateToBackColorConverter}}" />
