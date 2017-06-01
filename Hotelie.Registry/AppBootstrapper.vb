@@ -1,5 +1,8 @@
 ﻿Imports Caliburn.Micro
 Imports Hotelie.Application.Services.Authentication
+Imports Hotelie.Application.Services.Persistence
+Imports Hotelie.Persistence.Common
+Imports Hotelie.Persistence.Users
 Imports Microsoft.Practices.Unity
 
 Public Class AppBootstrapper
@@ -22,7 +25,9 @@ Public Class AppBootstrapper
 	Protected Overridable Sub ComposeDependencies()
 		_container.RegisterType(Of IWindowManager, WindowManager)( New ContainerControlledLifetimeManager() )
 		_container.RegisterType(Of IEventAggregator, EventAggregator)( New ContainerControlledLifetimeManager() )
-		_container.RegisterType(Of IAuthentication, Tests.Services.Authentication.Authentication)( New ContainerControlledLifetimeManager() )
+        _container.RegisterInstance(New DatabaseContext($"data source=KHUONG-ASUS\SQLEXPRESS;initial catalog=HotelieDatabase;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"),New ContainerControlledLifetimeManager())
+        _container.RegisterType(Of IUserRepository, UserRepository)(New ContainerControlledLifetimeManager())
+		_container.RegisterType(Of IAuthentication, Authentication)( New ContainerControlledLifetimeManager() )
 
 	End Sub
 
