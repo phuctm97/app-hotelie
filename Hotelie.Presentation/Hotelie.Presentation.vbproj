@@ -158,7 +158,6 @@
     <Compile Include="_Start\WorkspaceShell\Views\WorkspaceShellView.xaml.vb">
       <DependentUpon>WorkspaceShellView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="_Tests\Authentication.vb" />
   </ItemGroup>
   <ItemGroup>
     <Import Include="System.Threading.Tasks" />
@@ -247,6 +246,10 @@
     <ProjectReference Include="..\Hotelie.Application\Hotelie.Application.vbproj">
       <Project>{448CF32F-1323-4D4E-B28C-1DDED33124D4}</Project>
       <Name>Hotelie.Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hotelie.Registry\Hotelie.Registry.vbproj">
+      <Project>{e18ba51a-e5f2-491a-8383-d3c1fa40a367}</Project>
+      <Name>Hotelie.Registry</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
