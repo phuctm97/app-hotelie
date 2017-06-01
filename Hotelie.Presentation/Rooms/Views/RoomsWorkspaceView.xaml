@@ -15,6 +15,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <converters:NullableValueConverter x:Key="NullableValueConverter" />
+            <converters:NullableColorConverter x:Key="NullableColorConverter" />
             <converters:DecimalToCurrencyStringConverter x:Key="DecimalToCurrencyStringConverter" />
             <converters:StateToStateStringConverter x:Key="StateToStateStringConverter" />
             <converters:StateToBackColorConverter x:Key="StateToBackColorConverter" />
@@ -93,14 +94,10 @@
                                                 <!--Room category-->
                                                 <Button Margin="0 0 8 8" Padding="3" BorderThickness="0">
                                                     <Button.Background>
-                                                        <SolidColorBrush Color="Black" />
+                                                        <SolidColorBrush Color="{Binding CategoryDisplayColor, Converter={StaticResource NullableColorConverter}}" />
                                                     </Button.Background>
                                                     <Viewbox StretchDirection="DownOnly" Stretch="Uniform">
-                                                        <TextBlock Text="{Binding CategoryName}" FontSize="14">
-                                                            <TextBlock.Foreground>
-                                                                <SolidColorBrush Color="White"/>
-                                                            </TextBlock.Foreground>
-                                                        </TextBlock>
+                                                        <TextBlock Text="{Binding CategoryName}" FontSize="14" Foreground="White"/>
                                                     </Viewbox>
                                                 </Button>
                                                 <!--Room state-->
