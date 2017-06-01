@@ -15,6 +15,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <converters:NullableValueConverter x:Key="NullableValueConverter" />
+            <converters:DecimalToCurrencyStringConverter x:Key="DecimalToCurrencyStringConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -73,17 +74,15 @@
                                             <StackPanel Grid.Row="0" Grid.Column="1"
                                                         Margin="16 24 16 12">
                                                 <!--Title-->
-                                                <!--TODO: Binding name-->
                                                 <TextBlock Style="{DynamicResource MaterialDesignHeadlineTextBlock}"
                                                            Text="{Binding Name}"
                                                            Margin="0 0 0 8" />
 
                                                 <!--Subtitle-->
-                                                <!--TODO: Bind price-->
                                                 <TextBlock TextWrapping="Wrap"
                                                            Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
                                                            Foreground="{DynamicResource MaterialDesignBodyLight}"
-                                                           Text="{Binding Price}" />
+                                                           Text="{Binding Price, Converter={StaticResource DecimalToCurrencyStringConverter}}" />
                                             </StackPanel>
 
                                             <!--Action area 1-->
