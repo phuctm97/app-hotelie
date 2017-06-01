@@ -53,7 +53,7 @@ Namespace Rooms.ViewModels
 		End Property
 
 		Public Sub FilterRooms( Optional namePrefix As String = "",
-		                        Optional category As RoomCategoryModel = Nothing,
+		                        Optional categoryId As String = "",
 		                        Optional state As Integer = - 1 )
 			namePrefix = namePrefix.ToLower()
 
@@ -63,9 +63,9 @@ Namespace Rooms.ViewModels
 
 			For Each room As RoomModel In Rooms
 				matchNamePrefix = room.Name.ToLower().Contains( namePrefix )
-				matchCategory = (category Is Nothing) OrElse
-				                (String.Equals( category.Id, "##all##" ) Or
-				                 String.Equals( room.CategoryId, category.Id ))
+				matchCategory = String.Equals( categoryId, "" ) Or
+				                String.Equals( categoryId, "##all##" ) Or
+				                String.Equals( room.CategoryId, categoryId )
 				matchState = state < 0 Or state > 1 Or Equals( room.State, state )
 
 				If matchNamePrefix And matchCategory And matchState

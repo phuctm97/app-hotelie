@@ -56,7 +56,7 @@
                         <i:EventTrigger EventName="Click">
                             <cal:ActionMessage MethodName="FilterRooms">
                                 <cal:Parameter Value="" />
-                                <cal:Parameter Value="{x:Null}" />
+                                <cal:Parameter Value="##all##" />
                                 <cal:Parameter Value="-1" />
                             </cal:ActionMessage>
                         </i:EventTrigger>
@@ -73,7 +73,7 @@
                         <i:EventTrigger EventName="TextChanged">
                             <cal:ActionMessage MethodName="FilterRooms">
                                 <cal:Parameter Value="{Binding ElementName=TextBoxSearchName, Path=Text}" />
-                                <cal:Parameter Value="{Binding ElementName=ComboBoxSearchCategory, Path=SelectedValue}" />
+                                <cal:Parameter Value="{Binding ElementName=ComboBoxSearchCategory, Path=SelectedValue.Id}" />
                                 <cal:Parameter Value="{Binding ElementName=ComboBoxSearchState, Path=SelectedIndex}" />
                             </cal:ActionMessage>
                         </i:EventTrigger>
@@ -93,7 +93,7 @@
                         <i:EventTrigger EventName="SelectionChanged">
                             <cal:ActionMessage MethodName="FilterRooms">
                                 <cal:Parameter Value="{Binding ElementName=TextBoxSearchName, Path=Text}" />
-                                <cal:Parameter Value="{Binding ElementName=ComboBoxSearchCategory, Path=SelectedValue}" />
+                                <cal:Parameter Value="{Binding ElementName=ComboBoxSearchCategory, Path=SelectedValue.Id}" />
                                 <cal:Parameter Value="{Binding ElementName=ComboBoxSearchState, Path=SelectedIndex}" />
                             </cal:ActionMessage>
                         </i:EventTrigger>
@@ -112,7 +112,7 @@
                         <i:EventTrigger EventName="SelectionChanged">
                             <cal:ActionMessage MethodName="FilterRooms">
                                 <cal:Parameter Value="{Binding ElementName=TextBoxSearchName, Path=Text}" />
-                                <cal:Parameter Value="{Binding ElementName=ComboBoxSearchCategory, Path=SelectedValue}" />
+                                <cal:Parameter Value="{Binding ElementName=ComboBoxSearchCategory, Path=SelectedValue.Id}" />
                                 <cal:Parameter Value="{Binding ElementName=ComboBoxSearchState, Path=SelectedIndex}" />
                             </cal:ActionMessage>
                         </i:EventTrigger>
