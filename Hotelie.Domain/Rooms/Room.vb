@@ -1,4 +1,10 @@
 ﻿Namespace Rooms
+	Public Enum RoomState
+		Free = 0
+		Occupied = 1
+		Dirty = 2
+	End Enum
+
 	Public Class Room
 		Public Property Id As String
 
