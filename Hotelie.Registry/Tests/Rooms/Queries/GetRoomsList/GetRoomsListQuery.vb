@@ -12,10 +12,10 @@ Namespace Tests.Rooms.Queries.GetRoomsList
 				New RoomModel With {.Id="2", .Name="A102", .CategoryId="2", .CategoryName="Phòng thường 2", .Price=150000, .State=0},
 				New RoomModel With {.Id="3", .Name="A103", .CategoryId="3", .CategoryName="Phòng Vip 1", .Price=300000, .State=0},
 				New RoomModel With {.Id="4", .Name="A104", .CategoryId="4", .CategoryName="Phòng Vip 2", .Price=450000, .State=1},
-				New RoomModel With {.Id="5", .Name="A201", .CategoryId="5", .CategoryName="Phòng thường 1", .Price=100000, .State=0},
-				New RoomModel With {.Id="6", .Name="A202", .CategoryId="6", .CategoryName="Phòng thường 2", .Price=150000, .State=0},
-				New RoomModel With {.Id="7", .Name="A203", .CategoryId="7", .CategoryName="Phòng Vip 1", .Price=300000, .State=1},
-				New RoomModel With {.Id="8", .Name="A204", .CategoryId="8", .CategoryName="Phòng Vip 2", .Price=450000, .State=0}}
+				New RoomModel With {.Id="5", .Name="A201", .CategoryId="1", .CategoryName="Phòng thường 1", .Price=100000, .State=0},
+				New RoomModel With {.Id="6", .Name="A202", .CategoryId="2", .CategoryName="Phòng thường 2", .Price=150000, .State=0},
+				New RoomModel With {.Id="7", .Name="A203", .CategoryId="3", .CategoryName="Phòng Vip 1", .Price=300000, .State=1},
+				New RoomModel With {.Id="8", .Name="A204", .CategoryId="4", .CategoryName="Phòng Vip 2", .Price=450000, .State=0}}
 		End Sub
 
 		Public Function Execute() As IEnumerable(Of RoomModel) Implements IGetRoomsListQuery.Execute
