@@ -23,6 +23,7 @@
                     <converters:DecimalToCurrencyStringConverter x:Key="DecimalToCurrencyStringConverter" />
                     <converters:StateToStateStringConverter x:Key="StateToStateStringConverter" />
                     <converters:StateToBackColorConverter x:Key="StateToBackColorConverter" />
+                    <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
