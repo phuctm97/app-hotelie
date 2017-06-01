@@ -134,6 +134,7 @@
       <DependentUpon>LeasesWorkspaceView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Rooms\Converters\NullableValueConverter.vb" />
+    <Compile Include="Rooms\Converters\DecimalToCurrencyStringConverter.vb" />
     <Compile Include="Rooms\ViewModels\AddRoomViewModel.vb" />
     <Compile Include="Rooms\ViewModels\RoomDetailViewModel.vb" />
     <Compile Include="Rooms\ViewModels\RoomsWorkspaceViewModel.vb" />
