@@ -1,6 +1,10 @@
 ﻿Namespace Rooms.Queries.GetRoomsList
 	Public Class RoomModel
+		Property Id As String
+
 		Property Name As String
+
+		Property CategoryId As String
 
 		Property CategoryName As String
 
