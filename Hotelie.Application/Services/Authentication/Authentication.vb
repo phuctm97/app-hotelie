@@ -4,7 +4,6 @@ Namespace Services.Authentication
     Public Class Authentication
         Implements IAuthentication
 
-        Private _loggedIn As Boolean
 
         Private ReadOnly _userRepository As IUserRepository
 
@@ -12,54 +11,45 @@ Namespace Services.Authentication
 
         Public ReadOnly Property LoggedIn As Boolean Implements IAuthentication.LoggedIn
             Get
-                Return _loggedIn
+                Return Not(IsNothing(LoggedAccount))
             End Get
         End Property
 
         ''' <summary>
-        ''' Login to Hotelie
+        '''     Login to Hotelie
         ''' </summary>
         Public Function TryLogin(account As Account) As IEnumerable(Of String) Implements IAuthentication.TryLogin
             Dim errorLog = New List(Of String)
 
             ' Currently logged in
-            If (LoggedIn) 
+            If (LoggedIn)
                 errorLog.Add("Đăng nhập lỗi, Hotelie đang được đăng nhập với tài khoản: " + LoggedAccount.Username)
                 Return errorLog
             End If
 
-            ' Account currently logged in
-            If (account.Username=LoggedAccount.Username) And (account.Password=LoggedAccount.Password)
-                errorLog.Add("Tài khoản này đang đăng nhập")
-                Return errorLog
-            End If
-
             ' Username is invalid
-            Dim loginId = _userRepository.Find(Function(p)(p.Id=account.Username)).FirstOrDefault()
-            If (IsNothing(loginId))
+            Dim user = _userRepository.Find(Function(p)(p.Id = account.Username)).FirstOrDefault()
+            If (IsNothing(user))
                 errorLog.Add("Tên tài khoản không tồn tại.")
                 Return errorLog
             End If
 
             ' Password is invalid
-            Dim loginUser = _userRepository.Find(Function(p)(p.Id=loginId.Id And p.Password=account.Password)).FirstOrDefault()
-            If (IsNothing(loginUser))
+            If (user.Password <> account.Password)
                 errorLog.Add("Sai mật khẩu")
                 Return errorLog
             End If
 
             ' Logging in
-            _loggedIn = True
-            LoggedAccount = account
+            LoggedAccount = New Account() With {.Username=account.Username,.Password=account.Password}
 
-            Return Nothing
+            Return errorLog
         End Function
 
         ''' <summary>
-        ''' Logout current user
+        '''     Logout current user
         ''' </summary>
         Public Sub Logout() Implements IAuthentication.Logout
-            _loggedIn = False
             LoggedAccount = Nothing
         End Sub
 
@@ -67,7 +57,5 @@ Namespace Services.Authentication
             Logout()
             _userRepository = userRepository
         End Sub
-
-       
     End Class
 End Namespace
