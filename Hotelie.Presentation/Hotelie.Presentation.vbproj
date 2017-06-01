@@ -126,7 +126,7 @@
       <DependentUpon>Application.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Common\CategoryColors.vb" />
+    <Compile Include="Common\Colorizer.vb" />
     <Compile Include="Common\IMainWindow.vb" />
     <Compile Include="Common\IShell.vb" />
     <Compile Include="Common\IWorkspace.vb" />
