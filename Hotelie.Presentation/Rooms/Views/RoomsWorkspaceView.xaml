@@ -91,10 +91,16 @@
                                             <StackPanel Grid.Row="0" Grid.Column="2"
                                                         Width="100" Margin="0 16 0 0">
                                                 <!--Room category-->
-                                                <Button Margin="0 0 8 8" Padding="3"
-                                                        Background="{Binding CategoryId, Converter={StaticResource CategoryToBackColorConverter}}" BorderThickness="0">
+                                                <Button Margin="0 0 8 8" Padding="3" BorderThickness="0">
+                                                    <Button.Background>
+                                                        <SolidColorBrush Color="{Binding CategoryId, Converter={StaticResource CategoryToBackColorConverter}}" />
+                                                    </Button.Background>
                                                     <Viewbox StretchDirection="DownOnly" Stretch="Uniform">
-                                                        <TextBlock Text="{Binding CategoryName}" Foreground="{Binding CategoryId, Converter={StaticResource CategoryToForeColorConverter}}" FontSize="14" />
+                                                        <TextBlock Text="{Binding CategoryName}" FontSize="14">
+                                                            <TextBlock.Foreground>
+                                                                <SolidColorBrush Color="{Binding CategoryId, Converter={StaticResource CategoryToForeColorConverter}}" />
+                                                            </TextBlock.Foreground>
+                                                        </TextBlock>
                                                     </Viewbox>
                                                 </Button>
                                                 <!--Room state-->
