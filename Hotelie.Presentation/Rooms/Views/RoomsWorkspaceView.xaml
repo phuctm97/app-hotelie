@@ -16,6 +16,8 @@
         <ResourceDictionary>
             <converters:NullableValueConverter x:Key="NullableValueConverter" />
             <converters:DecimalToCurrencyStringConverter x:Key="DecimalToCurrencyStringConverter" />
+            <converters:CategoryToBackColorConverter x:Key="CategoryToBackColorConverter" />
+            <converters:CategoryToForeColorConverter x:Key="CategoryToForeColorConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -90,10 +92,9 @@
                                                         Width="100" Margin="0 16 0 0">
                                                 <!--Room category-->
                                                 <Button Margin="0 0 8 8" Padding="3"
-                                                        Background="Gray" BorderThickness="0">
+                                                        Background="{Binding CategoryId, Converter={StaticResource CategoryToBackColorConverter}}" BorderThickness="0">
                                                     <Viewbox StretchDirection="DownOnly" Stretch="Uniform">
-                                                        <!--TODO: Binding category-->
-                                                        <TextBlock Text="{Binding CategoryName}" FontSize="14" />
+                                                        <TextBlock Text="{Binding CategoryName}" Foreground="{Binding CategoryId, Converter={StaticResource CategoryToForeColorConverter}}" FontSize="14" />
                                                     </Viewbox>
                                                 </Button>
                                                 <!--Room state-->
