@@ -51,16 +51,6 @@
                         Padding="0" Margin="0"
                         Click="OnButtonResetSearchClicked">
                     <materialDesign:PackIcon Kind="Magnify" Width="20" Height="20" />
-
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Click">
-                            <cal:ActionMessage MethodName="FilterRooms">
-                                <cal:Parameter Value="" />
-                                <cal:Parameter Value="##all##" />
-                                <cal:Parameter Value="-1" />
-                            </cal:ActionMessage>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
                 </Button>
 
                 <!--Room name-->
@@ -68,18 +58,8 @@
                          HorizontalAlignment="Left"
                          VerticalAlignment="Center"
                          FontSize="15" Width="150"
-                         materialDesign:HintAssist.Hint="Tên phòng">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="TextChanged">
-                            <cal:ActionMessage MethodName="FilterRooms">
-                                <cal:Parameter Value="{Binding ElementName=TextBoxSearchName, Path=Text}" />
-                                <cal:Parameter
-                                    Value="{Binding ElementName=ComboBoxSearchCategory, Path=SelectedValue.Id}" />
-                                <cal:Parameter Value="{Binding ElementName=ComboBoxSearchState, Path=SelectedIndex}" />
-                            </cal:ActionMessage>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </TextBox>
+                         materialDesign:HintAssist.Hint="Tên phòng"
+                         Text="{Binding FilterRoomName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                 <!--Room category-->
                 <ComboBox x:Name="ComboBoxSearchCategory" DockPanel.Dock="Left" HorizontalAlignment="Left"
@@ -89,18 +69,8 @@
                           FontSize="15" Width="120"
                           Margin="0 0 16 0"
                           ItemsSource="{Binding RoomCategories, Converter={StaticResource RoomCategoriesPlusAllConverter}}"
-                          DisplayMemberPath="Name">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SelectionChanged">
-                            <cal:ActionMessage MethodName="FilterRooms">
-                                <cal:Parameter Value="{Binding ElementName=TextBoxSearchName, Path=Text}" />
-                                <cal:Parameter
-                                    Value="{Binding ElementName=ComboBoxSearchCategory, Path=SelectedValue.Id}" />
-                                <cal:Parameter Value="{Binding ElementName=ComboBoxSearchState, Path=SelectedIndex}" />
-                            </cal:ActionMessage>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </ComboBox>
+                          DisplayMemberPath="Name"
+                          SelectedItem="{Binding FilterRoomCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                 <!--Room state-->
                 <ComboBox x:Name="ComboBoxSearchState"
@@ -109,18 +79,8 @@
                           ToolTip="Tình trạng"
                           FontSize="15" Width="120"
                           Margin="0 0 32 0"
-                          ItemsSource="{Binding RoomStates}">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SelectionChanged">
-                            <cal:ActionMessage MethodName="FilterRooms">
-                                <cal:Parameter Value="{Binding ElementName=TextBoxSearchName, Path=Text}" />
-                                <cal:Parameter
-                                    Value="{Binding ElementName=ComboBoxSearchCategory, Path=SelectedValue.Id}" />
-                                <cal:Parameter Value="{Binding ElementName=ComboBoxSearchState, Path=SelectedIndex}" />
-                            </cal:ActionMessage>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-
+                          ItemsSource="{Binding RoomStates}"
+                          SelectedItem="{Binding FilterRoomState, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Converter={StaticResource StateToStateStringConverter}}" />
@@ -157,20 +117,12 @@
                           VerticalAlignment="Center"
                           materialDesign:HintAssist.Hint="Dựa trên"
                           FontSize="15" Width="120"
-                          Margin="16 0 8 0">
+                          Margin="16 0 8 0"
+                          SelectedIndex="{Binding SortFieldCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <ComboBoxItem Content="Tên phòng" />
                     <ComboBoxItem Content="Loại phòng" />
                     <ComboBoxItem Content="Giá" />
                     <ComboBoxItem Content="Trạng thái" />
-
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SelectionChanged">
-                            <cal:ActionMessage MethodName="SortRooms">
-                                <cal:Parameter Value="{Binding ElementName=ComboBoxSortField, Path=SelectedIndex}" />
-                                <cal:Parameter Value="{Binding ElementName=ToggleSortDirection, Path=IsChecked}" />
-                            </cal:ActionMessage>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
                 </ComboBox>
 
                 <!--Sort toggle-->
@@ -178,22 +130,14 @@
                               VerticalAlignment="Center"
                               Style="{StaticResource MaterialDesignActionToggleButton}"
                               Background="Transparent" Foreground="Black"
-                              ToolTip="Đảo thứ tự sắp xếp">
+                              ToolTip="Đảo thứ tự sắp xếp"
+                              IsChecked="{Binding IsSortDescending, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <ToggleButton.Content>
                         <materialDesign:PackIcon Kind="SortAscending" Width="20" Height="20" />
                     </ToggleButton.Content>
                     <materialDesign:ToggleButtonAssist.OnContent>
                         <materialDesign:PackIcon Kind="SortDescending" Width="24" Height="24" />
                     </materialDesign:ToggleButtonAssist.OnContent>
-
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Click">
-                            <cal:ActionMessage MethodName="SortRooms">
-                                <cal:Parameter Value="{Binding ElementName=ComboBoxSortField, Path=SelectedIndex}" />
-                                <cal:Parameter Value="{Binding ElementName=ToggleSortDirection, Path=IsChecked}" />
-                            </cal:ActionMessage>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
                 </ToggleButton>
 
             </DockPanel>
@@ -258,7 +202,7 @@
                                             <StackPanel Grid.Row="0" Grid.Column="2"
                                                         Width="100" Margin="0 16 0 0">
                                                 <!--Room category-->
-                                                <Button Margin="0 0 8 8" Padding="3" BorderThickness="0" Click="OnButtonRoomCategoryDisplayClicked">
+                                                <Button Margin="0 0 8 8" Padding="3" BorderThickness="0" cal:Message.Attach="FilterRoomCategoryBy($dataContext)">
                                                     <Button.Background>
                                                         <SolidColorBrush
                                                             Color="{Binding CategoryDisplayColor, Converter={StaticResource NullableColorConverter}}" />
@@ -270,7 +214,7 @@
                                                 </Button>
                                                 <!--Room state-->
                                                 <Button Margin="0 0 8 0" Padding="3"
-                                                        BorderThickness="0" Click="OnButtonRoomStateDisplayClicked">
+                                                        BorderThickness="0" cal:Message.Attach="FilterRoomStateBy($dataContext)">
                                                     <Button.Background>
                                                         <SolidColorBrush
                                                             Color="{Binding State, Converter={StaticResource StateToBackColorConverter}}" />
