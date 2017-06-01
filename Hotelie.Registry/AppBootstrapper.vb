@@ -1,6 +1,9 @@
 ﻿Imports Caliburn.Micro
 Imports Hotelie.Application.Rooms.Queries.GetRoomsList
 Imports Hotelie.Application.Services.Authentication
+Imports Hotelie.Application.Services.Persistence
+Imports Hotelie.Persistence.Common
+Imports Hotelie.Persistence.Users
 Imports Microsoft.Practices.Unity
 
 Public Class AppBootstrapper
