@@ -43,7 +43,6 @@
 
             <!--Toolbar-->
             <DockPanel Margin="24 24 24 8">
-
                 <!--Clear button-->
                 <Button DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
                         Style="{DynamicResource MaterialDesignToolButton}"
@@ -62,27 +61,41 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="TextChanged">
                             <cal:ActionMessage MethodName="FilterRooms">
-                                <cal:Parameter Value="{Binding Path=Text, ElementName=TextBoxSearchName}" />
+                                <cal:Parameter Value="{Binding ElementName=TextBoxSearchName, Path=Text}" />
+                                <cal:Parameter Value="{Binding ElementName=ComboBoxSearchCategory, Path=SelectedValue}" />
                             </cal:ActionMessage>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </TextBox>
 
                 <!--Room category-->
-                <ComboBox x:Name="ComboBoxSearchCategory" DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
+                <ComboBox x:Name="ComboBoxSearchCategory" DockPanel.Dock="Left" HorizontalAlignment="Left"
+                          VerticalAlignment="Center"
                           materialDesign:HintAssist.Hint="Loại phòng"
                           FontSize="15" Width="120"
                           Margin="0 0 16 0"
                           ItemsSource="{Binding RoomCategories}"
-                          DisplayMemberPath="Name">
+                          DisplayMemberPath="Name"
+                          ToolTip="Nhấp đúp chuột để xóa điêu kiện lọc"
+                          MouseDoubleClick="OnComboxBoxSearchDoubleClick">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <cal:ActionMessage MethodName="FilterRooms">
+                                <cal:Parameter Value="{Binding ElementName=TextBoxSearchName, Path=Text}" />
+                                <cal:Parameter Value="{Binding ElementName=ComboBoxSearchCategory, Path=SelectedValue}" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                 </ComboBox>
 
                 <!--Room state-->
-                <ComboBox x:Name="ComboBoxSearchState" 
+                <ComboBox x:Name="ComboBoxSearchState"
                           DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
                           materialDesign:HintAssist.Hint="Tình trạng"
                           FontSize="15" Width="120"
-                          Margin="0 0 32 0">
+                          Margin="0 0 32 0"
+                          ToolTip="Nhấp đúp chuột để xóa điêu kiện lọc"
+                          MouseDoubleClick="OnComboxBoxSearchDoubleClick">
                     <ComboBoxItem Content="Trống" />
                     <ComboBoxItem Content="Đã thuê" />
                     <ComboBoxItem Content="Chưa dọn" />
@@ -152,7 +165,8 @@
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
                         <Setter Property="Margin" Value="10" />
-                        <Setter Property="Visibility" Value="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        <Setter Property="Visibility"
+                                Value="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="ListBoxItem">

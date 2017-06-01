@@ -10,10 +10,10 @@ Namespace Rooms.ViewModels
 
 		Private _isTopDrawerOpen As Boolean
 		Private ReadOnly _getRoomsListQuery As IGetRoomsListQuery
-		Private ReadOnly _getRoomCategoriesListQuery As IGetRoomCategoriesList
+		Private ReadOnly _getRoomCategoriesListQuery As IGetRoomCategoriesListQuery
 
 		Public Sub New( getRoomsListQuery As IGetRoomsListQuery,
-		                getRoomCategoriesListQuery As IGetRoomCategoriesList )
+		                getRoomCategoriesListQuery As IGetRoomCategoriesListQuery )
 			_getRoomsListQuery = getRoomsListQuery
 			_getRoomCategoriesListQuery = getRoomCategoriesListQuery
 
@@ -40,11 +40,21 @@ Namespace Rooms.ViewModels
 		' Rooms
 		Public ReadOnly Property Rooms As IObservableCollection(Of RoomModel)
 
-		Public Sub FilterRooms( namePrefix As String )
+		Public Sub FilterRooms( Optional namePrefix As String = "",
+		                        Optional category As RoomCategoryModel = Nothing )
 			namePrefix = namePrefix.ToLower()
 
+			Dim matchNamePrefix As Boolean
+			Dim matchCategory As Boolean
+
 			For Each room As RoomModel In Rooms
-				If room.Name.ToLower().Contains( namePrefix )
+				matchNamePrefix = False
+				matchCategory = False
+
+				matchNamePrefix = room.Name.ToLower().Contains( namePrefix )
+				matchCategory = (category Is Nothing) OrElse String.Equals( room.CategoryId, category.Id )
+
+				If matchNamePrefix And matchCategory
 					room.IsVisible = True
 				Else
 					room.IsVisible = False
