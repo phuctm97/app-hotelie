@@ -10,7 +10,7 @@ Namespace Rooms.Converters
 		                         culture As CultureInfo ) As Object Implements IValueConverter.Convert
 			Dim x = CType(value, Decimal)
 
-			Return x.ToString( "N0" )
+			Return String.Format($"đ {x:N0}")
 		End Function
 
 		Public Function ConvertBack( value As Object,
