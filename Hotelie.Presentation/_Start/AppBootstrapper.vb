@@ -13,9 +13,6 @@ Namespace Start
 		Protected Overrides Sub ComposeDependencies()
 			MyBase.ComposeDependencies()
 
-			' Common
-			_container.RegisterInstance(New Colorizer(), New ContainerControlledLifetimeManager())
-
 			' Start
 			_container.RegisterType(Of IMainWindow, MainWindowViewModel)( New ContainerControlledLifetimeManager() )
 			_container.RegisterType(Of IShell, LoginShellViewModel)( "login-shell", New TransientLifetimeManager() )
