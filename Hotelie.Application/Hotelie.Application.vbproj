@@ -94,10 +94,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Rooms\Queries\GetRoomsList\ExampleRoomsListItem.vb" />
-    <Compile Include="Rooms\Queries\GetRoomsList\GetRoomsListQuery.vb" />
     <Compile Include="Rooms\Queries\GetRoomsList\IGetRoomsListQuery.vb" />
-    <Compile Include="Rooms\Queries\GetRoomsList\RoomsListItemModel.vb" />
+    <Compile Include="Rooms\Queries\GetRoomsList\RoomModel.vb" />
     <Compile Include="Services\Authentication\Account.vb" />
     <Compile Include="Services\Authentication\Authentication.vb" />
     <Compile Include="Services\Authentication\IAuthentication.vb" />
