@@ -72,10 +72,9 @@
                 <ComboBox x:Name="ComboBoxSearchCategory" DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
                           materialDesign:HintAssist.Hint="Loại phòng"
                           FontSize="15" Width="120"
-                          Margin="0 0 16 0">
-                    <ComboBoxItem Content="Loại 1" />
-                    <ComboBoxItem Content="Loại 2" />
-                    <ComboBoxItem Content="Loại 3" />
+                          Margin="0 0 16 0"
+                          ItemsSource="{Binding RoomCategories}"
+                          DisplayMemberPath="Name">
                 </ComboBox>
 
                 <!--Room state-->
