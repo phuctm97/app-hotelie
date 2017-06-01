@@ -133,7 +133,11 @@
     <Compile Include="Leases\Views\LeasesWorkspaceView.xaml.vb">
       <DependentUpon>LeasesWorkspaceView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Rooms\Converters\NullableColorConverter.vb" />
     <Compile Include="Rooms\Converters\NullableValueConverter.vb" />
+    <Compile Include="Rooms\Converters\DecimalToCurrencyStringConverter.vb" />
+    <Compile Include="Rooms\Converters\StateToBackColorConverter.vb" />
+    <Compile Include="Rooms\Converters\StateToStateStringConverter.vb" />
     <Compile Include="Rooms\ViewModels\AddRoomViewModel.vb" />
     <Compile Include="Rooms\ViewModels\RoomDetailViewModel.vb" />
     <Compile Include="Rooms\ViewModels\RoomsWorkspaceViewModel.vb" />

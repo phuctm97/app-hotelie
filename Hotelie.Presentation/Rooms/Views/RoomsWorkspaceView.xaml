@@ -15,6 +15,10 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <converters:NullableValueConverter x:Key="NullableValueConverter" />
+            <converters:NullableColorConverter x:Key="NullableColorConverter" />
+            <converters:DecimalToCurrencyStringConverter x:Key="DecimalToCurrencyStringConverter" />
+            <converters:StateToStateStringConverter x:Key="StateToStateStringConverter" />
+            <converters:StateToBackColorConverter x:Key="StateToBackColorConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -31,7 +35,7 @@
             </Grid.RowDefinitions>
 
             <!--Rooms list-->
-            <ListBox Grid.Row="1">
+            <ListBox Grid.Row="1" ItemsSource="{Binding Rooms}">
 
                 <!--panel style-->
                 <ListBox.ItemsPanel>
@@ -73,36 +77,39 @@
                                             <StackPanel Grid.Row="0" Grid.Column="1"
                                                         Margin="16 24 16 12">
                                                 <!--Title-->
-                                                <!--TODO: Binding name-->
                                                 <TextBlock Style="{DynamicResource MaterialDesignHeadlineTextBlock}"
-                                                           Text="Room name"
+                                                           Text="{Binding Name}"
                                                            Margin="0 0 0 8" />
 
                                                 <!--Subtitle-->
-                                                <!--TODO: Bind price-->
                                                 <TextBlock TextWrapping="Wrap"
                                                            Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
                                                            Foreground="{DynamicResource MaterialDesignBodyLight}"
-                                                           Text="đ XXX,XXX" />
+                                                           Text="{Binding Price, Converter={StaticResource DecimalToCurrencyStringConverter}}" />
                                             </StackPanel>
 
                                             <!--Action area 1-->
                                             <StackPanel Grid.Row="0" Grid.Column="2"
                                                         Width="100" Margin="0 16 0 0">
                                                 <!--Room category-->
-                                                <Button Margin="0 0 8 8" Padding="3"
-                                                        Background="Gray" BorderThickness="0">
+                                                <Button Margin="0 0 8 8" Padding="3" BorderThickness="0">
+                                                    <Button.Background>
+                                                        <SolidColorBrush Color="{Binding CategoryDisplayColor, Converter={StaticResource NullableColorConverter}}" />
+                                                    </Button.Background>
                                                     <Viewbox StretchDirection="DownOnly" Stretch="Uniform">
-                                                        <!--TODO: Binding category-->
-                                                        <TextBlock Text="Category" FontSize="14" />
+                                                        <TextBlock Text="{Binding CategoryName}" FontSize="14" Foreground="White"/>
                                                     </Viewbox>
                                                 </Button>
                                                 <!--Room state-->
                                                 <Button Margin="0 0 8 0" Padding="3"
-                                                        Background="Green" BorderThickness="0">
+                                                        BorderThickness="0">
+                                                    <Button.Background>
+                                                        <SolidColorBrush Color="{Binding State, Converter={StaticResource StateToBackColorConverter}}"/>
+                                                    </Button.Background>
                                                     <Viewbox StretchDirection="DownOnly" Stretch="Uniform">
-                                                        <!--TODO: Binding state-->
-                                                        <TextBlock Text="State" FontSize="14" />
+                                                        <TextBlock
+                                                            Text="{Binding State, Converter={StaticResource StateToStateStringConverter}}"
+                                                            FontSize="14" />
                                                     </Viewbox>
                                                 </Button>
                                             </StackPanel>
@@ -145,15 +152,6 @@
                     </Style>
                 </ListBox.ItemContainerStyle>
 
-                <ListBoxItem />
-                <ListBoxItem />
-                <ListBoxItem />
-                <ListBoxItem />
-                <ListBoxItem />
-                <ListBoxItem />
-                <ListBoxItem />
-                <ListBoxItem />
-                <ListBoxItem />
             </ListBox>
 
             <Button Grid.Row="2" Style="{DynamicResource MaterialDesignFloatingActionAccentButton}"

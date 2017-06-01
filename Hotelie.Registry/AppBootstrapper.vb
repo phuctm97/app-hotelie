@@ -1,4 +1,5 @@
 ﻿Imports Caliburn.Micro
+Imports Hotelie.Application.Rooms.Queries.GetRoomsList
 Imports Hotelie.Application.Services.Authentication
 Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Persistence.Common
@@ -25,10 +26,11 @@ Public Class AppBootstrapper
 	Protected Overridable Sub ComposeDependencies()
 		_container.RegisterType(Of IWindowManager, WindowManager)( New ContainerControlledLifetimeManager() )
 		_container.RegisterType(Of IEventAggregator, EventAggregator)( New ContainerControlledLifetimeManager() )
-        _container.RegisterInstance(New DatabaseContext($"data source=KHUONG-ASUS\SQLEXPRESS;initial catalog=HotelieDatabase;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"),New ContainerControlledLifetimeManager())
-        _container.RegisterType(Of IUserRepository, UserRepository)(New ContainerControlledLifetimeManager())
-		_container.RegisterType(Of IAuthentication, Authentication)( New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IAuthentication, Tests.Services.Authentication.Authentication)(
+			New ContainerControlledLifetimeManager() )
 
+		_container.RegisterType(Of IGetRoomsListQuery, Tests.Rooms.Queries.GetRoomsList.GetRoomsListQuery)(
+			New ContainerControlledLifetimeManager() )
 	End Sub
 
 	Protected Overrides Function GetInstance( service As Type,

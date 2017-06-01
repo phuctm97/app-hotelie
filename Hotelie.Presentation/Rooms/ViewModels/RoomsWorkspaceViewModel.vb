@@ -1,4 +1,5 @@
 ﻿Imports Caliburn.Micro
+Imports Hotelie.Application.Rooms.Queries.GetRoomsList
 Imports Hotelie.Presentation.Common
 
 Namespace Rooms.ViewModels
@@ -7,6 +8,27 @@ Namespace Rooms.ViewModels
 		Implements IWorkspace
 
 		Private _isDialogOpen As Boolean
+		Private ReadOnly _getRoomsListQuery As IGetRoomsListQuery
+
+		Public Sub New( getRoomsListQuery As IGetRoomsListQuery )
+			_getRoomsListQuery = getRoomsListQuery
+
+			DisplayName = "Danh sách phòng"
+			IsDialogOpen = False
+
+			Rooms = New BindableCollection(Of RoomModel)
+		End Sub
+
+		Protected Overrides Sub OnViewLoaded( view As Object )
+			MyBase.OnViewLoaded( view )
+
+			Rooms.AddRange( _getRoomsListQuery.Execute() )
+		End Sub
+
+		' Rooms
+		Public ReadOnly Property Rooms As IObservableCollection(Of RoomModel)
+
+		' Dialog
 
 		Public Property IsDialogOpen As Boolean
 			Get
@@ -18,11 +40,6 @@ Namespace Rooms.ViewModels
 				NotifyOfPropertyChange( Function() IsDialogOpen )
 			End Set
 		End Property
-
-		Public Sub New()
-			DisplayName = "Danh sách phòng"
-			IsDialogOpen = False
-		End Sub
 
 		Public Sub ShowRoomDetailDialog()
 			ActivateItem( New RoomDetailViewModel() )
