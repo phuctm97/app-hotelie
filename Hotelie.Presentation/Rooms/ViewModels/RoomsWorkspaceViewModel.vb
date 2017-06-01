@@ -25,8 +25,8 @@ Namespace Rooms.ViewModels
 			Rooms.AddRange( _getRoomsListQuery.Execute() )
 		End Sub
 
-		Protected Overrides Sub OnViewReady(view As Object)
-			MyBase.OnViewReady(view)
+		Protected Overrides Sub OnViewReady( view As Object )
+			MyBase.OnViewReady( view )
 
 			FilterRooms( String.Empty )
 		End Sub
@@ -35,6 +35,15 @@ Namespace Rooms.ViewModels
 		Public ReadOnly Property Rooms As IObservableCollection(Of RoomModel)
 
 		Public Sub FilterRooms( namePrefix As String )
+			namePrefix = namePrefix.ToLower()
+
+			For Each room As RoomModel In Rooms
+				If room.Name.ToLower().Contains( namePrefix )
+					room.IsVisible = True
+				Else
+					room.IsVisible = False
+				End If
+			Next
 		End Sub
 
 		' Dialog
