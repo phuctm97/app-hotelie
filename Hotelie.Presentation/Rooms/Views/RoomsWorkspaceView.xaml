@@ -18,6 +18,8 @@
             <converters:DecimalToCurrencyStringConverter x:Key="DecimalToCurrencyStringConverter" />
             <converters:CategoryToBackColorConverter x:Key="CategoryToBackColorConverter" />
             <converters:CategoryToForeColorConverter x:Key="CategoryToForeColorConverter" />
+            <converters:StateToStateStringConverter x:Key="StateToStateStringConverter" />
+            <converters:StateToBackColorConverter x:Key="StateToBackColorConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -105,10 +107,9 @@
                                                 </Button>
                                                 <!--Room state-->
                                                 <Button Margin="0 0 8 0" Padding="3"
-                                                        Background="Green" BorderThickness="0">
+                                                        Background="{Binding State, Converter={StaticResource StateToBackColorConverter}}" BorderThickness="0">
                                                     <Viewbox StretchDirection="DownOnly" Stretch="Uniform">
-                                                        <!--TODO: Binding state-->
-                                                        <TextBlock Text="{Binding State}" FontSize="14" />
+                                                        <TextBlock Text="{Binding State, Converter={StaticResource StateToStateStringConverter}}" FontSize="14" />
                                                     </Viewbox>
                                                 </Button>
                                             </StackPanel>
