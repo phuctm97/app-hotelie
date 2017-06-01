@@ -1,23 +1,23 @@
 ﻿Imports System.Globalization
+Imports Caliburn.Micro
+Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
 
 Namespace Rooms.Converters
-	Public Class StateToStateStringConverter
+	Public Class RoomCategoriesPlusAllConverter
 		Implements IValueConverter
 
 		Public Function Convert( value As Object,
 		                         targetType As Type,
 		                         parameter As Object,
 		                         culture As CultureInfo ) As Object Implements IValueConverter.Convert
-			Dim state = CType(value, Integer)
+			Dim collection = CType(value, IObservableCollection(Of RoomCategoryModel))
 
-			Select Case state
-				Case 0
-					Return "Trống"
-				Case 1
-					Return "Đã thuê"
-			End Select
+			Dim last = collection.LastOrDefault()
+			If last Is Nothing Or last.Id <> "##all##"
+				collection.Add( New RoomCategoryModel With {.Id="##all##", .Name="Tất cả", .DisplayColor=Colors.Black} )
+			End If
 
-			Return "Tất cả"
+			Return collection
 		End Function
 
 		Public Function ConvertBack( value As Object,

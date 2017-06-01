@@ -24,6 +24,7 @@
                     <converters:StateToStateStringConverter x:Key="StateToStateStringConverter" />
                     <converters:StateToBackColorConverter x:Key="StateToBackColorConverter" />
                     <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+                    <converters:RoomCategoriesPlusAllConverter x:Key="RoomCategoriesPlusAllConverter" />
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -46,10 +47,20 @@
                 <!--Clear button-->
                 <Button DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
                         Style="{DynamicResource MaterialDesignToolButton}"
-                        ToolTip="Reset thông tin tra cứu"
+                        ToolTip="Nhấp đển xóa tất cả điều kiện lọc"
                         Padding="0" Margin="0"
                         Click="OnButtonResetSearchClicked">
                     <materialDesign:PackIcon Kind="Magnify" Width="20" Height="20" />
+
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="FilterRooms">
+                                <cal:Parameter Value="" />
+                                <cal:Parameter Value="{x:Null}" />
+                                <cal:Parameter Value="-1" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                 </Button>
 
                 <!--Room name-->
@@ -63,6 +74,7 @@
                             <cal:ActionMessage MethodName="FilterRooms">
                                 <cal:Parameter Value="{Binding ElementName=TextBoxSearchName, Path=Text}" />
                                 <cal:Parameter Value="{Binding ElementName=ComboBoxSearchCategory, Path=SelectedValue}" />
+                                <cal:Parameter Value="{Binding ElementName=ComboBoxSearchState, Path=SelectedIndex}" />
                             </cal:ActionMessage>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
@@ -72,17 +84,17 @@
                 <ComboBox x:Name="ComboBoxSearchCategory" DockPanel.Dock="Left" HorizontalAlignment="Left"
                           VerticalAlignment="Center"
                           materialDesign:HintAssist.Hint="Loại phòng"
+                          ToolTip="Loại phòng"
                           FontSize="15" Width="120"
                           Margin="0 0 16 0"
-                          ItemsSource="{Binding RoomCategories}"
-                          DisplayMemberPath="Name"
-                          ToolTip="Nhấp đúp chuột để xóa điêu kiện lọc"
-                          MouseDoubleClick="OnComboxBoxSearchDoubleClick">
+                          ItemsSource="{Binding RoomCategories, Converter={StaticResource RoomCategoriesPlusAllConverter}}"
+                          DisplayMemberPath="Name">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
                             <cal:ActionMessage MethodName="FilterRooms">
                                 <cal:Parameter Value="{Binding ElementName=TextBoxSearchName, Path=Text}" />
                                 <cal:Parameter Value="{Binding ElementName=ComboBoxSearchCategory, Path=SelectedValue}" />
+                                <cal:Parameter Value="{Binding ElementName=ComboBoxSearchState, Path=SelectedIndex}" />
                             </cal:ActionMessage>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
@@ -92,13 +104,25 @@
                 <ComboBox x:Name="ComboBoxSearchState"
                           DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
                           materialDesign:HintAssist.Hint="Tình trạng"
+                          ToolTip="Tình trạng"
                           FontSize="15" Width="120"
                           Margin="0 0 32 0"
-                          ToolTip="Nhấp đúp chuột để xóa điêu kiện lọc"
-                          MouseDoubleClick="OnComboxBoxSearchDoubleClick">
-                    <ComboBoxItem Content="Trống" />
-                    <ComboBoxItem Content="Đã thuê" />
-                    <ComboBoxItem Content="Chưa dọn" />
+                          ItemsSource="{Binding RoomStates}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <cal:ActionMessage MethodName="FilterRooms">
+                                <cal:Parameter Value="{Binding ElementName=TextBoxSearchName, Path=Text}" />
+                                <cal:Parameter Value="{Binding ElementName=ComboBoxSearchCategory, Path=SelectedValue}" />
+                                <cal:Parameter Value="{Binding ElementName=ComboBoxSearchState, Path=SelectedIndex}" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Converter={StaticResource StateToStateStringConverter}}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
                 </ComboBox>
 
                 <!--Search icon-->
@@ -126,7 +150,7 @@
                 </ComboBox>
 
                 <!--Sort field-->
-                <ComboBox DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
+                <ComboBox x:Name="ComboBoxSortField" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
                           materialDesign:HintAssist.Hint="Dựa trên"
                           FontSize="15" Width="120"
                           Margin="16 0 8 0">
@@ -134,10 +158,19 @@
                     <ComboBoxItem Content="Loại phòng" />
                     <ComboBoxItem Content="Giá" />
                     <ComboBoxItem Content="Trạng thái" />
+
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <cal:ActionMessage MethodName="SortRooms">
+                                <cal:Parameter Value="{Binding ElementName=ComboBoxSortField, Path=SelectedIndex}" />
+                                <cal:Parameter Value="{Binding ElementName=ToggleSortDirection, Path=IsChecked}" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                 </ComboBox>
 
                 <!--Sort toggle-->
-                <ToggleButton DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
+                <ToggleButton x:Name="ToggleSortDirection" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
                               Style="{StaticResource MaterialDesignActionToggleButton}"
                               Background="Transparent" Foreground="Black"
                               ToolTip="Đảo thứ tự sắp xếp">
@@ -147,6 +180,15 @@
                     <materialDesign:ToggleButtonAssist.OnContent>
                         <materialDesign:PackIcon Kind="SortDescending" Width="24" Height="24" />
                     </materialDesign:ToggleButtonAssist.OnContent>
+
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="SortRooms">
+                                <cal:Parameter Value="{Binding ElementName=ComboBoxSortField, Path=SelectedIndex}" />
+                                <cal:Parameter Value="{Binding ElementName=ToggleSortDirection, Path=IsChecked}" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                 </ToggleButton>
 
             </DockPanel>
