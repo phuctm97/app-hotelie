@@ -120,6 +120,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Tests\Rooms\Queries\GetRoomsList\GetRoomsListQuery.vb" />
     <Compile Include="Tests\Services\Authentication\Authentication.vb" />
   </ItemGroup>
   <ItemGroup>
