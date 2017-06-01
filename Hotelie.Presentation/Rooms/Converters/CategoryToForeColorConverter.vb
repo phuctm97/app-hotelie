@@ -24,7 +24,7 @@ Namespace Rooms.Converters
 			Dim id = CType(value, String)
 
 			If Not _recoredCategories.ContainsKey( id )
-				_recoredCategories.Add( id, _recoredCategories( _currentColorIndex ) )
+				_recoredCategories.Add( id, _colors( _currentColorIndex ) )
 
 				_currentColorIndex += 1
 				If _currentColorIndex >= _colors.Count Then _currentColorIndex = 0
