@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Hotelie.Presentation"
              xmlns:converters="clr-namespace:Hotelie.Presentation.Rooms.Converters"
-             xmlns:viewModels="clr-namespace:Hotelie.Presentation.Rooms.ViewModels"
+             xmlns:design="clr-namespace:Hotelie.Presentation.Rooms.Design"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -11,7 +11,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="1000"
-             d:DataContext="{d:DesignInstance Type=viewModels:RoomsWorkspaceViewModel, IsDesignTimeCreatable=True}">
+             d:DataContext="{d:DesignInstance Type=design:RoomsWorkspaceDesignModel, IsDesignTimeCreatable=True}">
     <UserControl.Resources>
         <ResourceDictionary>
             <converters:NullableValueConverter x:Key="NullableValueConverter" />

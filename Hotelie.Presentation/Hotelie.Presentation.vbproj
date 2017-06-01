@@ -138,6 +138,7 @@
     <Compile Include="Rooms\Converters\DecimalToCurrencyStringConverter.vb" />
     <Compile Include="Rooms\Converters\StateToBackColorConverter.vb" />
     <Compile Include="Rooms\Converters\StateToStateStringConverter.vb" />
+    <Compile Include="Rooms\Design\RoomsWorkspaceDesignModel.vb" />
     <Compile Include="Rooms\ViewModels\AddRoomViewModel.vb" />
     <Compile Include="Rooms\ViewModels\RoomDetailViewModel.vb" />
     <Compile Include="Rooms\ViewModels\RoomsWorkspaceViewModel.vb" />
