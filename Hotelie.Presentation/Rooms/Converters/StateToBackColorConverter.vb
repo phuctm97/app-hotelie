@@ -16,9 +16,6 @@ Namespace Rooms.Converters
 
 				Case 1
 					Return Colors.Red
-
-				Case 2
-					Return Colors.Gold
 			End Select
 
 			Return Colors.White

@@ -24,6 +24,7 @@
                     <converters:StateToStateStringConverter x:Key="StateToStateStringConverter" />
                     <converters:StateToBackColorConverter x:Key="StateToBackColorConverter" />
                     <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+                    <converters:RoomCategoriesPlusAllConverter x:Key="RoomCategoriesPlusAllConverter" />
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -46,7 +47,7 @@
                 <!--Clear button-->
                 <Button DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
                         Style="{DynamicResource MaterialDesignToolButton}"
-                        ToolTip="Reset thông tin tra cứu"
+                        ToolTip="Nhấp để xóa tất cả điều kiện lọc"
                         Padding="0" Margin="0"
                         Click="OnButtonResetSearchClicked">
                     <materialDesign:PackIcon Kind="Magnify" Width="20" Height="20" />
@@ -57,48 +58,34 @@
                          HorizontalAlignment="Left"
                          VerticalAlignment="Center"
                          FontSize="15" Width="150"
-                         materialDesign:HintAssist.Hint="Tên phòng">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="TextChanged">
-                            <cal:ActionMessage MethodName="FilterRooms">
-                                <cal:Parameter Value="{Binding ElementName=TextBoxSearchName, Path=Text}" />
-                                <cal:Parameter Value="{Binding ElementName=ComboBoxSearchCategory, Path=SelectedValue}" />
-                            </cal:ActionMessage>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </TextBox>
+                         materialDesign:HintAssist.Hint="Tên phòng"
+                         Text="{Binding FilterRoomName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                 <!--Room category-->
                 <ComboBox x:Name="ComboBoxSearchCategory" DockPanel.Dock="Left" HorizontalAlignment="Left"
                           VerticalAlignment="Center"
                           materialDesign:HintAssist.Hint="Loại phòng"
+                          ToolTip="Loại phòng"
                           FontSize="15" Width="120"
                           Margin="0 0 16 0"
-                          ItemsSource="{Binding RoomCategories}"
+                          ItemsSource="{Binding RoomCategories, Converter={StaticResource RoomCategoriesPlusAllConverter}}"
                           DisplayMemberPath="Name"
-                          ToolTip="Nhấp đúp chuột để xóa điêu kiện lọc"
-                          MouseDoubleClick="OnComboxBoxSearchDoubleClick">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SelectionChanged">
-                            <cal:ActionMessage MethodName="FilterRooms">
-                                <cal:Parameter Value="{Binding ElementName=TextBoxSearchName, Path=Text}" />
-                                <cal:Parameter Value="{Binding ElementName=ComboBoxSearchCategory, Path=SelectedValue}" />
-                            </cal:ActionMessage>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </ComboBox>
+                          SelectedItem="{Binding FilterRoomCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                 <!--Room state-->
                 <ComboBox x:Name="ComboBoxSearchState"
                           DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
                           materialDesign:HintAssist.Hint="Tình trạng"
+                          ToolTip="Tình trạng"
                           FontSize="15" Width="120"
                           Margin="0 0 32 0"
-                          ToolTip="Nhấp đúp chuột để xóa điêu kiện lọc"
-                          MouseDoubleClick="OnComboxBoxSearchDoubleClick">
-                    <ComboBoxItem Content="Trống" />
-                    <ComboBoxItem Content="Đã thuê" />
-                    <ComboBoxItem Content="Chưa dọn" />
+                          ItemsSource="{Binding RoomStates}"
+                          SelectedItem="{Binding FilterRoomState, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Converter={StaticResource StateToStateStringConverter}}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
                 </ComboBox>
 
                 <!--Search icon-->
@@ -126,10 +113,12 @@
                 </ComboBox>
 
                 <!--Sort field-->
-                <ComboBox DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
+                <ComboBox x:Name="ComboBoxSortField" DockPanel.Dock="Right" HorizontalAlignment="Right"
+                          VerticalAlignment="Center"
                           materialDesign:HintAssist.Hint="Dựa trên"
                           FontSize="15" Width="120"
-                          Margin="16 0 8 0">
+                          Margin="16 0 8 0"
+                          SelectedIndex="{Binding SortFieldCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <ComboBoxItem Content="Tên phòng" />
                     <ComboBoxItem Content="Loại phòng" />
                     <ComboBoxItem Content="Giá" />
@@ -137,10 +126,12 @@
                 </ComboBox>
 
                 <!--Sort toggle-->
-                <ToggleButton DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
+                <ToggleButton x:Name="ToggleSortDirection" DockPanel.Dock="Right" HorizontalAlignment="Right"
+                              VerticalAlignment="Center"
                               Style="{StaticResource MaterialDesignActionToggleButton}"
                               Background="Transparent" Foreground="Black"
-                              ToolTip="Đảo thứ tự sắp xếp">
+                              ToolTip="Đảo thứ tự sắp xếp"
+                              IsChecked="{Binding IsSortDescending, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <ToggleButton.Content>
                         <materialDesign:PackIcon Kind="SortAscending" Width="20" Height="20" />
                     </ToggleButton.Content>
@@ -211,7 +202,7 @@
                                             <StackPanel Grid.Row="0" Grid.Column="2"
                                                         Width="100" Margin="0 16 0 0">
                                                 <!--Room category-->
-                                                <Button Margin="0 0 8 8" Padding="3" BorderThickness="0">
+                                                <Button Margin="0 0 8 8" Padding="3" BorderThickness="0" cal:Message.Attach="FilterRoomCategoryBy($dataContext)">
                                                     <Button.Background>
                                                         <SolidColorBrush
                                                             Color="{Binding CategoryDisplayColor, Converter={StaticResource NullableColorConverter}}" />
@@ -223,7 +214,7 @@
                                                 </Button>
                                                 <!--Room state-->
                                                 <Button Margin="0 0 8 0" Padding="3"
-                                                        BorderThickness="0">
+                                                        BorderThickness="0" cal:Message.Attach="FilterRoomStateBy($dataContext)">
                                                     <Button.Background>
                                                         <SolidColorBrush
                                                             Color="{Binding State, Converter={StaticResource StateToBackColorConverter}}" />
