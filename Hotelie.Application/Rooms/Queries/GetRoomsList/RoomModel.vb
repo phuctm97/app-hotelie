@@ -7,6 +7,7 @@ Namespace Rooms.Queries.GetRoomsList
 
 		Private _id As String
 		Private _name As String
+		Private _categoryId As String
 		Private _categoryName As String
 		Private _categoryDisplayColor As Color
 		Private _state As Integer
@@ -33,6 +34,15 @@ Namespace Rooms.Queries.GetRoomsList
 				If String.Equals( Value, _name ) Then Return
 				_name = value
 				NotifyOfPropertyChange( Function() Name )
+			End Set
+		End Property
+
+		Property CategoryId As String
+			Get
+				Return _categoryId
+			End Get
+			Set
+				_categoryId = value
 			End Set
 		End Property
 
