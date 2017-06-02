@@ -1,7 +1,7 @@
 ﻿
 Imports Caliburn.Micro
 
-Namespace Leases.Queries
+Namespace Leases.Factories
     Public Class LeaseModel
         Inherits PropertyChangedBase
 

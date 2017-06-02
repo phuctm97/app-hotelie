@@ -102,6 +102,7 @@
   <ItemGroup>
     <Compile Include="Authentication\TestAuthentication.vb" />
     <Compile Include="Leases\Commands\TestLeaseCommand.vb" />
+    <Compile Include="Leases\Factories\TestCreateLeaseFactory.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -121,6 +122,7 @@
     <Compile Include="Query\TestGetRoomCategoriesListQuery.vb" />
     <Compile Include="Query\TestGetRoomsListQuery.vb" />
     <Compile Include="Rooms\Commands\TestRoomCommands.vb" />
+    <Compile Include="Rooms\Factories\TestRoomFactories.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

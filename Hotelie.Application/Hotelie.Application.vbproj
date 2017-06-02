@@ -84,6 +84,9 @@
     <Compile Include="Leases\Commands\RemoveLease\RemoveLeaseCommand.vb" />
     <Compile Include="Leases\Commands\UpdateLease\IUpdateLeaseCommand.vb" />
     <Compile Include="Leases\Commands\UpdateLease\UpdateLeaseCommand.vb" />
+    <Compile Include="Leases\Factories\CreateLeaseFactory.vb" />
+    <Compile Include="Leases\Factories\ICreateLeaseFactory.vb" />
+    <Compile Include="Leases\Factories\LeaseModel.vb" />
     <Compile Include="Leases\Queries\GetLeasesListQuery.vb" />
     <Compile Include="Leases\Queries\IGetLeasesListQuery.vb" />
     <Compile Include="Leases\Queries\LeaseModel.vb" />
@@ -106,6 +109,7 @@
     <Compile Include="Rooms\Commands\RemoveRoom\RemoveRoomCommand.vb" />
     <Compile Include="Rooms\Commands\UpdateRoom\IUpdateRoomCommand.vb" />
     <Compile Include="Rooms\Commands\UpdateRoom\UpdateRoomCommand.vb" />
+    <Compile Include="Rooms\Factories\CreateRoom\CreateRoomFactory.vb" />
     <Compile Include="Rooms\Factories\CreateRoom\ICreateRoomFactory.vb" />
     <Compile Include="Rooms\Factories\CreateRoom\RoomModel.vb" />
     <Compile Include="Rooms\Queries\GetRoomCategoriesList\GetRoomCategoriesList.vb" />
@@ -149,9 +153,7 @@
       <Name>Hotelie.Domain</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Leases\Factories\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
