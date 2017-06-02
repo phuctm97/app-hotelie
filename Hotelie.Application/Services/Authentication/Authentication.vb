@@ -4,6 +4,9 @@ Namespace Services.Authentication
     Public Class Authentication
         Implements IAuthentication
 
+        Public Const AlreadyLoggedInError As String = "Đăng nhập lỗi, Hotelie đang được đăng nhập."
+        Public Const UsernameInvalidError As String = "Tên đăng nhập không tồn tại."
+        Public Const PasswordInvalidError As String = "Mật khẩu không chính xác."
 
         Private ReadOnly _userRepository As IUserRepository
 
@@ -23,20 +26,20 @@ Namespace Services.Authentication
 
             ' Currently logged in
             If (LoggedIn)
-                errorLog.Add("Đăng nhập lỗi, Hotelie đang được đăng nhập với tài khoản: " + LoggedAccount.Username)
+                errorLog.Add(AlreadyLoggedInError)
                 Return errorLog
             End If
 
             ' Username is invalid
             Dim user = _userRepository.Find(Function(p)(p.Id = account.Username)).FirstOrDefault()
             If (IsNothing(user))
-                errorLog.Add("Tên tài khoản không tồn tại.")
+                errorLog.Add(UsernameInvalidError)
                 Return errorLog
             End If
 
             ' Password is invalid
             If (user.Password <> account.Password)
-                errorLog.Add("Sai mật khẩu")
+                errorLog.Add(PasswordInvalidError)
                 Return errorLog
             End If
 

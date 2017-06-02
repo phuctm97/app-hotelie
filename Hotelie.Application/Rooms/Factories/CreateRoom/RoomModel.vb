@@ -1,7 +1,7 @@
 ﻿Imports System.Windows.Media
 Imports Caliburn.Micro
 
-Namespace Rooms.Queries.GetRoomsList
+Namespace Rooms.Factories.CreateRoom
 	Public Class RoomModel
 		Inherits PropertyChangedBase
 
