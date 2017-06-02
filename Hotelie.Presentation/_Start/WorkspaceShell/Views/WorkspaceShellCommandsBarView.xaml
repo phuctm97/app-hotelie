@@ -1,0 +1,78 @@
+﻿<UserControl x:Class="Start.WorkspaceShell.Views.WorkspaceShellCommandsBarView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Hotelie.Presentation"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             HorizontalAlignment="Right"
+             VerticalAlignment="Center"
+             HorizontalContentAlignment="Right"
+             VerticalContentAlignment="Center"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="100" d:DesignWidth="1024">
+    <materialDesign:TransitioningContent OpeningEffect="{materialDesign:TransitionEffect Kind=SlideInFromLeft}">
+        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center"
+                Orientation="Horizontal">
+            <!--User commands-->
+            <materialDesign:PopupBox DockPanel.Dock="Right"
+                                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                                 Margin="56 0 8 0"
+                                 PlacementMode="BottomAndAlignRightEdges"
+                                 StaysOpen="False">
+                <materialDesign:PopupBox.ToggleContent>
+                    <materialDesign:Card Background="{DynamicResource SecondaryAccentBrush}"
+                                     Foreground="{DynamicResource SecondaryAccentForegroundBrush}"
+                                     MinWidth="100" MaxWidth="200" Height="32">
+                        <!--TODO: Bind username-->
+                        <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="15"
+                               FontWeight="Medium"
+                               Foreground="{DynamicResource SecondaryAccentForegroundBrush}"
+                               Margin="8 0 8 0"
+                               Text="username" />
+                    </materialDesign:Card>
+                </materialDesign:PopupBox.ToggleContent>
+
+                <StackPanel Orientation="Vertical">
+                    <!--Account detail-->
+                    <Button>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="AccountCardDetails"
+                                                 VerticalAlignment="Center"
+                                                 Width="24" Height="24"
+                                                 Margin="0 0 8 0" />
+                            <TextBlock Text="Thông tin tài khoản" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+
+                    <!--Settings-->
+                    <Button>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Settings"
+                                                 VerticalAlignment="Center"
+                                                 Width="24" Height="24"
+                                                 Margin="0 0 8 0" />
+                            <TextBlock Text="Thay đổi quy định" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+
+                    <!--Log out-->
+                    <Button>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Logout"
+                                                 VerticalAlignment="Center"
+                                                 Width="24" Height="24"
+                                                 Margin="0 0 8 0" />
+                            <TextBlock Text="Đăng xuất" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+
+                </StackPanel>
+            </materialDesign:PopupBox>
+        </StackPanel>
+    </materialDesign:TransitioningContent>
+</UserControl>

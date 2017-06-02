@@ -6,7 +6,7 @@ Namespace Start.WorkspaceShell.ViewModels
 		Inherits Conductor(Of IWorkspace).Collection.OneActive
 		Implements IShell
 
-		Private _activeWorkspace As IWorkspace
+		' Parent window
 
 		Public Property ParentWindow As IMainWindow Implements IChild(Of IMainWindow).Parent
 			Get
@@ -17,60 +17,18 @@ Namespace Start.WorkspaceShell.ViewModels
 			End Set
 		End Property
 
-		Public Property ActiveWorkspace As IWorkspace
-			Get
-				Return _activeWorkspace
-			End Get
-			Set
-				If Equals( Value, _activeWorkspace ) Then Return
-
-				_activeWorkspace = value
-				NotifyOfPropertyChange( Function() ActiveWorkspace )
-			End Set
-		End Property
-
-		Public ReadOnly Property Workspaces As IObservableCollection(Of IWorkspace)
-			Get
-				Return Items
-			End Get
-		End Property
-
+		' Initialization
 		Public Sub New()
-			DisplayName = "Workspace"
+			CommandsBar = New WorkspaceShellCommandsBarViewModel( Me )
 		End Sub
 
 		Protected Overrides Sub OnInitialize()
 			MyBase.OnInitialize()
 
-			Items.Add( IoC.Get(Of IWorkspace)( "rooms-workspace" ) )
-			Items.Add( IoC.Get(Of IWorkspace)( "leases-workspace" ) )
+			DisplayName = "Workspace"
 		End Sub
 
-		Protected Overrides Sub OnViewLoaded( view As Object )
-			MyBase.OnViewLoaded( view )
-
-			ActivateItem( Items.FirstOrDefault() )
-		End Sub
-
-		Protected Overrides Sub ChangeActiveItem( newItem As IWorkspace,
-		                                          closePrevious As Boolean )
-			MyBase.ChangeActiveItem( newItem, closePrevious )
-
-			ActiveWorkspace = newItem
-		End Sub
-
-		' Window commands
-		Public Sub ToggleWindowZoomState()
-			ParentWindow.ToggleZoomState()
-		End Sub
-
-		Public Sub HideWindow()
-			ParentWindow.Hide()
-		End Sub
-
-		Public Sub CloseWindow()
-			ParentWindow.Close()
-		End Sub
+		' Display properties
 
 		Public ReadOnly Property CommandsBar As IWindowCommandsBar Implements IShell.CommandsBar
 	End Class

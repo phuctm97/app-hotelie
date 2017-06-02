@@ -34,9 +34,11 @@ Namespace Start.LoginShell.ViewModels
 			_authentication = authentication
 
 			CommandsBar = New LoginShellCommandsBarViewModel( Me )
+
 			Notification = New Notification()
 
 			LoginForm = New LoginFormViewModel()
+
 			SettingsForm = New SettingsFormViewModel()
 		End Sub
 
@@ -89,6 +91,7 @@ Namespace Start.LoginShell.ViewModels
 				NotifyOfPropertyChange( Function() DisplayCode )
 			End Set
 		End Property
+
 		' Login
 
 		Public Sub TryLogin( username As String,

@@ -11,52 +11,53 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              d:DesignHeight="200" d:DesignWidth="600">
-    <materialDesign:Transitioner HorizontalAlignment="Right" VerticalAlignment="Center"
-                                 SelectedIndex="{Binding Path=Parent.DisplayCode, Mode=TwoWay}">
-        <!--Settings-->
-        <materialDesign:TransitionerSlide HorizontalAlignment="Right" VerticalAlignment="Center"
-                                          OpeningEffect="{materialDesign:TransitionEffect Kind=SlideInFromLeft}">
-            <materialDesign:TransitionerSlide.BackwardWipe>
-                <materialDesign:CircleWipe />
-            </materialDesign:TransitionerSlide.BackwardWipe>
+    <materialDesign:TransitioningContent OpeningEffect="{materialDesign:TransitionEffect Kind=SlideInFromLeft}">
+        <materialDesign:Transitioner HorizontalAlignment="Right" VerticalAlignment="Center"
+                                     SelectedIndex="{Binding Path=Parent.DisplayCode, Mode=TwoWay}">
+            <!--Settings-->
+            <materialDesign:TransitionerSlide HorizontalAlignment="Right" VerticalAlignment="Center"
+                                              OpeningEffect="{materialDesign:TransitionEffect Kind=SlideInFromLeft}">
+                <materialDesign:TransitionerSlide.BackwardWipe>
+                    <materialDesign:CircleWipe />
+                </materialDesign:TransitionerSlide.BackwardWipe>
 
-            <StackPanel Orientation="Horizontal">
-                <!--Description settings-->
-                <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right"
-                           VerticalAlignment="Center"
-                           Style="{DynamicResource MaterialDesignBody1TextBlock}"
-                           Foreground="{DynamicResource PrimaryHueLightBrush}"
-                           Text="Gặp sự cố kết nối?" />
-                <!--Button settings-->
-                <Button VerticalAlignment="Center"
-                        Margin="8 0 8 0"
-                        Content="Thiết lập kết nối"
-                        Command="{x:Static materialDesign:Transitioner.MoveNextCommand}" />
-            </StackPanel>
-        </materialDesign:TransitionerSlide>
+                <StackPanel Orientation="Horizontal">
+                    <!--Description settings-->
+                    <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource MaterialDesignBody1TextBlock}"
+                               Foreground="{DynamicResource PrimaryHueLightBrush}"
+                               Text="Gặp sự cố kết nối?" />
+                    <!--Button settings-->
+                    <Button VerticalAlignment="Center"
+                            Margin="8 0 8 0"
+                            Content="Thiết lập kết nối"
+                            Command="{x:Static materialDesign:Transitioner.MoveNextCommand}" />
+                </StackPanel>
+            </materialDesign:TransitionerSlide>
 
-        <!--Login-->
-        <materialDesign:TransitionerSlide HorizontalAlignment="Right" VerticalAlignment="Center"
-                                          OpeningEffect="{materialDesign:TransitionEffect Kind=SlideInFromLeft}">
-            <materialDesign:TransitionerSlide.BackwardWipe>
-                <materialDesign:CircleWipe />
-            </materialDesign:TransitionerSlide.BackwardWipe>
+            <!--Login-->
+            <materialDesign:TransitionerSlide HorizontalAlignment="Right" VerticalAlignment="Center"
+                                              OpeningEffect="{materialDesign:TransitionEffect Kind=SlideInFromLeft}">
+                <materialDesign:TransitionerSlide.BackwardWipe>
+                    <materialDesign:CircleWipe />
+                </materialDesign:TransitionerSlide.BackwardWipe>
 
-            <StackPanel Orientation="Horizontal">
-                <!--Description login-->
-                <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right"
-                           VerticalAlignment="Center"
-                           Style="{DynamicResource MaterialDesignBody1TextBlock}"
-                           Foreground="{DynamicResource PrimaryHueLightBrush}"
-                           Text="Kết nối thành công?" />
-                <!--Button login-->
-                <Button VerticalAlignment="Center"
-                        Style="{DynamicResource MaterialDesignRaisedAccentButton}"
-                        Content="Đăng nhập"
-                        Margin="8 0 8 0"
-                        Command="{x:Static materialDesign:Transitioner.MovePreviousCommand}" />
-            </StackPanel>
-        </materialDesign:TransitionerSlide>
-    </materialDesign:Transitioner>
-
+                <StackPanel Orientation="Horizontal">
+                    <!--Description login-->
+                    <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource MaterialDesignBody1TextBlock}"
+                               Foreground="{DynamicResource PrimaryHueLightBrush}"
+                               Text="Kết nối thành công?" />
+                    <!--Button login-->
+                    <Button VerticalAlignment="Center"
+                            Style="{DynamicResource MaterialDesignRaisedAccentButton}"
+                            Content="Đăng nhập"
+                            Margin="8 0 8 0"
+                            Command="{x:Static materialDesign:Transitioner.MovePreviousCommand}" />
+                </StackPanel>
+            </materialDesign:TransitionerSlide>
+        </materialDesign:Transitioner>
+    </materialDesign:TransitioningContent>
 </UserControl>

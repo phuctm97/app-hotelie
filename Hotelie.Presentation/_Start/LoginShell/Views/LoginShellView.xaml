@@ -29,61 +29,63 @@
     </UserControl.Resources>
 
     <!--Content-->
-    <materialDesign:DrawerHost
-        IsTopDrawerOpen="{Binding Path=Notification.Type, Converter={StaticResource NotificationTypeToBooleanConverter}}">
+    <materialDesign:TransitioningContent OpeningEffect="{materialDesign:TransitionEffect Kind=SlideInFromBottom}">
+        <materialDesign:DrawerHost
+            IsTopDrawerOpen="{Binding Path=Notification.Type, Converter={StaticResource NotificationTypeToBooleanConverter}}">
 
-        <!--Notification-->
-        <materialDesign:DrawerHost.TopDrawerContent>
-            <DockPanel Margin="16 24 16 24">
+            <!--Notification-->
+            <materialDesign:DrawerHost.TopDrawerContent>
+                <DockPanel Margin="16 24 16 24">
 
-                <!--Icon-->
-                <Border DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
-                        Width="32" Height="32"
-                        Margin="0 0 16 0"
-                        CornerRadius="16">
-                    <Border.Background>
-                        <SolidColorBrush
-                            Color="{Binding Path=Notification.Type, Converter={StaticResource NotificationTypeToColorConverter}}" />
-                    </Border.Background>
-                    <materialDesign:PackIcon HorizontalAlignment="Center" VerticalAlignment="Center"
-                                             Width="24" Height="24"
-                                             Foreground="White"
-                                             Kind="{Binding Path=Notification.Type, Converter={StaticResource NotificationTypeToPackIconKindConverter}}" />
-                </Border>
+                    <!--Icon-->
+                    <Border DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
+                            Width="32" Height="32"
+                            Margin="0 0 16 0"
+                            CornerRadius="16">
+                        <Border.Background>
+                            <SolidColorBrush
+                                Color="{Binding Path=Notification.Type, Converter={StaticResource NotificationTypeToColorConverter}}" />
+                        </Border.Background>
+                        <materialDesign:PackIcon HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                 Width="24" Height="24"
+                                                 Foreground="White"
+                                                 Kind="{Binding Path=Notification.Type, Converter={StaticResource NotificationTypeToPackIconKindConverter}}" />
+                    </Border>
 
-                <!--Display-->
-                <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
-                           Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
-                           TextWrapping="Wrap"
-                           Text="{Binding Path=Notification.Text}" />
-            </DockPanel>
-        </materialDesign:DrawerHost.TopDrawerContent>
+                    <!--Display-->
+                    <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
+                               Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
+                               TextWrapping="Wrap"
+                               Text="{Binding Path=Notification.Text}" />
+                </DockPanel>
+            </materialDesign:DrawerHost.TopDrawerContent>
 
-        <materialDesign:Transitioner SelectedIndex="{Binding DisplayCode}">
-            <!--Login form-->
-            <materialDesign:TransitionerSlide>
-                <materialDesign:TransitionerSlide.BackwardWipe>
-                    <materialDesign:SlideOutWipe />
-                </materialDesign:TransitionerSlide.BackwardWipe>
-                <materialDesign:TransitionerSlide.ForwardWipe>
-                    <materialDesign:SlideOutWipe />
-                </materialDesign:TransitionerSlide.ForwardWipe>
+            <materialDesign:Transitioner SelectedIndex="{Binding DisplayCode}">
+                <!--Login form-->
+                <materialDesign:TransitionerSlide>
+                    <materialDesign:TransitionerSlide.BackwardWipe>
+                        <materialDesign:SlideOutWipe />
+                    </materialDesign:TransitionerSlide.BackwardWipe>
+                    <materialDesign:TransitionerSlide.ForwardWipe>
+                        <materialDesign:SlideOutWipe />
+                    </materialDesign:TransitionerSlide.ForwardWipe>
 
-                <ContentControl cal:View.Model="{Binding LoginForm}" />
-            </materialDesign:TransitionerSlide>
+                    <ContentControl cal:View.Model="{Binding LoginForm}" />
+                </materialDesign:TransitionerSlide>
 
-            <!--Connection settings form-->
-            <materialDesign:TransitionerSlide>
-                <materialDesign:TransitionerSlide.BackwardWipe>
-                    <materialDesign:SlideOutWipe />
-                </materialDesign:TransitionerSlide.BackwardWipe>
-                <materialDesign:TransitionerSlide.ForwardWipe>
-                    <materialDesign:SlideOutWipe />
-                </materialDesign:TransitionerSlide.ForwardWipe>
+                <!--Connection settings form-->
+                <materialDesign:TransitionerSlide>
+                    <materialDesign:TransitionerSlide.BackwardWipe>
+                        <materialDesign:SlideOutWipe />
+                    </materialDesign:TransitionerSlide.BackwardWipe>
+                    <materialDesign:TransitionerSlide.ForwardWipe>
+                        <materialDesign:SlideOutWipe />
+                    </materialDesign:TransitionerSlide.ForwardWipe>
 
-                <ContentControl cal:View.Model="{Binding SettingsForm}" />
-            </materialDesign:TransitionerSlide>
-        </materialDesign:Transitioner>
+                    <ContentControl cal:View.Model="{Binding SettingsForm}" />
+                </materialDesign:TransitionerSlide>
+            </materialDesign:Transitioner>
 
-    </materialDesign:DrawerHost>
+        </materialDesign:DrawerHost>
+    </materialDesign:TransitioningContent>
 </UserControl>

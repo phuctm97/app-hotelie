@@ -1,4 +1,4 @@
 ﻿Namespace Start.WorkspaceShell.Views
-	Public Class WorkspaceShellView
+	Public Class WorkspaceShellCommandsBarView
 	End Class
 End Namespace
