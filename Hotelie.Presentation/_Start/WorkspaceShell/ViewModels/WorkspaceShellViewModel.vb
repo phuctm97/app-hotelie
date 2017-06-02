@@ -1,10 +1,15 @@
 ﻿Imports Caliburn.Micro
 Imports Hotelie.Presentation.Common
+Imports Hotelie.Presentation.Rooms.ViewModels
 
 Namespace Start.WorkspaceShell.ViewModels
 	Public Class WorkspaceShellViewModel
 		Inherits Conductor(Of IWorkspace).Collection.OneActive
 		Implements IShell
+
+		' Workspaces backing fields
+
+		Private _activeWorkspace As IWorkspace
 
 		' Parent window
 
@@ -17,15 +22,39 @@ Namespace Start.WorkspaceShell.ViewModels
 			End Set
 		End Property
 
+		' Workspaces
+
+		Public Property ActiveWorkspace As IWorkspace
+			Get
+				Return _activeWorkspace
+			End Get
+			Set
+				If Equals( Value, _activeWorkspace ) Then Return
+				_activeWorkspace = value
+				NotifyOfPropertyChange( Function() ActiveWorkspace )
+			End Set
+		End Property
+
+		Protected Overrides Sub ChangeActiveItem( newItem As IWorkspace,
+		                                          closePrevious As Boolean )
+			MyBase.ChangeActiveItem( newItem, closePrevious )
+
+			ActiveWorkspace = ActiveItem
+		End Sub
+
 		' Initialization
 		Public Sub New()
 			CommandsBar = New WorkspaceShellCommandsBarViewModel( Me )
+
+			DisplayName = "Bàn làm việc"
+
+			Items.Add( IoC.Get(Of RoomsWorkspaceViewModel)() )
 		End Sub
 
 		Protected Overrides Sub OnInitialize()
 			MyBase.OnInitialize()
 
-			DisplayName = "Workspace"
+			ActivateItem(Items.FirstOrDefault())
 		End Sub
 
 		' Display properties

@@ -115,8 +115,8 @@
 
                 <!--Commands bar-->
                 <ContentControl x:Name="CommandsBar"
-                                DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
-                                HorizontalContentAlignment="Right" VerticalContentAlignment="Center"
+                                DockPanel.Dock="Right" HorizontalAlignment="Right"
+                                HorizontalContentAlignment="Right"
                                 cal:View.Model="{Binding Path=Shell.CommandsBar}" />
             </DockPanel>
         </materialDesign:ColorZone>

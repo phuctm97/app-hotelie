@@ -6,9 +6,7 @@ Namespace Rooms.ViewModels
 		Inherits Screen
 		Implements IWorkspace
 
-		Protected Overrides Sub OnInitialize()
-			MyBase.OnInitialize()
-
+		Public Sub New()
 			DisplayName = "Danh sách phòng"
 		End Sub
 	End Class

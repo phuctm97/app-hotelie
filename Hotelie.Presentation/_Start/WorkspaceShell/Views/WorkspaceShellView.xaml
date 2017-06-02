@@ -22,8 +22,5 @@
 
     <materialDesign:TransitioningContent
         OpeningEffect="{materialDesign:TransitionEffect Kind=SlideInFromBottom}">
-        <materialDesign:Card Margin="24">
-            <TextBlock Text="Workspace" FontSize="20" Margin="24" />
-        </materialDesign:Card>
     </materialDesign:TransitioningContent>
 </UserControl>

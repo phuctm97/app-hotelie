@@ -40,13 +40,11 @@ Namespace Start.LoginShell.ViewModels
 			LoginForm = New LoginFormViewModel()
 
 			SettingsForm = New SettingsFormViewModel()
-		End Sub
 
-		Protected Overrides Sub OnInitialize()
-			MyBase.OnInitialize()
+			DisplayName = "Đăng nhập"
 
-			DisplayName = "Login"
 			DisplayCode = 0
+
 			HideNotification()
 		End Sub
 

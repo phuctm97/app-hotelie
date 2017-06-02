@@ -13,9 +13,7 @@ Namespace Start.MainWindow.ViewModels
 		Private _height As Double
 		Private _windowState As WindowState
 
-		Protected Overrides Sub OnInitialize()
-			MyBase.OnInitialize()
-
+		Public Sub New()
 			DisplayName = "Hotelie"
 
 			Title = "Hotelie"

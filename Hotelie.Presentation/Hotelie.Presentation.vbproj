@@ -190,6 +190,7 @@
     <Compile Include="_Start\MainWindow\Views\MainWindowView.xaml.vb">
       <DependentUpon>MainWindowView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="_Start\WorkspaceShell\Converters\StringToUpperConverter.vb" />
     <Compile Include="_Start\WorkspaceShell\ViewModels\WorkspaceShellCommandsBarViewModel.vb" />
     <Compile Include="_Start\WorkspaceShell\ViewModels\WorkspaceShellViewModel.vb" />
     <Compile Include="_Start\WorkspaceShell\Views\WorkspaceShellCommandsBarView.xaml.vb">
