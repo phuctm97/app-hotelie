@@ -32,15 +32,15 @@
     </Window.Resources>
 
     <!--Shell selector-->
-    <!--<i:Interaction.Triggers>
+    <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <cal:ActionMessage MethodName="SwitchShell">
                 <cal:Parameter Value="login-shell" />
             </cal:ActionMessage>
         </i:EventTrigger>
-    </i:Interaction.Triggers>-->
+    </i:Interaction.Triggers>
 
-    <!--Main content-->
+    <!--Content-->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

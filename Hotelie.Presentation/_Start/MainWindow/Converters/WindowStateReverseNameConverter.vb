@@ -17,10 +17,7 @@ Namespace Start.MainWindow.Converters
 		                             targetType As Type,
 		                             parameter As Object,
 		                             culture As CultureInfo ) As Object Implements IValueConverter.ConvertBack
-			Dim name = CType(value, String)
-
-			If name = "Thu nhỏ" Then Return WindowState.Maximized
-			Return WindowState.Normal
+			Throw New NotImplementedException()
 		End Function
 	End Class
 End Namespace

@@ -18,31 +18,6 @@ Namespace Start.LoginShell.Views
 			InitEffectParameters()
 		End Sub
 
-		' Window command
-		Private Sub OnTitleBarLeftMouseDown( sender As Object,
-		                                     e As MouseButtonEventArgs )
-			If e.GetPosition( TitleBar ).Y > TitleBar.ActualHeight Then Return
-			If ButtonSettings.Visibility = Visibility.Visible And
-			   e.GetPosition( ButtonSettings ).X > 0 Then Return
-			If ButtonLogin.Visibility = Visibility.Visible And
-			   e.GetPosition( ButtonLogin ).X > 0 Then Return
-
-			Windows.Application.Current.MainWindow.DragMove()
-		End Sub
-
-		Private Sub OnTitleBarMouseDoubleClick( sender As Object,
-		                                        e As MouseButtonEventArgs )
-			If Not e.ChangedButton = MouseButton.Left Then Return
-			If e.GetPosition( TitleBar ).Y > TitleBar.ActualHeight Then Return
-			If ButtonSettings.Visibility = Visibility.Visible And
-			   e.GetPosition( ButtonSettings ).X > 0 Then Return
-			If ButtonLogin.Visibility = Visibility.Visible And
-			   e.GetPosition( ButtonLogin ).X > 0 Then Return
-
-			' send click event to button toggle zoom state
-			ButtonToggleWindowZoomState.RaiseEvent( New RoutedEventArgs( Primitives.ButtonBase.ClickEvent ) )
-		End Sub
-
 		' Textbox effects
 
 		Private Sub InitEffectParameters()

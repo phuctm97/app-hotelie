@@ -6,6 +6,8 @@ Namespace Start.MainWindow.ViewModels
 		Inherits Conductor(Of IShell)
 		Implements IMainWindow
 
+		' Window property backing fields
+
 		Private _title As String
 		Private _width As Double
 		Private _height As Double

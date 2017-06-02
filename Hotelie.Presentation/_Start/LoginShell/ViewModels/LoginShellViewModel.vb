@@ -8,11 +8,17 @@ Namespace Start.LoginShell.ViewModels
 		Inherits Screen
 		Implements IShell
 
+		' Dependencies
+
 		Private ReadOnly _authentication As IAuthentication
+
+		' Display property backing fields
 
 		Private _isLoginFormVisible As Boolean
 		Private _isSettingsFormVisible As Boolean
 		Private _notification As Notification
+
+		' Parent window
 
 		Public Property ParentWindow As IMainWindow Implements IChild(Of IMainWindow).Parent
 			Get
@@ -23,22 +29,25 @@ Namespace Start.LoginShell.ViewModels
 			End Set
 		End Property
 
+		' Initialization
+
 		Public Sub New( authentication As IAuthentication )
 			_authentication = authentication
-
-			InitializeComponents()
 		End Sub
 
-		Private Sub InitializeComponents()
+		Protected Overrides Sub OnInitialize()
+			MyBase.OnInitialize()
+
 			DisplayName = "Login"
 
 			IsLoginFormVisible = True
 			IsSettingsFormVisible = False
 
-			Notification = New Notification With {.Text=String.Empty, .Type=NotificationType.None}			
+			Notification = New Notification With {.Text=String.Empty, .Type=NotificationType.None}
 		End Sub
 
-		' Notification
+		' Display properties
+
 		Public Property Notification As Notification
 			Get
 				Return _notification
@@ -51,7 +60,6 @@ Namespace Start.LoginShell.ViewModels
 			End Set
 		End Property
 
-		' Forms display
 		Public Property IsLoginFormVisible As Boolean
 			Get
 				Return _isLoginFormVisible
@@ -74,25 +82,15 @@ Namespace Start.LoginShell.ViewModels
 			End Set
 		End Property
 
+		' Display actions
+
 		Public Sub ToggleDisplayForm()
 			IsLoginFormVisible = Not IsLoginFormVisible
 			IsSettingsFormVisible = Not IsSettingsFormVisible
 		End Sub
 
-		' Window commands
-		Public Sub ToggleWindowZoomState()
-			ParentWindow.ToggleZoomState()
-		End Sub
-
-		Public Sub HideWindow()
-			ParentWindow.Hide()
-		End Sub
-
-		Public Sub CloseWindow()
-			ParentWindow.Close()
-		End Sub
-
 		' Login
+
 		Public Sub TryLogin( username As String,
 		                     password As String )
 
@@ -115,7 +113,7 @@ Namespace Start.LoginShell.ViewModels
 
 			If String.IsNullOrEmpty( err )
 				' success
-				ParentWindow.SwitchShell("workspace-shell")
+				ParentWindow.SwitchShell( "workspace-shell" )
 			Else
 				' fail
 				Notification.Type = NotificationType.Error
