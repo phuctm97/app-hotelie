@@ -110,6 +110,7 @@
     <Compile Include="Services\Authentication\Account.vb" />
     <Compile Include="Services\Authentication\Authentication.vb" />
     <Compile Include="Services\Authentication\IAuthentication.vb" />
+    <Compile Include="Services\Persistence\ILeaseRepository.vb" />
     <Compile Include="Services\Persistence\IRepository.vb" />
     <Compile Include="Services\Persistence\IRoomRepository.vb" />
     <Compile Include="Services\Persistence\IUnitOfWork.vb" />
