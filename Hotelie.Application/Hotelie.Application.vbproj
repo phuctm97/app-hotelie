@@ -96,7 +96,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Rooms\Commands\RemoveRoom\IRemoveRoomCommand.vb" />
+    <Compile Include="Rooms\Commands\RemoveRoom\RemoveRoomCommand.vb" />
     <Compile Include="Rooms\Commands\UpdateRoom\IUpdateRoomCommand.vb" />
+    <Compile Include="Rooms\Commands\UpdateRoom\UpdateRoomCommand.vb" />
     <Compile Include="Rooms\Factories\CreateRoom\ICreateRoomFactory.vb" />
     <Compile Include="Rooms\Factories\CreateRoom\RoomModel.vb" />
     <Compile Include="Rooms\Queries\GetRoomCategoriesList\GetRoomCategoriesList.vb" />

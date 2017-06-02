@@ -118,6 +118,7 @@
     </Compile>
     <Compile Include="Query\TestGetRoomCategoriesListQuery.vb" />
     <Compile Include="Query\TestGetRoomsListQuery.vb" />
+    <Compile Include="Rooms\Commands\TestRoomCommands.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
