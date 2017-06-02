@@ -1,5 +1,7 @@
 ﻿Imports Caliburn.Micro
+Imports Hotelie.Presentation.Bills.ViewModels
 Imports Hotelie.Presentation.Common
+Imports Hotelie.Presentation.Leases.ViewModels
 Imports Hotelie.Presentation.Rooms.ViewModels
 
 Namespace Start.WorkspaceShell.ViewModels
@@ -49,12 +51,14 @@ Namespace Start.WorkspaceShell.ViewModels
 			DisplayName = "Bàn làm việc"
 
 			Items.Add( IoC.Get(Of RoomsWorkspaceViewModel)() )
+			Items.Add( IoC.Get(Of LeasesWorkspaceViewModel)() )
+			Items.Add( IoC.Get(Of BillsWorkspaceViewModel)() )
 		End Sub
 
 		Protected Overrides Sub OnInitialize()
 			MyBase.OnInitialize()
 
-			ActivateItem(Items.FirstOrDefault())
+			ActivateItem( Items.FirstOrDefault() )
 		End Sub
 
 		' Display properties

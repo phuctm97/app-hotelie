@@ -27,6 +27,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <converters:WindowStateReverseNameConverter x:Key="WindowStateReverseNameConverter" />
+            <converters:WindowStateReverseIconKindConverter x:Key="WindowStateReverseIconKindConverter" />
             <converters:StringToUpperConverter x:Key="StringToUpperConverter" />
         </ResourceDictionary>
     </Window.Resources>
@@ -35,7 +36,7 @@
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <cal:ActionMessage MethodName="SwitchShell">
-                <cal:Parameter Value="login-shell" />
+                <cal:Parameter Value="workspace-shell" />
             </cal:ActionMessage>
         </i:EventTrigger>
     </i:Interaction.Triggers>
@@ -59,7 +60,7 @@
                 <!--Icon-->
                 <Image DockPanel.Dock="Left" HorizontalAlignment="Left"
                        Margin="16 0 0 0"
-                       Source="/_Resources/Icons/icon.png" Height="58" />
+                       Source="/Resources/Icons/icon.png" Height="58" />
 
                 <!--Title-->
                 <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
@@ -81,7 +82,7 @@
                                 <materialDesign:PackIcon VerticalAlignment="Center"
                                                          Width="24" Height="24"
                                                          Margin="0 0 8 0"
-                                                         Kind="WindowMaximize" />
+                                                         Kind="{Binding WindowState, Converter={StaticResource WindowStateReverseIconKindConverter}}" />
                                 <TextBlock VerticalAlignment="Center"
                                            Text="{Binding WindowState, Converter={StaticResource WindowStateReverseNameConverter}}" />
                             </StackPanel>

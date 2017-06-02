@@ -48,7 +48,7 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>_Resources\Icons\icon.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Icons\icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
@@ -126,6 +126,10 @@
       <DependentUpon>Application.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Bills\ViewModels\BillsWorkspaceViewModel.vb" />
+    <Compile Include="Bills\Views\BillsWorkspaceView.xaml.vb">
+      <DependentUpon>BillsWorkspaceView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Common\IMainWindow.vb" />
     <Compile Include="Common\IShell.vb" />
     <Compile Include="Common\IWindowCommandsBar.vb" />
@@ -161,42 +165,43 @@
     <Compile Include="Rooms\Views\RoomsWorkspaceViewBackup.xaml.vb">
       <DependentUpon>RoomsWorkspaceViewBackup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="_Start\AppBootstrapper.vb" />
-    <Compile Include="_Start\LoginShell\Converters\BooleanToVisibilityConverter.vb" />
-    <Compile Include="_Start\LoginShell\Converters\NotificationTypeToBooleanConverter.vb" />
-    <Compile Include="_Start\LoginShell\Converters\NotificationTypeToColorConverter.vb" />
-    <Compile Include="_Start\LoginShell\Converters\NotificationTypeToPackIconKindConverter.vb" />
-    <Compile Include="_Start\LoginShell\Converters\WindowStateReverseNameConverter.vb" />
-    <Compile Include="_Start\LoginShell\Models\Notification.vb" />
-    <Compile Include="_Start\LoginShell\ViewModels\LoginFormViewModel.vb" />
-    <Compile Include="_Start\LoginShell\ViewModels\LoginShellCommandsBarViewModel.vb" />
-    <Compile Include="_Start\LoginShell\ViewModels\LoginShellViewModel.vb" />
-    <Compile Include="_Start\LoginShell\ViewModels\SettingsFormViewModel.vb" />
-    <Compile Include="_Start\LoginShell\Views\LoginFormView.xaml.vb">
+    <Compile Include="Start\AppBootstrapper.vb" />
+    <Compile Include="Start\LoginShell\Converters\BooleanToVisibilityConverter.vb" />
+    <Compile Include="Start\LoginShell\Converters\NotificationTypeToBooleanConverter.vb" />
+    <Compile Include="Start\LoginShell\Converters\NotificationTypeToColorConverter.vb" />
+    <Compile Include="Start\LoginShell\Converters\NotificationTypeToPackIconKindConverter.vb" />
+    <Compile Include="Start\LoginShell\Converters\WindowStateReverseNameConverter.vb" />
+    <Compile Include="Start\LoginShell\Models\Notification.vb" />
+    <Compile Include="Start\LoginShell\ViewModels\LoginFormViewModel.vb" />
+    <Compile Include="Start\LoginShell\ViewModels\LoginShellCommandsBarViewModel.vb" />
+    <Compile Include="Start\LoginShell\ViewModels\LoginShellViewModel.vb" />
+    <Compile Include="Start\LoginShell\ViewModels\SettingsFormViewModel.vb" />
+    <Compile Include="Start\LoginShell\Views\LoginFormView.xaml.vb">
       <DependentUpon>LoginFormView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="_Start\LoginShell\Views\LoginShellCommandsBarView.xaml.vb">
+    <Compile Include="Start\LoginShell\Views\LoginShellCommandsBarView.xaml.vb">
       <DependentUpon>LoginShellCommandsBarView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="_Start\LoginShell\Views\LoginShellView.xaml.vb">
+    <Compile Include="Start\LoginShell\Views\LoginShellView.xaml.vb">
       <DependentUpon>LoginShellView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="_Start\LoginShell\Views\SettingsFormView.xaml.vb">
+    <Compile Include="Start\LoginShell\Views\SettingsFormView.xaml.vb">
       <DependentUpon>SettingsFormView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="_Start\MainWindow\Converters\StringToUpperConverter.vb" />
-    <Compile Include="_Start\MainWindow\Converters\WindowStateReverseNameConverter.vb" />
-    <Compile Include="_Start\MainWindow\ViewModels\MainWindowViewModel.vb" />
-    <Compile Include="_Start\MainWindow\Views\MainWindowView.xaml.vb">
+    <Compile Include="Start\MainWindow\Converters\StringToUpperConverter.vb" />
+    <Compile Include="Start\MainWindow\Converters\WindowStateReverseIconKindConverter.vb" />
+    <Compile Include="Start\MainWindow\Converters\WindowStateReverseNameConverter.vb" />
+    <Compile Include="Start\MainWindow\ViewModels\MainWindowViewModel.vb" />
+    <Compile Include="Start\MainWindow\Views\MainWindowView.xaml.vb">
       <DependentUpon>MainWindowView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="_Start\WorkspaceShell\Converters\StringToUpperConverter.vb" />
-    <Compile Include="_Start\WorkspaceShell\ViewModels\WorkspaceShellCommandsBarViewModel.vb" />
-    <Compile Include="_Start\WorkspaceShell\ViewModels\WorkspaceShellViewModel.vb" />
-    <Compile Include="_Start\WorkspaceShell\Views\WorkspaceShellCommandsBarView.xaml.vb">
+    <Compile Include="Start\WorkspaceShell\Converters\StringToUpperConverter.vb" />
+    <Compile Include="Start\WorkspaceShell\ViewModels\WorkspaceShellCommandsBarViewModel.vb" />
+    <Compile Include="Start\WorkspaceShell\ViewModels\WorkspaceShellViewModel.vb" />
+    <Compile Include="Start\WorkspaceShell\Views\WorkspaceShellCommandsBarView.xaml.vb">
       <DependentUpon>WorkspaceShellCommandsBarView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="_Start\WorkspaceShell\Views\WorkspaceShellView.xaml.vb">
+    <Compile Include="Start\WorkspaceShell\Views\WorkspaceShellView.xaml.vb">
       <DependentUpon>WorkspaceShellView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -254,6 +259,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Bills\Views\BillsWorkspaceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Leases\Views\LeasesWorkspaceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -278,31 +287,31 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="_Start\LoginShell\Views\LoginFormView.xaml">
+    <Page Include="Start\LoginShell\Views\LoginFormView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="_Start\LoginShell\Views\LoginShellCommandsBarView.xaml">
+    <Page Include="Start\LoginShell\Views\LoginShellCommandsBarView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="_Start\LoginShell\Views\LoginShellView.xaml">
+    <Page Include="Start\LoginShell\Views\LoginShellView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="_Start\LoginShell\Views\SettingsFormView.xaml">
+    <Page Include="Start\LoginShell\Views\SettingsFormView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="_Start\MainWindow\Views\MainWindowView.xaml">
+    <Page Include="Start\MainWindow\Views\MainWindowView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="_Start\WorkspaceShell\Views\WorkspaceShellCommandsBarView.xaml">
+    <Page Include="Start\WorkspaceShell\Views\WorkspaceShellCommandsBarView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="_Start\WorkspaceShell\Views\WorkspaceShellView.xaml">
+    <Page Include="Start\WorkspaceShell\Views\WorkspaceShellView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -318,8 +327,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="_Resources\Icons\icon.ico" />
-    <Resource Include="_Resources\Icons\icon.png" />
+    <Resource Include="Resources\Icons\icon.ico" />
+    <Resource Include="Resources\Icons\icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

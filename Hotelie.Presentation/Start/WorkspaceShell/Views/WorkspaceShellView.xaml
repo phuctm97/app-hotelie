@@ -22,5 +22,6 @@
 
     <materialDesign:TransitioningContent
         OpeningEffect="{materialDesign:TransitionEffect Kind=SlideInFromBottom}">
+        <ContentControl cal:View.Model="{Binding ActiveWorkspace}" />
     </materialDesign:TransitioningContent>
 </UserControl>
