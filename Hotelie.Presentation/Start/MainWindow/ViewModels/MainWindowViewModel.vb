@@ -117,9 +117,18 @@ Namespace Start.MainWindow.ViewModels
 		End Sub
 
 		Public Sub Close() Implements IMainWindow.Close
-			' TODO: check shell can close
+			If IsNothing( Shell )
+				OnClosing( True )
+			Else
+				Shell.CanClose( AddressOf OnClosing )
+			End If
+		End Sub
 
-			Windows.Application.Current.MainWindow.Close()
+		Private Sub OnClosing( canClose As Boolean )
+			If Not canClose Then Return
+
+			DeactivateItem( Shell, True )
+			TryClose( True )
 		End Sub
 	End Class
 End Namespace

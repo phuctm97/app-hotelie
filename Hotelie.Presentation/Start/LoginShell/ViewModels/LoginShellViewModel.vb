@@ -118,5 +118,6 @@ Namespace Start.LoginShell.ViewModels
 				ShowNotification( NotificationType.Error, err )
 			End If
 		End Sub
+
 	End Class
 End Namespace
