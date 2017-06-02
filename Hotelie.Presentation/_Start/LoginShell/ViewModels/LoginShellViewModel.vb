@@ -115,7 +115,7 @@ Namespace Start.LoginShell.ViewModels
 
 			If String.IsNullOrEmpty( err )
 				' success
-				ParentWindow.ShowWorkspaceShell()
+				ParentWindow.SwitchShell("workspace-shell")
 			Else
 				' fail
 				Notification.Type = NotificationType.Error

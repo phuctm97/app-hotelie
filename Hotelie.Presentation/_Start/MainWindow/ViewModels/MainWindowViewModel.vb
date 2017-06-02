@@ -11,13 +11,21 @@ Namespace Start.MainWindow.ViewModels
 		Private _height As Double
 		Private _windowState As WindowState
 
-		Public Sub New()
+		Protected Overrides Sub OnInitialize()
+			MyBase.OnInitialize()
+
+			DisplayName = "Hotelie"
+
 			Title = "Hotelie"
 
-			Width = 1000
+			Width = 1024
 
-			Height = 600
+			Height = 700
+
+			WindowState = WindowState.Normal
 		End Sub
+
+		' Window properties
 
 		Public Property Title As String Implements IMainWindow.Title
 			Get
@@ -36,7 +44,7 @@ Namespace Start.MainWindow.ViewModels
 				Return _width
 			End Get
 			Set
-				If Double.Equals( _width, Value ) Then Return
+				If Equals( _width, Value ) Then Return
 
 				_width = value
 				NotifyOfPropertyChange( Function() Width )
@@ -48,7 +56,7 @@ Namespace Start.MainWindow.ViewModels
 				Return _height
 			End Get
 			Set
-				If Double.Equals( _height, Value ) Then Return
+				If Equals( _height, Value ) Then Return
 
 				_height = value
 				NotifyOfPropertyChange( Function() Height )
@@ -67,30 +75,16 @@ Namespace Start.MainWindow.ViewModels
 			End Set
 		End Property
 
+		' Shell
+
 		Public ReadOnly Property Shell As IShell Implements IMainWindow.Shell
 			Get
 				Return ActiveItem
 			End Get
 		End Property
 
-		Public Sub ShowLoginShell() Implements IMainWindow.ShowLoginShell
-			Title = "Hotelie - Login"
-
-			Width = 1000
-
-			Height = 600
-
-			WindowState = WindowState.Normal
-
-			ActivateItem( IoC.Get(Of IShell)( "login-shell" ) )
-		End Sub
-
-		Public Sub ShowWorkspaceShell() Implements IMainWindow.ShowWorkspaceShell
-			Title = "Hotelie - Workspace"
-
-			WindowState = WindowState.Maximized
-
-			ActivateItem( IoC.Get(Of IShell)( "workspace-shell" ) )
+		Public Sub SwitchShell( shellName As String ) Implements IMainWindow.SwitchShell
+			ActivateItem( IoC.Get(Of IShell)( shellName ) )
 		End Sub
 
 		Protected Overrides Sub ChangeActiveItem( newItem As IShell,
@@ -100,12 +94,18 @@ Namespace Start.MainWindow.ViewModels
 			' update view
 			NotifyOfPropertyChange( Function() Shell )
 
-			' update window title
+			' update window display name
 			If Shell Is Nothing
-				Title = "Hotelie"
+				DisplayName = "Hotelie"
 			Else
-				Title = $"Hotelie - {Shell.DisplayName}"
+				DisplayName = $"Hotelie - {Shell.DisplayName}"
 			End If
+		End Sub
+
+		' Window actions
+
+		Public Sub DragMove() Implements IMainWindow.DragMove
+			Windows.Application.Current.MainWindow.DragMove()
 		End Sub
 
 		Public Sub ToggleZoomState() Implements IMainWindow.ToggleZoomState
@@ -117,6 +117,8 @@ Namespace Start.MainWindow.ViewModels
 		End Sub
 
 		Public Sub Close() Implements IMainWindow.Close
+			' TODO: check shell can close
+
 			Windows.Application.Current.MainWindow.Close()
 		End Sub
 	End Class

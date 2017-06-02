@@ -17,11 +17,6 @@ Namespace Start
 			_container.RegisterType(Of IMainWindow, MainWindowViewModel)( New ContainerControlledLifetimeManager() )
 			_container.RegisterType(Of IShell, LoginShellViewModel)( "login-shell", New TransientLifetimeManager() )
 			_container.RegisterType(Of IShell, WorkspaceShellViewModel)( "workspace-shell", New TransientLifetimeManager() )
-
-			' Workspaces
-			_container.RegisterType(Of IWorkspace, RoomsWorkspaceViewModel)( "rooms-workspace", New TransientLifetimeManager() )
-			_container.RegisterType(Of IWorkspace, LeasesWorkspaceViewModel)( "leases-workspace",
-			                                                                  New TransientLifetimeManager() )
 		End Sub
 
 		Protected Overrides Sub OnStartup( sender As Object,

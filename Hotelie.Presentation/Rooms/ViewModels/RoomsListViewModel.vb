@@ -1,15 +1,15 @@
 ﻿Imports Caliburn.Micro
-Imports Hotelie.Presentation.Common
 
 Namespace Rooms.ViewModels
-	Public Class RoomsWorkspaceViewModel
+	Public Class RoomsListViewModel
 		Inherits Screen
-		Implements IWorkspace
+		Implements IScreen
 
 		Protected Overrides Sub OnInitialize()
 			MyBase.OnInitialize()
 
 			DisplayName = "Danh sách phòng"
 		End Sub
+
 	End Class
 End Namespace

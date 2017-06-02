@@ -140,18 +140,25 @@
     <Compile Include="Rooms\Converters\DecimalToCurrencyStringConverter.vb" />
     <Compile Include="Rooms\Converters\StateToBackColorConverter.vb" />
     <Compile Include="Rooms\Converters\StateToStateStringConverter.vb" />
-    <Compile Include="Rooms\Design\RoomsWorkspaceDesignModel.vb" />
     <Compile Include="Rooms\ViewModels\AddRoomViewModel.vb" />
     <Compile Include="Rooms\ViewModels\RoomDetailViewModel.vb" />
+    <Compile Include="Rooms\ViewModels\RoomsListViewModel.vb" />
     <Compile Include="Rooms\ViewModels\RoomsWorkspaceViewModel.vb" />
+    <Compile Include="Rooms\ViewModels\RoomsWorkspaceViewModelBackup.vb" />
     <Compile Include="Rooms\Views\AddRoomView.xaml.vb">
       <DependentUpon>AddRoomView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Rooms\Views\RoomDetailView.xaml.vb">
       <DependentUpon>RoomDetailView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Rooms\Views\RoomsListView.xaml.vb">
+      <DependentUpon>RoomsListView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Rooms\Views\RoomsWorkspaceView.xaml.vb">
       <DependentUpon>RoomsWorkspaceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Rooms\Views\RoomsWorkspaceViewBackup.xaml.vb">
+      <DependentUpon>RoomsWorkspaceViewBackup.xaml</DependentUpon>
     </Compile>
     <Compile Include="_Start\AppBootstrapper.vb" />
     <Compile Include="_Start\LoginShell\Converters\BooleanToVisibilityConverter.vb" />
@@ -164,6 +171,8 @@
     <Compile Include="_Start\LoginShell\Views\LoginShellView.xaml.vb">
       <DependentUpon>LoginShellView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="_Start\MainWindow\Converters\StringToUpperConverter.vb" />
+    <Compile Include="_Start\MainWindow\Converters\WindowStateReverseNameConverter.vb" />
     <Compile Include="_Start\MainWindow\ViewModels\MainWindowViewModel.vb" />
     <Compile Include="_Start\MainWindow\Views\MainWindowView.xaml.vb">
       <DependentUpon>MainWindowView.xaml</DependentUpon>
@@ -241,7 +250,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Rooms\Views\RoomsListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Rooms\Views\RoomsWorkspaceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Rooms\Views\RoomsWorkspaceViewBackup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

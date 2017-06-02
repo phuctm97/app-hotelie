@@ -1,5 +1,9 @@
-﻿Namespace Common
+﻿Imports Caliburn.Micro
+
+Namespace Common
 	Public Interface IMainWindow
+		Inherits IHaveDisplayName
+
 		Property Title As String
 
 		Property Width As Double
@@ -10,15 +14,14 @@
 
 		ReadOnly Property Shell As IShell
 
-		Sub ShowLoginShell()
+		Sub SwitchShell( shellName As String )
 
-		Sub ShowWorkspaceShell()
+		Sub DragMove()
 
 		Sub ToggleZoomState()
 
 		Sub Hide()
 
 		Sub Close()
-
 	End Interface
 End Namespace

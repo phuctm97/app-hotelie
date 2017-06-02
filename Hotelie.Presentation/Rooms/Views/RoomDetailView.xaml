@@ -8,99 +8,87 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignHeight="700" d:DesignWidth="1000">
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary
-                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ComboBox.xaml" />
-                <ResourceDictionary
-                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
+             d:DesignHeight="700" d:DesignWidth="1024">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="24" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <!--Title-->
+        <!--Title bar-->
         <materialDesign:ColorZone Grid.Row="0"
-                                  Mode="PrimaryMid"
-                                  materialDesign:ShadowAssist.ShadowDepth="Depth2"
-                                  Padding="16 0 16 0">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="16" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
+                                  Mode="PrimaryDark">
+            <DockPanel Margin="16 24 16 16">
 
-                <!--Title text-->
-                <TextBlock Grid.Column="0"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Center"
-                           Text="Chi tiết phòng"
-                           FontSize="24" FontWeight="Medium"
-                           Margin="0 20 0 20" />
+                <!--Back button-->
+                <Button DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
+                        Style="{DynamicResource MaterialDesignToolButton}"
+                        Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}" 
+                        Height="50" Width="50" Margin="0 0 8 0">
+                    <materialDesign:PackIcon Kind="KeyboardBackspace" Width="24" Height="24"/>
+                </Button>
+
+                <!--Room category-->
+                <Button DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
+                        Margin="0 0 24 0">
+                    Phòng thường
+                </Button>
+
+                <!--Room name-->
+                <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                           TextAlignment="Center"
+                           Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                           FontSize="48" FontWeight="Light" Margin="0"
+                           Text="A101"/>
+
+                <!--Delete button-->
+                <Button DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Style="{DynamicResource MaterialDesignFlatButton}"
+                        Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                    XÓA
+                </Button>
 
                 <!--Save button-->
-                <Button Grid.Column="1"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Style="{DynamicResource MaterialDesignToolButton}"
-                        Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-                        Content="LƯU" />
-
-                <Button Grid.Column="3"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Style="{DynamicResource MaterialDesignToolButton}"
-                        Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-                        Content="XÓA" />
-
-            </Grid>
-
+                <Button DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Style="{DynamicResource MaterialDesignFlatButton}"
+                        Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                    LƯU
+                </Button>
+            </DockPanel>
         </materialDesign:ColorZone>
 
-        <!--Room name-->
-        <StackPanel Grid.Row="1" Margin="16 24 16 0">
-            <TextBlock Text="Tên phòng" IsEnabled="False"
+        <!--Content-->
+        <StackPanel Grid.Row="1" Margin="12 0 12 0">
+            <!--Room name-->
+            <StackPanel Margin="16 24 16 0">
+                <TextBlock Text="Tên phòng" IsEnabled="False"
                        Foreground="{DynamicResource PrimaryHueDarkBrush}"
                        FontSize="15" Margin="0 0 0 4" />
-            <TextBox materialDesign:HintAssist.Hint="Tên phòng"
+                <TextBox materialDesign:HintAssist.Hint="Tên phòng"
                      FontSize="35" />
-        </StackPanel>
+            </StackPanel>
 
-        <!--Room category-->
-        <StackPanel Grid.Row="2" Margin="16 24 16 0">
-            <TextBlock Text="Loại phòng" IsEnabled="False"
+            <!--Room category-->
+            <StackPanel Margin="16 24 16 0">
+                <TextBlock Text="Loại phòng" IsEnabled="False"
                        Foreground="{DynamicResource PrimaryHueDarkBrush}"
                        FontSize="15" Margin="0 0 0 4" />
-            <ComboBox
+                <ComboBox
                 materialDesign:HintAssist.Hint="Loại phòng"
                 FontSize="20">
-                <ComboBoxItem Content="Phòng Thường 1" />
-                <ComboBoxItem Content="Phòng Thường 2" />
-                <ComboBoxItem Content="Phòng Vip 1" />
-                <ComboBoxItem Content="Phòng Vip 2" />
-            </ComboBox>
-        </StackPanel>
+                    <ComboBoxItem Content="Phòng Thường 1" />
+                    <ComboBoxItem Content="Phòng Thường 2" />
+                    <ComboBoxItem Content="Phòng Vip 1" />
+                    <ComboBoxItem Content="Phòng Vip 2" />
+                </ComboBox>
+            </StackPanel>
 
-        <!--Room note-->
-        <StackPanel Grid.Row="3" Margin="16 24 16 0">
-            <TextBlock Text="Ghi chú" IsEnabled="False"
+            <!--Room note-->
+            <StackPanel Margin="16 24 16 0">
+                <TextBlock Text="Ghi chú" IsEnabled="False"
                        Foreground="{DynamicResource PrimaryHueDarkBrush}"
                        FontSize="15" Margin="0 0 0 4" />
-            <TextBox materialDesign:HintAssist.Hint="Thông tin thêm về phòng"
+                <TextBox materialDesign:HintAssist.Hint="Thông tin thêm về phòng"
                      TextWrapping="Wrap"
                      AcceptsReturn="True"
                      VerticalScrollBarVisibility="Auto"
@@ -108,33 +96,30 @@
                      Padding="0 0 4 0"
                      Height="Auto"
                      MaxHeight="130" />
-        </StackPanel>
+            </StackPanel>
 
-        <!--Room state-->
-        <StackPanel Grid.Row="4" Margin="16 24 16 0">
-            <TextBlock Text="Tình trạng" IsEnabled="False"
+            <!--Room state-->
+            <StackPanel Margin="16 24 16 0">
+                <TextBlock Text="Tình trạng" IsEnabled="False"
                        Foreground="{DynamicResource PrimaryHueDarkBrush}"
                        FontSize="15" Margin="0 0 0 4" />
-            <materialDesign:Chip Content="Trống"
+                <materialDesign:Chip Content="Trống"
                                  FontSize="15"
                                  IconBackground="#FF00C853"
                                  IconForeground="White">
-                <materialDesign:Chip.Icon>
-                    <materialDesign:PackIcon Kind="Check" Width="24" Height="24" />
-                </materialDesign:Chip.Icon>
-            </materialDesign:Chip>
-        </StackPanel>
+                    <materialDesign:Chip.Icon>
+                        <materialDesign:PackIcon Kind="Check" Width="24" Height="24" />
+                    </materialDesign:Chip.Icon>
+                </materialDesign:Chip>
+            </StackPanel>
 
-        <!--Commands-->
-        <DockPanel Grid.Row="6">
-            <Button DockPanel.Dock="Right" HorizontalAlignment="Right"
+            <!--Commands-->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 16 0 0">
+                <Button DockPanel.Dock="Right" HorizontalAlignment="Right"
                     Style="{DynamicResource MaterialDesignFlatAccentButton}"
                     Content="THUÊ PHÒNG"
                     Margin="8" Height="36" Padding="8" />
-            <Button DockPanel.Dock="Left" HorizontalAlignment="Left"
-                    Style="{DynamicResource MaterialDesignFlatButton}"
-                    Content="ĐẶT PHÒNG"
-                    Margin="8" Height="36" Padding="8" />
-        </DockPanel>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </UserControl>
