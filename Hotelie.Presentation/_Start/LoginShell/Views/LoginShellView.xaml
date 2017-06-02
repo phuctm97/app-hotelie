@@ -9,7 +9,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignHeight="600" d:DesignWidth="1000">
+             d:DesignHeight="700" d:DesignWidth="1024">
     <!--Resources-->
     <UserControl.Resources>
         <ResourceDictionary>
@@ -22,7 +22,6 @@
                     Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PasswordBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <converters:NotificationTypeToBooleanConverter x:Key="NotificationTypeToBooleanConverter" />
             <converters:NotificationTypeToColorConverter x:Key="NotificationTypeToColorConverter" />
             <converters:NotificationTypeToPackIconKindConverter x:Key="NotificationTypeToPackIconKindConverter" />
@@ -60,148 +59,31 @@
             </DockPanel>
         </materialDesign:DrawerHost.TopDrawerContent>
 
-        <Grid>
+        <materialDesign:Transitioner SelectedIndex="{Binding DisplayCode}">
             <!--Login form-->
-            <materialDesign:Card HorizontalAlignment="Center" VerticalAlignment="Center"
-                                 Width="400" Height="Auto"
-                                 Visibility="{Binding IsLoginFormVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <StackPanel Orientation="Vertical">
+            <materialDesign:TransitionerSlide>
+                <materialDesign:TransitionerSlide.BackwardWipe>
+                    <materialDesign:SlideOutWipe />
+                </materialDesign:TransitionerSlide.BackwardWipe>
+                <materialDesign:TransitionerSlide.ForwardWipe>
+                    <materialDesign:SlideOutWipe />
+                </materialDesign:TransitionerSlide.ForwardWipe>
 
-                    <!--Title-->
-                    <StackPanel Orientation="Horizontal" Margin="0 48 0 32">
-                        <Rectangle Width="8" Fill="{DynamicResource SecondaryAccentBrush}" />
-                        <TextBlock Margin="32 8 8 8"
-                                   FontSize="21"
-                                   FontWeight="Bold"
-                                   Foreground="{DynamicResource SecondaryAccentBrush}"
-                                   Text="ĐĂNG NHẬP" />
-                    </StackPanel>
-
-                    <!--Account-->
-                    <TextBox x:Name="AccountTextBox"
-                             Margin="40 0 40 16"
-                             materialDesign:HintAssist.FloatingOffset="0, -24"
-                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                             FontSize="18"
-                             TextChanged="OnAccountChanged">
-                        <materialDesign:HintAssist.Hint>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon VerticalAlignment="Center"
-                                                         Margin="0 0 4 0"
-                                                         Kind="Account" />
-                                <TextBlock VerticalAlignment="Center" Text="Tài khoản" />
-                            </StackPanel>
-                        </materialDesign:HintAssist.Hint>
-                    </TextBox>
-
-                    <!--Password-->
-                    <TextBlock x:Name="PasswordStorage" Visibility="Collapsed" />
-                    <PasswordBox Margin="40 0 40 32"
-                                 materialDesign:HintAssist.FloatingOffset="0, -24"
-                                 Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
-                                 FontSize="18"
-                                 PasswordChanged="OnPasswordChanged">
-                        <materialDesign:HintAssist.Hint>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon VerticalAlignment="Center"
-                                                         Margin="0 0 4 0"
-                                                         Kind="Key" />
-                                <TextBlock VerticalAlignment="Center" Text="Mật khẩu" />
-                            </StackPanel>
-                        </materialDesign:HintAssist.Hint>
-                    </PasswordBox>
-
-                    <!--Submit-->
-                    <DockPanel Margin="40 0 40 32">
-                        <Button DockPanel.Dock="Left" HorizontalAlignment="Left"
-                                Style="{DynamicResource MaterialDesignRaisedAccentButton}"
-                                FontSize="16"
-                                IsDefault="{Binding IsLoginFormVisible}"
-                                Content="Đăng nhập">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Click">
-                                    <cal:ActionMessage MethodName="TryLogin">
-                                        <cal:Parameter Value="{Binding ElementName=AccountTextBox, Path=Text}" />
-                                        <cal:Parameter Value="{Binding ElementName=PasswordStorage, Path=Text}" />
-                                    </cal:ActionMessage>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </Button>
-
-                        <CheckBox DockPanel.Dock="Right" HorizontalAlignment="Right"
-                                  FontSize="16"
-                                  Content="Nhớ tài khoản" />
-                    </DockPanel>
-
-                </StackPanel>
-            </materialDesign:Card>
+                <ContentControl cal:View.Model="{Binding LoginForm}" />
+            </materialDesign:TransitionerSlide>
 
             <!--Connection settings form-->
-            <materialDesign:Card HorizontalAlignment="Center" VerticalAlignment="Center"
-                                 Width="400" Height="Auto"
-                                 Visibility="{Binding IsSettingsFormVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <StackPanel Orientation="Vertical">
+            <materialDesign:TransitionerSlide>
+                <materialDesign:TransitionerSlide.BackwardWipe>
+                    <materialDesign:SlideOutWipe />
+                </materialDesign:TransitionerSlide.BackwardWipe>
+                <materialDesign:TransitionerSlide.ForwardWipe>
+                    <materialDesign:SlideOutWipe />
+                </materialDesign:TransitionerSlide.ForwardWipe>
 
-                    <!--Title-->
-                    <StackPanel Margin="0 48 0 32" Orientation="Horizontal">
-                        <Rectangle Width="8" Fill="{DynamicResource PrimaryHueMidBrush}" />
-                        <TextBlock Margin="32 8 8 8"
-                                   FontSize="21"
-                                   FontWeight="Bold"
-                                   Foreground="{DynamicResource PrimaryHueMidBrush}"
-                                   Text="THIẾT LẬP KẾT NỐI" />
-                    </StackPanel>
-
-                    <!--Server name-->
-                    <TextBox Margin="40 0 40 16"
-                             materialDesign:HintAssist.FloatingOffset="0, -24"
-                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                             FontSize="18"
-                             TextChanged="OnServerChanged">
-                        <materialDesign:HintAssist.Hint>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon VerticalAlignment="Center"
-                                                         Margin="0 0 4 0"
-                                                         Kind="Server" />
-                                <TextBlock VerticalAlignment="Center" Text="Máy chủ" />
-                            </StackPanel>
-                        </materialDesign:HintAssist.Hint>
-                    </TextBox>
-
-                    <!--Database name-->
-                    <TextBox Margin="40 0 40 32"
-                             materialDesign:HintAssist.FloatingOffset="0, -24"
-                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                             FontSize="18"
-                             TextChanged="OnDatabaseChanged">
-                        <materialDesign:HintAssist.Hint>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon VerticalAlignment="Center"
-                                                         Margin="0 0 4 0"
-                                                         Kind="Database" />
-                                <TextBlock VerticalAlignment="Center" Text="Cơ sở dữ liệu" />
-                            </StackPanel>
-                        </materialDesign:HintAssist.Hint>
-                    </TextBox>
-
-                    <!--Submit-->
-                    <DockPanel Margin="40 0 40 32">
-                        <!--Save-->
-                        <Button DockPanel.Dock="Left" HorizontalAlignment="Left"
-                                Style="{DynamicResource MaterialDesignRaisedButton}"
-                                FontSize="16"
-                                Content="Lưu" />
-                        <!--Test-->
-                        <Button DockPanel.Dock="Right" HorizontalAlignment="Right"
-                                Style="{DynamicResource MaterialDesignToolButton}"
-                                FontSize="16"
-                                IsDefault="{Binding IsSettingsFormVisible}"
-                                Content="Thử kết nối" />
-                    </DockPanel>
-
-                </StackPanel>
-            </materialDesign:Card>
-        </Grid>
+                <ContentControl cal:View.Model="{Binding SettingsForm}" />
+            </materialDesign:TransitionerSlide>
+        </materialDesign:Transitioner>
 
     </materialDesign:DrawerHost>
 </UserControl>

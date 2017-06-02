@@ -71,5 +71,7 @@ Namespace Start.WorkspaceShell.ViewModels
 		Public Sub CloseWindow()
 			ParentWindow.Close()
 		End Sub
+
+		Public ReadOnly Property CommandsBar As IWindowCommandsBar Implements IShell.CommandsBar
 	End Class
 End Namespace

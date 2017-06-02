@@ -128,6 +128,7 @@
     </Compile>
     <Compile Include="Common\IMainWindow.vb" />
     <Compile Include="Common\IShell.vb" />
+    <Compile Include="Common\IWindowCommandsBar.vb" />
     <Compile Include="Common\IWorkspace.vb" />
     <Compile Include="Leases\ViewModels\LeasesWorkspaceViewModel.vb" />
     <Compile Include="Leases\Views\LeasesWorkspaceView.xaml.vb">
@@ -167,9 +168,21 @@
     <Compile Include="_Start\LoginShell\Converters\NotificationTypeToPackIconKindConverter.vb" />
     <Compile Include="_Start\LoginShell\Converters\WindowStateReverseNameConverter.vb" />
     <Compile Include="_Start\LoginShell\Models\Notification.vb" />
+    <Compile Include="_Start\LoginShell\ViewModels\LoginFormViewModel.vb" />
+    <Compile Include="_Start\LoginShell\ViewModels\LoginShellCommandsBarViewModel.vb" />
     <Compile Include="_Start\LoginShell\ViewModels\LoginShellViewModel.vb" />
+    <Compile Include="_Start\LoginShell\ViewModels\SettingsFormViewModel.vb" />
+    <Compile Include="_Start\LoginShell\Views\LoginFormView.xaml.vb">
+      <DependentUpon>LoginFormView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="_Start\LoginShell\Views\LoginShellCommandsBarView.xaml.vb">
+      <DependentUpon>LoginShellCommandsBarView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="_Start\LoginShell\Views\LoginShellView.xaml.vb">
       <DependentUpon>LoginShellView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="_Start\LoginShell\Views\SettingsFormView.xaml.vb">
+      <DependentUpon>SettingsFormView.xaml</DependentUpon>
     </Compile>
     <Compile Include="_Start\MainWindow\Converters\StringToUpperConverter.vb" />
     <Compile Include="_Start\MainWindow\Converters\WindowStateReverseNameConverter.vb" />
@@ -262,7 +275,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="_Start\LoginShell\Views\LoginFormView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="_Start\LoginShell\Views\LoginShellCommandsBarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="_Start\LoginShell\Views\LoginShellView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="_Start\LoginShell\Views\SettingsFormView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

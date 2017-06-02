@@ -14,9 +14,8 @@ Namespace Start.LoginShell.ViewModels
 
 		' Display property backing fields
 
-		Private _isLoginFormVisible As Boolean
-		Private _isSettingsFormVisible As Boolean
 		Private _notification As Notification
+		Private _displayCode As Integer
 
 		' Parent window
 
@@ -33,17 +32,20 @@ Namespace Start.LoginShell.ViewModels
 
 		Public Sub New( authentication As IAuthentication )
 			_authentication = authentication
+
+			CommandsBar = New LoginShellCommandsBarViewModel( Me )
+			Notification = New Notification()
+
+			LoginForm = New LoginFormViewModel()
+			SettingsForm = New SettingsFormViewModel()
 		End Sub
 
 		Protected Overrides Sub OnInitialize()
 			MyBase.OnInitialize()
 
 			DisplayName = "Login"
-
-			IsLoginFormVisible = True
-			IsSettingsFormVisible = False
-
-			Notification = New Notification With {.Text=String.Empty, .Type=NotificationType.None}
+			DisplayCode = 0
+			HideNotification()
 		End Sub
 
 		' Display properties
@@ -60,35 +62,33 @@ Namespace Start.LoginShell.ViewModels
 			End Set
 		End Property
 
-		Public Property IsLoginFormVisible As Boolean
-			Get
-				Return _isLoginFormVisible
-			End Get
-			Set
-				If Equals( Value, _isLoginFormVisible ) Then Return
-				_isLoginFormVisible = value
-				NotifyOfPropertyChange( Function() IsLoginFormVisible )
-			End Set
-		End Property
-
-		Public Property IsSettingsFormVisible As Boolean
-			Get
-				Return _isSettingsFormVisible
-			End Get
-			Set
-				If Equals( Value, _isSettingsFormVisible ) Then Return
-				_isSettingsFormVisible = value
-				NotifyOfPropertyChange( Function() IsSettingsFormVisible )
-			End Set
-		End Property
-
-		' Display actions
-
-		Public Sub ToggleDisplayForm()
-			IsLoginFormVisible = Not IsLoginFormVisible
-			IsSettingsFormVisible = Not IsSettingsFormVisible
+		Public Sub ShowNotification( type As NotificationType,
+		                             text As String )
+			Notification.Type = type
+			Notification.Text = text
 		End Sub
 
+		Public Sub HideNotification()
+			Notification.Type = NotificationType.None
+			Notification.Text = String.Empty
+		End Sub
+
+		Public ReadOnly Property LoginForm As LoginFormViewModel
+
+		Public ReadOnly Property SettingsForm As SettingsFormViewModel
+
+		Public ReadOnly Property CommandsBar As IWindowCommandsBar Implements IShell.CommandsBar
+
+		Public Property DisplayCode As Integer
+			Get
+				Return _displayCode
+			End Get
+			Set
+				If Equals( value, _displayCode ) Then Return
+				_displayCode = value
+				NotifyOfPropertyChange( Function() DisplayCode )
+			End Set
+		End Property
 		' Login
 
 		Public Sub TryLogin( username As String,
@@ -96,15 +96,13 @@ Namespace Start.LoginShell.ViewModels
 
 			' short username
 			If username.Length = 0
-				Notification.Type = NotificationType.Information
-				Notification.Text = "Nhập tên tài khoản để đăng nhập"
+				ShowNotification( NotificationType.Information, "Nhập tên tài khoản để đăng nhập" )
 				Return
 			End If
 
 			' short password
 			If password.Length = 0
-				Notification.Type = NotificationType.Information
-				Notification.Text = "Nhập mật khẩu để đăng nhập"
+				ShowNotification( NotificationType.Information, "Nhập mật khẩu để đăng nhập" )
 				Return
 			End If
 
@@ -116,8 +114,7 @@ Namespace Start.LoginShell.ViewModels
 				ParentWindow.SwitchShell( "workspace-shell" )
 			Else
 				' fail
-				Notification.Type = NotificationType.Error
-				Notification.Text = err
+				ShowNotification( NotificationType.Error, err )
 			End If
 		End Sub
 	End Class
