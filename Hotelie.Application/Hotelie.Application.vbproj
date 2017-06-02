@@ -95,6 +95,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Rooms\Commands\RemoveRoom\IRemoveRoomCommand.vb" />
+    <Compile Include="Rooms\Commands\UpdateRoom\IUpdateRoomCommand.vb" />
+    <Compile Include="Rooms\Factories\CreateRoom\ICreateRoomFactory.vb" />
+    <Compile Include="Rooms\Factories\CreateRoom\RoomModel.vb" />
     <Compile Include="Rooms\Queries\GetRoomCategoriesList\IGetRoomCategoriesListQuery.vb" />
     <Compile Include="Rooms\Queries\GetRoomCategoriesList\RoomCategoryModel.vb" />
     <Compile Include="Rooms\Queries\GetRoomsList\GetRoomListQuery.vb" />
