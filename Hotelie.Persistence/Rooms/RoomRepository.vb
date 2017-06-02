@@ -1,5 +1,4 @@
 ﻿Imports System.Linq.Expressions
-Imports System.Data.Entity
 Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Domain.Rooms
 Imports Hotelie.Persistence.Common
