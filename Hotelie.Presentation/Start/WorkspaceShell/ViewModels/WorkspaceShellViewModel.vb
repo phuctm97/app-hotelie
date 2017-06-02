@@ -1,8 +1,10 @@
 ﻿Imports Caliburn.Micro
 Imports Hotelie.Presentation.Bills.ViewModels
 Imports Hotelie.Presentation.Common
+Imports Hotelie.Presentation.Common.Controls
 Imports Hotelie.Presentation.Leases.ViewModels
 Imports Hotelie.Presentation.Rooms.ViewModels
+Imports MaterialDesignThemes.Wpf
 
 Namespace Start.WorkspaceShell.ViewModels
 	Public Class WorkspaceShellViewModel
@@ -64,5 +66,18 @@ Namespace Start.WorkspaceShell.ViewModels
 		' Display properties
 
 		Public ReadOnly Property CommandsBar As IWindowCommandsBar Implements IShell.CommandsBar
+
+		' Closing
+		Public Overrides Async Sub CanClose( callback As Action(Of Boolean) )
+			Dim dialog = New TwoButtonDialog( "Thoát khỏi bàn làm việc?", "THOÁT", "HỦY" )
+
+			Dim result = Await DialogHost.Show( dialog, "workspace-shell" )
+
+			If String.Equals( result, "THOÁT" )
+				callback( True )
+			Else
+				callback( False )
+			End If
+		End Sub
 	End Class
 End Namespace

@@ -116,19 +116,11 @@ Namespace Start.MainWindow.ViewModels
 			WindowState = WindowState.Minimized
 		End Sub
 
+		' Closing
+
 		Public Sub Close() Implements IMainWindow.Close
-			If IsNothing( Shell )
-				OnClosing( True )
-			Else
-				Shell.CanClose( AddressOf OnClosing )
-			End If
+			Windows.Application.Current.MainWindow.Close()
 		End Sub
 
-		Private Sub OnClosing( canClose As Boolean )
-			If Not canClose Then Return
-
-			DeactivateItem( Shell, True )
-			TryClose( True )
-		End Sub
 	End Class
 End Namespace

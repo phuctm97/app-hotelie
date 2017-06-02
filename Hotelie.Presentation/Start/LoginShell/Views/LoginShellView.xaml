@@ -30,6 +30,7 @@
 
     <!--Content-->
     <materialDesign:TransitioningContent OpeningEffect="{materialDesign:TransitionEffect Kind=SlideInFromBottom}">
+
         <materialDesign:DrawerHost
             IsTopDrawerOpen="{Binding Path=Notification.Type, Converter={StaticResource NotificationTypeToBooleanConverter}}">
 

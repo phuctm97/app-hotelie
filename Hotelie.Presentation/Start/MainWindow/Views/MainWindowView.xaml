@@ -4,6 +4,7 @@
         xmlns:local="clr-namespace:Hotelie.Presentation"
         xmlns:viewModels="clr-namespace:Hotelie.Presentation.Start.MainWindow.ViewModels"
         xmlns:converters="clr-namespace:Hotelie.Presentation.Start.MainWindow.Converters"
+        xmlns:commonConverters="clr-namespace:Hotelie.Presentation.Common.Converters"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -28,7 +29,7 @@
         <ResourceDictionary>
             <converters:WindowStateReverseNameConverter x:Key="WindowStateReverseNameConverter" />
             <converters:WindowStateReverseIconKindConverter x:Key="WindowStateReverseIconKindConverter" />
-            <converters:StringToUpperConverter x:Key="StringToUpperConverter" />
+            <commonConverters:StringToUpperConverter x:Key="StringToUpperConverter" />
         </ResourceDictionary>
     </Window.Resources>
 

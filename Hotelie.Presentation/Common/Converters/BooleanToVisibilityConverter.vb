@@ -1,17 +1,18 @@
 ﻿Imports System.Globalization
 
-Namespace Start.WorkspaceShell.Converters
-	Public Class StringToUpperConverter
+Namespace Common.Converters
+	Public Class BooleanToVisibilityConverter
 		Implements IValueConverter
 
 		Public Function Convert(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.Convert
-			Dim str = CType(value, String)
-
-			Return str.ToUpper()
+			If Equals(value, True) Then Return Visibility.Visible
+			Return Visibility.Collapsed
 		End Function
 
 		Public Function ConvertBack(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.ConvertBack
-			Throw New NotImplementedException()
+			If Equals(value, Visibility.Visible) Then Return True
+			Return False
 		End Function
+
 	End Class
 End Namespace

@@ -1,18 +1,17 @@
 ﻿Imports System.Globalization
 
-Namespace Start.LoginShell.Converters
-	Public Class BooleanToVisibilityConverter
+Namespace Common.Converters
+	Public Class StringToUpperConverter
 		Implements IValueConverter
 
 		Public Function Convert(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.Convert
-			If Equals(value, True) Then Return Visibility.Visible
-			Return Visibility.Collapsed
+			Dim str = CType(value, String)
+
+			Return str.ToUpper()
 		End Function
 
 		Public Function ConvertBack(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.ConvertBack
-			If Equals(value, Visibility.Visible) Then Return True
-			Return False
+			Throw New NotImplementedException()
 		End Function
-
 	End Class
 End Namespace
