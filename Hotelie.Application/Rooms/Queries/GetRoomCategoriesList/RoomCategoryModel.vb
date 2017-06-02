@@ -7,6 +7,7 @@ Namespace Rooms.Queries.GetRoomCategoriesList
 
 		Private _id As String
 		Private _name As String
+        Private _price As Decimal
 		Private _displayColor As Color
 
 		Public Property Id As String
@@ -40,6 +41,17 @@ Namespace Rooms.Queries.GetRoomCategoriesList
 				_displayColor = value
 				NotifyOfPropertyChange(Function() DisplayColor)
 			End Set
+		End Property
+
+		Public Property Price as Decimal
+		    Get
+		        Return _price
+		    End Get
+		    Set
+		        If Equals(Value, _price) Then Return
+		        _price = value
+		        NotifyOfPropertyChange(Function() Price)
+		    End Set
 		End Property
 
 		Public Sub New()
