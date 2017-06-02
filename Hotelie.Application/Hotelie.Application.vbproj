@@ -80,6 +80,13 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Leases\Commands\RemoveLease\IRemoveLeaseCommand.vb" />
+    <Compile Include="Leases\Commands\RemoveLease\RemoveLeaseCommand.vb" />
+    <Compile Include="Leases\Commands\UpdateLease\IUpdateLeaseCommand.vb" />
+    <Compile Include="Leases\Commands\UpdateLease\UpdateLeaseCommand.vb" />
+    <Compile Include="Leases\Queries\GetLeasesListQuery.vb" />
+    <Compile Include="Leases\Queries\IGetLeasesListQuery.vb" />
+    <Compile Include="Leases\Queries\LeaseModel.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -104,7 +111,7 @@
     <Compile Include="Rooms\Queries\GetRoomCategoriesList\GetRoomCategoriesList.vb" />
     <Compile Include="Rooms\Queries\GetRoomCategoriesList\IGetRoomCategoriesListQuery.vb" />
     <Compile Include="Rooms\Queries\GetRoomCategoriesList\RoomCategoryModel.vb" />
-    <Compile Include="Rooms\Queries\GetRoomsList\GetRoomListQuery.vb" />
+    <Compile Include="Rooms\Queries\GetRoomsList\GetRoomsListQuery.vb" />
     <Compile Include="Rooms\Queries\GetRoomsList\IGetRoomsListQuery.vb" />
     <Compile Include="Rooms\Queries\GetRoomsList\RoomModel.vb" />
     <Compile Include="Services\Authentication\Account.vb" />
@@ -143,7 +150,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Leases\Queries\" />
+    <Folder Include="Leases\Factories\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
