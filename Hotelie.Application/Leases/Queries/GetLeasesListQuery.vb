@@ -21,6 +21,9 @@ Namespace Leases.Queries
                                                         .ExtraCharge = p.ExtraCharge,
                                                         .NumberOfDate = p.NumberOfDate,
                                                         .BillId = p.Bill.Id})
+            For Each leaseModel As LeaseModel In leases
+
+            Next
             Return leases
         End Function
     End Class
