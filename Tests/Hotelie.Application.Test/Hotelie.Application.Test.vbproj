@@ -48,6 +48,7 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Caliburn.Micro, Version=3.0.3.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f" />
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Castle.Core.4.0.0\lib\net45\Castle.Core.dll</HintPath>
       <Private>True</Private>
@@ -99,6 +100,9 @@
     <Import Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authentication\TestAuthentication.vb" />
+    <Compile Include="Leases\Commands\TestLeaseCommand.vb" />
+    <Compile Include="Leases\Factories\TestCreateLeaseFactory.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -114,6 +118,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Query\TestGetLeasesQuery.vb" />
+    <Compile Include="Query\TestGetRoomCategoriesListQuery.vb" />
+    <Compile Include="Query\TestGetRoomsListQuery.vb" />
+    <Compile Include="Rooms\Commands\TestRoomCommands.vb" />
+    <Compile Include="Rooms\Factories\TestRoomFactories.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
