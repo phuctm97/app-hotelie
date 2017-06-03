@@ -1,24 +1,30 @@
 ﻿Imports System.Globalization
+Imports Hotelie.Presentation.Start.Login.Models
 
-Namespace Rooms.Converters
-	Public Class RoomStateToStringConverter
+Namespace Start.MainWindow.Converters
+	Public Class NotificationTypeToColorConverter
 		Implements IValueConverter
 
 		Public Function Convert( value As Object,
 		                         targetType As Type,
 		                         parameter As Object,
 		                         culture As CultureInfo ) As Object Implements IValueConverter.Convert
-			If String.IsNullOrEmpty(value) Then Return Nothing
-			Dim state = CType(value, Integer)
+			Dim type = CType(value, NotificationType)
 
-			Select Case state
-				Case 0
-					Return "Trống"
-				Case 1
-					Return "Đang thuê"
+			Select type
+				Case NotificationType.None
+					Return Colors.White
+				Case NotificationType.Ok
+					Return Colors.Green
+				Case NotificationType.Information
+					Return Colors.DodgerBlue
+				Case NotificationType.Error
+					Return Colors.Red
+				Case NotificationType.Warning
+					Return Colors.Gold
 			End Select
 
-			Return "Tất cả"
+			Return Colors.White
 		End Function
 
 		Public Function ConvertBack( value As Object,

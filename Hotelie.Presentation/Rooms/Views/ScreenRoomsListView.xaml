@@ -245,13 +245,16 @@
                                                     Margin="8 4 4 8"
                                                     Style="{DynamicResource MaterialDesignFlatButton}"
                                                     Content="CHI TIẾT"
-                                                    cal:Message.Attach="NavigateToScreenRoomDetail($dataContext)"/>
-
+                                                    cal:Message.Attach="NavigateToScreenRoomDetail($dataContext)" />
                                             <Button DockPanel.Dock="Left"
                                                     HorizontalAlignment="Left"
                                                     Margin="15 4 4 8"
                                                     Style="{DynamicResource MaterialDesignFlatAccentButton}"
                                                     Content="THUÊ" />
+                                            <materialDesign:PopupBox DockPanel.Dock="Right" HorizontalAlignment="Right"
+                                                                     VerticalAlignment="Center">
+                                                <Button Content="XÓA PHÒNG" />
+                                            </materialDesign:PopupBox>
                                         </DockPanel>
                                     </Grid>
                                 </materialDesign:Card>

@@ -124,7 +124,9 @@
         </materialDesign:ColorZone>
 
         <!--Shell-->
-        <ContentControl Grid.Row="1" cal:View.Model="{Binding Shell}" />
+        <materialDesign:DrawerHost Grid.Row="1">
+            <ContentControl cal:View.Model="{Binding Shell}" />
+        </materialDesign:DrawerHost>
     </Grid>
 
 </Window>

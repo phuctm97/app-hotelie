@@ -130,6 +130,12 @@
     <Compile Include="Bills\Views\BillsWorkspaceView.xaml.vb">
       <DependentUpon>BillsWorkspaceView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\Controls\ThreeButtonDialog.xaml.vb">
+      <DependentUpon>ThreeButtonDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Controls\OneButtonDialog.xaml.vb">
+      <DependentUpon>OneButtonDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Common\Converters\BooleanToVisibilityConverter.vb" />
     <Compile Include="Common\Converters\DecimalToCurrencyStringConverter.vb" />
     <Compile Include="Common\Converters\StringToUpperConverter.vb" />
@@ -140,7 +146,9 @@
     <Compile Include="Leases\Views\LeasesWorkspaceView.xaml.vb">
       <DependentUpon>LeasesWorkspaceView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Rooms\Converters\RoomNameWhenEmptyConverter.vb" />
     <Compile Include="Rooms\Converters\RoomStateToBackColorConverter.vb" />
+    <Compile Include="Rooms\Converters\RoomStateToIconKindConverter.vb" />
     <Compile Include="Rooms\Converters\RoomStateToStringConverter.vb" />
     <Compile Include="Rooms\ViewModels\ScreenRoomDetailViewModel.vb" />
     <Compile Include="Rooms\ViewModels\ScreenRoomsListViewModel.vb" />
@@ -175,6 +183,9 @@
     <Compile Include="Start\LoginShell\Views\ScreenSettingsView.xaml.vb">
       <DependentUpon>ScreenSettingsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Start\MainWindow\Converters\NotificationTypeToBooleanConverter.vb" />
+    <Compile Include="Start\MainWindow\Converters\NotificationTypeToColorConverter.vb" />
+    <Compile Include="Start\MainWindow\Converters\NotificationTypeToIconKindConverter.vb" />
     <Compile Include="Start\MainWindow\Converters\WindowStateReverseIconKindConverter.vb" />
     <Compile Include="Start\MainWindow\Converters\WindowStateReverseNameConverter.vb" />
     <Compile Include="Start\MainWindow\ViewModels\MainWindowViewModel.vb" />
@@ -250,6 +261,14 @@
     <Page Include="Bills\Views\BillsWorkspaceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Common\Controls\ThreeButtonDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Common\Controls\OneButtonDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Leases\Views\LeasesWorkspaceView.xaml">
       <SubType>Designer</SubType>

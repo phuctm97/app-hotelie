@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Common.Controls.TwoButtonDialog"
+﻿<UserControl x:Class="Common.Controls.ThreeButtonDialog"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Hotelie.Presentation"
@@ -28,9 +28,15 @@
             </Button>
             <Button x:Name="Button2" Style="{DynamicResource MaterialDesignFlatButton}"
                     Padding="8" Margin="8" Height="36"
-                    Content="NO"
+                    Content="YES"
                     Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                     CommandParameter="{Binding ElementName=Button2, Path=Content}">
+            </Button>
+            <Button x:Name="Button3" Style="{DynamicResource MaterialDesignFlatButton}"
+                    Padding="8" Margin="8" Height="36"
+                    Content="NO"
+                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                    CommandParameter="{Binding ElementName=Button3, Path=Content}">
             </Button>
         </StackPanel>
 
