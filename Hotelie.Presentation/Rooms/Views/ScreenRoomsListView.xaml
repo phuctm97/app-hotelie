@@ -92,10 +92,14 @@
                       Margin="16 0 8 0"
                       Width="100"
                       FontSize="15"
-                      materialDesign:HintAssist.Hint="Từ">
-                <ComboBoxItem Content="100,000" />
-                <ComboBoxItem Content="200,000" />
-                <ComboBoxItem Content="300,000" />
+                      materialDesign:HintAssist.Hint="Từ"
+                      ItemsSource="{Binding RoomMinPrices}"
+                      SelectedItem="{Binding FilterRoomMinPrice, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource DecimalToCurrencyStringConverter}}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
 
             <!--Max Price-->
@@ -103,10 +107,14 @@
                       Margin="0 0 32 0"
                       Width="100"
                       materialDesign:HintAssist.Hint="Đến"
-                      FontSize="15">
-                <ComboBoxItem Content="400,000" />
-                <ComboBoxItem Content="500,000" />
-                <ComboBoxItem Content="600,000" />
+                      FontSize="15"
+                      ItemsSource="{Binding RoomMaxPrices}"
+                      SelectedItem="{Binding FilterRoomMaxPrice, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource DecimalToCurrencyStringConverter}}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
 
             <!--Sort field-->

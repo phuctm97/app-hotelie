@@ -8,9 +8,12 @@ Namespace Common.Converters
 		                         targetType As Type,
 		                         parameter As Object,
 		                         culture As CultureInfo ) As Object Implements IValueConverter.Convert
+			If String.IsNullOrEmpty( value ) Then Return Nothing
+
 			Dim money = CType(value, Decimal)
 
-			Return $"đ {money:N0}"
+			If money < 0 Then Return "Không giới hạn"
+			Return $"{money:N0} đ"
 		End Function
 
 		Public Function ConvertBack( value As Object,
