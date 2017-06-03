@@ -1,4 +1,5 @@
 ﻿Imports Hotelie.Application.Rooms.Queries.GetRoomsList
+Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Domain.Rooms
 Imports Hotelie.Persistence.Common
 Imports Hotelie.Persistence.Rooms
@@ -6,7 +7,7 @@ Imports Hotelie.Persistence.Rooms
 Namespace Query
     <TestClass>
     Public Class TestGetRoomsListQuery
-        Private _context As DatabaseContext
+        Private _databaseService As IDatabaseService
         Private _roomRepository As RoomRepository
         Private _roomsList As List(Of Room)
         Private _roomCategoriesList As List(Of RoomCategory)
@@ -14,15 +15,15 @@ Namespace Query
 
         <TestInitialize>
         Public Sub TestInitialize()
-            _context = New DatabaseContext(
+            _databaseService = New DatabaseService(
                 $"data source=KHUONG-ASUS\SQLEXPRESS;initial catalog=HotelieDatabase;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
-            _roomRepository = New RoomRepository(_context)
+            _roomRepository = New RoomRepository(_databaseService)
             _getRoomListQuery = New GetRoomsListQuery(_roomRepository)
         End Sub
 
         <TestCleanup>
         Public Sub TestCleanup()
-            _context.Dispose()
+            _databaseService.Context.Dispose()
         End Sub
 
         Public Sub RoomsInitialize()
@@ -32,7 +33,7 @@ Namespace Query
             _roomCategoriesList.Add(roomCategory1)
             _roomCategoriesList.Add(roomCategory2)
             _roomRepository.AddRoomCategories(_roomCategoriesList)
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
 
             _roomsList = New List(Of Room)
             Dim room1 = new Room() _
@@ -45,7 +46,7 @@ Namespace Query
             _roomsList.Add(room2)
             _roomsList.Add(room3)
             _roomRepository.AddRange(_roomsList)
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
         End Sub
 
         Public Sub DisposeRooms()
@@ -53,7 +54,7 @@ Namespace Query
             _roomCategoriesList?.Clear()
             _roomRepository.RemoveRange(_roomRepository.GetAll())
             _roomRepository.RemoveRoomCategories(_roomRepository.GetAllRoomCategories())
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
         End Sub
 
         <TestMethod>

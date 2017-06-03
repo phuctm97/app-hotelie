@@ -2,7 +2,7 @@
 Imports Hotelie.Persistence.Common
 
 Namespace Users
-    <TestClass>
+    ' <TestClass>
     Public Class TestUserTransaction
         Private _context As DatabaseContext
 

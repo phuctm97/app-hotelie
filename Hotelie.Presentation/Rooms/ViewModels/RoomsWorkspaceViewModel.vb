@@ -1,54 +1,48 @@
 ﻿Imports Caliburn.Micro
+Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
 Imports Hotelie.Application.Rooms.Queries.GetRoomsList
-Imports Hotelie.Presentation.Common
 
 Namespace Rooms.ViewModels
 	Public Class RoomsWorkspaceViewModel
-		Inherits Conductor(Of IScreen)
-		Implements IWorkspace
+		Inherits Screen
 
-		Private _isDialogOpen As Boolean
-		Private ReadOnly _getRoomsListQuery As IGetRoomsListQuery
+		Private _displayCode As Integer
 
-		Public Sub New( getRoomsListQuery As IGetRoomsListQuery )
-			_getRoomsListQuery = getRoomsListQuery
+		Public ReadOnly Property ScreenRoomsList As ScreenRoomsListViewModel
 
-			DisplayName = "Danh sách phòng"
-			IsDialogOpen = False
+		Public ReadOnly Property ScreenRoomDetail As ScreenRoomDetailViewModel
 
-			Rooms = New BindableCollection(Of RoomModel)
-		End Sub
-
-		Protected Overrides Sub OnViewLoaded( view As Object )
-			MyBase.OnViewLoaded( view )
-
-			Rooms.AddRange( _getRoomsListQuery.Execute() )
-		End Sub
-
-		' Rooms
-		Public ReadOnly Property Rooms As IObservableCollection(Of RoomModel)
-
-		' Dialog
-
-		Public Property IsDialogOpen As Boolean
+		Public Property DisplayCode As Integer
 			Get
-				Return _isDialogOpen
+				Return _displayCode
 			End Get
 			Set
-				If Equals( Value, _isDialogOpen ) Then Return
-				_isDialogOpen = value
-				NotifyOfPropertyChange( Function() IsDialogOpen )
+				If Equals( Value, _displayCode ) Then Return
+				_displayCode = value
+				NotifyOfPropertyChange( Function() DisplayCode )
 			End Set
 		End Property
 
-		Public Sub ShowRoomDetailDialog()
-			ActivateItem( New RoomDetailViewModel() )
-			IsDialogOpen = True
+		Public Sub New( getRoomsListQuery As IGetRoomsListQuery,
+		                getRoomCategoriesListQuery As IGetRoomCategoriesListQuery )
+			DisplayName = "Danh sách phòng"
+
+			ScreenRoomsList = New ScreenRoomsListViewModel( getRoomsListQuery, getRoomCategoriesListQuery )
+
+			ScreenRoomDetail = New ScreenRoomDetailViewModel( getRoomCategoriesListQuery )
+
+			DisplayCode = 0
 		End Sub
 
-		Public Sub ShowAddRoomDialog()
-			ActivateItem( New AddRoomViewModel() )
-			IsDialogOpen = True
+		Public Sub NavigateToScreenRoomsList()
+			DisplayCode = 0
+		End Sub
+
+		Public Sub NavigateToScreenRoomDetail( room As RoomModel )
+			If IsNothing(room) Then Return
+
+			ScreenRoomDetail.SetRoom( room.Id, room.Name, room.CategoryId, room.State, room.Note )
+			DisplayCode = 1
 		End Sub
 	End Class
 End Namespace

@@ -1,6 +1,4 @@
-﻿
-Imports System.Data.Entity
-Imports Hotelie.Application.Services.Persistence
+﻿Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Domain.Leases
 Imports Hotelie.Persistence.Common
 
@@ -9,22 +7,22 @@ Namespace Leases
         Inherits Repository(Of Lease)
         Implements ILeaseRepository
 
-        Private ReadOnly _context As DatabaseContext
+        Private ReadOnly _databaseService As DatabaseService
 
-        Public Sub New(context As DbContext)
-            MyBase.New(context)
-            _context = context
+        Public Sub New(databaseService As DatabaseService)
+            MyBase.New(databaseService)
+            _databaseService = databaseService
         End Sub
 
         Public Function GetCustomers(id As String) As List(Of LeaseDetail) Implements ILeaseRepository.GetCustomers
-            Return _context.LeaseDetails.Where(Function(p)p.Lease.Id = id).ToList()
+            Return _databaseService.Context.LeaseDetails.Where(Function(p)p.Lease.Id = id).ToList()
         End Function
 
         Public Overrides Function GetOne(id As Object) As Lease
             Dim idString = CType(id, String)
             If idString Is Nothing Then Throw New InvalidCastException("Id must be string")
 
-            Return _context.Leases.FirstOrDefault(Function(p) String.Equals(p.Id, idString))
+            Return _databaseService.Context.Leases.FirstOrDefault(Function(p) String.Equals(p.Id, idString))
         End Function
     End Class
 End Namespace

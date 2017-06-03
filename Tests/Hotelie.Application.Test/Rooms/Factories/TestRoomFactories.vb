@@ -7,7 +7,7 @@ Imports Hotelie.Persistence.Rooms
 Namespace Rooms.Factories
     <TestClass>
     Public Class TestRoomFactories
-        Private _context As DatabaseContext
+        Private _databaseService As IDatabaseService
         Private _roomRepository As IRoomRepository
         Private _unitOfWork As IUnitOfWork
         Private _roomCategoriesList As List(Of RoomCategory)
@@ -15,17 +15,17 @@ Namespace Rooms.Factories
 
         <TestInitialize>
         Public Sub TestInitialize()
-            _context =
-                New DatabaseContext(
+            _databaseService =
+                New DatabaseService(
                     $"data source=KHUONG-ASUS\SQLEXPRESS;initial catalog=HotelieDatabase;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
-            _roomRepository = New RoomRepository(_context)
-            _unitOfWork = New UnitOfWork(_context)
+            _roomRepository = New RoomRepository(_databaseService)
+            _unitOfWork = New UnitOfWork(_databaseService)
             _createRoomFactory = New CreateRoomFactory(_roomRepository, _unitOfWork)
         End Sub
 
         <TestCleanup>
         Public Sub TestCleanup
-            _context.Dispose()
+            _databaseService.Context.Dispose()
         End Sub
 
         Public Sub RoomCategoriesInitialize()
@@ -36,14 +36,14 @@ Namespace Rooms.Factories
             _roomCategoriesList.Add(roomCategory1)
             _roomCategoriesList.Add(roomCategory2)
             _roomRepository.AddRoomCategories(_roomCategoriesList)
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
         End Sub
 
         Public Sub DisposeRoomCategories()
             _roomCategoriesList?.Clear()
             _roomRepository.RemoveRange(_roomRepository.GetAll())
             _roomRepository.RemoveRoomCategories(_roomRepository.GetAllRoomCategories())
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
         End Sub
 
         <TestMethod>

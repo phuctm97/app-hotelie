@@ -3,9 +3,7 @@ Imports Hotelie.Presentation.Common
 
 Namespace Leases.ViewModels
 	Public Class LeasesWorkspaceViewModel
-		Implements IWorkspace
-
-		Public Property DisplayName As String Implements IHaveDisplayName.DisplayName
+		Inherits Screen
 
 		Public Sub New()
 			DisplayName = "Thuê phòng"

@@ -48,7 +48,7 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>_Resources\Icons\icon.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Icons\icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
@@ -126,49 +126,70 @@
       <DependentUpon>Application.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Bills\ViewModels\BillsWorkspaceViewModel.vb" />
+    <Compile Include="Bills\Views\BillsWorkspaceView.xaml.vb">
+      <DependentUpon>BillsWorkspaceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Converters\BooleanToVisibilityConverter.vb" />
+    <Compile Include="Common\Converters\DecimalToCurrencyStringConverter.vb" />
+    <Compile Include="Common\Converters\StringToUpperConverter.vb" />
     <Compile Include="Common\IMainWindow.vb" />
     <Compile Include="Common\IShell.vb" />
-    <Compile Include="Common\IWorkspace.vb" />
+    <Compile Include="Common\IWindowCommandsBar.vb" />
     <Compile Include="Leases\ViewModels\LeasesWorkspaceViewModel.vb" />
     <Compile Include="Leases\Views\LeasesWorkspaceView.xaml.vb">
       <DependentUpon>LeasesWorkspaceView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Rooms\Converters\NullableColorConverter.vb" />
-    <Compile Include="Rooms\Converters\NullableValueConverter.vb" />
-    <Compile Include="Rooms\Converters\DecimalToCurrencyStringConverter.vb" />
-    <Compile Include="Rooms\Converters\StateToBackColorConverter.vb" />
-    <Compile Include="Rooms\Converters\StateToStateStringConverter.vb" />
-    <Compile Include="Rooms\ViewModels\AddRoomViewModel.vb" />
-    <Compile Include="Rooms\ViewModels\RoomDetailViewModel.vb" />
+    <Compile Include="Rooms\Converters\RoomStateToBackColorConverter.vb" />
+    <Compile Include="Rooms\Converters\RoomStateToStringConverter.vb" />
+    <Compile Include="Rooms\ViewModels\ScreenRoomDetailViewModel.vb" />
+    <Compile Include="Rooms\ViewModels\ScreenRoomsListViewModel.vb" />
     <Compile Include="Rooms\ViewModels\RoomsWorkspaceViewModel.vb" />
-    <Compile Include="Rooms\Views\AddRoomView.xaml.vb">
-      <DependentUpon>AddRoomView.xaml</DependentUpon>
+    <Compile Include="Rooms\Views\ScreenRoomDetailView.xaml.vb">
+      <DependentUpon>ScreenRoomDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Rooms\Views\RoomDetailView.xaml.vb">
-      <DependentUpon>RoomDetailView.xaml</DependentUpon>
+    <Compile Include="Rooms\Views\ScreenRoomsListView.xaml.vb">
+      <DependentUpon>ScreenRoomsListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Rooms\Views\RoomsWorkspaceView.xaml.vb">
       <DependentUpon>RoomsWorkspaceView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="_Start\AppBootstrapper.vb" />
-    <Compile Include="_Start\LoginShell\Converters\BooleanToVisibilityConverter.vb" />
-    <Compile Include="_Start\LoginShell\Converters\NotificationTypeToBooleanConverter.vb" />
-    <Compile Include="_Start\LoginShell\Converters\NotificationTypeToColorConverter.vb" />
-    <Compile Include="_Start\LoginShell\Converters\NotificationTypeToPackIconKindConverter.vb" />
-    <Compile Include="_Start\LoginShell\Converters\WindowStateReverseNameConverter.vb" />
-    <Compile Include="_Start\LoginShell\Models\Notification.vb" />
-    <Compile Include="_Start\LoginShell\ViewModels\LoginShellViewModel.vb" />
-    <Compile Include="_Start\LoginShell\Views\LoginShellView.xaml.vb">
+    <Compile Include="Start\AppBootstrapper.vb" />
+    <Compile Include="Start\LoginShell\Converters\NotificationTypeToBooleanConverter.vb" />
+    <Compile Include="Start\LoginShell\Converters\NotificationTypeToColorConverter.vb" />
+    <Compile Include="Start\LoginShell\Converters\NotificationTypeToPackIconKindConverter.vb" />
+    <Compile Include="Start\LoginShell\Models\Notification.vb" />
+    <Compile Include="Start\LoginShell\ViewModels\ScreenLoginViewModel.vb" />
+    <Compile Include="Start\LoginShell\ViewModels\LoginShellCommandsBarViewModel.vb" />
+    <Compile Include="Start\LoginShell\ViewModels\LoginShellViewModel.vb" />
+    <Compile Include="Start\LoginShell\ViewModels\ScreenSettingsViewModel.vb" />
+    <Compile Include="Start\LoginShell\Views\ScreenLoginView.xaml.vb">
+      <DependentUpon>ScreenLoginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Start\LoginShell\Views\LoginShellCommandsBarView.xaml.vb">
+      <DependentUpon>LoginShellCommandsBarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Start\LoginShell\Views\LoginShellView.xaml.vb">
       <DependentUpon>LoginShellView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="_Start\MainWindow\ViewModels\MainWindowViewModel.vb" />
-    <Compile Include="_Start\MainWindow\Views\MainWindowView.xaml.vb">
+    <Compile Include="Start\LoginShell\Views\ScreenSettingsView.xaml.vb">
+      <DependentUpon>ScreenSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Start\MainWindow\Converters\WindowStateReverseIconKindConverter.vb" />
+    <Compile Include="Start\MainWindow\Converters\WindowStateReverseNameConverter.vb" />
+    <Compile Include="Start\MainWindow\ViewModels\MainWindowViewModel.vb" />
+    <Compile Include="Start\MainWindow\Views\MainWindowView.xaml.vb">
       <DependentUpon>MainWindowView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="_Start\WorkspaceShell\Converters\CapitalizeConverter.vb" />
-    <Compile Include="_Start\WorkspaceShell\Converters\WindowStateReverseNameConverter.vb" />
-    <Compile Include="_Start\WorkspaceShell\ViewModels\WorkspaceShellViewModel.vb" />
-    <Compile Include="_Start\WorkspaceShell\Views\WorkspaceShellView.xaml.vb">
+    <Compile Include="Start\WorkspaceShell\ViewModels\WorkspaceShellCommandsBarViewModel.vb" />
+    <Compile Include="Start\WorkspaceShell\ViewModels\WorkspaceShellViewModel.vb" />
+    <Compile Include="Common\Controls\TwoButtonDialog.xaml.vb">
+      <DependentUpon>TwoButtonDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Start\WorkspaceShell\Views\WorkspaceShellCommandsBarView.xaml.vb">
+      <DependentUpon>WorkspaceShellCommandsBarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Start\WorkspaceShell\Views\WorkspaceShellView.xaml.vb">
       <DependentUpon>WorkspaceShellView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -226,15 +247,19 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Bills\Views\BillsWorkspaceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Leases\Views\LeasesWorkspaceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Rooms\Views\AddRoomView.xaml">
+    <Page Include="Rooms\Views\ScreenRoomDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Rooms\Views\RoomDetailView.xaml">
+    <Page Include="Rooms\Views\ScreenRoomsListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -242,15 +267,35 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="_Start\LoginShell\Views\LoginShellView.xaml">
+    <Page Include="Start\LoginShell\Views\ScreenLoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="_Start\MainWindow\Views\MainWindowView.xaml">
+    <Page Include="Start\LoginShell\Views\LoginShellCommandsBarView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="_Start\WorkspaceShell\Views\WorkspaceShellView.xaml">
+    <Page Include="Start\LoginShell\Views\LoginShellView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Start\LoginShell\Views\ScreenSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Start\MainWindow\Views\MainWindowView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Common\Controls\TwoButtonDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Start\WorkspaceShell\Views\WorkspaceShellCommandsBarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Start\WorkspaceShell\Views\WorkspaceShellView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -266,8 +311,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="_Resources\Icons\icon.ico" />
-    <Resource Include="_Resources\Icons\icon.png" />
+    <Resource Include="Resources\Icons\icon.ico" />
+    <Resource Include="Resources\Icons\icon.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
