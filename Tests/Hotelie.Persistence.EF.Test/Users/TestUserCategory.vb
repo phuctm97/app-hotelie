@@ -3,7 +3,7 @@ Imports Hotelie.Domain.Users
 Imports Hotelie.Persistence.Common
 
 Namespace Users
-    <TestClass>
+    ' <TestClass>
     Public Class TestUserCategory
         Private _context As DatabaseContext
 
