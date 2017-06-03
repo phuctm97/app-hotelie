@@ -21,7 +21,7 @@ Namespace Services.Authentication
         ''' <summary>
         '''     Login to Hotelie
         ''' </summary>
-        Public Function TryLogin(account As Account) As IEnumerable(Of String) Implements IAuthentication.TryLogin
+        Public Function TryLogin(username As String, password As String) As IEnumerable(Of String) Implements IAuthentication.TryLogin
             Dim errorLog = New List(Of String)
 
             ' Currently logged in
@@ -31,20 +31,20 @@ Namespace Services.Authentication
             End If
 
             ' Username is invalid
-            Dim user = _userRepository.Find(Function(p)(p.Id = account.Username)).FirstOrDefault()
+            Dim user = _userRepository.Find(Function(p)(p.Id = username)).FirstOrDefault()
             If (IsNothing(user))
                 errorLog.Add(UsernameInvalidError)
                 Return errorLog
             End If
 
             ' Password is invalid
-            If (user.Password <> account.Password)
+            If (user.Password <> password)
                 errorLog.Add(PasswordInvalidError)
                 Return errorLog
             End If
 
             ' Logging in
-            LoggedAccount = New Account() With {.Username=account.Username,.Password=account.Password}
+            LoggedAccount = New Account() With {.Username=username}
 
             Return errorLog
         End Function
