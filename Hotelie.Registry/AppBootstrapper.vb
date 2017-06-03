@@ -33,7 +33,7 @@ Public Class AppBootstrapper
         _container.RegisterType(Of IAuthentication, Authentication)( New ContainerControlledLifetimeManager() )
         _container.RegisterType(Of IDatabaseService, DatabaseService)(New ContainerControlledLifetimeManager())
         _container.RegisterType(Of IGetLeasesListQuery, GetLeasesListQuery)(New ContainerControlledLifetimeManager())
-        _container.RegisterType(Of IRoomRepository, IRoomRepository)(New ContainerControlledLifetimeManager())
+        _container.RegisterType(Of IRoomRepository, RoomRepository)(New ContainerControlledLifetimeManager())
         _container.RegisterType(Of ILeaseRepository, LeaseRepository)(New ContainerControlledLifetimeManager())
         _container.RegisterType(Of IGetRoomsListQuery, GetRoomsListQuery)(New ContainerControlledLifetimeManager())
         _container.RegisterType _
