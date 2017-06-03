@@ -1,5 +1,4 @@
 ﻿Imports Hotelie.Application.Services.Persistence
-Imports Hotelie.Persistence.DatabaseServices
 
 Namespace Common
 	Public Class UnitOfWork
