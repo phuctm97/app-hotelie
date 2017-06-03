@@ -32,6 +32,7 @@ Namespace Query
 
         Public Sub LeasesInitialize()
             DisposeLeases()
+            _context.CustomerCategories.RemoveRange(_context.CustomerCategories)
 
             Dim roomCategory = New RoomCategory() With {.Id = "00001", .Name="Annonymous", .Price=200000}
 
@@ -86,8 +87,17 @@ Namespace Query
             ' pre-input
             LeasesInitialize()
 
+            ' input
+            Dim customerCategory = New CustomerCategory() With {.Id = "ND001",.Name = "Noi Dia"}
+            _context.CustomerCategories.Add(customerCategory)
+            _context.SaveChanges()
+
+            Dim leaseCustomer = New LeaseDetail() With {.Id="LD001",.Address = "Customer Address",.Lease=_leasesList(0),.CustomerName="CustomerName",.CustomerCategory=customerCategory,.LicenseId="licenseId"}
+            _context.LeaseDetails.Add(leaseCustomer)
+            _context.SaveChanges()
+
             ' act
-            Dim leases = _getLeasesQuery.Execute()
+            Dim leases = _getLeasesQuery.Execute().ToList()
 
             ' assert 
             Assert.IsNotNull(leases)
@@ -102,8 +112,15 @@ Namespace Query
                 Assert.IsTrue(q)
             Next
 
+            Dim leaseCustomers = _leaseRepository.GetCustomers(_leasesList(0).Id)
+            Assert.IsNotNull(leaseCustomers)
+            Assert.IsTrue(leaseCustomers(0).Id = leaseCustomer.Id And leaseCustomers(0).CustomerCategory.Id = leaseCustomer.CustomerCategory.Id)
+            
             ' rollback
-            DisposeLeases
+            _context.LeaseDetails.Remove(leaseCustomer)
+            _context.CustomerCategories.Remove(customerCategory)
+            _context.SaveChanges()
+            DisposeLeases()
         End Sub
     End Class
 End NameSpace
