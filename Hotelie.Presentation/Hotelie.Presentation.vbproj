@@ -131,6 +131,7 @@
       <DependentUpon>BillsWorkspaceView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\Converters\BooleanToVisibilityConverter.vb" />
+    <Compile Include="Common\Converters\DecimalToCurrencyStringConverter.vb" />
     <Compile Include="Common\Converters\StringToUpperConverter.vb" />
     <Compile Include="Common\IMainWindow.vb" />
     <Compile Include="Common\IShell.vb" />
@@ -139,6 +140,8 @@
     <Compile Include="Leases\Views\LeasesWorkspaceView.xaml.vb">
       <DependentUpon>LeasesWorkspaceView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Rooms\Converters\RoomStateToBackColorConverter.vb" />
+    <Compile Include="Rooms\Converters\RoomStateToStringConverter.vb" />
     <Compile Include="Rooms\ViewModels\ScreenRoomsListViewModel.vb" />
     <Compile Include="Rooms\ViewModels\RoomsWorkspaceViewModel.vb" />
     <Compile Include="Rooms\Views\ScreenRoomsListView.xaml.vb">
