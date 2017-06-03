@@ -6,6 +6,7 @@ Namespace Services.Persistence
         Inherits IRepository(Of User)
 
         Function GetUserCategory( id As Object ) As UserCategory
+        Function GetUserCategoryAsync( id As Object ) As UserCategory
 
         Function GetAllUserCategories() As IQueryable(Of UserCategory)
 

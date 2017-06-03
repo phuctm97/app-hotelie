@@ -9,11 +9,7 @@ Namespace Services.Persistence
 
         Function GetAll() As IQueryable(Of TEntity)
 
-        Function GetAllAsync() As IQueryable(Of TEntity)
-
         Function Find(predicate As Expression(Of Func(Of TEntity, Boolean))) As IQueryable(Of TEntity)
-
-        Function FindAsync(predicate As Expression(Of Func(Of TEntity, Boolean))) As IQueryable(Of TEntity)
 
         Sub Add(entity As TEntity)
 
@@ -21,10 +17,6 @@ Namespace Services.Persistence
 
         Sub Remove(entity As TEntity)
 
-        Sub RemoveAsync(entity As TEntity)
-
         Sub RemoveRange(entities As IEnumerable(Of TEntity))
-
-        Sub RemoveRangeAsync(entities As IEnumerable(Of TEntity))
     End Interface
 End Namespace
