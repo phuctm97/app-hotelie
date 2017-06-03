@@ -24,16 +24,17 @@ Namespace Common
         Public Property Users As DbSet(of User) Implements IDatabaseContext.Users
 
         Public Overrides Function [Set] (Of TEntity As Class)() As DbSet(Of TEntity) Implements IDatabaseContext.[Set]
-            Return MyBase.[Set](Of TEntity)()
+            Return MyBase.[Set] (Of TEntity)()
         End Function
 
         Public Overrides Function SaveChanges() As Integer Implements IDatabaseContext.SaveChanges
             Return MyBase.SaveChanges()
         End Function
 
-        Public Shadows Sub Dispose() Implements IDatabaseContext.Dispose
-            MyBase.Dispose()
-        End Sub
+        Public Overrides Function SaveChangesAsync() As Task(Of Integer) _
+            Implements IDatabaseContext.SaveChangesAsync
+            Return MyBase.SaveChangesAsync()
+        End Function
 
         Public Property Permissions As DbSet(of Permission) Implements IDatabaseContext.Permissions
         Public Property UserCategories As DbSet(of UserCategory) Implements IDatabaseContext.UserCategories
@@ -45,11 +46,10 @@ Namespace Common
         End Sub
 
         Public Sub New(connectionString As String)
-            
+
             MyBase.New(connectionString)
 
             Database.SetInitializer(New DatabaseInitializer)
-
         End Sub
 
         Protected Overrides Sub OnModelCreating(modelBuilder As DbModelBuilder)
