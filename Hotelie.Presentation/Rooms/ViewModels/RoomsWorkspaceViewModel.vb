@@ -31,7 +31,7 @@ Namespace Rooms.ViewModels
 
 			ScreenRoomsList = New ScreenRoomsListViewModel( getRoomsListQuery, getRoomCategoriesListQuery )
 
-			ScreenRoomDetail = New ScreenRoomDetailViewModel( Me, getRoomCategoriesListQuery )
+			ScreenRoomDetail = New ScreenRoomDetailViewModel( Me, getRoomsListQuery, getRoomCategoriesListQuery )
 
 			ScreenAddRoom = New ScreenAddRoomViewModel( Me, getRoomCategoriesListQuery )
 
@@ -45,7 +45,7 @@ Namespace Rooms.ViewModels
 		Public Sub NavigateToScreenRoomDetail( room As RoomModel )
 			If IsNothing( room ) Then Return
 
-			ScreenRoomDetail.SetRoom( room.Id, room.Name, room.CategoryId, room.State, room.Note )
+			ScreenRoomDetail.SetRoom( room.Id )
 			DisplayCode = 1
 		End Sub
 

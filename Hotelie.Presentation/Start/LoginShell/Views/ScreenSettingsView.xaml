@@ -38,7 +38,8 @@
             </StackPanel>
 
             <!--Server name-->
-            <TextBox Margin="40 0 40 16"
+            <TextBox x:Name="ServerTextBox"
+                     Margin="40 0 40 16"
                      materialDesign:HintAssist.FloatingOffset="0, -24"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      FontSize="18"
@@ -48,13 +49,14 @@
                         <materialDesign:PackIcon VerticalAlignment="Center"
                                                  Margin="0 0 4 0"
                                                  Kind="Server" />
-                        <TextBlock x:Name="ServerTextBox" VerticalAlignment="Center" Text="Máy chủ" />
+                        <TextBlock VerticalAlignment="Center" Text="Máy chủ" />
                     </StackPanel>
                 </materialDesign:HintAssist.Hint>
             </TextBox>
 
             <!--Database name-->
-            <TextBox Margin="40 0 40 32"
+            <TextBox x:Name="DatabaseTextBox"
+                     Margin="40 0 40 32"
                      materialDesign:HintAssist.FloatingOffset="0, -24"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      FontSize="18"
@@ -64,7 +66,7 @@
                         <materialDesign:PackIcon VerticalAlignment="Center"
                                                  Margin="0 0 4 0"
                                                  Kind="Database" />
-                        <TextBlock x:Name="DatabaseTextBox" VerticalAlignment="Center" Text="Cơ sở dữ liệu" />
+                        <TextBlock VerticalAlignment="Center" Text="Cơ sở dữ liệu" />
                     </StackPanel>
                 </materialDesign:HintAssist.Hint>
             </TextBox>
