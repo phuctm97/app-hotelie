@@ -1,5 +1,6 @@
 ﻿Imports Caliburn.Micro
 Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
+Imports Hotelie.Application.Rooms.Queries.GetRoomsList
 Imports Hotelie.Presentation.Common.Controls
 Imports MaterialDesignThemes.Wpf
 
@@ -9,9 +10,10 @@ Namespace Rooms.ViewModels
 		Implements IChild(Of RoomsWorkspaceViewModel)
 
 		' Dependencies
-		Private ReadOnly _getRoomCategoriesList As IGetRoomCategoriesListQuery
+		Private ReadOnly _getRoomCategoriesListQuery As IGetRoomCategoriesListQuery
+		Private ReadOnly _getRoomsListQuery As IGetRoomsListQuery
 
-		Private _roomId As String
+		Private _roomModel As RoomModel
 		Private _roomName As String
 		Private _roomCategory As RoomCategoryModel
 		Private _roomNote As String
@@ -30,10 +32,14 @@ Namespace Rooms.ViewModels
 		' Initialization
 
 		Sub New( workspace As RoomsWorkspaceViewModel,
-		         getRoomCategoriesList As IGetRoomCategoriesListQuery )
-			ParentWorkspace = workspace
+		         getRoomsListQuery As IGetRoomsListQuery,
+		         getRoomCategoriesListQuery As IGetRoomCategoriesListQuery )
 
-			_getRoomCategoriesList = getRoomCategoriesList
+			ParentWorkspace = workspace
+			_getRoomsListQuery = getRoomsListQuery
+			_getRoomCategoriesListQuery = getRoomCategoriesListQuery
+
+			InitRooms( Rooms )
 
 			InitRoomCategories( RoomCategories )
 
@@ -41,7 +47,7 @@ Namespace Rooms.ViewModels
 		End Sub
 
 		Private Sub InitValues()
-			_roomId = String.Empty
+			_roomModel = Nothing
 			_roomName = "Chưa có tên"
 			_roomCategory = RoomCategories.FirstOrDefault()
 			_roomNote = String.Empty
@@ -52,9 +58,17 @@ Namespace Rooms.ViewModels
 			_originalRoomNote = _roomNote
 		End Sub
 
+		Private Sub InitRooms( ByRef roomCollection As IObservableCollection(Of RoomModel) )
+			Dim roomsList = _getRoomsListQuery.Execute().ToList()
+			roomsList.Sort( Function( a,
+				              b ) a.Name < b.Name )
+
+			roomCollection = New BindableCollection(Of RoomModel)( roomsList )
+		End Sub
+
 		Private Sub InitRoomCategories( ByRef roomCategoryCollection As IObservableCollection(Of RoomCategoryModel) )
 			roomCategoryCollection = New BindableCollection(Of RoomCategoryModel)
-			roomCategoryCollection.AddRange( _getRoomCategoriesList.Execute() )
+			roomCategoryCollection.AddRange( _getRoomCategoriesListQuery.Execute() )
 		End Sub
 
 		' Data
@@ -107,17 +121,21 @@ Namespace Rooms.ViewModels
 		' ReSharper disable once UnassignedGetOnlyAutoProperty
 		Public ReadOnly Property RoomCategories As IObservableCollection(Of RoomCategoryModel)
 
-		Public Sub SetRoom( id As String,
-		                    name As String,
-		                    categoryId As String,
-		                    state As Integer,
-		                    note As String )
-			_roomId = id
-			RoomName = name
-			RoomCategory = RoomCategories.FirstOrDefault( Function( c ) Equals( c.Id, categoryId ) )
-			RoomState = state
-			RoomNote = note
+		' ReSharper disable once UnassignedGetOnlyAutoProperty
+		Public ReadOnly Property Rooms As IObservableCollection(Of RoomModel)
 
+		Public Sub SetRoom( id As String )
+			' Load model
+			Dim roomModel = Rooms.FirstOrDefault( Function( r ) String.Equals( r.Id, id ) )
+			If IsNothing(roomModel) Then Return
+
+			' Bind values
+			RoomName = roomModel.Name
+			RoomCategory = RoomCategories.FirstOrDefault( Function( c ) Equals( c.Id, roomModel.CategoryId ) )
+			RoomState = roomModel.State
+			RoomNote = roomModel.Note
+
+			' Backup old values
 			_originalRoomName = _roomName
 			_originalRoomCategoryId = _roomCategory.Id
 			_originalRoomNote = _roomNote
