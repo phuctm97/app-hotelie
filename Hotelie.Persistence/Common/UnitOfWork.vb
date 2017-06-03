@@ -1,25 +1,24 @@
 ﻿Imports Hotelie.Application.Services.Persistence
-Imports Hotelie.Persistence.Rooms
-Imports Hotelie.Persistence.Users
+Imports Hotelie.Persistence.DatabaseServices
 
 Namespace Common
 	Public Class UnitOfWork
 		Implements IUnitOfWork
 
-		Private ReadOnly _context As DatabaseContext
+		Private ReadOnly _databaseService As DatabaseService
 
-		Sub New( context As DatabaseContext )
-			_context = context
-			If _context Is Nothing Then Throw New ArgumentNullException()
+		Sub New( databaseService As DatabaseService )
+			_databaseService = databaseService
+			If _databaseService.Context Is Nothing Then Throw New ArgumentNullException()
 		End Sub
 
 
 		Public Sub Commit() Implements IUnitOfWork.Commit
-			_context.SaveChanges()
+			_databaseService.Context.SaveChanges()
 		End Sub
 
 		Public Sub Dispose() Implements IDisposable.Dispose
-			_context.Dispose()
+			_databaseService.Context.Dispose()
 		End Sub
 	End Class
 End Namespace

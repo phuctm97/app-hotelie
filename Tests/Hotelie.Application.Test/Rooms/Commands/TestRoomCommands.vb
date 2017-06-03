@@ -3,12 +3,13 @@ Imports Hotelie.Application.Rooms.Commands.UpdateRoom
 Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Domain.Rooms
 Imports Hotelie.Persistence.Common
+Imports Hotelie.Persistence.DatabaseServices
 Imports Hotelie.Persistence.Rooms
 
 Namespace Rooms.Commands.RemoveRoom
     <TestClass>
     Public Class TestRemoveRoomCommand
-        Private _context As DatabaseContext
+        Private _databaseService As DatabaseService
         Private _unitOfWork As IUnitOfWork
         Private _roomRepository As IRoomRepository
         Private _removeRoomCommand As IRemoveRoomCommand
@@ -18,18 +19,18 @@ Namespace Rooms.Commands.RemoveRoom
 
         <TestInitialize>
         Public Sub TestInitialize()
-            _context =
-                New DatabaseContext(
+           _databaseService =
+                New DatabaseService(
                     $"data source=KHUONG-ASUS\SQLEXPRESS;initial catalog=HotelieDatabase;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
-            _roomRepository = New RoomRepository(_context)
-            _unitOfWork = New UnitOfWork(_context)
+            _roomRepository = New RoomRepository(_databaseService)
+            _unitOfWork = New UnitOfWork(_databaseService)
             _removeRoomCommand = new RemoveRoomCommand(_roomRepository, _unitOfWork)
             _updateRoomCommand = new UpdateRoomCommand(_roomRepository, _unitOfWork)
         End Sub
 
         <TestCleanup>
         Public Sub TestCleanup
-            _context.Dispose()
+           _databaseService.Context.Dispose()
         End Sub
 
         Public Sub RoomsInitialize()
@@ -39,7 +40,7 @@ Namespace Rooms.Commands.RemoveRoom
             _roomCategoriesList.Add(roomCategory1)
             _roomCategoriesList.Add(roomCategory2)
             _roomRepository.AddRoomCategories(_roomCategoriesList)
-            _context.SaveChanges()
+           _databaseService.Context.SaveChanges()
 
             _roomsList = New List(Of Room)
             Dim room1 = new Room() _
@@ -52,7 +53,7 @@ Namespace Rooms.Commands.RemoveRoom
             _roomsList.Add(room2)
             _roomsList.Add(room3)
             _roomRepository.AddRange(_roomsList)
-            _context.SaveChanges()
+           _databaseService.Context.SaveChanges()
         End Sub
 
         Public Sub DisposeRooms()
@@ -60,7 +61,7 @@ Namespace Rooms.Commands.RemoveRoom
             _roomCategoriesList?.Clear()
             _roomRepository.RemoveRange(_roomRepository.GetAll())
             _roomRepository.RemoveRoomCategories(_roomRepository.GetAllRoomCategories())
-            _context.SaveChanges()
+           _databaseService.Context.SaveChanges()
         End Sub
 
         <TestMethod>
