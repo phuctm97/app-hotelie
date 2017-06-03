@@ -2,13 +2,12 @@
 Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Domain.Rooms
 Imports Hotelie.Persistence.Common
-Imports Hotelie.Persistence.DatabaseServices
 Imports Hotelie.Persistence.Rooms
 
 Namespace Rooms.Factories
     <TestClass>
     Public Class TestRoomFactories
-        Private _databaseService As DatabaseService
+        Private _databaseService As IDatabaseService
         Private _roomRepository As IRoomRepository
         Private _unitOfWork As IUnitOfWork
         Private _roomCategoriesList As List(Of RoomCategory)
