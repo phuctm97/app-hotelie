@@ -11,15 +11,17 @@ Namespace Tests.Services.Persistence
 		End Property
 
 		Public Sub Dispose() Implements IDatabaseService.Dispose
-			Throw New NotImplementedException()
 		End Sub
 
 		Public Sub SetDatabaseConnection(connectionString As String) Implements IDatabaseService.SetDatabaseConnection
-			Throw New NotImplementedException()
 		End Sub
 
 		Public Function CheckDatabaseConnection(connectionString As String) As Boolean Implements IDatabaseService.CheckDatabaseConnection
-			Throw New NotImplementedException()
+			If String.Equals(connectionString, "success")
+				Return True
+			End If
+
+			Return False
 		End Function
 
 	End Class
