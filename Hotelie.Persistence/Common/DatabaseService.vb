@@ -4,7 +4,7 @@ Namespace Common
     Public Class DatabaseService
         Implements IDatabaseService
 
-        Private _context As DatabaseContext
+        Private _context As IDatabaseContext
 
         Public ReadOnly Property Context As IDatabaseContext Implements IDatabaseService.Context
             Get

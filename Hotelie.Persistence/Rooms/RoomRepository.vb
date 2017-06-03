@@ -18,77 +18,45 @@ Namespace Rooms
 
         Public Sub AddRoomCategories(entities As IEnumerable(Of RoomCategory)) _
             Implements IRoomRepository.AddRoomCategories
-            Try
-                _databaseService.Context.RoomCategories.AddRange(entities)
-            Catch
-                Throw New DatabaseConnectionFailedException
-            End Try
+            _databaseService.Context.RoomCategories.AddRange(entities)
         End Sub
 
         Public Sub AddRoomCategory(entity As RoomCategory) Implements IRoomRepository.AddRoomCategory
-            Try
-                _databaseService.Context.RoomCategories.Add(entity)
-            Catch
-                Throw New DatabaseConnectionFailedException
-            End Try
+            _databaseService.Context.RoomCategories.Add(entity)
         End Sub
 
         Public Sub RemoveRoomCategories(entities As IEnumerable(Of RoomCategory)) _
             Implements IRoomRepository.RemoveRoomCategories
-            Try
-                _databaseService.Context.RoomCategories.RemoveRange(entities)
-            Catch
-                Throw New DatabaseConnectionFailedException
-            End Try
+            _databaseService.Context.RoomCategories.RemoveRange(entities)
         End Sub
 
         Public Sub RemoveRoomCategory(entity As RoomCategory) Implements IRoomRepository.RemoveRoomCategory
-            Try
-                _databaseService.Context.RoomCategories.Remove(entity)
-            Catch
-                Throw New DatabaseConnectionFailedException
-            End Try
+            _databaseService.Context.RoomCategories.Remove(entity)
         End Sub
 
         Public Function FindRoomCategory(predicate As Expression(Of Func(Of RoomCategory, Boolean))) _
             As IQueryable(Of RoomCategory) Implements IRoomRepository.FindRoomCategory
-            Try
-                Return _databaseService.Context.RoomCategories.Where(predicate)
-            Catch
-                Throw New DatabaseConnectionFailedException
-            End Try
+            Return _databaseService.Context.RoomCategories.Where(predicate)
         End Function
 
         Public Function GetAllRoomCategories() As IQueryable(Of RoomCategory) _
             Implements IRoomRepository.GetAllRoomCategories
-            Try
-                Return _databaseService.Context.RoomCategories
-            Catch
-                Throw New DatabaseConnectionFailedException
-            End Try
+            Return _databaseService.Context.RoomCategories
         End Function
 
         Public Function GetRoomCategory(id As Object) As RoomCategory _
             Implements IRoomRepository.GetRoomCategory
-            Try
-                Dim idString = CType(id, String)
-                If idString Is Nothing Then Throw New InvalidCastException("Id must be string")
+            Dim idString = CType(id, String)
+            If idString Is Nothing Then Throw New InvalidCastException("Id must be string")
 
-                Return _databaseService.Context.RoomCategories.FirstOrDefault(Function(p) String.Equals(p.Id, idString))
-            Catch
-                Throw New DatabaseConnectionFailedException
-            End Try
+            Return _databaseService.Context.RoomCategories.FirstOrDefault(Function(p) String.Equals(p.Id, idString))
         End Function
 
         Public Overrides Function GetOne(id As Object) As Room
-            Try
-                Dim idString = CType(id, String)
-                If idString Is Nothing Then Throw New InvalidCastException("Id must be string")
+            Dim idString = CType(id, String)
+            If idString Is Nothing Then Throw New InvalidCastException("Id must be string")
 
-                Return _databaseService.Context.Rooms.FirstOrDefault(Function(p) String.Equals(p.Id, idString))
-            Catch
-                Throw New DatabaseConnectionFailedException
-            End Try
+            Return _databaseService.Context.Rooms.FirstOrDefault(Function(p) String.Equals(p.Id, idString))
         End Function
     End Class
 End Namespace

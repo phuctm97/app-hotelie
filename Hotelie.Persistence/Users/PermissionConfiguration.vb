@@ -10,15 +10,13 @@ Namespace Users
 
             [Property](Function(p)p.Id).
                 IsRequired().
-                IsUnicode( False ).
+                IsUnicode(False).
                 IsFixedLength().
                 HasMaxLength(5)
 
             [Property](Function(p)p.Name).
                 IsRequired().
                 HasMaxLength(40)
-
         End Sub
-
     End Class
 End Namespace
