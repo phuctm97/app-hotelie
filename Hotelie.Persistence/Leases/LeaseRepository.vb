@@ -15,14 +15,22 @@ Namespace Leases
         End Sub
 
         Public Function GetCustomers(id As String) As List(Of LeaseDetail) Implements ILeaseRepository.GetCustomers
-            Return _databaseService.Context.LeaseDetails.Where(Function(p)p.Lease.Id = id).ToList()
+            Try
+                Return _databaseService.Context.LeaseDetails.Where(Function(p)p.Lease.Id = id).ToList()
+            Catch
+                Throw New DatabaseConnectionFailedException
+            End Try
         End Function
 
         Public Overrides Function GetOne(id As Object) As Lease
-            Dim idString = CType(id, String)
-            If idString Is Nothing Then Throw New InvalidCastException("Id must be string")
+            Try
+                Dim idString = CType(id, String)
+                If idString Is Nothing Then Throw New InvalidCastException("Id must be string")
 
-            Return _databaseService.Context.Leases.FirstOrDefault(Function(p) String.Equals(p.Id, idString))
+                Return _databaseService.Context.Leases.FirstOrDefault(Function(p) String.Equals(p.Id, idString))
+            Catch
+                Throw New DatabaseConnectionFailedException
+            End Try
         End Function
     End Class
 End Namespace

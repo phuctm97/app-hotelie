@@ -61,13 +61,13 @@ Namespace Authentication
             ' act
             Dim userIndex = 0
             Dim userLoginIndex = 1
-            _authentication.TryLogin(New Account() With{.Username=_usersList(userIndex).Id,.Password=_usersList(userIndex).Password})
-            Dim errorLog = _authentication.TryLogin(New Account() With{.Username=_usersList(userLoginIndex).Id,.Password=_usersList(userLoginIndex).Password})
+            _authentication.TryLogin(_usersList(userIndex).Id,_usersList(userIndex).Password)
+            Dim errorLog = _authentication.TryLogin(_usersList(userLoginIndex).Id,_usersList(userLoginIndex).Password)
 
             ' assert
             Assert.IsTrue(_authentication.LoggedIn)
             Assert.IsNotNull(errorLog)
-            Assert.IsTrue(_authentication.LoggedAccount.Username = _usersList(userIndex).Id And _authentication.LoggedAccount.Password=_usersList(userIndex).Password)
+            Assert.IsTrue(_authentication.LoggedAccount.Username = _usersList(userIndex).Id)
             Assert.AreEqual(Hotelie.Application.Services.Authentication.Authentication.AlreadyLoggedInError,errorLog(0))
 
             ' rollback
@@ -84,8 +84,8 @@ Namespace Authentication
             UserInitialize()
 
             ' act
-            Dim invalidAccountUsername = New Account() With {.Username = "ThisIsAInvalidUsername",.Password="admin"}
-            Dim errorLog = _authentication.TryLogin(invalidAccountUsername)
+            Dim invalidAccountUsername = "ThisIsAInvalidUsername"
+            Dim errorLog = _authentication.TryLogin(invalidAccountUsername,"whateverthisis")
             
             ' assert
             Assert.IsFalse(_authentication.LoggedIn)
@@ -108,8 +108,8 @@ Namespace Authentication
             UserInitialize()
 
             ' act
-            Dim invalidAccountPassword = New Account() With {.Username = _usersList(0).Id,.Password="ThisIsAInvalidPassword"}
-            Dim errorLog = _authentication.TryLogin(invalidAccountPassword)
+            Dim invalidPassword = "ThisIsAInvalidPassword"
+            Dim errorLog = _authentication.TryLogin(_usersList(0).Id,invalidPassword)
             
             ' assert
             Assert.IsFalse(_authentication.LoggedIn)
@@ -133,13 +133,14 @@ Namespace Authentication
 
             ' act
             Dim validAccountIndex = 0
-            Dim validAccount = New Account() With {.Username = _usersList(validAccountIndex).Id,.Password=_usersList(validAccountIndex).Password}
-            Dim errorLog = _authentication.TryLogin(validAccount)
+            Dim validAccountUsername = _usersList(validAccountIndex).Id
+            Dim validAccountPassword = _usersList(validAccountIndex).Password
+            Dim errorLog = _authentication.TryLogin(validAccountUsername, validAccountPassword)
             
             ' assert
             Assert.IsTrue(_authentication.LoggedIn)
             Assert.AreEqual(0,errorLog.Count)
-            Assert.IsTrue(_authentication.LoggedAccount.Username = _usersList(validAccountIndex).Id And _authentication.LoggedAccount.Password=_usersList(validAccountIndex).Password)
+            Assert.IsTrue(_authentication.LoggedAccount.Username = _usersList(validAccountIndex).Id)
 
             ' rollback
             _authentication.Logout()
