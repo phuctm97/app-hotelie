@@ -1,34 +1,34 @@
 ﻿Imports Hotelie.Application.Services.Authentication
 Imports Hotelie.Domain.Users
-Imports Hotelie.Persistence.Common
+Imports Hotelie.Persistence.DatabaseServices
 Imports Hotelie.Persistence.Users
 
 Namespace Authentication
     <TestClass>
     Public Class TestAuthentication
         Private _authentication As Hotelie.Application.Services.Authentication.Authentication
-        Private _context As DatabaseContext
+        Private _databaseService As DatabaseService
         Private _userRepository As UserRepository
         Private _usersList As List(Of User)
 
         <TestInitialize>
         Public Sub TestInitialize()
-            _context =
-                New DatabaseContext(
+            _databaseService =
+                New DatabaseService(
                     $"data source=KHUONG-ASUS\SQLEXPRESS;initial catalog=HotelieDatabase;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
-            _userRepository = new UserRepository(_context)
+            _userRepository = new UserRepository(_databaseService)
             _authentication = new Hotelie.Application.Services.Authentication.Authentication(_userRepository)
         End Sub
 
         <TestCleanup>
         Public Sub TestCleanup()
-            _context.Dispose()
+            _databaseService.Context.Dispose()
         End Sub
 
         Public Sub UserInitialize()
             Dim userCategory = new UserCategory() With{.Id="10001",.Name="nhanvien"}
             _userRepository.AddUserCategory(userCategory)
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
 
             Dim user = New User() With{.Id="nhanvien1",.Password="matkhau",.Category=userCategory}
             Dim admin = New User() With{.Id="admin",.Password="admin",.Category=userCategory}
@@ -38,14 +38,14 @@ Namespace Authentication
             _usersList.Add(admin)
 
             _userRepository.AddRange(_usersList)
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
         End Sub
 
         Public Sub DisposeUsers()
             _usersList?.Clear()
             _userRepository.RemoveUserCategories(_userRepository.GetAllUserCategories())
             _userRepository.RemoveRange(_userRepository.GetAll())
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
         End Sub
 
         <TestMethod>

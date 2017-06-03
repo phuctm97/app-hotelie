@@ -1,21 +1,22 @@
 ﻿
 Imports Hotelie.Domain.Rooms
 Imports Hotelie.Persistence.Common
+Imports Hotelie.Persistence.DatabaseServices
 Imports Hotelie.Persistence.Rooms
 
 Namespace Rooms
     <TestClass>
     Public Class TestRoomRepository
-        Private _context As DatabaseContext
+        Private _databaseService As DatabaseService
         Private _roomRepository As RoomRepository
         Private _categoriesList As List(Of RoomCategory)
         Private _roomsList As List(Of Room)
 
         <TestInitialize>
         Public Sub TestInitialize()
-            _context = New DatabaseContext(
+            _databaseService = New DatabaseService(
                 $"data source=KHUONG-ASUS\SQLEXPRESS;initial catalog=HotelieDatabase;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
-            _roomRepository = new RoomRepository(_context)
+            _roomRepository = new RoomRepository(_databaseService)
         End Sub
 
         Public Sub InitializeCategories()
@@ -29,13 +30,13 @@ Namespace Rooms
             _categoriesList.Add(cat3)
             _categoriesList.Add(cat4)
             _roomRepository.AddRoomCategories(_categoriesList)
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
         End Sub
 
         Public Sub DisposeCategories()
             _categoriesList?.Clear()
             _roomRepository.RemoveRoomCategories(_roomRepository.GetAllRoomCategories())
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
         End Sub
 
         Public Sub InitializeRooms()
@@ -53,20 +54,20 @@ Namespace Rooms
             _roomsList.Add(room4)
             _roomsList.Add(room5)
             _roomRepository.AddRange(_roomsList)
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
         End Sub
 
         Public Sub DisposeRooms()
             DisposeCategories()
             _roomsList?.Clear()
             _roomRepository.RemoveRange(_roomRepository.GetAll())
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
         End Sub
 
         <TestCleanup>
         Public Sub TestCleanup()
             _roomRepository.RemoveRoomCategories(_roomRepository.GetAllRoomCategories())
-            _context.Dispose()
+            _databaseService.Context.Dispose()
         End Sub
 
         <TestMethod>
@@ -74,7 +75,7 @@ Namespace Rooms
 
             ' act
             _roomRepository.RemoveRoomCategories(_roomRepository.GetAllRoomCategories())
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
 
             ' assert
             Dim categories = _roomRepository.GetAllRoomCategories().ToList()
@@ -92,7 +93,7 @@ Namespace Rooms
 
             ' act
             _roomRepository.AddRoomCategory(New RoomCategory() With {.Id=id,.Name=name,.Price=price})
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
 
             ' assert
             Assert.AreEqual(roomCategoriesCount + 1, _roomRepository.GetAllRoomCategories().Count())
@@ -101,14 +102,14 @@ Namespace Rooms
             ' rollback
             Dim roomCategory = _roomRepository.GetRoomCategory(id)
             _roomRepository.RemoveRoomCategory(roomCategory)
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
         End Sub
 
         <TestMethod>
         Public Sub TestGetAllRoomCategories_ValidCategories_CountExtractly()
             ' pre-act
             DisposeCategories()
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
 
             ' input
             Dim name1 = "Normal"
@@ -121,7 +122,7 @@ Namespace Rooms
             ' pre-act
             _roomRepository.AddRoomCategory(New RoomCategory() With {.Id=id1,.Name=name1,.Price=price1})
             _roomRepository.AddRoomCategory(New RoomCategory() With {.Id=id2,.Name=name2,.Price=price2})
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
 
             ' act
             Dim categories = _roomRepository.GetAllRoomCategories().ToList()
@@ -172,7 +173,7 @@ Namespace Rooms
 
             ' act
             _roomRepository.AddRoomCategories(categories)
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
 
             Dim categoriesFromDatabase = _roomRepository.GetAllRoomCategories().ToList()
 
@@ -216,7 +217,7 @@ Namespace Rooms
 
             ' assert
             _roomRepository.RemoveRoomCategory(categoryToDelete)
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
 
             Dim categoryCheck = _roomRepository.FindRoomCategory(Function(p)(p.Id=category.Id And p.Name = category.Name)).FirstOrDefault()
 
@@ -241,7 +242,7 @@ Namespace Rooms
             
             ' act
             _roomRepository.Add(New Room() With{.Id=id, .Name=name, .Category=category})
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
             Dim room = _roomRepository.Find(Function(p)(p.Id = id And p.Name = name And p.Category.Price = category.Price)).FirstOrDefault()
 
             ' assert
@@ -326,7 +327,7 @@ Namespace Rooms
             Dim room = _roomsList(index)
             Dim roomToDelete = _roomRepository.Find(Function(p)(p.Id=room.Id And p.Name = room.Name)).FirstOrDefault()
             _roomRepository.Remove(roomToDelete)
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
             roomToDelete = _roomRepository.Find(Function(p)(p.Id=room.Id And p.Name = room.Name)).FirstOrDefault()
 
             ' assert
@@ -346,7 +347,7 @@ Namespace Rooms
 
             ' act
             _roomRepository.RemoveRange(_roomRepository.GetAll())
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
 
             Dim rooms = _roomRepository.GetAll().ToList()
 

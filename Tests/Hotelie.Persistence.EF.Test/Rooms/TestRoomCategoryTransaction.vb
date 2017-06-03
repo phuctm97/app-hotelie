@@ -1,7 +1,7 @@
 ﻿Imports Hotelie.Persistence.Common
 Imports Hotelie.Domain.Rooms
 Namespace Rooms
-    <TestClass>
+     ' <TestClass>
     Public Class TestRoomCategoryTransaction
         Private _context As DatabaseContext
 

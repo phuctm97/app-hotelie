@@ -1,20 +1,21 @@
 ﻿Imports Hotelie.Domain.Users
 Imports Hotelie.Persistence.Common
+Imports Hotelie.Persistence.DatabaseServices
 Imports Hotelie.Persistence.Users
 
 Namespace Users
     <TestClass>
     Public Class TestUserRepository
-        Private _context As DatabaseContext
+        Private _databaseService As DatabaseService
         Private _userRepository As UserRepository
         Private _categoriesList As List(Of UserCategory)
         Private _usersList As List(Of User)
 
         <TestInitialize>
         Public Sub TestInitialize()
-            _context = New DatabaseContext(
+            _databaseService= New DatabaseService(
                 $"data source=KHUONG-ASUS\SQLEXPRESS;initial catalog=HotelieDatabase;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
-            _userRepository = new UserRepository(_context)
+            _userRepository = new UserRepository(_databaseService)
         End Sub
 
         Public Sub InitializeCategories()
@@ -28,13 +29,13 @@ Namespace Users
             _categoriesList.Add(cat3)
             _categoriesList.Add(cat4)
             _userRepository.AddUserCategories(_categoriesList)
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
         End Sub
 
         Public Sub DisposeCategories()
             _categoriesList?.Clear()
             _userRepository.RemoveUserCategories(_userRepository.GetAllUserCategories())
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
         End Sub
 
         Public Sub InitializeUsers()
@@ -52,20 +53,20 @@ Namespace Users
             _usersList.Add(user4)
             _usersList.Add(user5)
             _userRepository.AddRange(_usersList)
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
         End Sub
 
         Public Sub DisposeUsers()
             DisposeCategories()
             _usersList?.Clear()
             _userRepository.RemoveRange(_userRepository.GetAll())
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
         End Sub
 
         <TestCleanup>
         Public Sub TestCleanup()
             _userRepository.RemoveUserCategories(_userRepository.GetAllUserCategories())
-            _context.Dispose()
+            _databaseService.Context.Dispose()
         End Sub
 
         <TestMethod>
@@ -73,7 +74,7 @@ Namespace Users
 
             ' act
             _userRepository.RemoveUserCategories(_userRepository.GetAllUserCategories())
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
 
             ' assert
             Dim categories = _userRepository.GetAllUserCategories().ToList()
@@ -92,7 +93,7 @@ Namespace Users
 
             ' act
             _userRepository.AddUserCategory(New UserCategory() With {.Id=id,.Name=name})
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
 
             ' assert
             Assert.AreEqual(userCategoriesCount + 1, _userRepository.GetAllUserCategories().Count())
@@ -106,7 +107,7 @@ Namespace Users
         Public Sub TestGetAllUserCategories_ValidCategories_CountExtractly()
             ' pre-act
             DisposeCategories()
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
 
             ' input
             Dim id1 = "10001"
@@ -117,7 +118,7 @@ Namespace Users
             ' pre-act
             _userRepository.AddUserCategory(New UserCategory() With {.Id=id1,.Name=name1})
             _userRepository.AddUserCategory(New UserCategory() With {.Id=id2,.Name=name2})
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
 
             ' act
             Dim categories = _userRepository.GetAllUserCategories().ToList()
@@ -166,7 +167,7 @@ Namespace Users
 
             ' act
             _userRepository.AddUserCategories(categories)
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
 
             Dim categoriesFromDatabase = _userRepository.GetAllUserCategories().ToList()
 
@@ -210,7 +211,7 @@ Namespace Users
 
             ' assert
             _userRepository.RemoveUserCategory(categoryToDelete)
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
 
             Dim categoryCheck = _userRepository.FindUserCategory(Function(p)(p.Id=category.Id And p.Name = category.Name)).FirstOrDefault()
 
@@ -235,7 +236,7 @@ Namespace Users
             
             ' act
             _userRepository.Add(New User() With{.Id=id, .Password=password, .Category=category})
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
             Dim user = _userRepository.Find(Function(p)(p.Id = id And p.Password = password)).FirstOrDefault()
 
             ' assert
@@ -319,7 +320,7 @@ Namespace Users
             Dim user = _usersList(index)
             Dim userToDelete = _userRepository.Find(Function(p)(p.Id=user.Id And p.Password = user.Password)).FirstOrDefault()
             _userRepository.Remove(userToDelete)
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
             userToDelete = _userRepository.Find(Function(p)(p.Id=user.Id And p.Password = user.Password)).FirstOrDefault()
 
             ' assert
@@ -339,7 +340,7 @@ Namespace Users
 
             ' act
             _userRepository.RemoveRange(_userRepository.GetAll())
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
 
             Dim users = _userRepository.GetAll().ToList()
 
