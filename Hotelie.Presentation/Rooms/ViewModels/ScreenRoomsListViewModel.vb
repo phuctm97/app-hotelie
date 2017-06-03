@@ -10,13 +10,13 @@ Namespace Rooms.ViewModels
 		Private _filterRoomNamePrefix As String
 		Private _filterRoomCategory As RoomCategoryModel
 		Private _filterRoomState As Integer?
+		Private _sortingCode As Integer
+		Private _isDescendingSort As Boolean
 
 		' Dependencies
 
 		Private ReadOnly _getRoomListsQuery As IGetRoomsListQuery
 		Private ReadOnly _getRoomCategoriesListQuery As IGetRoomCategoriesListQuery
-		Private _sortingCode As Integer
-		Private _isDescendingSort As Boolean
 
 		' Data
 
@@ -52,7 +52,7 @@ Namespace Rooms.ViewModels
 			FilterRoomCategory = Nothing
 			FilterRoomState = 2
 
-			SortingCode = -1
+			SortingCode = - 1
 			IsDescendingSort = False
 		End Sub
 
@@ -143,6 +143,20 @@ Namespace Rooms.ViewModels
 			FilterRoomNamePrefix = String.Empty
 			FilterRoomCategory = Nothing
 			FilterRoomState = Nothing
+		End Sub
+
+		Public Sub FilterByRoomCategoryOf( room As RoomModel )
+			Dim category = RoomCategories.FirstOrDefault(Function(c) String.Equals(c.Id, room.CategoryId))
+			If IsNothing(category) Then Return
+
+			FilterRoomCategory = category
+		End Sub
+
+		Public Sub FilterByRoomStateOf(room As RoomModel)
+			Dim state = RoomStates.FirstOrDefault(Function(s) Equals(s, room.State))
+			If IsNothing(state) Then Return
+
+			FilterRoomState = state
 		End Sub
 
 		Public Sub RefreshRoomsListVisibility()

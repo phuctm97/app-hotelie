@@ -200,7 +200,8 @@
                                         <StackPanel Grid.Row="0" Grid.Column="2"
                                                     Width="100" Margin="0 16 0 0">
                                             <!--Room category-->
-                                            <Button Margin="0 0 8 8" Padding="3" BorderThickness="0">
+                                            <Button Margin="0 0 8 8" Padding="3" BorderThickness="0"
+                                                    cal:Message.Attach="FilterByRoomCategoryOf($dataContext)">
                                                 <Button.Background>
                                                     <SolidColorBrush
                                                         Color="{Binding CategoryDisplayColor, FallbackValue=Black}" />
@@ -211,8 +212,8 @@
                                                 </Viewbox>
                                             </Button>
                                             <!--Room state-->
-                                            <Button Margin="0 0 8 0" Padding="3"
-                                                    BorderThickness="0">
+                                            <Button Margin="0 0 8 0" Padding="3" BorderThickness="0"
+                                                    cal:Message.Attach="FilterByRoomStateOf($dataContext)">
                                                 <Button.Background>
                                                     <SolidColorBrush
                                                         Color="{Binding State, Converter={StaticResource RoomStateToBackColorConverter}}" />
