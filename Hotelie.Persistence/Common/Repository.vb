@@ -1,13 +1,12 @@
 ﻿Imports System.Data.Entity
 Imports System.Linq.Expressions
 Imports Hotelie.Application.Services.Persistence
-Imports Hotelie.Persistence.DatabaseServices
 
 Namespace Common
 	Public Class Repository(Of TEntity As Class)
 		Implements IRepository(Of TEntity)
 
-		Private ReadOnly _databaseService As DatabaseService
+		Private ReadOnly _databaseService As IDatabaseService
 
 		Sub New( databaseService As DatabaseService )
 			_databaseService = databaseService

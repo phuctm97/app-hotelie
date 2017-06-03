@@ -1,23 +1,20 @@
-﻿Imports Hotelie.Persistence.Common
+﻿Imports Hotelie.Application.Services.Persistence
 
-Namespace DatabaseServices
+Namespace Common
     Public Class DatabaseService
         Implements IDatabaseService
 
         Private _context As DatabaseContext
 
-        Public Property Context As DatabaseContext
+        Public ReadOnly Property Context As IDatabaseContext Implements IDatabaseService.Context
             Get 
                 Return _context
             End Get
-            Private Set
-                _context = Value
-            End Set
         End Property
 
         Public Sub SetDatabaseConnection(connectionString As String) Implements IDatabaseService.SetDatabaseConnection
-            Context?.Dispose()
-            Context = New DatabaseContext(connectionString)
+            _context?.Dispose()
+            _context = New DatabaseContext(connectionString)
         End Sub
 
         Public Function CheckDatabaseConnection(connectionString As String) As Boolean Implements IDatabaseService.CheckDatabaseConnection
@@ -35,11 +32,11 @@ Namespace DatabaseServices
         End Sub
 
         Public Sub New(connectionString As String)
-            Context = New DatabaseContext(connectionString)
+            _context = New DatabaseContext(connectionString)
         End Sub
 
         Public Sub Dispose() Implements IDatabaseService.Dispose
-            Context.Dispose()
+            _context.Dispose()
         End Sub
     End Class
 End NameSpace
