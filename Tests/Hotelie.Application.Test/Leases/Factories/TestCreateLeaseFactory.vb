@@ -76,10 +76,18 @@ Namespace Leases.Factories
             Dim newEndDate = DateTime.ParseExact("8/5/2016", "d/m/yyyy", CultureInfo.InvariantCulture)
 
             ' act
-            Dim lease = _createLeaseFactory.Execute(newId,newRoomId,newBeginDate,newEndDate)
+            Dim lease1 = _createLeaseFactory.Execute(newRoomId,newBeginDate,newEndDate)
+            Dim lease2 = _createLeaseFactory.Execute(newRoomId,newBeginDate,newEndDate)
+            Dim lease3 = _createLeaseFactory.Execute(newRoomId,newBeginDate,newEndDate)
+            Dim lease4 = _createLeaseFactory.Execute(newRoomId,newBeginDate,newEndDate)
+            Dim lease5 = _createLeaseFactory.Execute(newRoomId,newBeginDate,newEndDate)
             
             ' assert
-            Assert.IsNotNull(lease)
+            Assert.IsNotNull(lease1)
+            Assert.IsNotNull(lease2)
+            Assert.IsNotNull(lease3)
+            Assert.IsNotNull(lease4)
+            Assert.IsNotNull(lease5)
 
             Dim newLease = _leaseRepository.GetOne(newId)
             Assert.AreEqual(_roomsList(0).Category.Price,newLease.Price)
