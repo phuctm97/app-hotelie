@@ -27,7 +27,10 @@ Public Class AppBootstrapper
 		_container.RegisterType(Of IEventAggregator, EventAggregator)( New ContainerControlledLifetimeManager() )
         _container.RegisterType(Of IUserRepository, UserRepository)(New ContainerControlledLifetimeManager())
 		_container.RegisterType(Of IAuthentication, Authentication)( New ContainerControlledLifetimeManager() )
-
+	    _container.RegisterType(Of IDatabaseService, DatabaseService)(New ContainerControlledLifetimeManager())
+        _container.RegisterType(Of IGetLeasesListQuery, GetLeasesListQuery)(New ContainerControlledLifetimeManager())
+	    _container.RegisterType(Of IRoomRepository, IRoomRepository)(New ContainerControlledLifetimeManager())
+	    _container.RegisterType(Of IGetRoomsListQuery, GetRoomListQuery)(New ContainerControlledLifetimeManager())
 	End Sub
 
 	Protected Overrides Function GetInstance( service As Type,
