@@ -89,6 +89,7 @@
     <Compile Include="Leases\Factories\LeaseModel.vb" />
     <Compile Include="Leases\Queries\GetLeasesListQuery.vb" />
     <Compile Include="Leases\Queries\IGetLeasesListQuery.vb" />
+    <Compile Include="Leases\Queries\LeaseCustomerModel.vb" />
     <Compile Include="Leases\Queries\LeaseModel.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">

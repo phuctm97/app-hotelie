@@ -226,5 +226,52 @@ Namespace Leases
             ' rollback
             DisposeLeases()
         End Sub
+
+        <TestMethod>
+        Public Sub TestGetLeaseCustomers_ValidLeaseId_AllLeaseCustomers()
+            ' pre-input
+            LeasesInitialize()
+
+            ' valid lease
+            Dim index = 1
+            Dim lease = _leasesList(index)
+
+            ' input
+            Dim customerCategory = New CustomerCategory() With {.Id="CUS01",.Name="Noi Dia"}
+            _context.CustomerCategories.Add(customerCategory)
+            _context.SaveChanges()
+
+            Dim leaseCustomer1 = New LeaseDetail() _
+                    With {.Lease = lease,.Address="Address 1",.CustomerCategory=customerCategory,
+                    .Id="LD001",.CustomerName="Nguyen Van Thi",.LicenseId="123123"}
+            _context.LeaseDetails.Add(leaseCustomer1)
+
+            Dim leaseCustomer2 = New LeaseDetail() _
+                    With {.Lease = lease,.Address="Address 2",.CustomerCategory=customerCategory,
+                    .Id="LD002",.CustomerName="Nguyen Van No",.LicenseId="444555"}
+            _context.LeaseDetails.Add(leaseCustomer2)
+
+            _context.SaveChanges()
+
+            ' act
+            Dim leaseCustomers = _leaseRepository.GetCustomers(lease.Id)
+
+            ' assert
+            Assert.AreEqual(2,leaseCustomers.Count)
+
+            CollectionAssert.AllItemsAreNotNull(leaseCustomers)
+            For Each leaseCustomer As LeaseDetail In leaseCustomers
+                Dim q = (Equals(leaseCustomer1.Id,leaseCustomer.Id) And (Equals(leaseCustomer1.CustomerCategory.Id,leaseCustomer.CustomerCategory.Id))) _
+                        Or (Equals(leaseCustomer2.Id,leaseCustomer.Id) And (Equals(leaseCustomer2.CustomerCategory.Id,leaseCustomer.CustomerCategory.Id)))
+                Assert.IsTrue(q)
+            Next
+
+            ' rollback
+            _context.LeaseDetails.Remove(leaseCustomer1)
+            _context.LeaseDetails.Remove(leaseCustomer2)
+            _context.CustomerCategories.Remove(customerCategory)
+            _context.SaveChanges()
+            DisposeLeases()
+        End Sub
     End Class
 End NameSpace
