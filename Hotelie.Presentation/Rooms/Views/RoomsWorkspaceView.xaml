@@ -9,7 +9,27 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="1024">
-    <materialDesign:Transitioner SelectedIndex="0">
-        <ContentControl cal:View.Model="{Binding ScreenRoomsList}" />
+    <materialDesign:Transitioner SelectedIndex="{Binding DisplayCode}" AutoApplyTransitionOrigins="True">
+
+        <materialDesign:TransitionerSlide>
+            <materialDesign:TransitionerSlide.BackwardWipe>
+                <materialDesign:CircleWipe />
+            </materialDesign:TransitionerSlide.BackwardWipe>
+            <materialDesign:TransitionerSlide.ForwardWipe>
+                <materialDesign:CircleWipe />
+            </materialDesign:TransitionerSlide.ForwardWipe>
+
+            <ContentControl cal:View.Model="{Binding ScreenRoomsList}" />
+        </materialDesign:TransitionerSlide>
+
+        <materialDesign:TransitionerSlide>
+            <materialDesign:TransitionerSlide.BackwardWipe>
+                <materialDesign:CircleWipe />
+            </materialDesign:TransitionerSlide.BackwardWipe>
+            <materialDesign:TransitionerSlide.ForwardWipe>
+                <materialDesign:CircleWipe />
+            </materialDesign:TransitionerSlide.ForwardWipe>
+            <ContentControl cal:View.Model="{Binding ScreenRoomDetail}" />
+        </materialDesign:TransitionerSlide>
     </materialDesign:Transitioner>
 </UserControl>

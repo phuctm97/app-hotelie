@@ -236,7 +236,8 @@
                                                     HorizontalAlignment="Left"
                                                     Margin="8 4 4 8"
                                                     Style="{DynamicResource MaterialDesignFlatButton}"
-                                                    Content="CHI TIẾT" />
+                                                    Content="CHI TIẾT"
+                                                    cal:Message.Attach="NavigateToScreenRoomDetail($dataContext)"/>
 
                                             <Button DockPanel.Dock="Left"
                                                     HorizontalAlignment="Left"
@@ -264,6 +265,9 @@
         <Button Grid.Row="2" Style="{DynamicResource MaterialDesignFloatingActionAccentButton}"
                 HorizontalAlignment="Right"
                 ToolTip="Thêm phòng"
-                Margin="0 -119 32 0" />
+                Margin="0 -119 32 0">
+            <materialDesign:PackIcon Width="24" Height="24"
+                                     Kind="Plus" />
+        </Button>
     </Grid>
 </UserControl>

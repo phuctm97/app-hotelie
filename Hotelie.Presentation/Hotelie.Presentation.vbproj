@@ -142,8 +142,12 @@
     </Compile>
     <Compile Include="Rooms\Converters\RoomStateToBackColorConverter.vb" />
     <Compile Include="Rooms\Converters\RoomStateToStringConverter.vb" />
+    <Compile Include="Rooms\ViewModels\ScreenRoomDetailViewModel.vb" />
     <Compile Include="Rooms\ViewModels\ScreenRoomsListViewModel.vb" />
     <Compile Include="Rooms\ViewModels\RoomsWorkspaceViewModel.vb" />
+    <Compile Include="Rooms\Views\ScreenRoomDetailView.xaml.vb">
+      <DependentUpon>ScreenRoomDetailView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Rooms\Views\ScreenRoomsListView.xaml.vb">
       <DependentUpon>ScreenRoomsListView.xaml</DependentUpon>
     </Compile>
@@ -248,6 +252,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Leases\Views\LeasesWorkspaceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Rooms\Views\ScreenRoomDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
