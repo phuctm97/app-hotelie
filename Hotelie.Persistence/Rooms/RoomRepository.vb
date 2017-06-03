@@ -2,7 +2,6 @@
 Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Domain.Rooms
 Imports Hotelie.Persistence.Common
-Imports Hotelie.Persistence.DatabaseServices
 
 Namespace Rooms
     Public Class RoomRepository

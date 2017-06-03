@@ -2,7 +2,6 @@
 Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Domain.Users
 Imports Hotelie.Persistence.Common
-Imports Hotelie.Persistence.DatabaseServices
 
 Namespace Users
     Public Class UserRepository

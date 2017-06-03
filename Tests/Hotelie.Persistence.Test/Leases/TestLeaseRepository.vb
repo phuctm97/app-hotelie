@@ -1,15 +1,15 @@
 ﻿Imports System.Globalization
+Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Domain.Leases
 Imports Hotelie.Domain.Rooms
 Imports Hotelie.Persistence.Common
-Imports Hotelie.Persistence.DatabaseServices
 Imports Hotelie.Persistence.Leases
 Imports Hotelie.Persistence.Rooms
 
 Namespace Leases
     <TestClass>
     Public Class TestLeaseRepository
-        Private _databaseService As DatabaseService
+        Private _databaseService As IDatabaseService
         Private _leaseRepository As LeaseRepository
         Private _roomRepository As RoomRepository
         Private _leasesList As List(Of Lease)

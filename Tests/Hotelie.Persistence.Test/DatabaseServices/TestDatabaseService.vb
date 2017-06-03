@@ -1,10 +1,11 @@
-﻿Imports Hotelie.Domain.Users
-Imports Hotelie.Persistence.DatabaseServices
+﻿Imports Hotelie.Application.Services.Persistence
+Imports Hotelie.Domain.Users
+Imports Hotelie.Persistence.Common
 
 Namespace DatabaseServices
     <TestClass>
     Public Class TestDatabaseService
-        Private _databaseService As DatabaseService
+        Private _databaseService As IDatabaseService
 
         <TestInitialize>
         Public Sub TestInitialze()

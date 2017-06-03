@@ -1,12 +1,12 @@
-﻿Imports Hotelie.Domain.Users
+﻿Imports Hotelie.Application.Services.Persistence
+Imports Hotelie.Domain.Users
 Imports Hotelie.Persistence.Common
-Imports Hotelie.Persistence.DatabaseServices
 Imports Hotelie.Persistence.Users
 
 Namespace Users
     <TestClass>
     Public Class TestUserRepository
-        Private _databaseService As DatabaseService
+        Private _databaseService As IDatabaseService
         Private _userRepository As UserRepository
         Private _categoriesList As List(Of UserCategory)
         Private _usersList As List(Of User)
