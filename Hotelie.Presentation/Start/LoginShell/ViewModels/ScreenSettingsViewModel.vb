@@ -52,8 +52,12 @@ Namespace Start.LoginShell.ViewModels
 			IoC.Get(Of IMainWindow).CloseStaticDialog()
 
 			If result
+				' save settings
 				My.Settings.HotelieDatabaseConnectionString = connectionString
 				My.Settings.Save()
+
+				' reload database service
+				_databaseService.SetDatabaseConnection( connectionString )
 
 				IoC.Get(Of IMainWindow).ShowStaticNotification( StaticNotificationType.Ok, "Đã thiết lập kết nối!" )
 			Else
