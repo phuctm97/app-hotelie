@@ -1,17 +1,17 @@
 ﻿Imports System.Globalization
 Imports Hotelie.Application.Leases.Commands.RemoveLease
 Imports Hotelie.Application.Leases.Commands.UpdateLease
+Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Domain.Leases
 Imports Hotelie.Domain.Rooms
 Imports Hotelie.Persistence.Common
-Imports Hotelie.Persistence.DatabaseServices
 Imports Hotelie.Persistence.Leases
 Imports Hotelie.Persistence.Rooms
 
 Namespace Leases.Commands
     <TestClass>
     Public Class TestLeaseCommand
-        Private _databaseService As DatabaseService
+        Private _databaseService As IDatabaseService
         Private _leaseRepository As LeaseRepository
         Private _roomRepository As RoomRepository
         Private _leasesList As List(Of Lease)

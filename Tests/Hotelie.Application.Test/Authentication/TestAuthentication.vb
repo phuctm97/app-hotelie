@@ -1,13 +1,14 @@
 ﻿Imports Hotelie.Application.Services.Authentication
+Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Domain.Users
-Imports Hotelie.Persistence.DatabaseServices
+Imports Hotelie.Persistence.Common
 Imports Hotelie.Persistence.Users
 
 Namespace Authentication
     <TestClass>
     Public Class TestAuthentication
         Private _authentication As Hotelie.Application.Services.Authentication.Authentication
-        Private _databaseService As DatabaseService
+        Private _databaseService As IDatabaseService
         Private _userRepository As UserRepository
         Private _usersList As List(Of User)
 

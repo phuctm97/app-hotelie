@@ -1,9 +1,6 @@
-﻿
-Imports System.Data.Entity
-Imports Hotelie.Application.Services.Persistence
+﻿Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Domain.Leases
 Imports Hotelie.Persistence.Common
-Imports Hotelie.Persistence.DatabaseServices
 
 Namespace Leases
     Public Class LeaseRepository
