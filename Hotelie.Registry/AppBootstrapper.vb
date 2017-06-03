@@ -2,6 +2,7 @@
 Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
 Imports Hotelie.Application.Rooms.Queries.GetRoomsList
 Imports Hotelie.Application.Services.Authentication
+Imports Hotelie.Application.Services.Persistence
 Imports Microsoft.Practices.Unity
 
 Public Class AppBootstrapper
@@ -24,6 +25,9 @@ Public Class AppBootstrapper
 	Protected Overridable Sub ComposeDependencies()
 		_container.RegisterType(Of IWindowManager, WindowManager)( New ContainerControlledLifetimeManager() )
 		_container.RegisterType(Of IEventAggregator, EventAggregator)( New ContainerControlledLifetimeManager() )
+
+		_container.RegisterType(Of IDatabaseService, Tests.Services.Persistence.DatabaseService)(
+			New ContainerControlledLifetimeManager() )
 		_container.RegisterType(Of IAuthentication, Tests.Services.Authentication.Authentication)(
 			New ContainerControlledLifetimeManager() )
 
