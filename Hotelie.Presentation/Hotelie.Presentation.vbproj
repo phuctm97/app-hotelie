@@ -130,6 +130,9 @@
     <Compile Include="Bills\Views\BillsWorkspaceView.xaml.vb">
       <DependentUpon>BillsWorkspaceView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\Controls\LoadingDialog.xaml.vb">
+      <DependentUpon>LoadingDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Common\Controls\ThreeButtonDialog.xaml.vb">
       <DependentUpon>ThreeButtonDialog.xaml</DependentUpon>
     </Compile>
@@ -183,12 +186,13 @@
     <Compile Include="Start\LoginShell\Views\ScreenSettingsView.xaml.vb">
       <DependentUpon>ScreenSettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Start\MainWindow\Converters\NotificationTypeToBooleanConverter.vb" />
-    <Compile Include="Start\MainWindow\Converters\NotificationTypeToColorConverter.vb" />
-    <Compile Include="Start\MainWindow\Converters\NotificationTypeToIconKindConverter.vb" />
+    <Compile Include="Start\MainWindow\Converters\StaticNotificationTypeToBooleanConverter.vb" />
+    <Compile Include="Start\MainWindow\Converters\StaticNotificationTypeToColorConverter.vb" />
+    <Compile Include="Start\MainWindow\Converters\StaticNotificationTypeToIconKindConverter.vb" />
     <Compile Include="Start\MainWindow\Converters\WindowStateReverseIconKindConverter.vb" />
     <Compile Include="Start\MainWindow\Converters\WindowStateReverseNameConverter.vb" />
-    <Compile Include="Start\MainWindow\Models\Notification.vb" />
+    <Compile Include="Start\MainWindow\Models\StaticDialogModel.vb" />
+    <Compile Include="Start\MainWindow\Models\StaticNotificationModel.vb" />
     <Compile Include="Start\MainWindow\ViewModels\MainWindowViewModel.vb" />
     <Compile Include="Start\MainWindow\Views\MainWindowView.xaml.vb">
       <DependentUpon>MainWindowView.xaml</DependentUpon>
@@ -262,6 +266,10 @@
     <Page Include="Bills\Views\BillsWorkspaceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Common\Controls\LoadingDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Common\Controls\ThreeButtonDialog.xaml">
       <Generator>MSBuild:Compile</Generator>

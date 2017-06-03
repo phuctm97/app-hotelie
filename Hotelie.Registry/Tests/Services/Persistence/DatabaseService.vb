@@ -13,16 +13,21 @@ Namespace Tests.Services.Persistence
 		Public Sub Dispose() Implements IDatabaseService.Dispose
 		End Sub
 
-		Public Sub SetDatabaseConnection(connectionString As String) Implements IDatabaseService.SetDatabaseConnection
+		Public Sub SetDatabaseConnection( connectionString As String ) Implements IDatabaseService.SetDatabaseConnection
 		End Sub
 
-		Public Function CheckDatabaseConnection(connectionString As String) As Boolean Implements IDatabaseService.CheckDatabaseConnection
-			If String.Equals(connectionString, "success")
+		Public Function CheckDatabaseConnection( connectionString As String ) As Boolean _
+			Implements IDatabaseService.CheckDatabaseConnection
+			If String.Equals( connectionString, "success" )
 				Return True
 			End If
 
 			Return False
 		End Function
 
+		Public Async Function CheckDatabaseConnectionAsync( connectionString As String ) As Task(Of Boolean) _
+			Implements IDatabaseService.CheckDatabaseConnectionAsync
+			Return Await Task.Run( Function() CheckDatabaseConnection( connectionString ) )
+		End Function
 	End Class
 End Namespace
