@@ -19,5 +19,6 @@ Namespace Services.Persistence
         Property Users As DbSet(Of User)
         Function [Set](Of TEntity As Class) As DbSet(Of TEntity)
         Function SaveChanges() As Integer
+        Function SaveChangesAsync() As Task(Of Integer)
     End Interface
 End Namespace
