@@ -28,6 +28,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <commonConverters:StringToUpperConverter x:Key="StringToUpperConverter" />
+            <commonConverters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <converters:WindowStateReverseNameConverter x:Key="WindowStateReverseNameConverter" />
             <converters:WindowStateReverseIconKindConverter x:Key="WindowStateReverseIconKindConverter" />
             <converters:NotificationTypeToBooleanConverter x:Key="NotificationTypeToBooleanConverter" />
@@ -127,7 +128,9 @@
         </materialDesign:ColorZone>
 
         <!--Shell-->
-        <materialDesign:DialogHost Identifier="shell" Grid.Row="1">
+        <materialDesign:DialogHost Grid.Row="1" Identifier="shell"
+                                   DialogContent="{Binding Path=Dialog.Content}"
+                                   IsOpen="{Binding Path=Dialog.IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
             <materialDesign:DrawerHost
                 IsTopDrawerOpen="{Binding Path=Notification.Type, Converter={StaticResource NotificationTypeToBooleanConverter}}">
 

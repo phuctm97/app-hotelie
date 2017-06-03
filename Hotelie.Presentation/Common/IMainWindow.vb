@@ -21,6 +21,10 @@ Namespace Common
 
 		Sub HideNotification()
 
+		Sub ShowDialog( content As Object )
+
+		Sub HideDialog()
+
 		Sub DragMove()
 
 		Sub ToggleZoomState()

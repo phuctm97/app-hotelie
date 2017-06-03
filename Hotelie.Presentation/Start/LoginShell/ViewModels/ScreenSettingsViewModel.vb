@@ -1,7 +1,9 @@
 ﻿Imports Caliburn.Micro
 Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Presentation.Common
+Imports Hotelie.Presentation.Common.Controls
 Imports Hotelie.Presentation.Start.MainWindow.Models
+Imports MaterialDesignThemes.Wpf
 
 Namespace Start.LoginShell.ViewModels
 	Public Class ScreenSettingsViewModel
@@ -13,7 +15,8 @@ Namespace Start.LoginShell.ViewModels
 		End Sub
 
 		Public Sub TestConnection( dataSource As String,
-		                           catalog As String )
+		                                 catalog As String )
+
 			Dim connectionString =
 				    $"data source={dataSource};initial catalog={catalog _
 				    };integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
@@ -26,6 +29,7 @@ Namespace Start.LoginShell.ViewModels
 				IoC.Get(Of IMainWindow).ShowNotification( NotificationType.Error, "Kết nối thất bại!" )
 			End If
 		End Sub
+
 
 		Public Sub ApplyConnection( dataSource As String,
 		                            catalog As String )

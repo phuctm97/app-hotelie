@@ -26,6 +26,8 @@ Namespace Start.MainWindow.ViewModels
 			WindowState = WindowState.Normal
 
 			Notification = New Notification()
+
+			Dialog = New Dialog()
 		End Sub
 
 		' Window properties
@@ -80,6 +82,8 @@ Namespace Start.MainWindow.ViewModels
 
 		Public ReadOnly Property Notification As Notification
 
+		Public ReadOnly Property Dialog As Dialog
+
 		' Shell
 
 		Public ReadOnly Property Shell As IShell Implements IMainWindow.Shell
@@ -127,6 +131,8 @@ Namespace Start.MainWindow.ViewModels
 			Windows.Application.Current.MainWindow.Close()
 		End Sub
 
+		' Notification
+
 		Public Sub ShowNotification( type As Integer,
 		                             text As String ) Implements IMainWindow.ShowNotification
 			Notification.Type = type
@@ -136,6 +142,18 @@ Namespace Start.MainWindow.ViewModels
 		Public Sub HideNotification() Implements IMainWindow.HideNotification
 			Notification.Type = NotificationType.None
 			Notification.Text = String.Empty
+		End Sub
+
+		' Dialog
+
+		Public Sub ShowDialog( content As Object ) Implements IMainWindow.ShowDialog
+			Dialog.Content = content
+			Dialog.IsVisible = True
+		End Sub
+
+		Public Sub HideDialog() Implements IMainWindow.HideDialog
+			Dialog.Content = Nothing
+			Dialog.IsVisible = False
 		End Sub
 	End Class
 End Namespace
