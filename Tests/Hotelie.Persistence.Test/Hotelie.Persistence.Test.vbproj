@@ -99,6 +99,7 @@
     <Import Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Leases\TestLeaseRepository.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -139,6 +140,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Hotelie.Application\Hotelie.Application.vbproj">
+      <Project>{448CF32F-1323-4D4E-B28C-1DDED33124D4}</Project>
+      <Name>Hotelie.Application</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Hotelie.Domain\Hotelie.Domain.vbproj">
       <Project>{490CDDD6-1D75-43C7-972E-52569504050C}</Project>
       <Name>Hotelie.Domain</Name>

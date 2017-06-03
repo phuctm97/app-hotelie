@@ -37,7 +37,7 @@ Namespace Users
             _context.SaveChanges()
         End Sub
 
-        Public Sub InitializeRooms()
+        Public Sub InitializeUsers()
             DisposeCategories()
             InitializeCategories()
             _usersList = new List(Of User)
@@ -55,7 +55,7 @@ Namespace Users
             _context.SaveChanges()
         End Sub
 
-        Public Sub DisposeRooms()
+        Public Sub DisposeUsers()
             DisposeCategories()
             _usersList?.Clear()
             _userRepository.RemoveRange(_userRepository.GetAll())
@@ -82,25 +82,24 @@ Namespace Users
 
         <TestMethod>
         Public Sub TestAddCategory_ValidCategory_CountIncrease()
+            ' pre-input
+            DisposeUsers()
 
             ' input
-            Dim roomCategoriesCount = _userRepository.GetAllUserCategories().Count()
-            Dim name = "Normal"
-            Dim price = 200000
-            Dim id = "CTG01"
+            Dim userCategoriesCount = _userRepository.GetAllUserCategories().Count()
+            Dim name = "nhanviena"
+            Dim id = "10001"
 
             ' act
             _userRepository.AddUserCategory(New UserCategory() With {.Id=id,.Name=name})
             _context.SaveChanges()
 
             ' assert
-            Assert.AreEqual(roomCategoriesCount + 1, _userRepository.GetAllUserCategories().Count())
+            Assert.AreEqual(userCategoriesCount + 1, _userRepository.GetAllUserCategories().Count())
             CollectionAssert.AllItemsAreNotNull(_userRepository.GetAllUserCategories().ToList())
 
             ' rollback
-            Dim roomCategory = _userRepository.GetUserCategory(id)
-            _userRepository.RemoveUserCategory(roomCategory)
-            _context.SaveChanges()
+            DisposeUsers()
         End Sub
 
         <TestMethod>
@@ -110,12 +109,10 @@ Namespace Users
             _context.SaveChanges()
 
             ' input
-            Dim name1 = "Normal"
-            Dim price1 = 300000
-            Dim id1 = "CTG01"
-            Dim name2 = "Old"
-            Dim price2 = 200000
-            Dim id2 = "CTG02"
+            Dim id1 = "10001"
+            Dim name1 = "nhanviena"
+            Dim id2 = "20001"
+            Dim name2 = "quanlyb"
 
             ' pre-act
             _userRepository.AddUserCategory(New UserCategory() With {.Id=id1,.Name=name1})
@@ -226,151 +223,151 @@ Namespace Users
 
 
         <TestMethod>
-        Public Sub TestAddRoom_ValidRoom_RoomAdded()
+        Public Sub TestAddUser_ValidUser_UserAdded()
             ' pre-act
-            DisposeRooms() 
+            DisposeUsers() 
             InitializeCategories()
 
             ' input
-            Dim id = "r0001"
-            Dim password  = "101"
+            Dim id = "nhanviena"
+            Dim password  = "admin"
             Dim category = _categoriesList(0)
             
             ' act
             _userRepository.Add(New User() With{.Id=id, .Password=password, .Category=category})
             _context.SaveChanges()
-            Dim room = _userRepository.Find(Function(p)(p.Id = id And p.Password = password)).FirstOrDefault()
+            Dim user = _userRepository.Find(Function(p)(p.Id = id And p.Password = password)).FirstOrDefault()
 
             ' assert
-            Assert.IsTrue(room.Id=id And room.Password= password)
+            Assert.IsTrue(user.Id=id And user.Password= password)
             
             'rollback
-            DisposeRooms()
+            DisposeUsers()
         End Sub
 
         <TestMethod>
-        Public Sub TestAddRooms_ValidRoomsList_RoomsAdded()
+        Public Sub TestAddUsers_ValidUsersList_UsersAdded()
             ' input
-            DisposeRooms()
-            InitializeRooms()
+            DisposeUsers()
+            InitializeUsers()
 
             ' assert
-            Dim rooms = _userRepository.GetAll().ToList()
+            Dim users = _userRepository.GetAll().ToList()
             Dim i=0
-            For Each room As User In rooms
-                Assert.IsTrue(room.id = _usersList(i).Id And room.Password = _usersList(i).Password)
+            For Each user As User In users
+                Assert.IsTrue(user.id = _usersList(i).Id And user.Password = _usersList(i).Password)
                 i = i + 1
             Next
             
             ' rollback
-            DisposeRooms()
+            DisposeUsers()
         End Sub
 
         <TestMethod>
-        Public Sub TestGetRoom_ValidIdIndex_ReturnRightRoom()
+        Public Sub TestGetUser_ValidIdIndex_ReturnRightUser()
             ' pre-input
-            DisposeRooms()
+            DisposeUsers()
 
             ' input
-            InitializeRooms()
+            InitializeUsers()
 
             ' act
             Dim index = 1
-            Dim room = _userRepository.GetOne(_usersList(index).Id)
+            Dim user = _userRepository.GetOne(_usersList(index).Id)
             
             ' assert
-            Assert.IsNotNull(room)
-            Assert.AreEqual(_usersList(index).Id, room.Id)
-            Assert.AreEqual(_usersList(index).Password, room.Password)
+            Assert.IsNotNull(user)
+            Assert.AreEqual(_usersList(index).Id, user.Id)
+            Assert.AreEqual(_usersList(index).Password, user.Password)
 
             ' rollback
-            DisposeRooms()
+            DisposeUsers()
         End Sub
 
         <TestMethod>
-        Public Sub TestGetRooms__ReturnAllRooms()
+        Public Sub TestGetUsers__ReturnAllUsers()
             ' pre-input
-            DisposeRooms()
+            DisposeUsers()
 
             ' input
-            InitializeRooms()
+            InitializeUsers()
 
             ' act
-            Dim rooms = _userRepository.GetAll().ToList()
-            CollectionAssert.AllItemsAreNotNull(rooms)
+            Dim users = _userRepository.GetAll().ToList()
+            CollectionAssert.AllItemsAreNotNull(users)
             Dim i = 0
-            For Each room As User In rooms
-                Assert.AreEqual(_usersList(i).Id,room.Id)
-                Assert.AreEqual(_usersList(i).Password,room.Password)
+            For Each user As User In users
+                Assert.AreEqual(_usersList(i).Id,user.Id)
+                Assert.AreEqual(_usersList(i).Password,user.Password)
                 i = i + 1
             Next
 
             ' rollback
-            DisposeRooms()
+            DisposeUsers()
         End Sub
 
         <TestMethod>
-        Public Sub TestRemoveRoom_ValidRoomsListItemIndex_RoomDeleted()
+        Public Sub TestRemoveUser_ValidUsersListItemIndex_UserDeleted()
             ' pre-input
-            DisposeRooms()
+            DisposeUsers()
             
             ' input
-            InitializeRooms()
+            InitializeUsers()
 
             ' act
             Dim index = 1
-            Dim room = _usersList(index)
-            Dim roomToDelete = _userRepository.Find(Function(p)(p.Id=room.Id And p.Password = room.Password)).FirstOrDefault()
-            _userRepository.Remove(roomToDelete)
+            Dim user = _usersList(index)
+            Dim userToDelete = _userRepository.Find(Function(p)(p.Id=user.Id And p.Password = user.Password)).FirstOrDefault()
+            _userRepository.Remove(userToDelete)
             _context.SaveChanges()
-            roomToDelete = _userRepository.Find(Function(p)(p.Id=room.Id And p.Password = room.Password)).FirstOrDefault()
+            userToDelete = _userRepository.Find(Function(p)(p.Id=user.Id And p.Password = user.Password)).FirstOrDefault()
 
             ' assert
-            Assert.IsNull(roomToDelete)
+            Assert.IsNull(userToDelete)
 
             ' rollback
-            DisposeRooms()
+            DisposeUsers()
         End Sub
 
         <TestMethod>
-        Public Sub TestRemoveAllRooms__RoomsIsNull()
+        Public Sub TestRemoveAllUsers__UsersIsNull()
             ' pre-input
-            DisposeRooms()
+            DisposeUsers()
 
             ' input
-            InitializeRooms()
+            InitializeUsers()
 
             ' act
             _userRepository.RemoveRange(_userRepository.GetAll())
             _context.SaveChanges()
 
-            Dim rooms = _userRepository.GetAll().ToList()
+            Dim users = _userRepository.GetAll().ToList()
 
-            Assert.AreEqual(0,rooms.Count)
+            Assert.AreEqual(0,users.Count)
 
             ' rollback
-            DisposeRooms()
+            DisposeUsers()
         End Sub
 
         <TestMethod>
-        Public Sub TestFindRoom_ValidRoomsListItemIndex_ReturnRightRoom()
+        Public Sub TestFindUser_ValidUsersListItemIndex_ReturnRightUser()
             ' pre-act
-            DisposeRooms()
+            DisposeUsers()
 
             ' input
-            InitializeRooms()
+            InitializeUsers()
 
             'act
             Dim index = 2
-            Dim roomToFind = _usersList(index)
-            Dim room = _userRepository.Find(Function(p)(p.Id=roomToFind.Id And p.Password=roomToFind.Password)).FirstOrDefault()
+            Dim userToFind = _usersList(index)
+            Dim user = _userRepository.Find(Function(p)(p.Id=userToFind.Id And p.Password=userToFind.Password)).FirstOrDefault()
 
             ' assert
-            Assert.AreEqual(_usersList(index).Id,room.Id)
-            Assert.AreEqual(_usersList(index).Password,room.Password)
+            Assert.AreEqual(_usersList(index).Id,user.Id)
+            Assert.AreEqual(_usersList(index).Password,user.Password)
 
             ' rollback
-            DisposeRooms()
+            DisposeUsers()
         End Sub
     End Class
 End NameSpace
