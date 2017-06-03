@@ -28,6 +28,17 @@ Namespace Common
             Return True
         End Function
 
+        Public Async Function CheckDatabaseConnectionAsync(connectionString As String) As Task(Of Boolean) Implements IDatabaseService.CheckDatabaseConnectionAsync
+            Dim dbContext = New DatabaseContext(connectionString)
+            Try
+                Await dbContext.Database.Connection.OpenAsync()
+                dbContext.Database.Connection.Close()
+            Catch
+                Return False
+            End Try
+            Return True
+        End Function
+
         Public Sub New()
         End Sub
 
@@ -38,5 +49,7 @@ Namespace Common
         Public Sub Dispose() Implements IDatabaseService.Dispose
             _context.Dispose()
         End Sub
+
+        
     End Class
 End NameSpace
