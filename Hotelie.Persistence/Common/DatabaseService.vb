@@ -26,7 +26,7 @@ Namespace Common
             Catch
                 Return False
             Finally
-                dbContext.Dispose
+                dbContext.Dispose()
             End Try
             Return True
         End Function
