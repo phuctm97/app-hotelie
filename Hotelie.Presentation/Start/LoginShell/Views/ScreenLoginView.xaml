@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Start.LoginShell.Views.LoginFormView"
+﻿<UserControl x:Class="Start.LoginShell.Views.ScreenLoginView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Hotelie.Presentation"
@@ -80,7 +80,7 @@
                         Content="Đăng nhập">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
-                            <cal:ActionMessage MethodName="TryLogin">
+                            <cal:ActionMessage MethodName="Login">
                                 <cal:Parameter Value="{Binding ElementName=AccountTextBox, Path=Text}" />
                                 <cal:Parameter Value="{Binding ElementName=PasswordStorage, Path=Text}" />
                             </cal:ActionMessage>

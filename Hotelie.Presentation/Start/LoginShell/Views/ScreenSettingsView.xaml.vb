@@ -1,7 +1,7 @@
 ﻿Imports System.Windows.Media.Animation
 
 Namespace Start.LoginShell.Views
-	Public Class SettingsFormView
+	Public Class ScreenSettingsView
 		' For textbox effects
 		Private _previousServerNameLength As Integer
 		Private _previousDatabaseNameLength As Integer

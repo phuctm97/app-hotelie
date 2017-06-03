@@ -9,7 +9,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="1024">
-    <materialDesign:Card Margin="24">
-        <TextBlock Text="Danh sách phòng" Margin="24" />
-    </materialDesign:Card>
+    <materialDesign:Transitioner SelectedIndex="0">
+        <ContentControl cal:View.Model="{Binding ScreenRoomsList}" />
+    </materialDesign:Transitioner>
 </UserControl>

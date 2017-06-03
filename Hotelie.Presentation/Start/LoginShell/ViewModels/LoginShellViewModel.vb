@@ -8,10 +8,6 @@ Namespace Start.LoginShell.ViewModels
 		Inherits Screen
 		Implements IShell
 
-		' Dependencies
-
-		Private ReadOnly _authentication As IAuthentication
-
 		' Display property backing fields
 
 		Private _notification As Notification
@@ -31,15 +27,13 @@ Namespace Start.LoginShell.ViewModels
 		' Initialization
 
 		Public Sub New( authentication As IAuthentication )
-			_authentication = authentication
-
 			CommandsBar = New LoginShellCommandsBarViewModel( Me )
 
 			Notification = New Notification()
 
-			LoginForm = New LoginFormViewModel()
+			ScreenLogin = New ScreenLoginViewModel( Me, authentication )
 
-			SettingsForm = New SettingsFormViewModel()
+			ScreenSettings = New ScreenSettingsViewModel()
 
 			DisplayName = "Đăng nhập"
 
@@ -73,9 +67,9 @@ Namespace Start.LoginShell.ViewModels
 			Notification.Text = String.Empty
 		End Sub
 
-		Public ReadOnly Property LoginForm As LoginFormViewModel
+		Public ReadOnly Property ScreenLogin As ScreenLoginViewModel
 
-		Public ReadOnly Property SettingsForm As SettingsFormViewModel
+		Public ReadOnly Property ScreenSettings As ScreenSettingsViewModel
 
 		Public ReadOnly Property CommandsBar As IWindowCommandsBar Implements IShell.CommandsBar
 
@@ -90,33 +84,5 @@ Namespace Start.LoginShell.ViewModels
 			End Set
 		End Property
 
-		' Login
-
-		Public Sub TryLogin( username As String,
-		                     password As String )
-
-			' short username
-			If username.Length = 0
-				ShowNotification( NotificationType.Information, "Nhập tên tài khoản để đăng nhập" )
-				Return
-			End If
-
-			' short password
-			If password.Length = 0
-				ShowNotification( NotificationType.Information, "Nhập mật khẩu để đăng nhập" )
-				Return
-			End If
-
-			' login
-			Dim err = _authentication.TryLogin( New Account With {.Username=username, .Password=password} ).FirstOrDefault()
-
-			If String.IsNullOrEmpty( err )
-				' success
-				ParentWindow.SwitchShell( "workspace-shell" )
-			Else
-				' fail
-				ShowNotification( NotificationType.Error, err )
-			End If
-		End Sub
 	End Class
 End Namespace

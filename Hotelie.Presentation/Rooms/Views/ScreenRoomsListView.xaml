@@ -1,14 +1,23 @@
-﻿<UserControl x:Class="RoomsListScreenView"
+﻿<UserControl x:Class="Rooms.Views.ScreenRoomsListView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Hotelie.Presentation"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
              d:DesignHeight="700" d:DesignWidth="1024">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -20,26 +29,29 @@
         <DockPanel Margin="24 24 24 8">
             <!--Clear button-->
             <Button DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
+                    Margin="0" Padding="0"
                     Style="{DynamicResource MaterialDesignToolButton}"
-                    ToolTip="Nhấp để xóa tất cả điều kiện lọc"
-                    Padding="0" Margin="0">
-                <materialDesign:PackIcon Kind="Magnify" Width="20" Height="20" />
+                    ToolTip="Nhấp để xóa tất cả điều kiện lọc">
+                <materialDesign:PackIcon Width="20" Height="20" Kind="Magnify" />
             </Button>
 
             <!--Room name-->
-            <TextBox Margin="16 0 16 0" DockPanel.Dock="Left"
+            <TextBox DockPanel.Dock="Left"
                      HorizontalAlignment="Left"
                      VerticalAlignment="Center"
-                     FontSize="15" Width="150"
+                     Margin="16 0 16 0"
+                     Width="150"
+                     FontSize="15"
                      materialDesign:HintAssist.Hint="Tên phòng" />
 
             <!--Room category-->
             <ComboBox DockPanel.Dock="Left" HorizontalAlignment="Left"
                       VerticalAlignment="Center"
+                      Margin="0 0 16 0"
+                      Width="120"
+                      FontSize="15"
                       materialDesign:HintAssist.Hint="Loại phòng"
-                      ToolTip="Loại phòng"
-                      FontSize="15" Width="120"
-                      Margin="0 0 16 0">
+                      ToolTip="Loại phòng">
                 <ComboBoxItem Content="Loại 1" />
                 <ComboBoxItem Content="Loại 2" />
                 <ComboBoxItem Content="Loại 3" />
@@ -47,23 +59,26 @@
 
             <!--Room state-->
             <ComboBox DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
+                      Margin="0 0 32 0"
+                      Width="120"
+                      FontSize="15"
                       materialDesign:HintAssist.Hint="Tình trạng"
-                      ToolTip="Tình trạng"
-                      FontSize="15" Width="120"
-                      Margin="0 0 32 0">
+                      ToolTip="Tình trạng">
                 <ComboBoxItem Content="Trống" />
                 <ComboBoxItem Content="Đã thuê" />
             </ComboBox>
 
             <!--Search icon-->
             <materialDesign:PackIcon DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
-                                     Kind="CashMultiple" Width="20" Height="20" />
+                                     Width="20" Height="20"
+                                     Kind="CashMultiple" />
 
             <!--Min price-->
             <ComboBox DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
-                      materialDesign:HintAssist.Hint="Từ"
-                      FontSize="15" Width="100"
-                      Margin="16 0 8 0">
+                      Margin="16 0 8 0"
+                      Width="100"
+                      FontSize="15"
+                      materialDesign:HintAssist.Hint="Từ">
                 <ComboBoxItem Content="100,000" />
                 <ComboBoxItem Content="200,000" />
                 <ComboBoxItem Content="300,000" />
@@ -71,9 +86,10 @@
 
             <!--Max Price-->
             <ComboBox DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
+                      Margin="0 0 32 0"
+                      Width="100"
                       materialDesign:HintAssist.Hint="Đến"
-                      FontSize="15" Width="100"
-                      Margin="0 0 32 0">
+                      FontSize="15">
                 <ComboBoxItem Content="400,000" />
                 <ComboBoxItem Content="500,000" />
                 <ComboBoxItem Content="600,000" />
@@ -82,9 +98,10 @@
             <!--Sort field-->
             <ComboBox DockPanel.Dock="Right" HorizontalAlignment="Right"
                       VerticalAlignment="Center"
-                      materialDesign:HintAssist.Hint="Dựa trên"
-                      FontSize="15" Width="120"
-                      Margin="16 0 8 0">
+                      Margin="16 0 8 0"
+                      Width="120"
+                      FontSize="15"
+                      materialDesign:HintAssist.Hint="Dựa trên">
                 <ComboBoxItem Content="Tên phòng" />
                 <ComboBoxItem Content="Loại phòng" />
                 <ComboBoxItem Content="Giá" />
@@ -98,10 +115,10 @@
                           Background="Transparent" Foreground="Black"
                           ToolTip="Đảo thứ tự sắp xếp">
                 <ToggleButton.Content>
-                    <materialDesign:PackIcon Kind="SortAscending" Width="20" Height="20" />
+                    <materialDesign:PackIcon Width="20" Height="20" Kind="SortAscending" />
                 </ToggleButton.Content>
                 <materialDesign:ToggleButtonAssist.OnContent>
-                    <materialDesign:PackIcon Kind="SortDescending" Width="24" Height="24" />
+                    <materialDesign:PackIcon Width="20" Height="20" Kind="SortDescending" />
                 </materialDesign:ToggleButtonAssist.OnContent>
             </ToggleButton>
 
@@ -165,7 +182,7 @@
                                         <StackPanel Grid.Row="0" Grid.Column="2"
                                                     Width="100" Margin="0 16 0 0">
                                             <!--Room category-->
-                                            <Button Margin="0 0 8 8" Padding="3" BorderThickness="0" >
+                                            <Button Margin="0 0 8 8" Padding="3" BorderThickness="0">
                                                 <Button.Background>
                                                     <SolidColorBrush Color="Black" />
                                                 </Button.Background>

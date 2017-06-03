@@ -71,7 +71,7 @@
                         <materialDesign:SlideOutWipe />
                     </materialDesign:TransitionerSlide.ForwardWipe>
 
-                    <ContentControl cal:View.Model="{Binding LoginForm}" />
+                    <ContentControl cal:View.Model="{Binding ScreenLogin}" />
                 </materialDesign:TransitionerSlide>
 
                 <!--Connection settings form-->
@@ -83,7 +83,7 @@
                         <materialDesign:SlideOutWipe />
                     </materialDesign:TransitionerSlide.ForwardWipe>
 
-                    <ContentControl cal:View.Model="{Binding SettingsForm}" />
+                    <ContentControl cal:View.Model="{Binding ScreenSettings}" />
                 </materialDesign:TransitionerSlide>
             </materialDesign:Transitioner>
 

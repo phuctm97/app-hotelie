@@ -1,7 +1,7 @@
 ﻿Imports Caliburn.Micro
 
 Namespace Rooms.ViewModels
-	Public Class RoomsListScreenViewModel
+	Public Class ScreenRoomsListViewModel
 		Inherits Screen
 	End Class
 End Namespace

@@ -1,4 +1,4 @@
 ﻿Namespace Start.LoginShell.ViewModels
-	Public Class SettingsFormViewModel
+	Public Class ScreenSettingsViewModel
 	End Class
 End Namespace

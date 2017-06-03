@@ -1,7 +1,7 @@
 ﻿Imports System.Windows.Media.Animation
 
 Namespace Start.LoginShell.Views
-	Public Class LoginFormView
+	Public Class ScreenLoginView
 		' For textbox effects
 		Private _previousPasswordLength As Integer
 		Private _previousAccountLength As Integer
