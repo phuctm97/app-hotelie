@@ -1,11 +1,11 @@
 ﻿Imports Caliburn.Micro
 Imports Hotelie.Application.Services.Authentication
+Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Start.MainWindow.Models
 
 Namespace Start.LoginShell.ViewModels
 	Public Class ScreenLoginViewModel
-		
 		' Dependencies
 
 		Private ReadOnly _authentication As IAuthentication
@@ -33,7 +33,14 @@ Namespace Start.LoginShell.ViewModels
 
 			' login
 
-			Dim err = _authentication.TryLogin( username, password ).FirstOrDefault()
+			Dim err = String.Empty
+			Try
+				err = _authentication.TryLogin( username, password ).FirstOrDefault()
+			Catch ex As DatabaseConnectionFailedException
+				err = "Mất kết nối máy chủ. Không thể đăng nhập!"
+			Catch ex As Exception
+				err = ex.Message
+			End Try
 
 			If String.IsNullOrEmpty( err )
 				' success

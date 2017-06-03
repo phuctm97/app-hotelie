@@ -77,7 +77,7 @@
                         FontSize="16"
                         Content="Lưu">
                     <i:Interaction.Triggers>
-                        <i:EventTrigger>
+                        <i:EventTrigger EventName="Click">
                             <cal:ActionMessage MethodName="ApplyConnection">
                                 <cal:Parameter Value="{Binding ElementName=ServerTextBox, Path=Text}" />
                                 <cal:Parameter Value="{Binding ElementName=DatabaseTextBox, Path=Text}" />
@@ -92,7 +92,7 @@
                         IsDefault="True"
                         Content="Thử kết nối">
                     <i:Interaction.Triggers>
-                        <i:EventTrigger>
+                        <i:EventTrigger EventName="Click">
                             <cal:ActionMessage MethodName="TestConnection">
                                 <cal:Parameter Value="{Binding ElementName=ServerTextBox, Path=Text}" />
                                 <cal:Parameter Value="{Binding ElementName=DatabaseTextBox, Path=Text}" />
