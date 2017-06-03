@@ -13,8 +13,8 @@ Namespace Users
 
         <TestInitialize>
         Public Sub TestInitialize()
-            _databaseService= New DatabaseService(
-                $"data source=KHUONG-ASUS\SQLEXPRESS;initial catalog=HotelieDatabase;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
+            _databaseService= New DatabaseService()
+            _databaseService.SetDatabaseConnection($"data source=KHUONG-ASUS\SQLEXPRESS;initial catalog=HotelieDatabase;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
             _userRepository = new UserRepository(_databaseService)
         End Sub
 
