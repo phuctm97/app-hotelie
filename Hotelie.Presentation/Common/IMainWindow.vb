@@ -16,6 +16,11 @@ Namespace Common
 
 		Sub SwitchShell( shellName As String )
 
+		Sub ShowNotification( type As Integer,
+		                      text As String )
+
+		Sub HideNotification()
+
 		Sub DragMove()
 
 		Sub ToggleZoomState()

@@ -29,7 +29,7 @@ Namespace Rooms.ViewModels
 
 			ScreenRoomsList = New ScreenRoomsListViewModel( getRoomsListQuery, getRoomCategoriesListQuery )
 
-			ScreenRoomDetail = New ScreenRoomDetailViewModel( getRoomCategoriesListQuery )
+			ScreenRoomDetail = New ScreenRoomDetailViewModel( Me, getRoomCategoriesListQuery )
 
 			DisplayCode = 0
 		End Sub
