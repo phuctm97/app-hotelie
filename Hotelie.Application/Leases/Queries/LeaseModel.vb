@@ -15,6 +15,7 @@ Namespace Leases.Queries
         Private _customerCoefficient As Double
         Private _extraCharge As Decimal
         Private _billId As String
+        Private _customers As List(Of LeaseCustomerModel)
 
         Public Property Id As String
             Get
@@ -128,5 +129,18 @@ Namespace Leases.Queries
                 NotifyOfPropertyChange(Function() BillId)
             End Set
         End Property
+
+        Public Property Customers As List(Of LeaseCustomerModel)
+            Get
+                Return _customers
+
+            End Get
+            Set
+                If Equals(Value, _customers) Then Return
+                _customers = Value
+                NotifyOfPropertyChange(Function() Customers)
+            End Set
+        End Property
+
     End Class
 End NameSpace
