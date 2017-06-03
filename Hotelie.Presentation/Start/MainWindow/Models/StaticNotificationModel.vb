@@ -1,7 +1,7 @@
 ﻿Imports Caliburn.Micro
 
 Namespace Start.MainWindow.Models
-	Public Enum NotificationType
+	Public Enum StaticNotificationType
 		None
 		Ok
 		Information
@@ -9,11 +9,11 @@ Namespace Start.MainWindow.Models
 		[Error]
 	End Enum
 
-	Public Class Notification
+	Public Class StaticNotificationModel
 		Inherits PropertyChangedBase
 
 		Private _text As String
-		Private _type As NotificationType
+		Private _type As StaticNotificationType
 
 		Public Property Text As String
 			Get
@@ -27,7 +27,7 @@ Namespace Start.MainWindow.Models
 			End Set
 		End Property
 
-		Public Property Type As NotificationType
+		Public Property Type As StaticNotificationType
 			Get
 				Return _type
 			End Get

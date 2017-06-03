@@ -25,9 +25,9 @@ Namespace Start.MainWindow.ViewModels
 
 			WindowState = WindowState.Normal
 
-			Notification = New Notification()
+			StaticNotification = New StaticNotificationModel()
 
-			Dialog = New Dialog()
+			StaticDialog = New StaticDialogModel()
 		End Sub
 
 		' Window properties
@@ -80,9 +80,9 @@ Namespace Start.MainWindow.ViewModels
 			End Set
 		End Property
 
-		Public ReadOnly Property Notification As Notification
+		Public ReadOnly Property StaticNotification As StaticNotificationModel
 
-		Public ReadOnly Property Dialog As Dialog
+		Public ReadOnly Property StaticDialog As StaticDialogModel
 
 		' Shell
 
@@ -133,27 +133,27 @@ Namespace Start.MainWindow.ViewModels
 
 		' Notification
 
-		Public Sub ShowNotification( type As Integer,
-		                             text As String ) Implements IMainWindow.ShowNotification
-			Notification.Type = type
-			Notification.Text = text
+		Public Sub ShowStaticNotification( type As Integer,
+		                             text As String ) Implements IMainWindow.ShowStaticNotification
+			StaticNotification.Type = type
+			StaticNotification.Text = text
 		End Sub
 
-		Public Sub HideNotification() Implements IMainWindow.HideNotification
-			Notification.Type = NotificationType.None
-			Notification.Text = String.Empty
+		Public Sub CloseStaticNotification() Implements IMainWindow.CloseStaticNotification
+			StaticNotification.Type = StaticNotificationType.None
+			StaticNotification.Text = String.Empty
 		End Sub
 
 		' Dialog
 
-		Public Sub ShowDialog( content As Object ) Implements IMainWindow.ShowDialog
-			Dialog.Content = content
-			Dialog.IsVisible = True
+		Public Sub ShowStaticDialog( content As Object ) Implements IMainWindow.ShowStaticDialog
+			StaticDialog.Content = content
+			StaticDialog.IsVisible = True
 		End Sub
 
-		Public Sub HideDialog() Implements IMainWindow.HideDialog
-			Dialog.Content = Nothing
-			Dialog.IsVisible = False
+		Public Sub CloseStaticDialog() Implements IMainWindow.CloseStaticDialog
+			StaticDialog.Content = Nothing
+			StaticDialog.IsVisible = False
 		End Sub
 	End Class
 End Namespace

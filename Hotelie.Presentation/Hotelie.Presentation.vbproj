@@ -186,13 +186,13 @@
     <Compile Include="Start\LoginShell\Views\ScreenSettingsView.xaml.vb">
       <DependentUpon>ScreenSettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Start\MainWindow\Converters\NotificationTypeToBooleanConverter.vb" />
-    <Compile Include="Start\MainWindow\Converters\NotificationTypeToColorConverter.vb" />
-    <Compile Include="Start\MainWindow\Converters\NotificationTypeToIconKindConverter.vb" />
+    <Compile Include="Start\MainWindow\Converters\StaticNotificationTypeToBooleanConverter.vb" />
+    <Compile Include="Start\MainWindow\Converters\StaticNotificationTypeToColorConverter.vb" />
+    <Compile Include="Start\MainWindow\Converters\StaticNotificationTypeToIconKindConverter.vb" />
     <Compile Include="Start\MainWindow\Converters\WindowStateReverseIconKindConverter.vb" />
     <Compile Include="Start\MainWindow\Converters\WindowStateReverseNameConverter.vb" />
-    <Compile Include="Start\MainWindow\Models\Dialog.vb" />
-    <Compile Include="Start\MainWindow\Models\Notification.vb" />
+    <Compile Include="Start\MainWindow\Models\StaticDialogModel.vb" />
+    <Compile Include="Start\MainWindow\Models\StaticNotificationModel.vb" />
     <Compile Include="Start\MainWindow\ViewModels\MainWindowViewModel.vb" />
     <Compile Include="Start\MainWindow\Views\MainWindowView.xaml.vb">
       <DependentUpon>MainWindowView.xaml</DependentUpon>

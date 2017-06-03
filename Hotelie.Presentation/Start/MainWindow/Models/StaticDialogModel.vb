@@ -1,7 +1,7 @@
 ﻿Imports Caliburn.Micro
 
 Namespace Start.MainWindow.Models
-	Public Class Dialog
+	Public Class StaticDialogModel
 		Inherits PropertyChangedBase
 
 		Private _content As Object

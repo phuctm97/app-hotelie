@@ -21,13 +21,13 @@ Namespace Start.LoginShell.ViewModels
 
 			' short username
 			If username.Length = 0
-				IoC.Get(Of IMainWindow).ShowNotification( NotificationType.Information, "Nhập tên tài khoản để đăng nhập" )
+				IoC.Get(Of IMainWindow).ShowStaticNotification( StaticNotificationType.Information, "Nhập tên tài khoản để đăng nhập" )
 				Return
 			End If
 
 			' short password
 			If password.Length = 0
-				IoC.Get(Of IMainWindow).ShowNotification( NotificationType.Information, "Nhập mật khẩu để đăng nhập" )
+				IoC.Get(Of IMainWindow).ShowStaticNotification( StaticNotificationType.Information, "Nhập mật khẩu để đăng nhập" )
 				Return
 			End If
 
@@ -47,7 +47,7 @@ Namespace Start.LoginShell.ViewModels
 				IoC.Get(Of IMainWindow).SwitchShell( "workspace-shell" )
 			Else
 				' fail
-				IoC.Get(Of IMainWindow).ShowNotification( NotificationType.Error, err )
+				IoC.Get(Of IMainWindow).ShowStaticNotification( StaticNotificationType.Error, err )
 			End If
 		End Sub
 	End Class

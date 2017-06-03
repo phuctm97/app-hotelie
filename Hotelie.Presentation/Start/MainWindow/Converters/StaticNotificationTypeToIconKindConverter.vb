@@ -1,30 +1,31 @@
 ﻿Imports System.Globalization
 Imports Hotelie.Presentation.Start.MainWindow.Models
+Imports MaterialDesignThemes.Wpf
 
 Namespace Start.MainWindow.Converters
-	Public Class NotificationTypeToColorConverter
+	Public Class StaticNotificationTypeToIconKindConverter
 		Implements IValueConverter
 
 		Public Function Convert( value As Object,
 		                         targetType As Type,
 		                         parameter As Object,
 		                         culture As CultureInfo ) As Object Implements IValueConverter.Convert
-			Dim type = CType(value, NotificationType)
+			Dim type = CType(value, StaticNotificationType)
 
 			Select type
-				Case NotificationType.None
-					Return Colors.White
-				Case NotificationType.Ok
-					Return Colors.Green
-				Case NotificationType.Information
-					Return Colors.DodgerBlue
-				Case NotificationType.Error
-					Return Colors.Red
-				Case NotificationType.Warning
-					Return Colors.Gold
+				Case StaticNotificationType.None
+					Return PackIconKind.AppleKeyboardCommand
+				Case StaticNotificationType.Ok
+					Return PackIconKind.Check
+				Case StaticNotificationType.Information
+					Return PackIconKind.InformationVariant
+				Case StaticNotificationType.Error
+					Return PackIconKind.Close
+				Case StaticNotificationType.Warning
+					Return PackIconKind.Alert
 			End Select
 
-			Return Colors.White
+			Return PackIconKind.AppleKeyboardCommand
 		End Function
 
 		Public Function ConvertBack( value As Object,

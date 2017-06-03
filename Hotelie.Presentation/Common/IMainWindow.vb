@@ -16,14 +16,14 @@ Namespace Common
 
 		Sub SwitchShell( shellName As String )
 
-		Sub ShowNotification( type As Integer,
-		                      text As String )
+		Sub ShowStaticNotification( type As Integer,
+		                            text As String )
 
-		Sub HideNotification()
+		Sub CloseStaticNotification()
 
-		Sub ShowDialog( content As Object )
+		Sub ShowStaticDialog( content As Object )
 
-		Sub HideDialog()
+		Sub CloseStaticDialog()
 
 		Sub DragMove()
 
