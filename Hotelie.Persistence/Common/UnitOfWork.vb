@@ -16,7 +16,11 @@ Namespace Common
 			_databaseService.Context.SaveChanges()
 		End Sub
 
-		Public Sub Dispose() Implements IDisposable.Dispose
+        Public Async Sub CommitAsync() Implements IUnitOfWork.CommitAsync
+            Await _databaseService.Context.SaveChangesAsync()
+        End Sub
+
+        Public Sub Dispose() Implements IDisposable.Dispose
 			_databaseService.Context.Dispose()
 		End Sub
 	End Class

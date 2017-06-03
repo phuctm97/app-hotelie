@@ -59,5 +59,49 @@ Namespace Leases.Factories
 
             Return lease
         End Function
+
+        Public Function ExecuteAsync(roomId As String, beginDate As Date, endDate As Date) As LeaseModel Implements ICreateLeaseFactory.ExecuteAsync
+            Dim room = _roomRepository.GetOne(roomId)
+
+            ' create new lease id
+            Dim defaultId = 0
+            Dim newId As String = Nothing
+            Dim leases = _leaseRepository.GetAll().ToList()
+
+            If (leases.Count = 0) Then
+                newId = "LS"+1.ToString("000")
+            Else
+                Do While newId = Nothing
+                    defaultId += 1
+                    Dim newIdCheck = "LS" + defaultId.ToString("000")
+                    Dim q = True
+                    For Each unit As Lease In leases
+                        If (unit.Id = newIdCheck) Then 
+                            q = False
+                            Exit For
+                        End If
+                    Next
+                    If q Then newId = newIdCheck
+                Loop
+            End If
+
+            ' new lease initialize
+            Dim lease = New LeaseModel() With { _
+                    .Id = newId,
+                    .RoomId = roomId,
+                    .BeginDate = beginDate,
+                    .EndDate = endDate,
+                    .Price = room.Category.Price
+                    }
+
+            ' add new lease to database
+            _leaseRepository.Add(
+                New Lease() _
+                                    With {.Id = lease.Id, .Room=room, .BeginDate = lease.BeginDate,
+                                    .EndDate = lease.EndDate, .Price = lease.Price})
+            _unitOfWork.CommitAsync()
+
+            Return lease
+        End Function
     End Class
 End NameSpace
