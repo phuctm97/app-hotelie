@@ -57,12 +57,18 @@ Namespace Rooms.Factories
             Dim newCategoryId  = _roomCategoriesList(1).Id
             Dim newNote = ""
             
-            Dim room = _createRoomFactory.Execute(newId,newName,newCategoryId,newNote)
+            Dim room1 = _createRoomFactory.Execute(newName,newCategoryId,newNote)
+            Dim room2 = _createRoomFactory.Execute(newName,newCategoryId,newNote)
+            Dim room3 = _createRoomFactory.Execute(newName,newCategoryId,newNote)
+            Dim room4 = _createRoomFactory.Execute(newName,newCategoryId,newNote)
             
             ' Assert
-            Assert.IsNotNull(room)
+            Assert.IsNotNull(room1)
+            Assert.IsNotNull(room2)
+            Assert.IsNotNull(room3)
+            Assert.IsNotNull(room4)
             
-            Dim newRoom = _roomRepository.GetOne(newId)
+            Dim newRoom = _roomRepository.GetOne("PH002")
             Assert.AreEqual(newName,newRoom.Name)
             Assert.AreEqual(newCategoryId, newRoom.Category.ID)
 
