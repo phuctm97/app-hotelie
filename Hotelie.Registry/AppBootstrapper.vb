@@ -1,8 +1,12 @@
 ﻿Imports Caliburn.Micro
+Imports Hotelie.Application.Leases.Queries
 Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
 Imports Hotelie.Application.Rooms.Queries.GetRoomsList
 Imports Hotelie.Application.Services.Authentication
 Imports Hotelie.Application.Services.Persistence
+Imports Hotelie.Persistence.Common
+Imports Hotelie.Persistence.Leases
+Imports Hotelie.Persistence.Users
 Imports Microsoft.Practices.Unity
 
 Public Class AppBootstrapper
@@ -30,7 +34,10 @@ Public Class AppBootstrapper
 	    _container.RegisterType(Of IDatabaseService, DatabaseService)(New ContainerControlledLifetimeManager())
         _container.RegisterType(Of IGetLeasesListQuery, GetLeasesListQuery)(New ContainerControlledLifetimeManager())
 	    _container.RegisterType(Of IRoomRepository, IRoomRepository)(New ContainerControlledLifetimeManager())
-	    _container.RegisterType(Of IGetRoomsListQuery, GetRoomListQuery)(New ContainerControlledLifetimeManager())
+	    _container.RegisterType(Of ILeaseRepository, LeaseRepository)(New ContainerControlledLifetimeManager())
+	    _container.RegisterType(Of IGetRoomsListQuery, GetRoomsListQuery)(New ContainerControlledLifetimeManager())
+	    _container.RegisterType _
+            (Of IGetRoomCategoriesListQuery, GetRoomCategoriesListQuery)(New ContainerControlledLifetimeManager())
 	End Sub
 
 	Protected Overrides Function GetInstance( service As Type,
