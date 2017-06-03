@@ -3,13 +3,12 @@ Imports Hotelie.Application.Rooms.Commands.UpdateRoom
 Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Domain.Rooms
 Imports Hotelie.Persistence.Common
-Imports Hotelie.Persistence.DatabaseServices
 Imports Hotelie.Persistence.Rooms
 
-Namespace Rooms.Commands.RemoveRoom
+Namespace Rooms.Commands
     <TestClass>
     Public Class TestRemoveRoomCommand
-        Private _databaseService As DatabaseService
+        Private _databaseService As IDatabaseService
         Private _unitOfWork As IUnitOfWork
         Private _roomRepository As IRoomRepository
         Private _removeRoomCommand As IRemoveRoomCommand
