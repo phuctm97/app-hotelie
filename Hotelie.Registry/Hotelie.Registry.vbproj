@@ -124,6 +124,7 @@
     <Compile Include="Tests\Rooms\Queries\GetRoomCategoriesList\GetRoomCategoriesList.vb" />
     <Compile Include="Tests\Rooms\Queries\GetRoomsList\GetRoomsListQuery.vb" />
     <Compile Include="Tests\Services\Authentication\Authentication.vb" />
+    <Compile Include="Tests\Services\Persistence\DatabaseService.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
