@@ -1,5 +1,6 @@
 ﻿Imports Caliburn.Micro
 Imports Hotelie.Presentation.Common
+Imports Hotelie.Presentation.Start.MainWindow.Models
 
 Namespace Start.MainWindow.ViewModels
 	Public Class MainWindowViewModel
@@ -23,6 +24,8 @@ Namespace Start.MainWindow.ViewModels
 			Height = 700
 
 			WindowState = WindowState.Normal
+
+			Notification = New Notification()
 		End Sub
 
 		' Window properties
@@ -75,6 +78,8 @@ Namespace Start.MainWindow.ViewModels
 			End Set
 		End Property
 
+		Public ReadOnly Property Notification As Notification
+
 		' Shell
 
 		Public ReadOnly Property Shell As IShell Implements IMainWindow.Shell
@@ -122,5 +127,15 @@ Namespace Start.MainWindow.ViewModels
 			Windows.Application.Current.MainWindow.Close()
 		End Sub
 
+		Public Sub ShowNotification( type As Integer,
+		                             text As String ) Implements IMainWindow.ShowNotification
+			Notification.Type = type
+			Notification.Text = text
+		End Sub
+
+		Public Sub HideNotification() Implements IMainWindow.HideNotification
+			Notification.Type = NotificationType.None
+			Notification.Text = String.Empty
+		End Sub
 	End Class
 End Namespace

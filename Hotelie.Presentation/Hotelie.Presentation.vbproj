@@ -163,10 +163,6 @@
       <DependentUpon>RoomsWorkspaceView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Start\AppBootstrapper.vb" />
-    <Compile Include="Start\LoginShell\Converters\NotificationTypeToBooleanConverter.vb" />
-    <Compile Include="Start\LoginShell\Converters\NotificationTypeToColorConverter.vb" />
-    <Compile Include="Start\LoginShell\Converters\NotificationTypeToPackIconKindConverter.vb" />
-    <Compile Include="Start\LoginShell\Models\Notification.vb" />
     <Compile Include="Start\LoginShell\ViewModels\ScreenLoginViewModel.vb" />
     <Compile Include="Start\LoginShell\ViewModels\LoginShellCommandsBarViewModel.vb" />
     <Compile Include="Start\LoginShell\ViewModels\LoginShellViewModel.vb" />
@@ -188,6 +184,7 @@
     <Compile Include="Start\MainWindow\Converters\NotificationTypeToIconKindConverter.vb" />
     <Compile Include="Start\MainWindow\Converters\WindowStateReverseIconKindConverter.vb" />
     <Compile Include="Start\MainWindow\Converters\WindowStateReverseNameConverter.vb" />
+    <Compile Include="Start\MainWindow\Models\Notification.vb" />
     <Compile Include="Start\MainWindow\ViewModels\MainWindowViewModel.vb" />
     <Compile Include="Start\MainWindow\Views\MainWindowView.xaml.vb">
       <DependentUpon>MainWindowView.xaml</DependentUpon>

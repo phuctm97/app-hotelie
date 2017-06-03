@@ -1,5 +1,5 @@
 ﻿Imports System.Globalization
-Imports Hotelie.Presentation.Start.Login.Models
+Imports Hotelie.Presentation.Start.MainWindow.Models
 
 Namespace Start.MainWindow.Converters
 	Public Class NotificationTypeToColorConverter

@@ -1,6 +1,6 @@
 ﻿Imports Caliburn.Micro
 
-Namespace Start.Login.Models
+Namespace Start.MainWindow.Models
 	Public Enum NotificationType
 		None
 		Ok
@@ -20,10 +20,10 @@ Namespace Start.Login.Models
 				Return _text
 			End Get
 			Set
-				If String.Equals(Value, _text) Then Return
+				If String.Equals( Value, _text ) Then Return
 
 				_text = value
-				NotifyOfPropertyChange(Function() Text)
+				NotifyOfPropertyChange( Function() Text )
 			End Set
 		End Property
 
@@ -32,10 +32,10 @@ Namespace Start.Login.Models
 				Return _type
 			End Get
 			Set
-				If Equals(Value, _type) Then Return
+				If Equals( Value, _type ) Then Return
 
 				_type = value
-				NotifyOfPropertyChange(Function() Type)
+				NotifyOfPropertyChange( Function() Type )
 			End Set
 		End Property
 	End Class

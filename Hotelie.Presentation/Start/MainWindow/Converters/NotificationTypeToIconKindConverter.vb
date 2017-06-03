@@ -1,5 +1,5 @@
 ﻿Imports System.Globalization
-Imports Hotelie.Presentation.Start.Login.Models
+Imports Hotelie.Presentation.Start.MainWindow.Models
 Imports MaterialDesignThemes.Wpf
 
 Namespace Start.MainWindow.Converters
