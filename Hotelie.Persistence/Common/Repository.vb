@@ -1,40 +1,41 @@
 ﻿Imports System.Data.Entity
 Imports System.Linq.Expressions
 Imports Hotelie.Application.Services.Persistence
+Imports Hotelie.Persistence.DatabaseServices
 
 Namespace Common
 	Public Class Repository(Of TEntity As Class)
 		Implements IRepository(Of TEntity)
 
-		Private ReadOnly _context As DbContext
+		Private ReadOnly _databaseService As DatabaseService
 
-		Sub New( context As DbContext )
-			_context = context
+		Sub New( databaseService As DatabaseService )
+			_databaseService = databaseService
 		End Sub
 
 		Public Sub Add( entity As TEntity ) Implements IRepository(Of TEntity).Add
-			_context.Set(Of TEntity).Add( entity )
+			_databaseService.Context.Set(Of TEntity).Add( entity )
 		End Sub
 
 		Public Sub AddRange( entities As IEnumerable(Of TEntity) ) Implements IRepository(Of TEntity).AddRange
-			_context.Set(Of TEntity).AddRange( entities )
+			_databaseService.Context.Set(Of TEntity).AddRange( entities )
 		End Sub
 
 		Public Sub Remove( entity As TEntity ) Implements IRepository(Of TEntity).Remove
-			_context.Set(Of TEntity).Remove( entity )
+			_databaseService.Context.Set(Of TEntity).Remove( entity )
 		End Sub
 
 		Public Sub RemoveRange( entities As IEnumerable(Of TEntity) ) Implements IRepository(Of TEntity).RemoveRange
-			_context.Set(Of TEntity).RemoveRange( entities )
+			_databaseService.Context.Set(Of TEntity).RemoveRange( entities )
 		End Sub
 
 		Public Function Find( predicate As Expression(Of Func(Of TEntity, Boolean)) ) As IQueryable(Of TEntity) _
 			Implements IRepository(Of TEntity).Find
-			Return _context.Set(Of TEntity).Where( predicate )
+			Return _databaseService.Context.Set(Of TEntity).Where( predicate )
 		End Function
 
 		Public Function GetAll() As IQueryable(Of TEntity) Implements IRepository(Of TEntity).GetAll
-			Return _context.Set(Of TEntity)
+			Return _databaseService.Context.Set(Of TEntity)
 		End Function
 
 		Public Overridable Function GetOne( id As Object ) As TEntity Implements IRepository(Of TEntity).GetOne
