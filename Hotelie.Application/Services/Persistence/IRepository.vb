@@ -5,7 +5,7 @@ Namespace Services.Persistence
 
         Function GetOne(id As Object) As TEntity
 
-        Function GetOneAsync(id As Object) As TEntity
+        Function GetOneAsync(id As Object) As Task(Of TEntity)
 
         Function GetAll() As IQueryable(Of TEntity)
 
