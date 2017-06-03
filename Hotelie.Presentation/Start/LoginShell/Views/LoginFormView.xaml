@@ -5,9 +5,9 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
              d:DesignHeight="700" d:DesignWidth="1024">
     <!--Resources-->
     <UserControl.Resources>
@@ -24,31 +24,31 @@
     </UserControl.Resources>
 
     <materialDesign:Card HorizontalAlignment="Center" VerticalAlignment="Center"
-                                     Width="400" Height="Auto">
+                         Width="400" Height="Auto">
         <StackPanel Orientation="Vertical">
 
             <!--Title-->
-            <StackPanel Orientation="Horizontal" Margin="0 48 0 32">
+            <StackPanel Margin="0 48 0 32" Orientation="Horizontal">
                 <Rectangle Width="8" Fill="{DynamicResource SecondaryAccentBrush}" />
                 <TextBlock Margin="32 8 8 8"
-                                       FontSize="21"
-                                       FontWeight="Bold"
-                                       Foreground="{DynamicResource SecondaryAccentBrush}"
-                                       Text="ĐĂNG NHẬP" />
+                           FontSize="21"
+                           FontWeight="Bold"
+                           Foreground="{DynamicResource SecondaryAccentBrush}"
+                           Text="ĐĂNG NHẬP" />
             </StackPanel>
 
             <!--Account-->
             <TextBox x:Name="AccountTextBox"
-                                 Margin="40 0 40 16"
-                                 materialDesign:HintAssist.FloatingOffset="0, -24"
-                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                 FontSize="18"
-                                 TextChanged="OnAccountChanged">
+                     Margin="40 0 40 16"
+                     materialDesign:HintAssist.FloatingOffset="0, -24"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     FontSize="18"
+                     TextChanged="OnAccountChanged">
                 <materialDesign:HintAssist.Hint>
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon VerticalAlignment="Center"
-                                                             Margin="0 0 4 0"
-                                                             Kind="Account" />
+                                                 Margin="0 0 4 0"
+                                                 Kind="Account" />
                         <TextBlock VerticalAlignment="Center" Text="Tài khoản" />
                     </StackPanel>
                 </materialDesign:HintAssist.Hint>
@@ -57,15 +57,15 @@
             <!--Password-->
             <TextBlock x:Name="PasswordStorage" Visibility="Collapsed" />
             <PasswordBox Margin="40 0 40 32"
-                                     materialDesign:HintAssist.FloatingOffset="0, -24"
-                                     Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
-                                     FontSize="18"
-                                     PasswordChanged="OnPasswordChanged">
+                         materialDesign:HintAssist.FloatingOffset="0, -24"
+                         Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
+                         FontSize="18"
+                         PasswordChanged="OnPasswordChanged">
                 <materialDesign:HintAssist.Hint>
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon VerticalAlignment="Center"
-                                                             Margin="0 0 4 0"
-                                                             Kind="Key" />
+                                                 Margin="0 0 4 0"
+                                                 Kind="Key" />
                         <TextBlock VerticalAlignment="Center" Text="Mật khẩu" />
                     </StackPanel>
                 </materialDesign:HintAssist.Hint>
@@ -74,10 +74,10 @@
             <!--Submit-->
             <DockPanel Margin="40 0 40 32">
                 <Button DockPanel.Dock="Left" HorizontalAlignment="Left"
-                                    Style="{DynamicResource MaterialDesignRaisedAccentButton}"
-                                    FontSize="16"
-                                    IsDefault="True"
-                                    Content="Đăng nhập">
+                        Style="{DynamicResource MaterialDesignRaisedAccentButton}"
+                        FontSize="16"
+                        IsDefault="True"
+                        Content="Đăng nhập">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <cal:ActionMessage MethodName="TryLogin">
@@ -89,8 +89,8 @@
                 </Button>
 
                 <CheckBox DockPanel.Dock="Right" HorizontalAlignment="Right"
-                                      FontSize="16"
-                                      Content="Nhớ tài khoản" />
+                          FontSize="16"
+                          Content="Nhớ tài khoản" />
             </DockPanel>
 
         </StackPanel>

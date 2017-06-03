@@ -81,8 +81,8 @@
                         <Button cal:Message.Attach="ToggleZoomState">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon VerticalAlignment="Center"
-                                                         Width="24" Height="24"
                                                          Margin="0 0 8 0"
+                                                         Width="24" Height="24"
                                                          Kind="{Binding WindowState, Converter={StaticResource WindowStateReverseIconKindConverter}}" />
                                 <TextBlock VerticalAlignment="Center"
                                            Text="{Binding WindowState, Converter={StaticResource WindowStateReverseNameConverter}}" />
@@ -93,8 +93,8 @@
                         <Button cal:Message.Attach="Hide">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon VerticalAlignment="Center"
-                                                         Width="24" Height="24"
                                                          Margin="0 0 8 0"
+                                                         Width="24" Height="24"
                                                          Kind="WindowMinimize" />
                                 <TextBlock VerticalAlignment="Center"
                                            Text="Ẩn" />
@@ -105,8 +105,8 @@
                         <Button cal:Message.Attach="Close">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon VerticalAlignment="Center"
-                                                         Width="24" Height="24"
                                                          Margin="0 0 8 0"
+                                                         Width="24" Height="24"
                                                          Kind="ExitToApp" />
                                 <TextBlock VerticalAlignment="Center"
                                            Text="Thoát" />

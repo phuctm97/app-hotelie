@@ -52,9 +52,9 @@
                                Text="Kết nối thành công?" />
                     <!--Button login-->
                     <Button VerticalAlignment="Center"
+                            Margin="8 0 8 0"
                             Style="{DynamicResource MaterialDesignRaisedAccentButton}"
                             Content="Đăng nhập"
-                            Margin="8 0 8 0"
                             Command="{x:Static materialDesign:Transitioner.MovePreviousCommand}" />
                 </StackPanel>
             </materialDesign:TransitionerSlide>

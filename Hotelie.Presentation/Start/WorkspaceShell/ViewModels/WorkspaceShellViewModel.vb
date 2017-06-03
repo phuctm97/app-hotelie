@@ -8,12 +8,12 @@ Imports MaterialDesignThemes.Wpf
 
 Namespace Start.WorkspaceShell.ViewModels
 	Public Class WorkspaceShellViewModel
-		Inherits Conductor(Of IWorkspace).Collection.OneActive
+		Inherits Conductor(Of IScreen).Collection.OneActive
 		Implements IShell
 
 		' Workspaces backing fields
 
-		Private _activeWorkspace As IWorkspace
+		Private _activeWorkspace As IScreen
 
 		' Parent window
 
@@ -28,7 +28,7 @@ Namespace Start.WorkspaceShell.ViewModels
 
 		' Workspaces
 
-		Public Property ActiveWorkspace As IWorkspace
+		Public Property ActiveWorkspace As IScreen
 			Get
 				Return _activeWorkspace
 			End Get
@@ -39,7 +39,7 @@ Namespace Start.WorkspaceShell.ViewModels
 			End Set
 		End Property
 
-		Protected Overrides Sub ChangeActiveItem( newItem As IWorkspace,
+		Protected Overrides Sub ChangeActiveItem( newItem As IScreen,
 		                                          closePrevious As Boolean )
 			MyBase.ChangeActiveItem( newItem, closePrevious )
 

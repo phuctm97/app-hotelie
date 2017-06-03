@@ -112,16 +112,16 @@
                                      PlacementMode="BottomAndAlignRightEdges"
                                      StaysOpen="False">
                 <materialDesign:PopupBox.ToggleContent>
-                    <materialDesign:Card Background="{DynamicResource SecondaryAccentBrush}"
-                                         Foreground="{DynamicResource SecondaryAccentForegroundBrush}"
-                                         MinWidth="100" MaxWidth="200" Height="32">
+                    <materialDesign:Card MinWidth="100" MaxWidth="200" Height="32"
+                                         Background="{DynamicResource SecondaryAccentBrush}"
+                                         Foreground="{DynamicResource SecondaryAccentForegroundBrush}">
                         <!--TODO: Bind username-->
                         <TextBlock HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
+                                   Margin="8 0 8 0"
                                    FontSize="15"
                                    FontWeight="Medium"
                                    Foreground="{DynamicResource SecondaryAccentForegroundBrush}"
-                                   Margin="8 0 8 0"
                                    Text="username" />
                     </materialDesign:Card>
                 </materialDesign:PopupBox.ToggleContent>
@@ -130,10 +130,10 @@
                     <!--Account detail-->
                     <Button>
                         <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="AccountCardDetails"
-                                                     VerticalAlignment="Center"
+                            <materialDesign:PackIcon VerticalAlignment="Center"
                                                      Width="24" Height="24"
-                                                     Margin="0 0 8 0" />
+                                                     Margin="0 0 8 0"
+                                                     Kind="AccountCardDetails" />
                             <TextBlock Text="Thông tin tài khoản" VerticalAlignment="Center" />
                         </StackPanel>
                     </Button>

@@ -135,13 +135,15 @@
     <Compile Include="Common\IMainWindow.vb" />
     <Compile Include="Common\IShell.vb" />
     <Compile Include="Common\IWindowCommandsBar.vb" />
-    <Compile Include="Common\IWorkspace.vb" />
     <Compile Include="Leases\ViewModels\LeasesWorkspaceViewModel.vb" />
     <Compile Include="Leases\Views\LeasesWorkspaceView.xaml.vb">
       <DependentUpon>LeasesWorkspaceView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Rooms\ViewModels\RoomsListPageViewModel.vb" />
+    <Compile Include="Rooms\ViewModels\RoomsListScreenViewModel.vb" />
     <Compile Include="Rooms\ViewModels\RoomsWorkspaceViewModel.vb" />
+    <Compile Include="Rooms\Views\RoomsListScreenView.xaml.vb">
+      <DependentUpon>RoomsListScreenView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Rooms\Views\RoomsWorkspaceView.xaml.vb">
       <DependentUpon>RoomsWorkspaceView.xaml</DependentUpon>
     </Compile>
@@ -149,7 +151,6 @@
     <Compile Include="Start\LoginShell\Converters\NotificationTypeToBooleanConverter.vb" />
     <Compile Include="Start\LoginShell\Converters\NotificationTypeToColorConverter.vb" />
     <Compile Include="Start\LoginShell\Converters\NotificationTypeToPackIconKindConverter.vb" />
-    <Compile Include="Start\LoginShell\Converters\WindowStateReverseNameConverter.vb" />
     <Compile Include="Start\LoginShell\Models\Notification.vb" />
     <Compile Include="Start\LoginShell\ViewModels\LoginFormViewModel.vb" />
     <Compile Include="Start\LoginShell\ViewModels\LoginShellCommandsBarViewModel.vb" />
@@ -244,6 +245,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Leases\Views\LeasesWorkspaceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Rooms\Views\RoomsListScreenView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
