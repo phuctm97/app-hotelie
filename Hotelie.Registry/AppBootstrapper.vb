@@ -25,7 +25,6 @@ Public Class AppBootstrapper
 	Protected Overridable Sub ComposeDependencies()
 		_container.RegisterType(Of IWindowManager, WindowManager)( New ContainerControlledLifetimeManager() )
 		_container.RegisterType(Of IEventAggregator, EventAggregator)( New ContainerControlledLifetimeManager() )
-        _container.RegisterInstance(New DatabaseContext($"data source=KHUONG-ASUS\SQLEXPRESS;initial catalog=HotelieDatabase;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"),New ContainerControlledLifetimeManager())
         _container.RegisterType(Of IUserRepository, UserRepository)(New ContainerControlledLifetimeManager())
 		_container.RegisterType(Of IAuthentication, Authentication)( New ContainerControlledLifetimeManager() )
 
