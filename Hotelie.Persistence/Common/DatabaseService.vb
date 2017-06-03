@@ -40,6 +40,7 @@ Namespace Common
         End Function
 
         Public Sub New()
+            _context = New DatabaseContext()
         End Sub
 
         Public Sub New(connectionString As String)

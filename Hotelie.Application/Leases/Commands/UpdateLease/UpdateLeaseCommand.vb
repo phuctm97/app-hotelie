@@ -25,5 +25,16 @@ Namespace Leases.Commands.UpdateLease
 
             _unitOfWork.Commit()
         End Sub
+
+        Public Sub ExecuteAsync(id As String, roomId As String, beginDate As Date, endDate As Date) Implements IUpdateLeaseCommand.ExecuteAsync
+            Dim lease = _leaseRepository.GetOne(id)
+            Dim room = _roomRepository.GetOne(roomId)
+
+            lease.Room = room
+            lease.BeginDate = beginDate
+            lease.EndDate = endDate
+
+            _unitOfWork.CommitAsync()
+        End Sub
     End Class
 End NameSpace
