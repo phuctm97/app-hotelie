@@ -71,7 +71,7 @@ Namespace Start.WorkspaceShell.ViewModels
 		Public Overrides Async Sub CanClose( callback As Action(Of Boolean) )
 			Dim dialog = New TwoButtonDialog( "Thoát khỏi bàn làm việc?", "THOÁT", "HỦY", True, False )
 
-			Dim result = Await DialogHost.Show( dialog, "workspace-shell" )
+			Dim result = Await DialogHost.Show( dialog, "shell" )
 
 			If String.Equals( result, "THOÁT" )
 				callback( True )

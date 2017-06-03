@@ -48,7 +48,7 @@
                         <materialDesign:PackIcon VerticalAlignment="Center"
                                                  Margin="0 0 4 0"
                                                  Kind="Server" />
-                        <TextBlock VerticalAlignment="Center" Text="Máy chủ" />
+                        <TextBlock x:Name="ServerTextBox" VerticalAlignment="Center" Text="Máy chủ" />
                     </StackPanel>
                 </materialDesign:HintAssist.Hint>
             </TextBox>
@@ -64,7 +64,7 @@
                         <materialDesign:PackIcon VerticalAlignment="Center"
                                                  Margin="0 0 4 0"
                                                  Kind="Database" />
-                        <TextBlock VerticalAlignment="Center" Text="Cơ sở dữ liệu" />
+                        <TextBlock x:Name="DatabaseTextBox" VerticalAlignment="Center" Text="Cơ sở dữ liệu" />
                     </StackPanel>
                 </materialDesign:HintAssist.Hint>
             </TextBox>
@@ -75,13 +75,31 @@
                 <Button DockPanel.Dock="Left" HorizontalAlignment="Left"
                         Style="{DynamicResource MaterialDesignRaisedButton}"
                         FontSize="16"
-                        Content="Lưu" />
+                        Content="Lưu">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger>
+                            <cal:ActionMessage MethodName="ApplyConnection">
+                                <cal:Parameter Value="{Binding ElementName=ServerTextBox, Path=Text}" />
+                                <cal:Parameter Value="{Binding ElementName=DatabaseTextBox, Path=Text}" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
                 <!--Test-->
                 <Button DockPanel.Dock="Right" HorizontalAlignment="Right"
                         Style="{DynamicResource MaterialDesignToolButton}"
                         FontSize="16"
                         IsDefault="True"
-                        Content="Thử kết nối" />
+                        Content="Thử kết nối">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger>
+                            <cal:ActionMessage MethodName="TestConnection">
+                                <cal:Parameter Value="{Binding ElementName=ServerTextBox, Path=Text}" />
+                                <cal:Parameter Value="{Binding ElementName=DatabaseTextBox, Path=Text}" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
             </DockPanel>
 
         </StackPanel>

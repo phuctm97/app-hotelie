@@ -20,9 +20,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <materialDesign:DialogHost Identifier="workspace-shell">
-        <materialDesign:TransitioningContent
-            OpeningEffect="{materialDesign:TransitionEffect Kind=SlideInFromBottom}"
-            cal:View.Model="{Binding ActiveWorkspace}" />
-    </materialDesign:DialogHost>
+    <materialDesign:TransitioningContent
+        OpeningEffect="{materialDesign:TransitionEffect Kind=SlideInFromBottom}"
+        cal:View.Model="{Binding ActiveWorkspace}" />
 </UserControl>

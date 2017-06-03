@@ -1,5 +1,6 @@
 ﻿Imports Caliburn.Micro
 Imports Hotelie.Application.Services.Authentication
+Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Presentation.Common
 
 Namespace Start.LoginShell.ViewModels
@@ -24,12 +25,13 @@ Namespace Start.LoginShell.ViewModels
 
 		' Initialization
 
-		Public Sub New( authentication As IAuthentication )
+		Public Sub New( authentication As IAuthentication,
+		                databaseService As IDatabaseService )
 			CommandsBar = New LoginShellCommandsBarViewModel( Me )
 
 			ScreenLogin = New ScreenLoginViewModel( authentication )
 
-			ScreenSettings = New ScreenSettingsViewModel()
+			ScreenSettings = New ScreenSettingsViewModel( databaseService )
 
 			DisplayName = "Đăng nhập"
 
