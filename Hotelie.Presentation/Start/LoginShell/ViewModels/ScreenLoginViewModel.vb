@@ -33,7 +33,7 @@ Namespace Start.LoginShell.ViewModels
 
 			' login
 
-			Dim err = _authentication.TryLogin( New Account With {.Username=username, .Password=password} ).FirstOrDefault()
+			Dim err = _authentication.TryLogin( username, password ).FirstOrDefault()
 
 			If String.IsNullOrEmpty( err )
 				' success
