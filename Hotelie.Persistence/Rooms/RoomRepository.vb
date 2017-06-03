@@ -18,46 +18,77 @@ Namespace Rooms
 
         Public Sub AddRoomCategories(entities As IEnumerable(Of RoomCategory)) _
             Implements IRoomRepository.AddRoomCategories
-            _databaseService.Context.RoomCategories.AddRange(entities)
+            Try
+                _databaseService.Context.RoomCategories.AddRange(entities)
+            Catch
+                Throw New DatabaseConnectionFailedException
+            End Try
         End Sub
 
         Public Sub AddRoomCategory(entity As RoomCategory) Implements IRoomRepository.AddRoomCategory
-            _databaseService.Context.RoomCategories.Add(entity)
+            Try
+                _databaseService.Context.RoomCategories.Add(entity)
+            Catch
+                Throw New DatabaseConnectionFailedException
+            End Try
         End Sub
 
         Public Sub RemoveRoomCategories(entities As IEnumerable(Of RoomCategory)) _
             Implements IRoomRepository.RemoveRoomCategories
-            _databaseService.Context.RoomCategories.RemoveRange(entities)
+            Try
+                _databaseService.Context.RoomCategories.RemoveRange(entities)
+            Catch
+                Throw New DatabaseConnectionFailedException
+            End Try
         End Sub
 
         Public Sub RemoveRoomCategory(entity As RoomCategory) Implements IRoomRepository.RemoveRoomCategory
-            _databaseService.Context.RoomCategories.Remove(entity)
+            Try
+                _databaseService.Context.RoomCategories.Remove(entity)
+            Catch
+                Throw New DatabaseConnectionFailedException
+            End Try
         End Sub
 
         Public Function FindRoomCategory(predicate As Expression(Of Func(Of RoomCategory, Boolean))) _
             As IQueryable(Of RoomCategory) Implements IRoomRepository.FindRoomCategory
-            Return _databaseService.Context.RoomCategories.Where(predicate)
+            Try
+                Return _databaseService.Context.RoomCategories.Where(predicate)
+            Catch
+                Throw New DatabaseConnectionFailedException
+            End Try
         End Function
 
         Public Function GetAllRoomCategories() As IQueryable(Of RoomCategory) _
             Implements IRoomRepository.GetAllRoomCategories
-            Return _databaseService.Context.RoomCategories
+            Try
+                Return _databaseService.Context.RoomCategories
+            Catch
+                Throw New DatabaseConnectionFailedException
+            End Try
         End Function
 
         Public Function GetRoomCategory(id As Object) As RoomCategory _
             Implements IRoomRepository.GetRoomCategory
+            Try
+                Dim idString = CType(id, String)
+                If idString Is Nothing Then Throw New InvalidCastException("Id must be string")
 
-            Dim idString = CType(id, String)
-            If idString Is Nothing Then Throw New InvalidCastException("Id must be string")
-
-            Return _databaseService.Context.RoomCategories.FirstOrDefault(Function(p) String.Equals(p.Id, idString))
+                Return _databaseService.Context.RoomCategories.FirstOrDefault(Function(p) String.Equals(p.Id, idString))
+            Catch
+                Throw New DatabaseConnectionFailedException
+            End Try
         End Function
 
         Public Overrides Function GetOne(id As Object) As Room
-            Dim idString = CType(id, String)
-            If idString Is Nothing Then Throw New InvalidCastException("Id must be string")
+            Try
+                Dim idString = CType(id, String)
+                If idString Is Nothing Then Throw New InvalidCastException("Id must be string")
 
-            Return _databaseService.Context.Rooms.FirstOrDefault(Function(p) String.Equals(p.Id, idString))
+                Return _databaseService.Context.Rooms.FirstOrDefault(Function(p) String.Equals(p.Id, idString))
+            Catch
+                Throw New DatabaseConnectionFailedException
+            End Try
         End Function
     End Class
 End Namespace

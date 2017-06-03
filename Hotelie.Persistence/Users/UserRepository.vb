@@ -17,46 +17,77 @@ Namespace Users
 
         Public Sub AddUserCategories(entities As IEnumerable(Of UserCategory)) _
             Implements IUserRepository.AddUserCategories
-            _databaseService.Context.UserCategories.AddRange(entities)
+            Try
+                _databaseService.Context.UserCategories.AddRange(entities)
+            Catch
+                Throw New DatabaseConnectionFailedException
+            End Try
         End Sub
 
         Public Sub AddUserCategory(entity As UserCategory) Implements IUserRepository.AddUserCategory
-            _databaseService.Context.UserCategories.Add(entity)
+            Try
+                _databaseService.Context.UserCategories.Add(entity)
+            Catch
+                Throw New DatabaseConnectionFailedException
+            End Try
         End Sub
 
         Public Sub RemoveUserCategories(entities As IEnumerable(Of UserCategory)) _
             Implements IUserRepository.RemoveUserCategories
-            _databaseService.Context.UserCategories.RemoveRange(entities)
+            Try
+                _databaseService.Context.UserCategories.RemoveRange(entities)
+            Catch
+                Throw New DatabaseConnectionFailedException
+            End Try
         End Sub
 
         Public Sub RemoveUserCategory(entity As UserCategory) Implements IUserRepository.RemoveUserCategory
-            _databaseService.Context.UserCategories.Remove(entity)
+            Try
+                _databaseService.Context.UserCategories.Remove(entity)
+            Catch
+                Throw New DatabaseConnectionFailedException
+            End Try
         End Sub
 
         Public Function FindUserCategory(predicate As Expression(Of Func(Of UserCategory, Boolean))) _
             As IQueryable(Of UserCategory) Implements IUserRepository.FindUserCategory
-            Return _databaseService.Context.UserCategories.Where(predicate)
+            Try
+                Return _databaseService.Context.UserCategories.Where(predicate)
+            Catch
+                Throw New DatabaseConnectionFailedException
+            End Try
         End Function
 
         Public Function GetAllUserCategories() As IQueryable(Of UserCategory) _
             Implements IUserRepository.GetAllUserCategories
-            Return _databaseService.Context.UserCategories
+            Try
+                Return _databaseService.Context.UserCategories
+            Catch
+                Throw New DatabaseConnectionFailedException
+            End Try
         End Function
 
         Public Function GetUserCategory(id As Object) As UserCategory _
             Implements IUserRepository.GetUserCategory
+            Try
+                Dim idString = CType(id, String)
+                If idString Is Nothing Then Throw New InvalidCastException("Id must be string")
 
-            Dim idString = CType(id, String)
-            If idString Is Nothing Then Throw New InvalidCastException("Id must be string")
-
-            Return _databaseService.Context.UserCategories.FirstOrDefault(Function(p) String.Equals(p.Id, idString))
+                Return _databaseService.Context.UserCategories.FirstOrDefault(Function(p) String.Equals(p.Id, idString))
+            Catch
+                Throw New DatabaseConnectionFailedException
+            End Try
         End Function
 
         Public Overrides Function GetOne(id As Object) As User
-            Dim idString = CType(id, String)
-            If idString Is Nothing Then Throw New InvalidCastException("Id must be string")
+            Try
+                Dim idString = CType(id, String)
+                If idString Is Nothing Then Throw New InvalidCastException("Id must be string")
 
-            Return _databaseService.Context.Users.FirstOrDefault(Function(p) String.Equals(p.Id, idString))
+                Return _databaseService.Context.Users.FirstOrDefault(Function(p) String.Equals(p.Id, idString))
+            Catch
+                Throw New DatabaseConnectionFailedException
+            End Try
         End Function
     End Class
 End Namespace
