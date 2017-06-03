@@ -276,7 +276,8 @@
         <Button Grid.Row="2" Style="{DynamicResource MaterialDesignFloatingActionAccentButton}"
                 HorizontalAlignment="Right"
                 ToolTip="Thêm phòng"
-                Margin="0 -119 32 0">
+                Margin="0 -119 32 0"
+                cal:Message.Attach="NavigateToScreenAddRoom">
             <materialDesign:PackIcon Width="24" Height="24"
                                      Kind="Plus" />
         </Button>

@@ -12,6 +12,8 @@ Namespace Rooms.ViewModels
 
 		Public ReadOnly Property ScreenRoomDetail As ScreenRoomDetailViewModel
 
+		Public ReadOnly Property ScreenAddRoom As ScreenAddRoomViewModel
+
 		Public Property DisplayCode As Integer
 			Get
 				Return _displayCode
@@ -31,6 +33,8 @@ Namespace Rooms.ViewModels
 
 			ScreenRoomDetail = New ScreenRoomDetailViewModel( Me, getRoomCategoriesListQuery )
 
+			ScreenAddRoom = New ScreenAddRoomViewModel( Me, getRoomCategoriesListQuery )
+
 			DisplayCode = 0
 		End Sub
 
@@ -39,10 +43,15 @@ Namespace Rooms.ViewModels
 		End Sub
 
 		Public Sub NavigateToScreenRoomDetail( room As RoomModel )
-			If IsNothing(room) Then Return
+			If IsNothing( room ) Then Return
 
 			ScreenRoomDetail.SetRoom( room.Id, room.Name, room.CategoryId, room.State, room.Note )
 			DisplayCode = 1
+		End Sub
+
+		Public Sub NavigateToScreenAddRoom()
+			ScreenAddRoom.Reset()
+			DisplayCode = 2
 		End Sub
 	End Class
 End Namespace
