@@ -25,17 +25,12 @@ Public Class AppBootstrapper
 	Protected Overridable Sub ComposeDependencies()
 		_container.RegisterType(Of IWindowManager, WindowManager)( New ContainerControlledLifetimeManager() )
 		_container.RegisterType(Of IEventAggregator, EventAggregator)( New ContainerControlledLifetimeManager() )
-
-		_container.RegisterType(Of IDatabaseService, Tests.Services.Persistence.DatabaseService)(
-			New ContainerControlledLifetimeManager() )
-		_container.RegisterType(Of IAuthentication, Tests.Services.Authentication.Authentication)(
-			New ContainerControlledLifetimeManager() )
-
-		_container.RegisterType(Of IGetRoomsListQuery, Tests.Rooms.Queries.GetRoomsList.GetRoomsListQuery)(
-			New ContainerControlledLifetimeManager() )
-		_container.RegisterType _
-			(Of IGetRoomCategoriesListQuery, Tests.Rooms.Queries.GetRoomCategoriesList.GetRoomCategoriesListQuery)(
-				New ContainerControlledLifetimeManager() )
+        _container.RegisterType(Of IUserRepository, UserRepository)(New ContainerControlledLifetimeManager())
+		_container.RegisterType(Of IAuthentication, Authentication)( New ContainerControlledLifetimeManager() )
+	    _container.RegisterType(Of IDatabaseService, DatabaseService)(New ContainerControlledLifetimeManager())
+        _container.RegisterType(Of IGetLeasesListQuery, GetLeasesListQuery)(New ContainerControlledLifetimeManager())
+	    _container.RegisterType(Of IRoomRepository, IRoomRepository)(New ContainerControlledLifetimeManager())
+	    _container.RegisterType(Of IGetRoomsListQuery, GetRoomListQuery)(New ContainerControlledLifetimeManager())
 	End Sub
 
 	Protected Overrides Function GetInstance( service As Type,
