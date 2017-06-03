@@ -43,10 +43,6 @@ Namespace Common
             _context = New DatabaseContext()
         End Sub
 
-        Public Sub New(connectionString As String)
-            _context = New DatabaseContext(connectionString)
-        End Sub
-
         Public Sub Dispose() Implements IDatabaseService.Dispose
             _context.Dispose()
         End Sub
