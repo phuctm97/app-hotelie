@@ -1,28 +1,27 @@
 ﻿Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
-Imports Hotelie.Application.Rooms.Queries.GetRoomsList
 Imports Hotelie.Domain.Rooms
-Imports Hotelie.Persistence.Common
+Imports Hotelie.Persistence.DatabaseServices
 Imports Hotelie.Persistence.Rooms
 
 Namespace Query
     <TestClass>
     Public Class TestGetRoomCategoriesListQuery
-        Private _context As DatabaseContext
+        Private _databaseService As DatabaseService
         Private _roomRepository As RoomRepository
         Private _roomCategoriesList As List(Of RoomCategory)
         Private _getRoomCategoriesListQuery As GetRoomCategoriesListQuery
 
         <TestInitialize>
         Public Sub TestInitialize()
-            _context = New DatabaseContext(
+            _databaseService = New DatabaseService(
                 $"data source=KHUONG-ASUS\SQLEXPRESS;initial catalog=HotelieDatabase;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
-            _roomRepository = New RoomRepository(_context)
+            _roomRepository = New RoomRepository(_databaseService)
             _getRoomCategoriesListQuery = New GetRoomCategoriesListQuery(_roomRepository)
         End Sub
 
         <TestCleanup>
         Public Sub TestCleanup()
-            _context.Dispose()
+            _databaseService.Context.Dispose()
         End Sub
 
         Public Sub RoomCategoriesInitialize()
@@ -32,13 +31,13 @@ Namespace Query
             _roomCategoriesList.Add(roomCategory1)
             _roomCategoriesList.Add(roomCategory2)
             _roomRepository.AddRoomCategories(_roomCategoriesList)
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
         End Sub
 
         Public Sub DisposeRoomCategories()
             _roomCategoriesList?.Clear()
             _roomRepository.RemoveRoomCategories(_roomRepository.GetAllRoomCategories())
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
         End Sub
 
         <TestMethod>

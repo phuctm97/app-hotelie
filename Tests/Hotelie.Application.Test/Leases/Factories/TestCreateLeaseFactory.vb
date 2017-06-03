@@ -4,13 +4,14 @@ Imports Hotelie.Application.Leases.Queries
 Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Domain.Rooms
 Imports Hotelie.Persistence.Common
+Imports Hotelie.Persistence.DatabaseServices
 Imports Hotelie.Persistence.Leases
 Imports Hotelie.Persistence.Rooms
 
 Namespace Leases.Factories
     <TestClass>
     Public Class TestGetLeasesQuery
-        Private _context As DatabaseContext
+        Private _databaseService As DatabaseService
         Private _leaseRepository As LeaseRepository
         Private _roomRepository As RoomRepository
         Private _roomsList As List(Of Room)
@@ -20,18 +21,18 @@ Namespace Leases.Factories
 
         <TestInitialize>
         Public Sub TestInitialize()
-            _context = New DatabaseContext(
+            _databaseService = New DatabaseService(
                 $"data source=KHUONG-ASUS\SQLEXPRESS;initial catalog=HotelieDatabase;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
-            _leaseRepository = new LeaseRepository(_context)
-            _roomRepository = New RoomRepository(_context)
-            _unitOfWork = New UnitOfWork(_context)
+            _leaseRepository = new LeaseRepository(_databaseService)
+            _roomRepository = New RoomRepository(_databaseService)
+            _unitOfWork = New UnitOfWork(_databaseService)
             _getLeasesQuery = New GetLeasesListQuery(_leaseRepository)
             _createLeaseFactory = New CreateLeaseFactory(_leaseRepository,_unitOfWork,_roomRepository)
         End Sub
 
         <TestCleanup>
         Public Sub TestCleanup()
-            _context.Dispose()
+            _databaseService.Context.Dispose()
         End Sub
 
         Public Sub LeasesInitialize()
@@ -40,7 +41,7 @@ Namespace Leases.Factories
             Dim roomCategory = New RoomCategory() With {.Id = "00001", .Name="Annonymous", .Price=200000}
 
             _roomRepository.AddRoomCategory(roomCategory)
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
 
             Dim room1 = New Room() With {.Id="PH001",.Name="101",.Category=roomCategory,.State=0}
             Dim room2 = New Room() With {.Id="PH002",.Name="201",.Category=roomCategory,.State=0}
@@ -51,7 +52,7 @@ Namespace Leases.Factories
             _roomsList.Add(room2)
             _roomsList.Add(room3)
             _roomRepository.AddRange(_roomsList)
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
 
         End Sub
 
@@ -60,7 +61,7 @@ Namespace Leases.Factories
             _leaseRepository.RemoveRange(_leaseRepository.GetAll())
             _roomRepository.RemoveRange(_roomRepository.GetAll())
             _roomRepository.RemoveRoomCategories(_roomRepository.GetAllRoomCategories())
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
         End Sub
 
 

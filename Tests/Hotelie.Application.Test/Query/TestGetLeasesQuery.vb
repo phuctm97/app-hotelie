@@ -2,14 +2,14 @@
 Imports Hotelie.Application.Leases.Queries
 Imports Hotelie.Domain.Leases
 Imports Hotelie.Domain.Rooms
-Imports Hotelie.Persistence.Common
+Imports Hotelie.Persistence.DatabaseServices
 Imports Hotelie.Persistence.Leases
 Imports Hotelie.Persistence.Rooms
 
 Namespace Query
     <TestClass>
     Public Class TestGetLeasesQuery
-        Private _context As DatabaseContext
+        Private _databaseService As DatabaseService
         Private _leaseRepository As LeaseRepository
         Private _roomRepository As RoomRepository
         Private _leasesList As List(Of Lease)
@@ -18,26 +18,26 @@ Namespace Query
 
         <TestInitialize>
         Public Sub TestInitialize()
-            _context = New DatabaseContext(
+            _databaseService = New DatabaseService(
                 $"data source=KHUONG-ASUS\SQLEXPRESS;initial catalog=HotelieDatabase;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
-            _leaseRepository = new LeaseRepository(_context)
-            _roomRepository = New RoomRepository(_context)
+            _leaseRepository = new LeaseRepository(_databaseService)
+            _roomRepository = New RoomRepository(_databaseService)
             _getLeasesQuery = New GetLeasesListQuery(_leaseRepository)
         End Sub
 
         <TestCleanup>
         Public Sub TestCleanup()
-            _context.Dispose()
+            _databaseService.Context.Dispose()
         End Sub
 
         Public Sub LeasesInitialize()
             DisposeLeases()
-            _context.CustomerCategories.RemoveRange(_context.CustomerCategories)
+            _databaseService.Context.CustomerCategories.RemoveRange(_databaseService.Context.CustomerCategories)
 
             Dim roomCategory = New RoomCategory() With {.Id = "00001", .Name="Annonymous", .Price=200000}
 
             _roomRepository.AddRoomCategory(roomCategory)
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
 
             Dim room1 = New Room() With {.Id="PH001",.Name="101",.Category=roomCategory,.State=0}
             Dim room2 = New Room() With {.Id="PH002",.Name="201",.Category=roomCategory,.State=0}
@@ -48,7 +48,7 @@ Namespace Query
             _roomsList.Add(room2)
             _roomsList.Add(room3)
             _roomRepository.AddRange(_roomsList)
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
 
             Dim lease1 = New Lease() With{.Id = "LS001", 
                     .BeginDate=DateTime.ParseExact("5/12/2016", "d/m/yyyy", CultureInfo.InvariantCulture), 
@@ -70,7 +70,7 @@ Namespace Query
             _leasesList.Add(lease2)
             _leasesList.Add(lease3)
             _leaseRepository.AddRange(_leasesList)
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
         End Sub
 
         Public Sub DisposeLeases()
@@ -79,7 +79,7 @@ Namespace Query
             _leaseRepository.RemoveRange(_leaseRepository.GetAll())
             _roomRepository.RemoveRange(_roomRepository.GetAll())
             _roomRepository.RemoveRoomCategories(_roomRepository.GetAllRoomCategories())
-            _context.SaveChanges()
+            _databaseService.Context.SaveChanges()
         End Sub
 
         <TestMethod>
@@ -89,12 +89,12 @@ Namespace Query
 
             ' input
             Dim customerCategory = New CustomerCategory() With {.Id = "ND001",.Name = "Noi Dia"}
-            _context.CustomerCategories.Add(customerCategory)
-            _context.SaveChanges()
+            _databaseService.Context.CustomerCategories.Add(customerCategory)
+            _databaseService.Context.SaveChanges()
 
             Dim leaseCustomer = New LeaseDetail() With {.Id="LD001",.Address = "Customer Address",.Lease=_leasesList(0),.CustomerName="CustomerName",.CustomerCategory=customerCategory,.LicenseId="licenseId"}
-            _context.LeaseDetails.Add(leaseCustomer)
-            _context.SaveChanges()
+            _databaseService.Context.LeaseDetails.Add(leaseCustomer)
+            _databaseService.Context.SaveChanges()
 
             ' act
             Dim leases = _getLeasesQuery.Execute().ToList()
@@ -117,9 +117,9 @@ Namespace Query
             Assert.IsTrue(leaseCustomers(0).Id = leaseCustomer.Id And leaseCustomers(0).CustomerCategory.Id = leaseCustomer.CustomerCategory.Id)
             
             ' rollback
-            _context.LeaseDetails.Remove(leaseCustomer)
-            _context.CustomerCategories.Remove(customerCategory)
-            _context.SaveChanges()
+            _databaseService.Context.LeaseDetails.Remove(leaseCustomer)
+            _databaseService.Context.CustomerCategories.Remove(customerCategory)
+            _databaseService.Context.SaveChanges()
             DisposeLeases()
         End Sub
     End Class
