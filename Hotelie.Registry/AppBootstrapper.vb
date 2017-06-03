@@ -6,6 +6,7 @@ Imports Hotelie.Application.Services.Authentication
 Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Persistence.Common
 Imports Hotelie.Persistence.Leases
+Imports Hotelie.Persistence.Rooms
 Imports Hotelie.Persistence.Users
 Imports Microsoft.Practices.Unity
 
