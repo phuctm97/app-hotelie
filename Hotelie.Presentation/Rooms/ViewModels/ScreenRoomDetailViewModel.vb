@@ -16,7 +16,10 @@ Namespace Rooms.ViewModels
 		Private _roomCategory As RoomCategoryModel
 		Private _roomNote As String
 		Private _roomState As Integer
-		Private _isEdited As Boolean
+
+		Private _originalRoomName As String
+		Private _originalRoomCategoryId As String
+		Private _originalRoomNote As String
 
 		' Parent
 
@@ -43,7 +46,10 @@ Namespace Rooms.ViewModels
 			_roomCategory = RoomCategories.FirstOrDefault()
 			_roomNote = String.Empty
 			_roomState = 0
-			_isEdited = False
+
+			_originalRoomName = _roomName
+			_originalRoomCategoryId = _roomCategory.Id
+			_originalRoomNote = _roomNote
 		End Sub
 
 		Private Sub InitRoomCategories( ByRef roomCategoryCollection As IObservableCollection(Of RoomCategoryModel) )
@@ -60,7 +66,6 @@ Namespace Rooms.ViewModels
 			Set
 				If String.Equals( Value, _roomName ) Then Return
 				_roomName = value
-				_isEdited = True
 				NotifyOfPropertyChange( Function() RoomName )
 			End Set
 		End Property
@@ -72,7 +77,6 @@ Namespace Rooms.ViewModels
 			Set
 				If Equals( Value, _roomCategory ) Then Return
 				_roomCategory = value
-				_isEdited = True
 				NotifyOfPropertyChange( Function() RoomCategory )
 			End Set
 		End Property
@@ -84,7 +88,6 @@ Namespace Rooms.ViewModels
 			Set
 				If String.Equals( Value, _roomNote ) Then Return
 				_roomNote = value
-				_isEdited = True
 				NotifyOfPropertyChange( Function() RoomNote )
 			End Set
 		End Property
@@ -96,7 +99,6 @@ Namespace Rooms.ViewModels
 			Set
 				If Equals( Value, _roomState ) Then Return
 				_roomState = value
-				_isEdited = True
 				NotifyOfPropertyChange( Function() RoomState )
 			End Set
 		End Property
@@ -115,15 +117,20 @@ Namespace Rooms.ViewModels
 			RoomCategory = RoomCategories.FirstOrDefault( Function( c ) Equals( c.Id, categoryId ) )
 			RoomState = state
 			RoomNote = note
-			_isEdited = False
+
+			_originalRoomName = _roomName
+			_originalRoomCategoryId = _roomCategory.Id
+			_originalRoomNote = _roomNote
 		End Sub
 
 		Public Async Sub PreviewNavigateToScreenRoomsList()
-			If Not _isEdited
+			' Nothing changes
+			If String.Equals( _roomName, _originalRoomName ) And
+			   String.Equals( _roomCategory.Id, _originalRoomCategoryId ) And
+			   String.Equals( _roomNote, _originalRoomNote )
 				ParentWorkspace.NavigateToScreenRoomsList()
 				Return
 			End If
-
 
 			Dim dialog = New ThreeButtonDialog( "Thoát mà không lưu các thay đổi?",
 			                                    "THOÁT",
@@ -133,7 +140,7 @@ Namespace Rooms.ViewModels
 			                                    True,
 			                                    False )
 
-			Dim result = Await DialogHost.Show( dialog, "screen-room-detail" )
+			Dim result = Await DialogHost.Show( dialog, "shell" )
 
 			If String.Equals( result, "THOÁT" )
 				ParentWorkspace.NavigateToScreenRoomsList()

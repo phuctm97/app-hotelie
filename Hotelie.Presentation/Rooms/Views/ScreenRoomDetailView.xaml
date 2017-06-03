@@ -23,156 +23,154 @@
     </UserControl.Resources>
 
     <!--Content-->
-    <materialDesign:DialogHost Identifier="screen-room-detail">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-            <!--Title bar-->
-            <materialDesign:ColorZone Grid.Row="0" Mode="PrimaryDark"
-                                      materialDesign:ShadowAssist.ShadowDepth="Depth2">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="72" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
+        <!--Title bar-->
+        <materialDesign:ColorZone Grid.Row="0" Mode="PrimaryDark"
+                                  materialDesign:ShadowAssist.ShadowDepth="Depth2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="72" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-                    <!--Back button-->
-                    <Button Grid.Column="0" HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Margin="16 0 0 0" Style="{DynamicResource MaterialDesignToolButton}"
-                            cal:Message.Attach="PreviewNavigateToScreenRoomsList">
-                        <materialDesign:PackIcon Width="24" Height="24"
-                                                 Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-                                                 Kind="KeyboardBackspace" />
-                    </Button>
+                <!--Back button-->
+                <Button Grid.Column="0" HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="16 0 0 0" Style="{DynamicResource MaterialDesignToolButton}"
+                        cal:Message.Attach="PreviewNavigateToScreenRoomsList">
+                    <materialDesign:PackIcon Width="24" Height="24"
+                                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                             Kind="KeyboardBackspace" />
+                </Button>
 
-                    <!--Content-->
-                    <DockPanel Grid.Row="0" Grid.Column="1" Margin="0 24 0 24">
-                        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom"
-                                    Margin="0 0 16 0">
-                            <!--Room category-->
-                            <Button DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
-                                    Margin="0 0 0 8"
-                                    Content="{Binding Path=RoomCategory.Name}">
-                                <Button.Background>
-                                    <SolidColorBrush Color="{Binding Path=RoomCategory.DisplayColor}" />
-                                </Button.Background>
-                            </Button>
+                <!--Content-->
+                <DockPanel Grid.Row="0" Grid.Column="1" Margin="0 24 0 24">
+                    <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                                Margin="0 0 16 0">
+                        <!--Room category-->
+                        <Button DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                Margin="0 0 0 8"
+                                Content="{Binding Path=RoomCategory.Name}">
+                            <Button.Background>
+                                <SolidColorBrush Color="{Binding Path=RoomCategory.DisplayColor}" />
+                            </Button.Background>
+                        </Button>
 
-                            <!--Room price-->
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
-                                           FontSize="15"
-                                           Opacity="0.7"
-                                           Text="GIÁ" Margin="0 0 8 0" />
-                                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
-                                           FontSize="15"
-                                           Opacity="0.9"
-                                           Text="{Binding Path=RoomCategory.Price, Converter={StaticResource DecimalToCurrencyStringConverter}}" />
-                            </StackPanel>
+                        <!--Room price-->
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
+                                       FontSize="15"
+                                       Opacity="0.7"
+                                       Text="GIÁ" Margin="0 0 8 0" />
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
+                                       FontSize="15"
+                                       Opacity="0.9"
+                                       Text="{Binding Path=RoomCategory.Price, Converter={StaticResource DecimalToCurrencyStringConverter}}" />
                         </StackPanel>
+                    </StackPanel>
 
-                        <!--Room name-->
-                        <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
-                                   Margin="0 0 0 4"
-                                   FontSize="60"
-                                   Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-                                   FontWeight="Light"
-                                   Text="{Binding RoomName}" />
+                    <!--Room name-->
+                    <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
+                               Margin="0 0 0 4"
+                               FontSize="60"
+                               Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                               FontWeight="Light"
+                               Text="{Binding RoomName}" />
 
-                        <!--Delete button-->
-                        <Button DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
-                                Margin="8 0 16 0" Padding="8" Height="Auto"
-                                Style="{DynamicResource MaterialDesignToolButton}"
-                                Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-                                FontSize="18"
-                                Content="XÓA" />
+                    <!--Delete button-->
+                    <Button DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
+                            Margin="8 0 16 0" Padding="8" Height="Auto"
+                            Style="{DynamicResource MaterialDesignToolButton}"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            FontSize="18"
+                            Content="XÓA" />
 
-                        <!--Save button-->
-                        <Button DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
-                                Padding="8" Height="Auto"
-                                Style="{DynamicResource MaterialDesignToolButton}"
-                                Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-                                FontSize="18"
-                                Content="LƯU" />
-                    </DockPanel>
-                </Grid>
+                    <!--Save button-->
+                    <Button DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
+                            Padding="8" Height="Auto"
+                            Style="{DynamicResource MaterialDesignToolButton}"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            FontSize="18"
+                            Content="LƯU" />
+                </DockPanel>
+            </Grid>
 
-            </materialDesign:ColorZone>
+        </materialDesign:ColorZone>
 
-            <!--Content-->
-            <StackPanel Grid.Row="1" Margin="4 0 4 0">
-                <!--Room name-->
-                <StackPanel Margin="16 24 16 0">
-                    <TextBlock Text="Tên phòng" IsEnabled="False"
-                               Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                               FontSize="15" Margin="0 0 0 4" />
-                    <TextBox materialDesign:HintAssist.Hint="Tên phòng"
-                             Text="{Binding RoomName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             FontSize="35" />
-                </StackPanel>
-
-                <!--Room category-->
-                <StackPanel Margin="16 24 16 0">
-                    <TextBlock Text="Loại phòng" IsEnabled="False"
-                               Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                               FontSize="15" Margin="0 0 0 4" />
-                    <ComboBox materialDesign:HintAssist.Hint="Loại phòng"
-                              FontSize="20"
-                              ItemsSource="{Binding RoomCategories}"
-                              DisplayMemberPath="Name"
-                              SelectedItem="{Binding RoomCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
-
-                <!--Room note-->
-                <StackPanel Margin="16 24 16 0">
-                    <TextBlock Text="Ghi chú" IsEnabled="False"
-                               Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                               FontSize="15" Margin="0 0 0 4" />
-                    <TextBox materialDesign:HintAssist.Hint="Thông tin thêm về phòng"
-                             TextWrapping="Wrap"
-                             AcceptsReturn="True"
-                             VerticalScrollBarVisibility="Auto"
-                             FontSize="15"
-                             Padding="0 0 4 0"
-                             Height="Auto"
-                             MaxHeight="130"
-                             Text="{Binding RoomNote, Mode=TwoWay}" />
-                </StackPanel>
-
-                <!--Room state-->
-                <StackPanel Margin="16 24 16 0">
-                    <TextBlock Text="Tình trạng" IsEnabled="False"
-                               Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                               FontSize="15" Margin="0 0 0 4" />
-                    <materialDesign:Chip
-                        Content="{Binding RoomState, Converter={StaticResource RoomStateToStringConverter}}"
-                        FontSize="15"
-                        IconForeground="White">
-                        <materialDesign:Chip.IconBackground>
-                            <SolidColorBrush
-                                Color="{Binding RoomState, Converter={StaticResource RoomStateToBackColorConverter}}" />
-                        </materialDesign:Chip.IconBackground>
-                        <materialDesign:Chip.Icon>
-                            <materialDesign:PackIcon
-                                Kind="{Binding RoomState, Converter={StaticResource RoomStateToIconKindConverter}}"
-                                Width="24" Height="24" />
-                        </materialDesign:Chip.Icon>
-                    </materialDesign:Chip>
-                </StackPanel>
-
-                <!--Commands-->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 16 0 0">
-                    <Button DockPanel.Dock="Right" HorizontalAlignment="Right"
-                            Style="{DynamicResource MaterialDesignFlatAccentButton}"
-                            Content="THUÊ PHÒNG"
-                            Margin="8" Height="36" Padding="8" />
-                </StackPanel>
+        <!--Content-->
+        <StackPanel Grid.Row="1" Margin="4 0 4 0">
+            <!--Room name-->
+            <StackPanel Margin="16 24 16 0">
+                <TextBlock Text="Tên phòng" IsEnabled="False"
+                           Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                           FontSize="15" Margin="0 0 0 4" />
+                <TextBox materialDesign:HintAssist.Hint="Tên phòng"
+                         Text="{Binding RoomName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         FontSize="35" />
             </StackPanel>
 
-        </Grid>
-    </materialDesign:DialogHost>
+            <!--Room category-->
+            <StackPanel Margin="16 24 16 0">
+                <TextBlock Text="Loại phòng" IsEnabled="False"
+                           Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                           FontSize="15" Margin="0 0 0 4" />
+                <ComboBox materialDesign:HintAssist.Hint="Loại phòng"
+                          FontSize="20"
+                          ItemsSource="{Binding RoomCategories}"
+                          DisplayMemberPath="Name"
+                          SelectedItem="{Binding RoomCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <!--Room note-->
+            <StackPanel Margin="16 24 16 0">
+                <TextBlock Text="Ghi chú" IsEnabled="False"
+                           Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                           FontSize="15" Margin="0 0 0 4" />
+                <TextBox materialDesign:HintAssist.Hint="Thông tin thêm về phòng"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True"
+                         VerticalScrollBarVisibility="Auto"
+                         FontSize="15"
+                         Padding="0 0 4 0"
+                         Height="Auto"
+                         MaxHeight="130"
+                         Text="{Binding RoomNote, Mode=TwoWay}" />
+            </StackPanel>
+
+            <!--Room state-->
+            <StackPanel Margin="16 24 16 0">
+                <TextBlock Text="Tình trạng" IsEnabled="False"
+                           Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                           FontSize="15" Margin="0 0 0 4" />
+                <materialDesign:Chip
+                    Content="{Binding RoomState, Converter={StaticResource RoomStateToStringConverter}}"
+                    FontSize="15"
+                    IconForeground="White">
+                    <materialDesign:Chip.IconBackground>
+                        <SolidColorBrush
+                            Color="{Binding RoomState, Converter={StaticResource RoomStateToBackColorConverter}}" />
+                    </materialDesign:Chip.IconBackground>
+                    <materialDesign:Chip.Icon>
+                        <materialDesign:PackIcon
+                            Kind="{Binding RoomState, Converter={StaticResource RoomStateToIconKindConverter}}"
+                            Width="24" Height="24" />
+                    </materialDesign:Chip.Icon>
+                </materialDesign:Chip>
+            </StackPanel>
+
+            <!--Commands-->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 16 0 0">
+                <Button DockPanel.Dock="Right" HorizontalAlignment="Right"
+                        Style="{DynamicResource MaterialDesignFlatAccentButton}"
+                        Content="THUÊ PHÒNG"
+                        Margin="8" Height="36" Padding="8" />
+            </StackPanel>
+        </StackPanel>
+
+    </Grid>
 </UserControl>
