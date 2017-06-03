@@ -78,6 +78,8 @@
     <Compile Include="Common\DatabaseInitializer.vb" />
     <Compile Include="Common\Repository.vb" />
     <Compile Include="Common\UnitOfWork.vb" />
+    <Compile Include="DatabaseServices\DatabaseService.vb" />
+    <Compile Include="DatabaseServices\IDatabaseService.vb" />
     <Compile Include="Leases\BillConfiguration.vb" />
     <Compile Include="Leases\CustomerCategoryConfiguration.vb" />
     <Compile Include="Leases\LeaseConfiguration.vb" />
