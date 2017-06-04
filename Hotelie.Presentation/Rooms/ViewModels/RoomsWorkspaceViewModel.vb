@@ -57,12 +57,21 @@ Namespace Rooms.ViewModels
 			InitAsync()
 		End Sub
 
+		Private Sub Init()
+			ScreenRoomsList.Init()
+			ScreenRoomDetail.Init()
+			ScreenAddRoom.Init()
+			DisplayCode = 0
+		End Sub
+
 		Private Async Sub InitAsync()
 			ShowStaticWindowLoadingDialog()
 			Await ScreenRoomsList.InitAsync()
+			Await ScreenRoomDetail.InitAsync()
+			Await ScreenAddRoom.InitAsync()
 			CloseStaticWindowDialog()
-
 			DisplayCode = 0
+			Await Task.Delay( 100 ) 'delay for binding
 		End Sub
 
 		Public Sub NavigateToScreenRoomsList()

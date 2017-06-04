@@ -27,23 +27,35 @@ Namespace Rooms.ViewModels
 		Sub New( workspace As RoomsWorkspaceViewModel,
 		         getRoomCategoriesList As IGetRoomCategoriesListQuery )
 			ParentWorkspace = workspace
-
 			_getRoomCategoriesList = getRoomCategoriesList
 
-			InitRoomCategories( RoomCategories )
+			RoomCategories = New BindableCollection(Of RoomCategoryModel)
+		End Sub
 
+		Public Sub Init()
+			InitRoomCategories()
 			InitValues()
 		End Sub
+
+		Public Async Function InitAsync() As Task
+			Await InitRoomCategoriesAsync()
+			InitValues()
+		End Function
+
+		Private Sub InitRoomCategories()
+			RoomCategories.Clear()
+			RoomCategories.AddRange( _getRoomCategoriesList.Execute() )
+		End Sub
+
+		Private Async Function InitRoomCategoriesAsync() As Task
+			RoomCategories.Clear()
+			RoomCategories.AddRange( Await _getRoomCategoriesList.ExecuteAsync() )
+		End Function
 
 		Private Sub InitValues()
 			_roomName = String.Empty
 			_roomCategory = RoomCategories.FirstOrDefault()
 			_roomNote = String.Empty
-		End Sub
-
-		Private Sub InitRoomCategories( ByRef roomCategoryCollection As IObservableCollection(Of RoomCategoryModel) )
-			roomCategoryCollection = New BindableCollection(Of RoomCategoryModel)
-			roomCategoryCollection.AddRange( _getRoomCategoriesList.Execute() )
 		End Sub
 
 		' Data
@@ -155,7 +167,8 @@ Namespace Rooms.ViewModels
 
 		Private Function ValidateData() As Boolean
 			If String.IsNullOrWhiteSpace( RoomName )
-				IoC.Get(Of IMainWindow).ShowStaticBottomNotification( StaticNotificationType.Information, "Vui lòng nhập tên phòng!" )
+				IoC.Get(Of IMainWindow).ShowStaticBottomNotification( StaticNotificationType.Information,
+				                                                      "Vui lòng nhập tên phòng!" )
 				Return False
 			End If
 
