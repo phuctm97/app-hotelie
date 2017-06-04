@@ -7,6 +7,8 @@ Namespace Services.Persistence
 
         Function GetUserCategory( id As Object ) As UserCategory
 
+        Function GetUserCategoryAsync( id As Object ) As Task(Of UserCategory)
+
         Function GetAllUserCategories() As IQueryable(Of UserCategory)
 
         Function FindUserCategory( predicate As Expression(Of Func(Of UserCategory, Boolean)) ) As IQueryable(Of UserCategory)

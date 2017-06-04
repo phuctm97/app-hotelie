@@ -7,6 +7,8 @@ Namespace Services.Persistence
 
 	    Function GetRoomCategory( id As Object ) As RoomCategory
 
+	    Function GetRoomCategoryAsync( id As Object ) As Task(Of RoomCategory)
+
 	    Function GetAllRoomCategories() As IQueryable(Of RoomCategory)
 
 	    Function FindRoomCategory( predicate As Expression(Of Func(Of RoomCategory, Boolean)) ) As IQueryable(Of RoomCategory)
