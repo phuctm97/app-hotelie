@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Hotelie.Presentation"
              xmlns:commonConverters="clr-namespace:Hotelie.Presentation.Common.Converters"
+             xmlns:converters="clr-namespace:Hotelie.Presentation.Leases.Converters"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -21,6 +22,9 @@
             </ResourceDictionary.MergedDictionaries>
 
             <commonConverters:DateTimeToShortDateStringConverter x:Key="DateTimeToShortDateStringConverter" />
+            <converters:LeaseIdStringDisplayConverter x:Key="LeaseIdStringDisplayConverter" />
+            <converters:TotalPriceDisplayConverter x:Key="TotalPriceDisplayConverter" />
+            <converters:NumberOfUsedDaysDisplayConverters x:Key="NumberOfUsedDaysDisplayConverters" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -32,7 +36,7 @@
         </Grid.RowDefinitions>
 
         <!--Rooms list-->
-        <ListBox Grid.Row="1">
+        <ListBox Grid.Row="1" ItemsSource="{Binding Leases}">
 
             <!--panel style-->
             <ListBox.ItemsPanel>
@@ -71,6 +75,7 @@
                                                    Fill="{DynamicResource SecondaryAccentBrush}"
                                                    Visibility="Collapsed" />
 
+                                        <!--Main content-->
                                         <Grid Grid.Row="0" Grid.Column="1"
                                               Background="{DynamicResource PrimaryHueMidBrush}">
                                             <Grid.RowDefinitions>
@@ -82,21 +87,30 @@
                                             <!--Primary text-->
                                             <StackPanel Grid.Row="0"
                                                         Margin="16 24 16 0">
-                                                <!--Title-->
+                                                <!--Lease id-->
                                                 <TextBlock Style="{DynamicResource MaterialDesignHeadlineTextBlock}"
-                                                           Text="#T00010" Margin="0 0 8 0" />
+                                                           Text="{Binding Id, Converter={StaticResource LeaseIdStringDisplayConverter}}"
+                                                           Margin="0 0 8 0" />
 
-                                                <!--Subtitle-->
-                                                <TextBlock TextWrapping="Wrap"
-                                                           Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
-                                                           Text="Đã ở 5 ngày. Tổng tiền: 200,000đ" Opacity="0.65" />
+                                                <!--Total price-->
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
+                                                               Text="{Binding BeginDate, Converter={StaticResource NumberOfUsedDaysDisplayConverters}}" Opacity="0.65" />
+                                                    <TextBlock Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
+                                                               Text=". " Opacity="0.65" />
+                                                    <TextBlock Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
+                                                               Text="{Binding TotalPrice, Converter={StaticResource TotalPriceDisplayConverter}}" Opacity="0.65" />
+                                                </StackPanel>
 
-                                                <Button Background="White" Foreground="{DynamicResource PrimaryHueMidBrush}"
-                                                        HorizontalAlignment="Left" Height="Auto" Margin="-4 12 0 0" Padding="8 4">
-                                                    <TextBlock Text="Phòng A101" FontSize="24" />
+                                                <Button Background="White"
+                                                        Foreground="{DynamicResource PrimaryHueMidBrush}"
+                                                        HorizontalAlignment="Left" Height="Auto" Margin="-4 12 0 0"
+                                                        Padding="8 4">
+                                                    <TextBlock Text="{Binding RoomName}" FontSize="24" />
                                                 </Button>
                                             </StackPanel>
 
+                                            <!--Extra info-->
                                             <Grid Grid.Row="1"
                                                   Margin="16 8 16 16">
                                                 <Grid.ColumnDefinitions>
@@ -109,31 +123,38 @@
                                                     <RowDefinition Height="*" />
                                                 </Grid.RowDefinitions>
 
+                                                <!--Room category-->
                                                 <StackPanel Margin="0 0 4 4" Grid.Row="0" Grid.Column="0"
                                                             Orientation="Horizontal">
                                                     <materialDesign:PackIcon Kind="HomeVariant" Margin="0 0 8 0" />
-                                                    <TextBlock Margin="0 0 16 0" Text="Phòng Vip"
+                                                    <TextBlock Margin="0 0 16 0" Text="{Binding RoomCategoryName}"
                                                                FontWeight="Light" />
                                                 </StackPanel>
 
+                                                <!--Number of people-->
                                                 <StackPanel Margin="0 0 0 4" Grid.Row="0" Grid.Column="1"
                                                             Orientation="Horizontal">
                                                     <materialDesign:PackIcon Kind="AccountMultiple"
                                                                              Margin="0 0 8 0" />
-                                                    <TextBlock Text="3 người" FontWeight="Light" />
+                                                    <TextBlock Text="{Binding Path=Customers.Count}" FontWeight="Light" />
                                                 </StackPanel>
 
+                                                <!--Begin date-->
                                                 <StackPanel Margin="0 4 4 4" Grid.Row="1" Grid.Column="0"
                                                             Orientation="Horizontal">
                                                     <materialDesign:PackIcon Kind="CalendarToday" Margin="0 0 8 0" />
-                                                    <TextBlock Margin="0 0 16 0" Text="23/10/1997"
+                                                    <TextBlock Margin="0 0 16 0"
+                                                               Text="{Binding BeginDate, Converter={StaticResource DateTimeToShortDateStringConverter}}"
                                                                FontWeight="Light" />
                                                 </StackPanel>
 
+                                                <!--End date-->
                                                 <StackPanel Margin="0 4 0 4" Grid.Row="1" Grid.Column="1"
                                                             Orientation="Horizontal">
                                                     <materialDesign:PackIcon Kind="Calendar" Margin="0 0 8 0" />
-                                                    <TextBlock Text="23/10/1997" FontWeight="Light" />
+                                                    <TextBlock
+                                                        Text="{Binding EndDate, Converter={StaticResource DateTimeToShortDateStringConverter}}"
+                                                        FontWeight="Light" />
                                                 </StackPanel>
                                             </Grid>
 
@@ -143,7 +164,8 @@
                                             </StackPanel>
                                         </Grid>
 
-                                        <ListBox Grid.Row="1" Grid.Column="1">
+                                        <!--Customer list-->
+                                        <ListBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Customers}">
                                             <ListBox.ItemsPanel>
                                                 <ItemsPanelTemplate>
                                                     <WrapPanel Margin="8 8 8 4" Orientation="Horizontal" />
@@ -157,22 +179,18 @@
                                                     <Setter Property="Template">
                                                         <Setter.Value>
                                                             <ControlTemplate TargetType="ListBoxItem">
-                                                                <materialDesign:Chip FontSize="12">
+                                                                <materialDesign:Chip FontSize="12"
+                                                                                     Content="{Binding Name}">
                                                                     <materialDesign:Chip.Icon>
                                                                         <materialDesign:PackIcon Height="16" Width="16"
                                                                                                  Kind="Account" />
                                                                     </materialDesign:Chip.Icon>
-                                                                    Nguyễn Văn A
                                                                 </materialDesign:Chip>
                                                             </ControlTemplate>
                                                         </Setter.Value>
                                                     </Setter>
                                                 </Style>
                                             </ListBox.ItemContainerStyle>
-
-                                            <ListBoxItem />
-                                            <ListBoxItem />
-                                            <ListBoxItem />
                                         </ListBox>
 
                                         <Separator Grid.Row="2" Grid.Column="1"
@@ -206,10 +224,6 @@
                     </Setter>
                 </Style>
             </ListBox.ItemContainerStyle>
-
-            <ListBoxItem />
-            <ListBoxItem />
-            <ListBoxItem />
         </ListBox>
     </Grid>
 </UserControl>

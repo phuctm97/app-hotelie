@@ -66,7 +66,7 @@
                             <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
                                        FontSize="15"
                                        Opacity="0.7"
-                                       Text="GIÁ" Margin="0 0 8 0" />
+                                       Text="ĐƠN GIÁ" Margin="0 0 8 0" />
                             <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
                                        FontSize="15"
                                        Opacity="0.9"
