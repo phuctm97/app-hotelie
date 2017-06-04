@@ -4,10 +4,12 @@ Imports Hotelie.Application.Rooms.Commands.UpdateRoom
 Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
 Imports Hotelie.Application.Rooms.Queries.GetRoomsList
 Imports Hotelie.Application.Services.Infrastructure
+Imports Hotelie.Presentation.Common.Controls
 
 Namespace Rooms.ViewModels
 	Public Class RoomsWorkspaceViewModel
 		Inherits Screen
+		Implements INeedWindowModals
 
 		' Dependencies
 		Private ReadOnly _getRoomsListQuery As IGetRoomsListQuery
@@ -56,8 +58,10 @@ Namespace Rooms.ViewModels
 		Protected Overrides Async Sub OnViewReady( view As Object )
 			MyBase.OnViewReady( view )
 
+			ShowStaticWindowLoadingDialog()
 			ScreenRoomsList = Await ScreenRoomsListViewModel.CreateAsync( _getRoomsListQuery, _getRoomCategoriesListQuery )
 			NotifyOfPropertyChange( Function() ScreenRoomsList )
+			CloseStaticWindowDialog()
 
 			DisplayCode = 0
 		End Sub
