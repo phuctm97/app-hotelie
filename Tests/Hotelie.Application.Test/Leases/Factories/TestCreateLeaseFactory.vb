@@ -21,8 +21,7 @@ Namespace Leases.Factories
         <TestInitialize>
         Public Sub TestInitialize()
             _databaseService = New DatabaseService()
-            _databaseService.SetDatabaseConnection(
-                $"data source=KHUONG-ASUS\SQLEXPRESS;initial catalog=HotelieDatabase;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
+            _databaseService.SetDatabaseConnection($"KHUONG-ASUS\SQLEXPRESS",$"HotelieDatabase")
             _leaseRepository = new LeaseRepository(_databaseService)
             _roomRepository = New RoomRepository(_databaseService)
             _unitOfWork = New UnitOfWork(_databaseService)

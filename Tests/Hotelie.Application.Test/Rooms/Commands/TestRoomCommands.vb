@@ -19,8 +19,7 @@ Namespace Rooms.Commands
         <TestInitialize>
         Public Sub TestInitialize()
             _databaseService = New DatabaseService()
-            _databaseService.SetDatabaseConnection(
-                $"data source=KHUONG-ASUS\SQLEXPRESS;initial catalog=HotelieDatabase;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
+            _databaseService.SetDatabaseConnection($"KHUONG-ASUS\SQLEXPRESS",$"HotelieDatabase")
             _roomRepository = New RoomRepository(_databaseService)
             _unitOfWork = New UnitOfWork(_databaseService)
             _removeRoomCommand = new RemoveRoomCommand(_roomRepository, _unitOfWork)
