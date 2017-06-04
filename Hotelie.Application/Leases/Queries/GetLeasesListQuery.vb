@@ -53,7 +53,7 @@ Namespace Leases.Queries
                                                              .NumberOfDate = p.NumberOfDate,
                                                              .BillId = p.Bill.Id}).ToListAsync()
             For Each leaseModel As LeaseModel In leases
-                Dim customers = _leaseRepository.GetCustomers(leaseModel.Id)
+                Dim customers = Await _leaseRepository.GetCustomersAsync(leaseModel.Id)
 
                 If (customers.Count > 0)
                     leaseModel.Customers = New List(Of LeaseCustomerModel)
