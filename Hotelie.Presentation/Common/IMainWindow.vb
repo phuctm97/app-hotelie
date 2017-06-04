@@ -21,9 +21,13 @@ Namespace Common
 
 		Sub CloseStaticNotification()
 
-		Sub ShowStaticDialog( content As Object )
+		Sub ShowStaticShellDialog( content As Object )
 
-		Sub CloseStaticDialog()
+		Sub CloseStaticShellDialog()
+
+		Sub ShowStaticWindowDialog( content As Object )
+
+		Sub CloseStaticWindowDialog()
 
 		Sub DragMove()
 

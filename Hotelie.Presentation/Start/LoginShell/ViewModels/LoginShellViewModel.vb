@@ -71,14 +71,14 @@ Namespace Start.LoginShell.ViewModels
 
 		Private Async Sub SetUpConnection()
 			' show loading dialog
-			IoC.Get(Of IMainWindow).ShowStaticDialog( New LoadingDialog( "Đang kiểm tra kết nối..." ) )
+			IoC.Get(Of IMainWindow).ShowStaticShellDialog( New LoadingDialog( "Đang kiểm tra kết nối..." ) )
 
 			' try connection
 			Dim result = Await _databaseService.CheckDatabaseConnectionAsync( My.Settings.ConnectionDataSource,
 			                                                                  My.Settings.ConnectionCatalog )
 
 			' finish, close dialog
-			IoC.Get(Of IMainWindow).CloseStaticDialog()
+			IoC.Get(Of IMainWindow).CloseStaticShellDialog()
 
 			If result
 				' reload database service

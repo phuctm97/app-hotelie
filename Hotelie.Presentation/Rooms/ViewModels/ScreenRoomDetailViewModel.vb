@@ -163,9 +163,9 @@ Namespace Rooms.ViewModels
 				Return
 			End If
 
-			IoC.Get(Of IMainWindow).ShowStaticDialog( New LoadingDialog() )
+			IoC.Get(Of IMainWindow).ShowStaticShellDialog( New LoadingDialog() )
 			_updateRoomCommand.ExecuteAsync( _roomId, RoomName, RoomCategory.Id, RoomNote, RoomState )
-			IoC.Get(Of IMainWindow).CloseStaticDialog()
+			IoC.Get(Of IMainWindow).CloseStaticShellDialog()
 			ParentWorkspace.NavigateToScreenRoomsList()
 		End Sub
 	End Class

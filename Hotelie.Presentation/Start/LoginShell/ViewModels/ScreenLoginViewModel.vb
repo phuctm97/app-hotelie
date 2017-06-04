@@ -13,8 +13,13 @@ Namespace Start.LoginShell.ViewModels
 
 		' Initilization
 
+		Public ReadOnly Property InitialAccount As String
+		Public ReadOnly Property InitialPassword As String
+
 		Public Sub New( authentication As IAuthentication )
 			_authentication = authentication
+			InitialAccount = My.Settings.SavedAccount
+			InitialPassword = My.Settings.SavedPassword
 		End Sub
 
 		Public Async Sub Login( username As String,
@@ -37,9 +42,9 @@ Namespace Start.LoginShell.ViewModels
 
 			Dim err = String.Empty
 			Try
-				IoC.Get(Of IMainWindow).ShowStaticDialog( New LoadingDialog() )
+				IoC.Get(Of IMainWindow).ShowStaticShellDialog( New LoadingDialog() )
 				err = (Await _authentication.TryLoginAsync( username, password )).FirstOrDefault()
-				IoC.Get(Of IMainWindow).CloseStaticDialog()
+				IoC.Get(Of IMainWindow).CloseStaticShellDialog()
 			Catch ex As DatabaseConnectionFailedException
 				err = "Mất kết nối máy chủ. Không thể đăng nhập!"
 			Catch ex As Exception

@@ -43,7 +43,8 @@
                      materialDesign:HintAssist.FloatingOffset="0, -24"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      FontSize="18"
-                     TextChanged="OnAccountChanged">
+                     TextChanged="OnAccountChanged"
+                     Text="{Binding InitialAccount, Mode=OneWay}">
                 <materialDesign:HintAssist.Hint>
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon VerticalAlignment="Center"
@@ -55,8 +56,9 @@
             </TextBox>
 
             <!--Password-->
-            <TextBlock x:Name="PasswordStorage" Visibility="Collapsed" />
-            <PasswordBox Margin="40 0 40 32"
+            <TextBlock x:Name="PasswordStorage" Visibility="Collapsed"
+                       Text="{Binding InitialPassword, Mode=OneWay}" Loaded="OnPasswordStorageLoaded"/>
+            <PasswordBox x:Name="PasswordTextBox" Margin="40 0 40 32"
                          materialDesign:HintAssist.FloatingOffset="0, -24"
                          Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
                          FontSize="18"

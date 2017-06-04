@@ -23,9 +23,9 @@ Namespace Start.LoginShell.ViewModels
 
 		Public Async Sub TestConnection( dataSource As String,
 		                                 catalog As String )
-			IoC.Get(Of IMainWindow).ShowStaticDialog( New LoadingDialog() )
+			IoC.Get(Of IMainWindow).ShowStaticShellDialog( New LoadingDialog() )
 			Dim result = Await _databaseService.CheckDatabaseConnectionAsync( dataSource, catalog )
-			IoC.Get(Of IMainWindow).CloseStaticDialog()
+			IoC.Get(Of IMainWindow).CloseStaticShellDialog()
 
 			' show result
 			If result
@@ -37,9 +37,9 @@ Namespace Start.LoginShell.ViewModels
 
 		Public Async Sub ApplyConnection( dataSource As String,
 		                                  catalog As String )
-			IoC.Get(Of IMainWindow).ShowStaticDialog( New LoadingDialog() )
+			IoC.Get(Of IMainWindow).ShowStaticShellDialog( New LoadingDialog() )
 			Dim result = Await _databaseService.CheckDatabaseConnectionAsync( dataSource, catalog )
-			IoC.Get(Of IMainWindow).CloseStaticDialog()
+			IoC.Get(Of IMainWindow).CloseStaticShellDialog()
 
 			If result
 				' save settings
