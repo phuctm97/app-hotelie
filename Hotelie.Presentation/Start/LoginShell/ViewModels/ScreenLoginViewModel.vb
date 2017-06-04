@@ -7,6 +7,8 @@ Imports Hotelie.Presentation.Start.MainWindow.Models
 
 Namespace Start.LoginShell.ViewModels
 	Public Class ScreenLoginViewModel
+		Implements INeedWindowModals
+
 		' Dependencies
 		Private ReadOnly _authentication As IAuthentication
 
@@ -21,21 +23,24 @@ Namespace Start.LoginShell.ViewModels
 			InitialPassword = My.Settings.SavedPassword
 		End Sub
 
-		Public Async Sub Login( username As String,
-		                        password As String )
+		Public Sub PreviewLogin( username As String,
+		                         password As String )
 			If Not ValidateAccount( username, password ) Then Return
 
-			' login
+			LoginAsync( username, password )
+		End Sub
 
+		Private Sub Login( username As String,
+		                  password As String )
 			Dim err As String
 			Try
 				' try login
-				IoC.Get(Of IMainWindow).ShowStaticWindowDialog( New LoadingDialog() )
-				err = (Await _authentication.TryLoginAsync( username, password )).FirstOrDefault()
-				IoC.Get(Of IMainWindow).CloseStaticWindowDialog()
+				err = _authentication.TryLogin( username, password ).FirstOrDefault()
+
 			Catch ex As DatabaseConnectionFailedException
 				' connection errors
 				err = "Mất kết nối máy chủ. Không thể đăng nhập!"
+
 			Catch ex As Exception
 				' other errors
 				err = ex.Message
@@ -46,7 +51,34 @@ Namespace Start.LoginShell.ViewModels
 				IoC.Get(Of IMainWindow).SwitchShell( "workspace-shell" )
 			Else
 				' fail
-				IoC.Get(Of IMainWindow).ShowStaticTopNotification( StaticNotificationType.Error, err )
+				ShowStaticTopNotification( StaticNotificationType.Error, err )
+			End If
+		End Sub
+
+		Private Async Sub LoginAsync( username As String,
+		                             password As String )
+			Dim err As String
+			Try
+				' try login
+				ShowStaticWindowDialog( New LoadingDialog() )
+				err = (Await _authentication.TryLoginAsync( username, password )).FirstOrDefault()
+				CloseStaticWindowDialog()
+
+			Catch ex As DatabaseConnectionFailedException
+				' connection errors
+				err = "Mất kết nối máy chủ. Không thể đăng nhập!"
+
+			Catch ex As Exception
+				' other errors
+				err = ex.Message
+			End Try
+
+			If String.IsNullOrEmpty( err )
+				' success
+				IoC.Get(Of IMainWindow).SwitchShell( "workspace-shell" )
+			Else
+				' fail
+				ShowStaticTopNotification( StaticNotificationType.Error, err )
 			End If
 		End Sub
 
@@ -54,14 +86,15 @@ Namespace Start.LoginShell.ViewModels
 		                                  password As String ) As Boolean
 			' short username
 			If username.Length = 0
-				IoC.Get(Of IMainWindow).ShowStaticTopNotification( StaticNotificationType.Information,
-				                                                "Nhập tên tài khoản để đăng nhập" )
+				ShowStaticTopNotification( StaticNotificationType.Information,
+				                           "Nhập tên tài khoản để đăng nhập" )
 				Return False
 			End If
 
 			' short password
 			If password.Length = 0
-				IoC.Get(Of IMainWindow).ShowStaticTopNotification( StaticNotificationType.Information, "Nhập mật khẩu để đăng nhập" )
+				ShowStaticTopNotification( StaticNotificationType.Information,
+				                           "Nhập mật khẩu để đăng nhập" )
 				Return False
 			End If
 

@@ -10,6 +10,7 @@ Namespace Start.WorkspaceShell.ViewModels
 	Public Class WorkspaceShellViewModel
 		Inherits Conductor(Of IScreen).Collection.OneActive
 		Implements IShell
+		Implements INeedWindowModals
 
 		Private _activeWorkspace As IScreen
 
@@ -54,8 +55,8 @@ Namespace Start.WorkspaceShell.ViewModels
 			Items.Add( IoC.Get(Of BillsWorkspaceViewModel)() )
 		End Sub
 
-		Protected Overrides Sub OnInitialize()
-			MyBase.OnInitialize()
+		Protected Overrides Sub OnViewReady(view As Object)
+			MyBase.OnViewReady(view)
 
 			ActivateItem( Items.FirstOrDefault() )
 		End Sub
@@ -68,7 +69,7 @@ Namespace Start.WorkspaceShell.ViewModels
 		Public Overrides Async Sub CanClose( callback As Action(Of Boolean) )
 			Dim dialog = New TwoButtonDialog( "Thoát khỏi bàn làm việc?", "THOÁT", "HỦY", True, False )
 
-			Dim result = Await DialogHost.Show( dialog, "window" )
+			Dim result = Await ShowDynamicWindowDialog( dialog )
 
 			If String.Equals( result, "THOÁT" )
 				callback( True )

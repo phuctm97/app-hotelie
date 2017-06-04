@@ -85,7 +85,7 @@
                         Content="Đăng nhập">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
-                            <cal:ActionMessage MethodName="Login">
+                            <cal:ActionMessage MethodName="PreviewLogin">
                                 <cal:Parameter Value="{Binding ElementName=AccountTextBox, Path=Text}" />
                                 <cal:Parameter Value="{Binding ElementName=PasswordStorage, Path=Text}" />
                             </cal:ActionMessage>
