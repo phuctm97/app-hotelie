@@ -1,4 +1,5 @@
-﻿Imports System.Linq.Expressions
+﻿Imports System.Data.Entity
+Imports System.Linq.Expressions
 Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Domain.Rooms
 Imports Hotelie.Persistence.Common
@@ -57,6 +58,21 @@ Namespace Rooms
             If idString Is Nothing Then Throw New InvalidCastException("Id must be string")
 
             Return _databaseService.Context.Rooms.FirstOrDefault(Function(p) String.Equals(p.Id, idString))
+        End Function
+
+        Public Overrides Async Function GetOneAsync(id As Object) As Task(Of Room)
+            Dim idString = CType(id, String)
+            If idString Is Nothing Then Throw New InvalidCastException("Id must be string")
+
+            Dim room = Await _databaseService.Context.Rooms.FirstOrDefaultAsync(Function(p) String.Equals(p.Id, idString))
+            Return room
+        End Function
+        Public Async Function GetRoomCategoryAsync(id As Object) As Task(Of RoomCategory) Implements IRoomRepository.GetRoomCategoryAsync
+            Dim idString = CType(id, String)
+            If idString Is Nothing Then Throw New InvalidCastException("Id must be string")
+
+            Dim rc = Await _databaseService.Context.RoomCategories.FirstOrDefaultAsync(Function(p) String.Equals(p.Id, idString))
+            Return rc
         End Function
     End Class
 End Namespace

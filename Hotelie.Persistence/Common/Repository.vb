@@ -41,5 +41,9 @@ Namespace Common
                 New NotImplementedException(
                     "Not implemented yet because generic do not know entity key property to compare. It should be overrided in derived class of specific entity type")
         End Function
+
+        Public Overridable Function GetOneAsync(id As Object) As Task(Of TEntity) Implements IRepository(Of TEntity).GetOneAsync
+            Throw New NotImplementedException()
+        End Function
     End Class
 End Namespace

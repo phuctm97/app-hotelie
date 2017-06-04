@@ -1,4 +1,5 @@
-﻿Imports System.Linq.Expressions
+﻿Imports System.Data.Entity
+Imports System.Linq.Expressions
 Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Domain.Users
 Imports Hotelie.Persistence.Common
@@ -56,6 +57,23 @@ Namespace Users
             If idString Is Nothing Then Throw New InvalidCastException("Id must be string")
 
             Return _databaseService.Context.Users.FirstOrDefault(Function(p) String.Equals(p.Id, idString))
+        End Function
+
+        Public Overrides Async Function GetOneAsync(id As Object) As Task(Of User)
+            Dim idString = CType(id, String)
+            If idString Is Nothing Then Throw New InvalidCastException("Id must be string")
+
+            Dim user  = Await _databaseService.Context.Users.FirstOrDefaultAsync(Function(p) String.Equals(p.Id, idString))
+
+            Return user
+        End Function
+
+        Public Async Function GetUserCategoryAsync(id As Object) As Task(Of UserCategory) Implements IUserRepository.GetUserCategoryAsync
+            Dim idString = CType(id, String)
+            If idString Is Nothing Then Throw New InvalidCastException("Id must be string")
+
+            Dim userCategories = Await _databaseService.Context.UserCategories.FirstOrDefaultAsync(Function(p) String.Equals(p.Id, idString))
+            Return userCategories
         End Function
     End Class
 End Namespace
