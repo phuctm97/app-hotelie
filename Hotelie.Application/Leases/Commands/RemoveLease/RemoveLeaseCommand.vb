@@ -18,9 +18,10 @@ Namespace Leases.Commands.RemoveLease
             _unitOfWork.Commit()
         End Sub
 
-        Public Async Sub ExecuteAsync(id As String) Implements IRemoveLeaseCommand.ExecuteAsync
+        Public Async Function ExecuteAsync(id As String) As Task(Of Integer) Implements IRemoveLeaseCommand.ExecuteAsync
             _leaseRepository.Remove(Await _leaseRepository.GetOneAsync(id))
-            _unitOfWork.CommitAsync()
-        End Sub
+            Await _unitOfWork.CommitAsync()
+            Return 1
+        End Function
     End Class
 End NameSpace

@@ -99,7 +99,7 @@ Namespace Leases.Factories
                 New Lease() _
                                     With {.Id = lease.Id, .Room=room, .BeginDate = lease.BeginDate,
                                     .EndDate = lease.EndDate, .Price = lease.Price})
-            _unitOfWork.CommitAsync()
+            Await _unitOfWork.CommitAsync()
 
             Return lease
         End Function
