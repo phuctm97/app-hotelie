@@ -79,11 +79,6 @@
     <Compile Include="Common\Repository.vb" />
     <Compile Include="Common\UnitOfWork.vb" />
     <Compile Include="Common\DatabaseService.vb" />
-    <Compile Include="Leases\BillConfiguration.vb" />
-    <Compile Include="Leases\CustomerCategoryConfiguration.vb" />
-    <Compile Include="Leases\LeaseConfiguration.vb" />
-    <Compile Include="Leases\LeaseDetailConfiguration.vb" />
-    <Compile Include="Leases\LeaseRepository.vb" />
     <Compile Include="Migrations\201705301447357_DbInitialize_FirstComplete.Designer.vb">
       <DependentUpon>201705301447357_DbInitialize_FirstComplete.vb</DependentUpon>
     </Compile>

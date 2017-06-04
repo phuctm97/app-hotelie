@@ -89,17 +89,6 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Leases\Commands\RemoveLease\IRemoveLeaseCommand.vb" />
-    <Compile Include="Leases\Commands\RemoveLease\RemoveLeaseCommand.vb" />
-    <Compile Include="Leases\Commands\UpdateLease\IUpdateLeaseCommand.vb" />
-    <Compile Include="Leases\Commands\UpdateLease\UpdateLeaseCommand.vb" />
-    <Compile Include="Leases\Factories\CreateLeaseFactory.vb" />
-    <Compile Include="Leases\Factories\ICreateLeaseFactory.vb" />
-    <Compile Include="Leases\Factories\LeaseModel.vb" />
-    <Compile Include="Leases\Queries\GetLeasesListQuery.vb" />
-    <Compile Include="Leases\Queries\IGetLeasesListQuery.vb" />
-    <Compile Include="Leases\Queries\LeaseCustomerModel.vb" />
-    <Compile Include="Leases\Queries\LeaseModel.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -135,7 +124,6 @@
     <Compile Include="Services\Persistence\DatabaseConnectionFailedException.vb" />
     <Compile Include="Services\Persistence\IDatabaseContext.vb" />
     <Compile Include="Services\Persistence\IDatabaseService.vb" />
-    <Compile Include="Services\Persistence\ILeaseRepository.vb" />
     <Compile Include="Services\Persistence\IRepository.vb" />
     <Compile Include="Services\Persistence\IRoomRepository.vb" />
     <Compile Include="Services\Persistence\IUnitOfWork.vb" />
