@@ -4,7 +4,6 @@ Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
 Imports Hotelie.Presentation.Leases.ViewModels
 Imports Hotelie.Presentation.Rooms.ViewModels
-Imports MaterialDesignThemes.Wpf
 
 Namespace Start.WorkspaceShell.ViewModels
 	Public Class WorkspaceShellViewModel
@@ -55,14 +54,13 @@ Namespace Start.WorkspaceShell.ViewModels
 			Items.Add( IoC.Get(Of BillsWorkspaceViewModel)() )
 		End Sub
 
-		Protected Overrides Sub OnViewReady(view As Object)
-			MyBase.OnViewReady(view)
+		Protected Overrides Sub OnViewReady( view As Object )
+			MyBase.OnViewReady( view )
 
 			ActivateItem( Items.FirstOrDefault() )
 		End Sub
 
 		' Display properties
-
 		Public ReadOnly Property CommandsBar As IWindowCommandsBar Implements IShell.CommandsBar
 
 		' Closing

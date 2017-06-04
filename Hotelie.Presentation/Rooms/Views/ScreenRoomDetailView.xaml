@@ -139,7 +139,7 @@
                          Padding="0 0 4 0"
                          Height="Auto"
                          MaxHeight="130"
-                         Text="{Binding RoomNote, Mode=TwoWay}" />
+                         Text="{Binding RoomNote, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
 
             <!--Room state-->
