@@ -35,11 +35,11 @@ Namespace Rooms.ViewModels
 		Public Property ParentWorkspace As RoomsWorkspaceViewModel Implements IChild(Of RoomsWorkspaceViewModel).Parent
 
 		' Initialization
-		Sub New( workspace As RoomsWorkspaceViewModel,
-		         getRoomCategoriesListQuery As IGetRoomCategoriesListQuery,
-		         updateRoomCommand As IUpdateRoomCommand,
-		         removeRoomCommand As IRemoveRoomCommand,
-		         inventory As IInventory )
+		Public Sub New( workspace As RoomsWorkspaceViewModel,
+		                getRoomCategoriesListQuery As IGetRoomCategoriesListQuery,
+		                updateRoomCommand As IUpdateRoomCommand,
+		                removeRoomCommand As IRemoveRoomCommand,
+		                inventory As IInventory )
 
 			ParentWorkspace = workspace
 			_getRoomCategoriesListQuery = getRoomCategoriesListQuery

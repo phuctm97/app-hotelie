@@ -1,12 +1,14 @@
 ﻿Imports Caliburn.Micro
 Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
 Imports Hotelie.Application.Rooms.Queries.GetRoomsList
+Imports Hotelie.Presentation.Common.Controls
 Imports Hotelie.Presentation.Infrastructure
 
 Namespace Rooms.ViewModels
 	Public Class ScreenRoomsListViewModel
 		Inherits PropertyChangedBase
-		Implements IRoomCollectionPresenter
+		Implements IRoomCollectionPresenter,
+		           INeedWindowModals
 
 		Private _rooms As IObservableCollection(Of RoomModel)
 		Private _filterRoomNamePrefix As String
@@ -34,16 +36,16 @@ Namespace Rooms.ViewModels
 		End Property
 
 		' ReSharper disable once UnassignedGetOnlyAutoProperty
-		Public ReadOnly Property RoomCategories As IObservableCollection(Of RoomCategoryModel)
+		Public Property RoomCategories As IObservableCollection(Of RoomCategoryModel)
 
 		' ReSharper disable once UnassignedGetOnlyAutoProperty
-		Public ReadOnly Property RoomStates As IObservableCollection(Of Integer)
+		Public Property RoomStates As IObservableCollection(Of Integer)
 
 		' ReSharper disable once UnassignedGetOnlyAutoProperty
-		Public ReadOnly Property RoomMinPrices As IObservableCollection(Of Decimal)
+		Public Property RoomMinPrices As IObservableCollection(Of Decimal)
 
 		' ReSharper disable once UnassignedGetOnlyAutoProperty
-		Public ReadOnly Property RoomMaxPrices As IObservableCollection(Of Decimal)
+		Public Property RoomMaxPrices As IObservableCollection(Of Decimal)
 
 		' Initialization
 		Public Sub New( getRoomListsQuery As IGetRoomsListQuery,
@@ -53,13 +55,13 @@ Namespace Rooms.ViewModels
 
 			RegisterInventory()
 
-			InitRooms( Rooms )
+			InitRooms()
 
-			InitRoomCategories( RoomCategories )
+			InitRoomCategories()
 
-			InitRoomStates( RoomStates )
+			InitRoomStates()
 
-			InitRoomPrices( RoomMinPrices, RoomMaxPrices )
+			InitRoomPrices()
 
 			InitFilteringValues()
 
@@ -81,8 +83,7 @@ Namespace Rooms.ViewModels
 			_isDescendingSort = False
 		End Sub
 
-		Private Sub InitRoomPrices( ByRef minPriceCollection As IObservableCollection(Of Decimal),
-		                            ByRef maxPriceCollection As IObservableCollection(Of Decimal) )
+		Private Sub InitRoomPrices()
 			Dim minPrices = New List(Of Decimal)
 			Dim maxPrices = New List(Of Decimal)
 
@@ -104,25 +105,86 @@ Namespace Rooms.ViewModels
 				              b ) a > b )
 			maxPrices.Add( - 1 )
 
-			minPriceCollection = New BindableCollection(Of Decimal)( minPrices )
-			maxPriceCollection = New BindableCollection(Of Decimal)( maxPrices )
+			RoomMinPrices = New BindableCollection(Of Decimal)( minPrices )
+			RoomMaxPrices = New BindableCollection(Of Decimal)( maxPrices )
 		End Sub
 
-		Private Sub InitRoomStates( ByRef stateCollection As IObservableCollection(Of Integer) )
-			stateCollection = New BindableCollection(Of Integer)()
-			stateCollection.AddRange( {0, 1} )
-			stateCollection.Add( 2 ) 'filter all
+		Private Async Sub InitRoomPricesAsync()
+			Dim minPrices = New List(Of Decimal)
+			Dim maxPrices = New List(Of Decimal)
+
+			For i = 0 To RoomCategories.Count - 2
+				Dim price = RoomCategories( i ).Price
+
+				If Not minPrices.Contains( price ) Then _
+					minPrices.Add( price )
+
+				If Not maxPrices.Contains( price ) Then _
+					maxPrices.Add( price )
+			Next
+
+			minPrices.Sort( Function( a,
+				              b ) a < b )
+			minPrices.Add( - 1 )
+
+			maxPrices.Sort( Function( a,
+				              b ) a > b )
+			maxPrices.Add( - 1 )
+
+			RoomMinPrices = New BindableCollection(Of Decimal)( minPrices )
+			RoomMaxPrices = New BindableCollection(Of Decimal)( maxPrices )
+
+			ShowStaticWindowLoadingDialog()
+			Await Task.Delay( 25 )
+			CloseStaticWindowDialog()
 		End Sub
 
-		Private Sub InitRoomCategories( ByRef categoryCollection As IObservableCollection(Of RoomCategoryModel) )
-			categoryCollection = New BindableCollection(Of RoomCategoryModel)()
-			categoryCollection.AddRange( _getRoomCategoriesListQuery.Execute() )
-			categoryCollection.Add( New RoomCategoryModel With {.Name = "Tất cả", .Price = - 1} ) 'filter all
+		Private Sub InitRoomStates()
+			RoomStates = New BindableCollection(Of Integer)()
+			RoomStates.AddRange( {0, 1} )
+			RoomStates.Add( 2 ) 'filter all
 		End Sub
 
-		Private Sub InitRooms( ByRef roomCollection As IObservableCollection(Of RoomModel) )
-			roomCollection = New BindableCollection(Of RoomModel)()
-			roomCollection.AddRange( _getRoomListsQuery.Execute() )
+		Private Async Sub InitRoomStatesAsync()
+			RoomStates = New BindableCollection(Of Integer)()
+			RoomStates.AddRange( {0, 1} )
+			RoomStates.Add( 2 ) 'filter all
+
+			ShowStaticWindowLoadingDialog()
+			Await Task.Delay( 25 )
+			CloseStaticWindowDialog()
+		End Sub
+
+		Private Sub InitRoomCategories()
+			RoomCategories = New BindableCollection(Of RoomCategoryModel)()
+			RoomCategories.AddRange( _getRoomCategoriesListQuery.Execute() )
+			RoomCategories.Add( New RoomCategoryModel With {.Name = "Tất cả", .Price = - 1} ) 'filter all
+		End Sub
+
+		Private Async Sub InitRoomCategoriesAsync()
+			RoomCategories = New BindableCollection(Of RoomCategoryModel)()
+
+			ShowStaticWindowLoadingDialog()
+			RoomCategories.AddRange( Await _getRoomCategoriesListQuery.ExecuteAsync() )
+			RoomCategories.Add( New RoomCategoryModel With {.Name = "Tất cả", .Price = - 1} ) 'filter all
+
+			Await Task.Delay( 25 )
+			CloseStaticWindowDialog()
+		End Sub
+
+		Private Sub InitRooms()
+			Rooms = New BindableCollection(Of RoomModel)()
+			Rooms.AddRange( _getRoomListsQuery.Execute() )
+		End Sub
+
+		Private Async Sub InitRoomsAsync()
+			Rooms = New BindableCollection(Of RoomModel)()
+
+			ShowStaticWindowLoadingDialog()
+			Rooms.AddRange( Await _getRoomListsQuery.ExecuteAsync() )
+
+			Await Task.Delay( 25 )
+			CloseStaticWindowDialog()
 		End Sub
 
 		' Filter values

@@ -162,10 +162,14 @@ Namespace Start.MainWindow.ViewModels
 		End Sub
 
 		' Dialog
-		Public Sub ShowStaticWindowDialog( content As Object ) Implements IMainWindow.ShowStaticWindowDialog
+		Public Sub ShowStaticWindowDialog( content As Object ) _
+			Implements IMainWindow.ShowStaticWindowDialog
 			_staticWindowDialogRefs += 1
-			StaticWindowDialog.Content = content
-			StaticWindowDialog.IsVisible = True
+
+			If _staticWindowDialogRefs > 0
+				StaticWindowDialog.Content = content
+				StaticWindowDialog.IsVisible = True
+			End If
 		End Sub
 
 		Public Sub CloseStaticWindowDialog() Implements IMainWindow.CloseStaticWindowDialog
@@ -183,8 +187,11 @@ Namespace Start.MainWindow.ViewModels
 
 		Public Sub ShowStaticShellDialog( content As Object ) Implements IMainWindow.ShowStaticShellDialog
 			_staticShellDialogRefs += 1
-			StaticShellDialog.Content = content
-			StaticShellDialog.IsVisible = True
+
+			if _staticShellDialogRefs > 0
+				StaticShellDialog.Content = content
+				StaticShellDialog.IsVisible = True
+			End If
 		End Sub
 
 		Public Sub CloseStaticShellDialog() Implements IMainWindow.CloseStaticShellDialog
