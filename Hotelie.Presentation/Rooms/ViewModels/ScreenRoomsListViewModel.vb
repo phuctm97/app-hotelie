@@ -381,42 +381,6 @@ Namespace Rooms.ViewModels
 			End Select
 		End Sub
 
-		' Delete room
-		Public Async Sub PreviewDelete( roomModel As RoomModel )
-			Dim result = Await ConfirmDelete( roomModel.Name )
-
-			If Equals( result, 0 )
-				DeleteAsync( roomModel.Id )
-			End If
-		End Sub
-
-		Private Async Function ConfirmDelete( roomName As String ) As Task(Of Integer)
-			' show dialog
-			Dim dialog = New TwoButtonDialog( $"Xóa phòng {roomName}. Tiếp tục?",
-			                                  "XÓA",
-			                                  "HỦY",
-			                                  True,
-			                                  False )
-			Dim result = Await ShowDynamicWindowDialog( dialog )
-
-			If String.Equals( result, "XÓA" ) Then Return 0
-			Return 1
-		End Function
-
-		Private Sub Delete( roomId As String )
-			' try update
-			_removeRoomCommand.Execute( roomId )
-			_inventory.OnRoomRemoved( roomId )
-		End Sub
-
-		Private Async Sub DeleteAsync( roomId As String )
-			' try update
-			ShowStaticWindowLoadingDialog()
-			Await _removeRoomCommand.ExecuteAsync( roomId )
-			_inventory.OnRoomRemoved( roomId )
-			CloseStaticWindowDialog()
-		End Sub
-
 		' Infrastructure
 		Public Sub OnRoomAdded( id As String,
 		                        name As String,
