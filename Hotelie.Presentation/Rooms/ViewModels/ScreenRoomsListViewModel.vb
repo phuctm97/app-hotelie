@@ -55,7 +55,8 @@ Namespace Rooms.ViewModels
 			RegisterInventory()
 
 			Rooms = New BindableCollection(Of RoomModel)
-			RoomCategories = New BindableCollection(Of RoomModel)
+			RoomCategories = New BindableCollection(Of RoomCategoryModel)
+			RoomStates = New BindableCollection(Of Integer)
 			RoomMinPrices = New BindableCollection(Of Decimal)
 			RoomMaxPrices = New BindableCollection(Of Decimal)
 		End Sub
