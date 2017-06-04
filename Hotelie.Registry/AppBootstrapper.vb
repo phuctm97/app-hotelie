@@ -1,5 +1,11 @@
 ﻿Imports Caliburn.Micro
+Imports Hotelie.Application.Leases.Commands.RemoveLease
+Imports Hotelie.Application.Leases.Commands.UpdateLease
+Imports Hotelie.Application.Leases.Factories
 Imports Hotelie.Application.Leases.Queries
+Imports Hotelie.Application.Rooms.Commands.RemoveRoom
+Imports Hotelie.Application.Rooms.Commands.UpdateRoom
+Imports Hotelie.Application.Rooms.Factories.CreateRoom
 Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
 Imports Hotelie.Application.Rooms.Queries.GetRoomsList
 Imports Hotelie.Application.Services.Authentication
@@ -37,6 +43,12 @@ Public Class AppBootstrapper
         _container.RegisterType(Of IGetRoomsListQuery, GetRoomsListQuery)(New ContainerControlledLifetimeManager())
         _container.RegisterType _
             (Of IGetRoomCategoriesListQuery, GetRoomCategoriesListQuery)(New ContainerControlledLifetimeManager())
+        _container.RegisterType(Of IUpdateRoomCommand, UpdateRoomCommand)(New ContainerControlledLifetimeManager())
+        _container.RegisterType(Of ICreateRoomFactory, CreateRoomFactory)(New ContainerControlledLifetimeManager())
+        _container.RegisterType(Of IRemoveRoomCommand, RemoveRoomCommand)(New ContainerControlledLifetimeManager())
+        _container.RegisterType(Of IUpdateLeaseCommand, UpdateLeaseCommand)(New ContainerControlledLifetimeManager())
+        _container.RegisterType(Of ICreateLeaseFactory, CreateLeaseFactory)(New ContainerControlledLifetimeManager())
+        _container.RegisterType(Of IRemoveLeaseCommand, RemoveLeaseCommand)(New ContainerControlledLifetimeManager())
     End Sub
 
     Protected Overrides Function GetInstance( service As Type,
