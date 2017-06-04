@@ -251,10 +251,6 @@
                                                     Margin="15 4 4 8"
                                                     Style="{DynamicResource MaterialDesignFlatAccentButton}"
                                                     Content="THUÊ" />
-                                            <materialDesign:PopupBox DockPanel.Dock="Right" HorizontalAlignment="Right"
-                                                                     VerticalAlignment="Center">
-                                                <Button Content="XÓA PHÒNG" cal:Message.Attach="PreviewDelete($dataContext)" />
-                                            </materialDesign:PopupBox>
                                         </DockPanel>
                                     </Grid>
                                 </materialDesign:Card>

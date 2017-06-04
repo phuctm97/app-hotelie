@@ -6,16 +6,10 @@ Namespace Leases.Queries
         Inherits PropertyChangedBase
 
         Private _id As String
-        Private _roomId As String
+        Private _roomName As String
         Private _beginDate As Date
         Private _endDate As Date
-        Private _numberOfDate As Integer
-        Private _price As Decimal
-        Private _extraCoefficient As Double
-        Private _customerCoefficient As Double
-        Private _extraCharge As Decimal
-        Private _billId As String
-        Private _customers As List(Of LeaseCustomerModel)
+        Private _numberOfCustomers As Integer
 
         Public Property Id As String
             Get
@@ -28,14 +22,14 @@ Namespace Leases.Queries
             End Set
         End Property
 
-        Public Property RoomId As String
+        Public Property RoomName As String
             Get
-                Return _roomId
+                Return _roomName
             End Get
             Set
-                If Equals(Value, _roomId) Then Return
-                _roomId = value
-                NotifyOfPropertyChange(Function() RoomId)
+                If Equals(Value, _roomName) Then Return
+                _roomName = value
+                NotifyOfPropertyChange(Function() RoomName)
             End Set
         End Property
 
@@ -61,84 +55,14 @@ Namespace Leases.Queries
             End Set
         End Property
 
-        Public Property NumberOfDate As Integer
+        Public Property NumberOfCustomers As Integer
             Get
-                Return _numberOfDate
+                Return _numberOfCustomers
             End Get
             Set
-                If Equals(Value, _numberOfDate) Then Return
-                _numberOfDate = Value
-                NotifyOfPropertyChange(Function() NumberOfDate)
-            End Set
-        End Property
-
-        Public Property ExtraCoefficient As Double
-            Get
-                Return _extraCoefficient
-            End Get
-            Set
-                If Equals(Value, _extraCoefficient) Then Return
-                _extraCoefficient = Value
-                NotifyOfPropertyChange(Function() ExtraCoefficient)
-            End Set
-        End Property
-
-        Public Property CustomerCoefficient As Double
-            Get
-                Return _customerCoefficient
-            End Get
-            Set
-                If Equals(Value, _customerCoefficient) Then Return
-                _customerCoefficient = Value
-                NotifyOfPropertyChange(Function() CustomerCoefficient)
-            End Set
-        End Property
-
-        Public Property ExtraCharge As Decimal
-            Get
-                Return _extraCharge
-
-            End Get
-            Set
-                If Equals(Value, _extraCharge) Then Return
-                _extraCharge = Value
-                NotifyOfPropertyChange(Function() ExtraCharge)
-            End Set
-        End Property
-
-        Public Property Price As Decimal
-            Get
-                Return _price
-
-            End Get
-            Set
-                If Equals(Value, _price) Then Return
-                _price = Value
-                NotifyOfPropertyChange(Function() Price)
-            End Set
-        End Property
-
-        Public Property BillId As String
-            Get
-                Return _billId
-
-            End Get
-            Set
-                If Equals(Value, _billId) Then Return
-                _billId = Value
-                NotifyOfPropertyChange(Function() BillId)
-            End Set
-        End Property
-
-        Public Property Customers As List(Of LeaseCustomerModel)
-            Get
-                Return _customers
-
-            End Get
-            Set
-                If Equals(Value, _customers) Then Return
-                _customers = Value
-                NotifyOfPropertyChange(Function() Customers)
+                If Equals(Value, _numberOfCustomers) Then Return
+                _numberOfCustomers = Value
+                NotifyOfPropertyChange(Function() NumberOfCustomers)
             End Set
         End Property
 
