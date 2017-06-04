@@ -7,6 +7,7 @@ Namespace Leases.Queries
 
         Private _id As String
         Private _roomName As String
+        Private _roomCategoryName As String
         Private _beginDate As Date
         Private _endDate As Date
         Private _numberOfCustomers As Integer
@@ -32,6 +33,17 @@ Namespace Leases.Queries
                 NotifyOfPropertyChange(Function() RoomName)
             End Set
         End Property
+        Public Property RoomCategoryName As String
+            Get
+                Return _roomCategoryName
+            End Get
+            Set
+                If Equals(Value, _roomCategoryName) Then Return
+                _roomCategoryName = value
+                NotifyOfPropertyChange(Function() RoomName)
+            End Set
+        End Property
+
 
         Public Property BeginDate As DateTime
             Get
