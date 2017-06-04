@@ -55,7 +55,7 @@
                         <!--Room category-->
                         <Button DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
                                 Margin="0 0 0 8"
-                                Content="{Binding Path=RoomCategory.Name, FallbackValue=(Loại phòng)}">
+                                Content="{Binding Path=RoomCategory.Name}">
                             <Button.Background>
                                 <SolidColorBrush Color="{Binding Path=RoomCategory.DisplayColor}" />
                             </Button.Background>
