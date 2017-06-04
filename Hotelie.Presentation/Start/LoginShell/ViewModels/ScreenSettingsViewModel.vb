@@ -16,16 +16,16 @@ Namespace Start.LoginShell.ViewModels
 
 		Public Sub New( databaseService As IDatabaseService )
 			_databaseService = databaseService
-
 			InitialDataSource = My.Settings.ConnectionDataSource
 			InitialCatalog = My.Settings.ConnectionCatalog
 		End Sub
 
 		Public Async Sub TestConnection( dataSource As String,
 		                                 catalog As String )
-			IoC.Get(Of IMainWindow).ShowStaticShellDialog( New LoadingDialog() )
+			' try connection
+			IoC.Get(Of IMainWindow).ShowStaticWindowDialog( New LoadingDialog() )
 			Dim result = Await _databaseService.CheckDatabaseConnectionAsync( dataSource, catalog )
-			IoC.Get(Of IMainWindow).CloseStaticShellDialog()
+			IoC.Get(Of IMainWindow).CloseStaticWindowDialog()
 
 			' show result
 			If result
@@ -37,9 +37,9 @@ Namespace Start.LoginShell.ViewModels
 
 		Public Async Sub ApplyConnection( dataSource As String,
 		                                  catalog As String )
-			IoC.Get(Of IMainWindow).ShowStaticShellDialog( New LoadingDialog() )
+			IoC.Get(Of IMainWindow).ShowStaticWindowDialog( New LoadingDialog() )
 			Dim result = Await _databaseService.CheckDatabaseConnectionAsync( dataSource, catalog )
-			IoC.Get(Of IMainWindow).CloseStaticShellDialog()
+			IoC.Get(Of IMainWindow).CloseStaticWindowDialog()
 
 			If result
 				' save settings
@@ -50,8 +50,10 @@ Namespace Start.LoginShell.ViewModels
 				' reload database service
 				_databaseService.SetDatabaseConnection( dataSource, catalog )
 
+				' notification
 				IoC.Get(Of IMainWindow).ShowStaticNotification( StaticNotificationType.Ok, "Đã thiết lập kết nối!" )
 			Else
+				' report error
 				IoC.Get(Of IMainWindow).ShowStaticNotification( StaticNotificationType.Error,
 				                                                "Kết nối thất bại. Thiết lập không hợp lệ!" )
 			End If

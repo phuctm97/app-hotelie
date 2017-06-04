@@ -132,7 +132,7 @@ Namespace Rooms.ViewModels
 		End Sub
 
 		Public Async Sub PreviewNavigateToScreenRoomsList()
-			' Nothing changes
+			' nothing changes
 			If String.Equals( _roomName, _originalRoomName ) And
 			   String.Equals( _roomCategory.Id, _originalRoomCategoryId ) And
 			   String.Equals( _roomNote, _originalRoomNote )
@@ -140,6 +140,7 @@ Namespace Rooms.ViewModels
 				Return
 			End If
 
+			' show dialog
 			Dim dialog = New ThreeButtonDialog( "Thoát mà không lưu các thay đổi?",
 			                                    "THOÁT",
 			                                    "LƯU & THOÁT",
@@ -147,13 +148,13 @@ Namespace Rooms.ViewModels
 			                                    False,
 			                                    True,
 			                                    False )
-
-			Dim result = Await DialogHost.Show( dialog, "shell" )
+			Dim result = Await DialogHost.Show( dialog, "window" )
 
 			If String.Equals( result, "THOÁT" )
 				ParentWorkspace.NavigateToScreenRoomsList()
 			ElseIf String.Equals( result, "LƯU & THOÁT" )
 				SaveChanges()
+				ParentWorkspace.NavigateToScreenRoomsList()
 			End If
 		End Sub
 
@@ -163,10 +164,10 @@ Namespace Rooms.ViewModels
 				Return
 			End If
 
+			' try update
 			IoC.Get(Of IMainWindow).ShowStaticShellDialog( New LoadingDialog() )
 			_updateRoomCommand.ExecuteAsync( _roomId, RoomName, RoomCategory.Id, RoomNote, RoomState )
 			IoC.Get(Of IMainWindow).CloseStaticShellDialog()
-			ParentWorkspace.NavigateToScreenRoomsList()
 		End Sub
 	End Class
 End Namespace

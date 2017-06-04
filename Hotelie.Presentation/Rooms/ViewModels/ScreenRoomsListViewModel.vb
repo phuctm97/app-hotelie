@@ -16,12 +16,10 @@ Namespace Rooms.ViewModels
 		Private _isDescendingSort As Boolean
 
 		' Dependencies
-
 		Private ReadOnly _getRoomListsQuery As IGetRoomsListQuery
 		Private ReadOnly _getRoomCategoriesListQuery As IGetRoomCategoriesListQuery
 
 		' Data
-
 		Public Property Rooms As IObservableCollection(Of RoomModel)
 			Get
 				Return _rooms
@@ -46,7 +44,6 @@ Namespace Rooms.ViewModels
 		Public ReadOnly Property RoomMaxPrices As IObservableCollection(Of Decimal)
 
 		' Initialization
-
 		Public Sub New( getRoomListsQuery As IGetRoomsListQuery,
 		                getRoomCategoriesListQuery As IGetRoomCategoriesListQuery )
 			_getRoomListsQuery = getRoomListsQuery
@@ -125,7 +122,6 @@ Namespace Rooms.ViewModels
 		End Sub
 
 		' Filter values
-
 		Public Property FilterRoomNamePrefix As String
 			Get
 				Return _filterRoomNamePrefix
@@ -205,7 +201,6 @@ Namespace Rooms.ViewModels
 		End Property
 
 		' Sort values
-
 		Public Property SortingCode As Integer
 			Get
 				Return _sortingCode
@@ -231,7 +226,6 @@ Namespace Rooms.ViewModels
 		End Property
 
 		' Filter 
-
 		Public Sub ResetFilters()
 			_filterRoomNamePrefix = String.Empty
 			NotifyOfPropertyChange( Function() FilterRoomNamePrefix )
@@ -308,7 +302,6 @@ Namespace Rooms.ViewModels
 		End Sub
 
 		' Sort
-
 		Public Sub SortRoomsList()
 			Select Case SortingCode
 				Case 0

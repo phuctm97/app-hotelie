@@ -31,6 +31,7 @@ Namespace Rooms.ViewModels
 		                updateRoomCommand As IUpdateRoomCommand )
 			DisplayName = "Danh sách phòng"
 
+			' TODO: delay for loading screens
 			ScreenRoomsList = New ScreenRoomsListViewModel( getRoomsListQuery, getRoomCategoriesListQuery )
 
 			ScreenRoomDetail = New ScreenRoomDetailViewModel( Me, getRoomCategoriesListQuery, updateRoomCommand )

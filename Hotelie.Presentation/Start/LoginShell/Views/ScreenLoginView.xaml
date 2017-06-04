@@ -23,6 +23,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
+    <!--Content-->
     <materialDesign:Card HorizontalAlignment="Center" VerticalAlignment="Center"
                          Width="400" Height="Auto">
         <StackPanel Orientation="Vertical">
@@ -75,6 +76,8 @@
 
             <!--Submit-->
             <DockPanel Margin="40 0 40 32">
+                
+                <!--Button login-->
                 <Button DockPanel.Dock="Left" HorizontalAlignment="Left"
                         Style="{DynamicResource MaterialDesignRaisedAccentButton}"
                         FontSize="16"
@@ -90,6 +93,7 @@
                     </i:Interaction.Triggers>
                 </Button>
 
+                <!--Remember acount-->
                 <CheckBox DockPanel.Dock="Right" HorizontalAlignment="Right"
                           FontSize="16"
                           Content="Nhớ tài khoản" />

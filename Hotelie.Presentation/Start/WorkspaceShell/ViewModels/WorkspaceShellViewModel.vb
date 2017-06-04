@@ -11,12 +11,9 @@ Namespace Start.WorkspaceShell.ViewModels
 		Inherits Conductor(Of IScreen).Collection.OneActive
 		Implements IShell
 
-		' Workspaces backing fields
-
 		Private _activeWorkspace As IScreen
 
 		' Parent window
-
 		Public Property ParentWindow As IMainWindow Implements IChild(Of IMainWindow).Parent
 			Get
 				Return CType(Parent, IMainWindow)
@@ -27,7 +24,6 @@ Namespace Start.WorkspaceShell.ViewModels
 		End Property
 
 		' Workspaces
-
 		Public Property ActiveWorkspace As IScreen
 			Get
 				Return _activeWorkspace
@@ -52,6 +48,7 @@ Namespace Start.WorkspaceShell.ViewModels
 
 			DisplayName = "Bàn làm việc"
 
+			' Add all screens
 			Items.Add( IoC.Get(Of RoomsWorkspaceViewModel)() )
 			Items.Add( IoC.Get(Of LeasesWorkspaceViewModel)() )
 			Items.Add( IoC.Get(Of BillsWorkspaceViewModel)() )
@@ -71,7 +68,7 @@ Namespace Start.WorkspaceShell.ViewModels
 		Public Overrides Async Sub CanClose( callback As Action(Of Boolean) )
 			Dim dialog = New TwoButtonDialog( "Thoát khỏi bàn làm việc?", "THOÁT", "HỦY", True, False )
 
-			Dim result = Await DialogHost.Show( dialog, "shell" )
+			Dim result = Await DialogHost.Show( dialog, "window" )
 
 			If String.Equals( result, "THOÁT" )
 				callback( True )

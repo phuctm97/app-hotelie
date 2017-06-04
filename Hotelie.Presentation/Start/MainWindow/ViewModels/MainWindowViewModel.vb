@@ -7,8 +7,6 @@ Namespace Start.MainWindow.ViewModels
 		Inherits Conductor(Of IShell)
 		Implements IMainWindow
 
-		' Window property backing fields
-
 		Private _title As String
 		Private _width As Double
 		Private _height As Double
@@ -33,7 +31,6 @@ Namespace Start.MainWindow.ViewModels
 		End Sub
 
 		' Window properties
-
 		Public Property Title As String Implements IMainWindow.Title
 			Get
 				Return _title
@@ -89,7 +86,6 @@ Namespace Start.MainWindow.ViewModels
 		Public ReadOnly Property StaticShellDialog As StaticDialogModel
 
 		' Shell
-
 		Public ReadOnly Property Shell As IShell Implements IMainWindow.Shell
 			Get
 				Return ActiveItem
@@ -116,7 +112,6 @@ Namespace Start.MainWindow.ViewModels
 		End Sub
 
 		' Window actions
-
 		Public Sub DragMove() Implements IMainWindow.DragMove
 			Windows.Application.Current.MainWindow.DragMove()
 		End Sub
@@ -134,7 +129,6 @@ Namespace Start.MainWindow.ViewModels
 		End Sub
 
 		' Notification
-
 		Public Sub ShowStaticNotification( type As Integer,
 		                                   text As String ) Implements IMainWindow.ShowStaticNotification
 			StaticNotification.Type = type
@@ -147,7 +141,6 @@ Namespace Start.MainWindow.ViewModels
 		End Sub
 
 		' Dialog
-
 		Public Sub ShowStaticWindowDialog( content As Object ) Implements IMainWindow.ShowStaticWindowDialog
 			StaticWindowDialog.Content = content
 			StaticWindowDialog.IsVisible = True

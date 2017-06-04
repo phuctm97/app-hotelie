@@ -97,6 +97,8 @@ Namespace Rooms.ViewModels
 		End Sub
 
 		Public Async Sub PreviewNavigateToScreenRoomsList()
+
+			' show dialog
 			Dim dialog = New ThreeButtonDialog( "Thoát mà không lưu các thay đổi?",
 			                                    "THOÁT",
 			                                    "LƯU & THOÁT",
@@ -104,14 +106,17 @@ Namespace Rooms.ViewModels
 			                                    False,
 			                                    True,
 			                                    False )
-
-			Dim result = Await DialogHost.Show( dialog, "shell" )
+			Dim result = Await DialogHost.Show( dialog, "window" )
 
 			If String.Equals( result, "THOÁT" )
 				ParentWorkspace.NavigateToScreenRoomsList()
 			ElseIf String.Equals( result, "LƯU & THOÁT" )
-
+				SaveRoom()
 			End If
+		End Sub
+
+		Private Sub SaveRoom()
+			Throw New NotImplementedException
 		End Sub
 	End Class
 End Namespace
