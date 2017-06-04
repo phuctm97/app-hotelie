@@ -9,8 +9,16 @@ Namespace Start.LoginShell.ViewModels
 		' Dependencies
 		Private ReadOnly _databaseService As IDatabaseService
 
+		' Display
+		Public ReadOnly Property InitialDataSource As String
+
+		Public ReadOnly Property InitialCatalog As String
+
 		Public Sub New( databaseService As IDatabaseService )
 			_databaseService = databaseService
+
+			InitialDataSource = My.Settings.ConnectionDataSource
+			InitialCatalog = My.Settings.ConnectionCatalog
 		End Sub
 
 		Public Async Sub TestConnection( dataSource As String,
@@ -53,7 +61,8 @@ Namespace Start.LoginShell.ViewModels
 
 			If result
 				' save settings
-				My.Settings.HotelieDatabaseConnectionString = connectionString
+				My.Settings.ConnectionDataSource = dataSource
+				My.Settings.ConnectionCatalog = catalog
 				My.Settings.Save()
 
 				' reload database service

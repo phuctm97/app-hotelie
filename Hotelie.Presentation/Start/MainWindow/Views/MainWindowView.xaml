@@ -127,10 +127,15 @@
         </materialDesign:ColorZone>
 
         <!--Shell-->
+        
+        <!--Static dialog-->
         <materialDesign:DialogHost Grid.Row="1"
                                    DialogContent="{Binding Path=StaticDialog.Content}"
-                                   IsOpen="{Binding Path=StaticDialog.IsVisible}">
+                                   IsOpen="{Binding Path=StaticDialog.IsVisible}"> 
+            <!--Dynamic dialog-->
             <materialDesign:DialogHost Identifier="shell">
+                
+                <!--Static notification-->
                 <materialDesign:DrawerHost
                     IsTopDrawerOpen="{Binding Path=StaticNotification.Type, Converter={StaticResource StaticNotificationTypeToBooleanConverter}}">
 

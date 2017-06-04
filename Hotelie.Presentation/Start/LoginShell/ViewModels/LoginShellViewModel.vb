@@ -74,7 +74,7 @@ Namespace Start.LoginShell.ViewModels
 			IoC.Get(Of IMainWindow).ShowStaticDialog( New LoadingDialog( "Đang kiểm tra kết nối..." ) )
 
 			' try connection
-			Dim connectionString = My.Settings.HotelieDatabaseConnectionString
+			Dim connectionString = My.Settings.ConnectionDataSource
 			Dim result = Await _databaseService.CheckDatabaseConnectionAsync( connectionString )
 
 			' finish, close dialog
