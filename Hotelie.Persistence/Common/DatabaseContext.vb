@@ -4,6 +4,7 @@ Imports Hotelie.Domain.Leases
 Imports Hotelie.Domain.Parameters
 Imports Hotelie.Domain.Rooms
 Imports Hotelie.Domain.Users
+Imports Hotelie.Persistence.Leases
 Imports Hotelie.Persistence.Parameters
 Imports Hotelie.Persistence.Rooms
 Imports Hotelie.Persistence.Users
@@ -18,7 +19,6 @@ Namespace Common
         Public Property Leases As DbSet(Of Lease) Implements IDatabaseContext.Leases
         Public Property LeaseDetails As DbSet(Of LeaseDetail) Implements IDatabaseContext.LeaseDetails
         Public Property CustomerCategories As DbSet(Of CustomerCategory) Implements IDatabaseContext.CustomerCategories
-        Public Property Bills As DbSet(Of Bill) Implements IDatabaseContext.Bills
         Public Property Parameters As DbSet(Of Parameter) Implements IDatabaseContext.Parameters
         Public Property Users As DbSet(of User) Implements IDatabaseContext.Users
 
@@ -60,6 +60,9 @@ Namespace Common
             modelBuilder.Configurations.Add(New UserConfiguration)
             modelBuilder.Configurations.Add(New PermissionConfiguration)
             modelBuilder.Configurations.Add(New UserCategoryConfiguration)
+            modelBuilder.Configurations.Add(New LeaseConfiguration)
+            modelBuilder.Configurations.Add(New LeaseDetailConfiguration)
+            modelBuilder.Configurations.Add(New CustomerCategoryConfiguration)
         End Sub
     End Class
 End Namespace

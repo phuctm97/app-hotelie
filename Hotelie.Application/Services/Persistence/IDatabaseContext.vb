@@ -7,7 +7,6 @@ Imports Hotelie.Domain.Users
 Namespace Services.Persistence
     Public Interface IDatabaseContext
         Inherits IDisposable
-        Property Bills As DbSet(Of Bill)
         Property CustomerCategories As DbSet(Of CustomerCategory)
         Property LeaseDetails As DbSet(Of LeaseDetail)
         Property Leases As DbSet(Of Lease)
