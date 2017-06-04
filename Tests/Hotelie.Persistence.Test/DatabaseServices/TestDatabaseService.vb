@@ -20,21 +20,21 @@ Namespace DatabaseServices
         <TestMethod>
         Public Sub TestConnection_ValidConnectionString_Connected()
             ' valid connection string
-            Dim valid = $"data source=KHUONG-ASUS\SQLEXPRESS;initial catalog=HotelieDatabase;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
-
+            Dim validServerName = $"KHUONG-ASUS\SQLEXPRESS"
+            Dim validDatabaseName = $"HotelieDatabase"
             ' invalid connection string
-            Dim inValid  =$"data source=;initial catalog=;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
-
+            Dim inValidServerName  =""
+            Dim inValidDatabaseName ="1"
             ' assert
-            _databaseService.SetDatabaseConnection(valid)
-            Assert.IsTrue(_databaseService.CheckDatabaseConnection(valid))
+            _databaseService.SetDatabaseConnection(validServerName,validDatabaseName)
+            Assert.IsTrue(_databaseService.CheckDatabaseConnection(validServerName,validDatabaseName))
             Dim userCategory = New UserCategory() With {.Id = "00001",.Name =  "Test"}
             _databaseService.Context.UserCategories.Add(userCategory)
             _databaseService.Context.UserCategories.Remove(userCategory)
 
 
-            _databaseService.SetDatabaseConnection(inValid)
-            Assert.IsFalse(_databaseService.CheckDatabaseConnection(inValid))
+            _databaseService.SetDatabaseConnection(inValidServerName,inValidDatabaseName)
+            Assert.IsFalse(_databaseService.CheckDatabaseConnection(inValidServerName,inValidDatabaseName))
         End Sub
     End Class
 End NameSpace
