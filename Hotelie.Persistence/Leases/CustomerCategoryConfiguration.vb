@@ -17,6 +17,9 @@ Namespace Leases
             [Property](Function(p)p.Name).
                 IsRequired().
                 HasMaxLength(50)
+
+            [Property](Function(p)p.Coefficient).
+                IsRequired()
         End Sub
     End Class
 End Namespace
