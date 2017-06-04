@@ -51,10 +51,13 @@ Namespace Rooms.ViewModels
 			DisplayCode = - 1
 		End Sub
 
-		Protected Overrides Sub OnInitialize()
+		Protected Overrides Async Sub OnInitialize()
 			MyBase.OnInitialize()
 
-			InitAsync()
+			ShowStaticWindowLoadingDialog()
+			Await InitAsync()
+			Await Task.Delay( 100 ) 'allow binding
+			CloseStaticWindowDialog()
 		End Sub
 
 		Private Sub Init()
@@ -64,15 +67,12 @@ Namespace Rooms.ViewModels
 			DisplayCode = 0
 		End Sub
 
-		Private Async Sub InitAsync()
-			ShowStaticWindowLoadingDialog()
+		Private Async Function InitAsync() As Task
 			Await ScreenRoomsList.InitAsync()
 			Await ScreenRoomDetail.InitAsync()
 			Await ScreenAddRoom.InitAsync()
-			CloseStaticWindowDialog()
 			DisplayCode = 0
-			Await Task.Delay( 100 ) 'delay for binding
-		End Sub
+		End Function
 
 		Public Sub NavigateToScreenRoomsList()
 			DisplayCode = 0
