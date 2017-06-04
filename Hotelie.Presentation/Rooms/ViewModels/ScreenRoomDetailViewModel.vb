@@ -53,7 +53,15 @@ Namespace Rooms.ViewModels
 		End Sub
 
 		Private Sub InitValues()
-			ResetValues()
+			_roomId = String.Empty
+			_roomName = "Chưa có tên"
+			_roomCategory = RoomCategories.FirstOrDefault()
+			_roomNote = String.Empty
+			_roomState = 0
+
+			_originalRoomName = _roomName
+			_originalRoomCategoryId = _roomCategory.Id
+			_originalRoomNote = _roomNote
 		End Sub
 
 		Private Sub InitRoomCategories( ByRef roomCategoryCollection As IObservableCollection(Of RoomCategoryModel) )
@@ -131,10 +139,10 @@ Namespace Rooms.ViewModels
 		' Exit
 		Private Sub ResetValues()
 			_roomId = String.Empty
-			_roomName = "Chưa có tên"
-			_roomCategory = RoomCategories.FirstOrDefault()
-			_roomNote = String.Empty
-			_roomState = 0
+			RoomName = "Chưa có tên"
+			RoomCategory = RoomCategories.FirstOrDefault()
+			RoomNote = String.Empty
+			RoomState = 0
 
 			_originalRoomName = _roomName
 			_originalRoomCategoryId = _roomCategory.Id
