@@ -1,5 +1,4 @@
 ﻿Imports Caliburn.Micro
-Imports Hotelie.Application.Rooms.Commands.UpdateRoom
 Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
 Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
@@ -13,7 +12,6 @@ Namespace Rooms.ViewModels
 
 		' Dependencies
 		Private ReadOnly _getRoomCategoriesListQuery As IGetRoomCategoriesListQuery
-		Private ReadOnly _updateRoomCommand As IUpdateRoomCommand
 
 		Private _roomId As String
 		Private _roomName As String
@@ -34,12 +32,10 @@ Namespace Rooms.ViewModels
 		' Initialization
 
 		Sub New( workspace As RoomsWorkspaceViewModel,
-		         getRoomCategoriesListQuery As IGetRoomCategoriesListQuery,
-		         updateRoomCommand As IUpdateRoomCommand )
+		         getRoomCategoriesListQuery As IGetRoomCategoriesListQuery )
 
 			ParentWorkspace = workspace
 			_getRoomCategoriesListQuery = getRoomCategoriesListQuery
-			_updateRoomCommand = updateRoomCommand
 
 			InitRoomCategories( RoomCategories )
 
@@ -166,7 +162,7 @@ Namespace Rooms.ViewModels
 
 			' try update
 			IoC.Get(Of IMainWindow).ShowStaticShellDialog( New LoadingDialog() )
-			_updateRoomCommand.ExecuteAsync( _roomId, RoomName, RoomCategory.Id, RoomNote, RoomState )
+			' TODO: call update here
 			IoC.Get(Of IMainWindow).CloseStaticShellDialog()
 		End Sub
 	End Class
