@@ -40,7 +40,7 @@
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <cal:ActionMessage MethodName="SwitchShell">
-                <cal:Parameter Value="login-shell" />
+                <cal:Parameter Value="workspace-shell" />
             </cal:ActionMessage>
         </i:EventTrigger>
     </i:Interaction.Triggers>

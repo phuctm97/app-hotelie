@@ -74,27 +74,11 @@
                         </StackPanel>
                     </StackPanel>
 
-                    <ComboBox x:Name="ComboBoxName" DockPanel.Dock="Left" HorizontalAlignment="Left"
-                              VerticalAlignment="Center"
-                              FontSize="60" FontWeight="Light"
-                              materialDesign:HintAssist.Hint="Phòng"
-                              ItemsSource="{Binding Rooms}"
-                              DisplayMemberPath="Name">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="SelectionChanged">
-                                <cal:ActionMessage MethodName="ChangeRoom">
-                                    <cal:Parameter Value="{Binding ElementName=ComboBoxName, Path=SelectedItem.Id}" />
-                                </cal:ActionMessage>
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-
-                        <ComboBox.ItemContainerStyle>
-                            <Style TargetType="ComboBoxItem" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
-                                <Setter Property="FontSize" Value="60" />
-                                <Setter Property="FontWeight" Value="Light" />
-                            </Style>
-                        </ComboBox.ItemContainerStyle>
-                    </ComboBox>
+                    <!--Room name-->
+                    <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               FontSize="60" FontWeight="Light"
+                               Text="{Binding RoomName, Converter={StaticResource RoomNameWhenEmptyConverter}}" />
 
                     <!--Delete button-->
                     <Button DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
