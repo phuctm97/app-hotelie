@@ -78,18 +78,23 @@
                                                 <RowDefinition Height="Auto" />
                                                 <RowDefinition Height="Auto" />
                                             </Grid.RowDefinitions>
+
                                             <!--Primary text-->
                                             <StackPanel Grid.Row="0"
-                                                        Margin="16 24 16 12">
+                                                        Margin="16 24 16 0">
                                                 <!--Title-->
                                                 <TextBlock Style="{DynamicResource MaterialDesignHeadlineTextBlock}"
-                                                           Text="Phòng A101"
-                                                           Margin="0 0 0 8" />
+                                                           Text="#T00010" Margin="0 0 8 0" />
 
                                                 <!--Subtitle-->
                                                 <TextBlock TextWrapping="Wrap"
                                                            Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
                                                            Text="Đã ở 5 ngày. Tổng tiền: 200,000đ" Opacity="0.65" />
+
+                                                <Button Background="White" Foreground="{DynamicResource PrimaryHueMidBrush}"
+                                                        HorizontalAlignment="Left" Height="Auto" Margin="-4 12 0 0" Padding="8 4">
+                                                    <TextBlock Text="Phòng A101" FontSize="24" />
+                                                </Button>
                                             </StackPanel>
 
                                             <Grid Grid.Row="1"
@@ -107,19 +112,22 @@
                                                 <StackPanel Margin="0 0 4 4" Grid.Row="0" Grid.Column="0"
                                                             Orientation="Horizontal">
                                                     <materialDesign:PackIcon Kind="HomeVariant" Margin="0 0 8 0" />
-                                                    <TextBlock Margin="0 0 16 0" Text="Phòng Vip" FontWeight="Light" />
+                                                    <TextBlock Margin="0 0 16 0" Text="Phòng Vip"
+                                                               FontWeight="Light" />
                                                 </StackPanel>
 
                                                 <StackPanel Margin="0 0 0 4" Grid.Row="0" Grid.Column="1"
                                                             Orientation="Horizontal">
-                                                    <materialDesign:PackIcon Kind="AccountMultiple" Margin="0 0 8 0" />
+                                                    <materialDesign:PackIcon Kind="AccountMultiple"
+                                                                             Margin="0 0 8 0" />
                                                     <TextBlock Text="3 người" FontWeight="Light" />
                                                 </StackPanel>
 
                                                 <StackPanel Margin="0 4 4 4" Grid.Row="1" Grid.Column="0"
                                                             Orientation="Horizontal">
                                                     <materialDesign:PackIcon Kind="CalendarToday" Margin="0 0 8 0" />
-                                                    <TextBlock Margin="0 0 16 0" Text="23/10/1997" FontWeight="Light" />
+                                                    <TextBlock Margin="0 0 16 0" Text="23/10/1997"
+                                                               FontWeight="Light" />
                                                 </StackPanel>
 
                                                 <StackPanel Margin="0 4 0 4" Grid.Row="1" Grid.Column="1"
@@ -130,8 +138,8 @@
                                             </Grid>
 
                                             <StackPanel Grid.Row="2" Margin="16 0 0 0" HorizontalAlignment="Left">
-                                                <TextBlock Text="DANH SÁCH KHÁCH HÀNG" Margin="0 0 0 8"/>
-                                                <Rectangle VerticalAlignment="Bottom" Height="4" Fill="White"/>
+                                                <TextBlock Text="DANH SÁCH KHÁCH HÀNG" Margin="0 0 0 8" />
+                                                <Rectangle VerticalAlignment="Bottom" Height="4" Fill="White" />
                                             </StackPanel>
                                         </Grid>
 
@@ -141,16 +149,18 @@
                                                     <WrapPanel Margin="8 8 8 4" Orientation="Horizontal" />
                                                 </ItemsPanelTemplate>
                                             </ListBox.ItemsPanel>
-                                            
+
                                             <ListBox.ItemContainerStyle>
-                                                <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                                                <Style TargetType="ListBoxItem"
+                                                       BasedOn="{StaticResource {x:Type ListBoxItem}}">
                                                     <Setter Property="Margin" Value="4" />
                                                     <Setter Property="Template">
                                                         <Setter.Value>
                                                             <ControlTemplate TargetType="ListBoxItem">
                                                                 <materialDesign:Chip FontSize="12">
                                                                     <materialDesign:Chip.Icon>
-                                                                        <materialDesign:PackIcon Height="16" Width="16" Kind="Account" />
+                                                                        <materialDesign:PackIcon Height="16" Width="16"
+                                                                                                 Kind="Account" />
                                                                     </materialDesign:Chip.Icon>
                                                                     Nguyễn Văn A
                                                                 </materialDesign:Chip>
@@ -159,7 +169,7 @@
                                                     </Setter>
                                                 </Style>
                                             </ListBox.ItemContainerStyle>
-                                            
+
                                             <ListBoxItem />
                                             <ListBoxItem />
                                             <ListBoxItem />
