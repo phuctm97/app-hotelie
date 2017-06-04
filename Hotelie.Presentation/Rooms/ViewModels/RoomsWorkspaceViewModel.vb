@@ -12,12 +12,9 @@ Namespace Rooms.ViewModels
 		Implements INeedWindowModals
 
 		' Dependencies
-		Private ReadOnly _getRoomsListQuery As IGetRoomsListQuery
-		Private ReadOnly _getRoomCategoriesListQuery As IGetRoomCategoriesListQuery
-
 		Private _displayCode As Integer
 
-		Public Property ScreenRoomsList As ScreenRoomsListViewModel
+		Public ReadOnly Property ScreenRoomsList As ScreenRoomsListViewModel
 
 		Public Property ScreenRoomDetail As ScreenRoomDetailViewModel
 
@@ -39,8 +36,7 @@ Namespace Rooms.ViewModels
 		                updateRoomCommand As IUpdateRoomCommand,
 		                removeRoomCommand As IRemoveRoomCommand,
 		                inventory As IInventory )
-			_getRoomsListQuery = getRoomsListQuery
-			_getRoomCategoriesListQuery = getRoomCategoriesListQuery
+			ScreenRoomsList = New ScreenRoomsListViewModel( getRoomsListQuery, getRoomCategoriesListQuery )
 
 			ScreenRoomDetail = New ScreenRoomDetailViewModel( Me,
 			                                                  getRoomCategoriesListQuery,
@@ -63,8 +59,7 @@ Namespace Rooms.ViewModels
 
 		Private Async Sub InitAsync()
 			ShowStaticWindowLoadingDialog()
-			ScreenRoomsList = Await ScreenRoomsListViewModel.CreateAsync( _getRoomsListQuery, _getRoomCategoriesListQuery )
-			NotifyOfPropertyChange( Function() ScreenRoomsList )
+			Await ScreenRoomsList.InitAsync()
 			CloseStaticWindowDialog()
 
 			DisplayCode = 0
