@@ -79,7 +79,7 @@ Namespace Start.LoginShell.ViewModels
 				DisplayCode = 0
 			Else
 				' report error
-				IoC.Get(Of IMainWindow).ShowStaticNotification( StaticNotificationType.Error,
+				IoC.Get(Of IMainWindow).ShowStaticTopNotification( StaticNotificationType.Error,
 				                                                "Sự cố kết nối! Vui lòng kiểm tra lại thiết lập kết nối!" )
 				' show settings screen
 				DisplayCode = 1

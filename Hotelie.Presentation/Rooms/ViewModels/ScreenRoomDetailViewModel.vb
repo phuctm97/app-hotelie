@@ -13,6 +13,7 @@ Namespace Rooms.ViewModels
 		' Dependencies
 		Private ReadOnly _getRoomCategoriesListQuery As IGetRoomCategoriesListQuery
 
+		' Backing fields
 		Private _roomId As String
 		Private _roomName As String
 		Private _roomCategory As RoomCategoryModel
@@ -24,13 +25,11 @@ Namespace Rooms.ViewModels
 		Private _originalRoomNote As String
 
 		' Parent
-
 		Public Property Parent As Object Implements IChild.Parent
 
 		Public Property ParentWorkspace As RoomsWorkspaceViewModel Implements IChild(Of RoomsWorkspaceViewModel).Parent
 
 		' Initialization
-
 		Sub New( workspace As RoomsWorkspaceViewModel,
 		         getRoomCategoriesListQuery As IGetRoomCategoriesListQuery )
 
@@ -43,15 +42,7 @@ Namespace Rooms.ViewModels
 		End Sub
 
 		Private Sub InitValues()
-			_roomId = String.Empty
-			_roomName = "Chưa có tên"
-			_roomCategory = RoomCategories.FirstOrDefault()
-			_roomNote = String.Empty
-			_roomState = 0
-
-			_originalRoomName = _roomName
-			_originalRoomCategoryId = _roomCategory.Id
-			_originalRoomNote = _roomNote
+			ResetValues()
 		End Sub
 
 		Private Sub InitRoomCategories( ByRef roomCategoryCollection As IObservableCollection(Of RoomCategoryModel) )
@@ -60,7 +51,6 @@ Namespace Rooms.ViewModels
 		End Sub
 
 		' Data
-
 		Public Property RoomName As String
 			Get
 				Return _roomName
@@ -127,15 +117,47 @@ Namespace Rooms.ViewModels
 			_originalRoomNote = _roomNote
 		End Sub
 
-		Public Async Sub PreviewNavigateToScreenRoomsList()
-			' nothing changes
-			If String.Equals( _roomName, _originalRoomName ) And
-			   String.Equals( _roomCategory.Id, _originalRoomCategoryId ) And
-			   String.Equals( _roomNote, _originalRoomNote )
-				ParentWorkspace.NavigateToScreenRoomsList()
-				Return
+		' Exit
+		Private Sub ResetValues()
+			_roomId = String.Empty
+			_roomName = "Chưa có tên"
+			_roomCategory = RoomCategories.FirstOrDefault()
+			_roomNote = String.Empty
+			_roomState = 0
+
+			_originalRoomName = _roomName
+			_originalRoomCategoryId = _roomCategory.Id
+			_originalRoomNote = _roomNote
+		End Sub
+
+		Private Sub [Exit]()
+			ResetValues()
+			ParentWorkspace.NavigateToScreenRoomsList()
+		End Sub
+
+		Public Async Sub PreviewExit()
+			If CheckForPendingChanges()
+				Dim result = Await ConfirmExit()
+
+				If Equals( result, 1 )
+					PreviewSave()
+					Return
+				ElseIf Equals( result, 2 )
+					Return
+				End If
 			End If
 
+			[Exit]()
+		End Sub
+
+		Private Function CheckForPendingChanges() As Boolean
+			Return (Not String.IsNullOrEmpty( _roomId )) And
+			       ((Not String.Equals( _roomName, _originalRoomName )) Or
+			        (Not String.Equals( _roomCategory.Id, _originalRoomCategoryId )) Or
+			        (Not String.Equals( _roomNote, _originalRoomNote )))
+		End Function
+
+		Private Async Function ConfirmExit() As Task(Of Integer)
 			' show dialog
 			Dim dialog = New ThreeButtonDialog( "Thoát mà không lưu các thay đổi?",
 			                                    "THOÁT",
@@ -146,24 +168,64 @@ Namespace Rooms.ViewModels
 			                                    False )
 			Dim result = Await DialogHost.Show( dialog, "window" )
 
-			If String.Equals( result, "THOÁT" )
-				ParentWorkspace.NavigateToScreenRoomsList()
-			ElseIf String.Equals( result, "LƯU & THOÁT" )
-				SaveChanges()
-				ParentWorkspace.NavigateToScreenRoomsList()
-			End If
+			If String.Equals( result, "THOÁT" ) Then Return 0
+			If String.Equals( result, "HỦY" ) Then Return 2
+			Return 1
+		End Function
+
+		' Save
+		Public Sub PreviewSave()
+			If Not ValidateData() Then Return
+			Save()
 		End Sub
 
-		Public Sub SaveChanges()
-			If String.IsNullOrWhiteSpace( RoomName )
-				IoC.Get(Of IMainWindow).ShowStaticNotification( StaticNotificationType.Information, "Vui lòng nhập tên phòng!" )
-				Return
-			End If
-
+		Private Sub Save()
 			' try update
 			IoC.Get(Of IMainWindow).ShowStaticShellDialog( New LoadingDialog() )
 			' TODO: call update here
 			IoC.Get(Of IMainWindow).CloseStaticShellDialog()
+
+			[Exit]()
+		End Sub
+
+		Private Function ValidateData() As Boolean
+			If String.IsNullOrWhiteSpace( RoomName )
+				IoC.Get(Of IMainWindow).ShowStaticBottomNotification( StaticNotificationType.Information, "Vui lòng nhập tên phòng!" )
+				Return False
+			End If
+
+			Return True
+		End Function
+
+		' Delete
+		Public Async Sub PreviewDelete()
+			Dim result = Await ConfirmDelete()
+
+			If Equals( result, 0 )
+				Delete()
+			End If
+		End Sub
+
+		Private Async Function ConfirmDelete() As Task(Of Integer)
+			' show dialog
+			Dim dialog = New TwoButtonDialog( "Xóa phòng. Tiếp tục?",
+			                                  "XÓA",
+			                                  "HỦY",
+			                                  True,
+			                                  False )
+			Dim result = Await DialogHost.Show( dialog, "window" )
+
+			If String.Equals( result, "XÓA" ) Then Return 0
+			Return 1
+		End Function
+
+		Private Sub Delete()
+			' try update
+			IoC.Get(Of IMainWindow).ShowStaticShellDialog( New LoadingDialog() )
+			' TODO: call delete here
+			IoC.Get(Of IMainWindow).CloseStaticShellDialog()
+
+			[Exit]()
 		End Sub
 	End Class
 End Namespace

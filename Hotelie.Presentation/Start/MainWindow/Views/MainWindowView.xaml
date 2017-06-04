@@ -40,7 +40,7 @@
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <cal:ActionMessage MethodName="SwitchShell">
-                <cal:Parameter Value="login-shell" />
+                <cal:Parameter Value="workspace-shell" />
             </cal:ActionMessage>
         </i:EventTrigger>
     </i:Interaction.Triggers>
@@ -141,7 +141,8 @@
 
                         <!--Static notification-->
                         <materialDesign:DrawerHost
-                            IsTopDrawerOpen="{Binding Path=StaticNotification.Type, Converter={StaticResource StaticNotificationTypeToBooleanConverter}}">
+                            IsTopDrawerOpen="{Binding Path=StaticTopNotification.Type, Converter={StaticResource StaticNotificationTypeToBooleanConverter}}"
+                            IsBottomDrawerOpen="{Binding Path=StaticBottomNotification.Type, Converter={StaticResource StaticNotificationTypeToBooleanConverter}}">
 
                             <!--Notification-->
                             <materialDesign:DrawerHost.TopDrawerContent>
@@ -154,13 +155,13 @@
                                             CornerRadius="16">
                                         <Border.Background>
                                             <SolidColorBrush
-                                                Color="{Binding Path=StaticNotification.Type, Converter={StaticResource StaticNotificationTypeToColorConverter}}" />
+                                                Color="{Binding Path=StaticTopNotification.Type, Converter={StaticResource StaticNotificationTypeToColorConverter}}" />
                                         </Border.Background>
                                         <materialDesign:PackIcon HorizontalAlignment="Center"
                                                                  VerticalAlignment="Center"
                                                                  Width="24" Height="24"
                                                                  Foreground="White"
-                                                                 Kind="{Binding Path=StaticNotification.Type, Converter={StaticResource StaticNotificationTypeToIconKindConverter}}" />
+                                                                 Kind="{Binding Path=StaticTopNotification.Type, Converter={StaticResource StaticNotificationTypeToIconKindConverter}}" />
                                     </Border>
 
                                     <!--Display-->
@@ -168,9 +169,36 @@
                                                VerticalAlignment="Center"
                                                Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
                                                TextWrapping="Wrap"
-                                               Text="{Binding Path=StaticNotification.Text}" />
+                                               Text="{Binding Path=StaticTopNotification.Text}" />
                                 </DockPanel>
                             </materialDesign:DrawerHost.TopDrawerContent>
+                            <materialDesign:DrawerHost.BottomDrawerContent>
+                                <DockPanel Margin="16 24 16 24">
+
+                                    <!--Icon-->
+                                    <Border DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                            Margin="0 0 16 0"
+                                            Width="32" Height="32"
+                                            CornerRadius="16">
+                                        <Border.Background>
+                                            <SolidColorBrush
+                                                Color="{Binding Path=StaticBottomNotification.Type, Converter={StaticResource StaticNotificationTypeToColorConverter}}" />
+                                        </Border.Background>
+                                        <materialDesign:PackIcon HorizontalAlignment="Center"
+                                                                 VerticalAlignment="Center"
+                                                                 Width="24" Height="24"
+                                                                 Foreground="White"
+                                                                 Kind="{Binding Path=StaticBottomNotification.Type, Converter={StaticResource StaticNotificationTypeToIconKindConverter}}" />
+                                    </Border>
+
+                                    <!--Display-->
+                                    <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
+                                               TextWrapping="Wrap"
+                                               Text="{Binding Path=StaticBottomNotification.Text}" />
+                                </DockPanel>
+                            </materialDesign:DrawerHost.BottomDrawerContent>
 
                             <!--Shell-->
                             <ContentControl cal:View.Model="{Binding Shell}" />

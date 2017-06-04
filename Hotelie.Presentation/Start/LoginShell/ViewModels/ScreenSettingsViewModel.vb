@@ -29,9 +29,9 @@ Namespace Start.LoginShell.ViewModels
 
 			' show result
 			If result
-				IoC.Get(Of IMainWindow).ShowStaticNotification( StaticNotificationType.Ok, "Kết nối thành công!" )
+				IoC.Get(Of IMainWindow).ShowStaticTopNotification( StaticNotificationType.Ok, "Kết nối thành công!" )
 			Else
-				IoC.Get(Of IMainWindow).ShowStaticNotification( StaticNotificationType.Error, "Kết nối thất bại!" )
+				IoC.Get(Of IMainWindow).ShowStaticTopNotification( StaticNotificationType.Error, "Kết nối thất bại!" )
 			End If
 		End Sub
 
@@ -51,10 +51,10 @@ Namespace Start.LoginShell.ViewModels
 				_databaseService.SetDatabaseConnection( dataSource, catalog )
 
 				' notification
-				IoC.Get(Of IMainWindow).ShowStaticNotification( StaticNotificationType.Ok, "Đã thiết lập kết nối!" )
+				IoC.Get(Of IMainWindow).ShowStaticTopNotification( StaticNotificationType.Ok, "Đã thiết lập kết nối!" )
 			Else
 				' report error
-				IoC.Get(Of IMainWindow).ShowStaticNotification( StaticNotificationType.Error,
+				IoC.Get(Of IMainWindow).ShowStaticTopNotification( StaticNotificationType.Error,
 				                                                "Kết nối thất bại. Thiết lập không hợp lệ!" )
 			End If
 		End Sub
