@@ -94,7 +94,7 @@
                                             <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap"
                                                        Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
                                                        Foreground="{DynamicResource MaterialDesignBodyLight}"
-                                                       Text="{Binding RoomCategoryName}" />
+                                                       Text="Loại phòng" />
 
                                             <StackPanel Margin="0 16 0 0">
                                                 <DockPanel>

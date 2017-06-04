@@ -8,8 +8,6 @@ Namespace Leases.ViewModels
 		Implements INeedWindowModals
 
 		' Dependencies
-		Private ReadOnly _getLeasesListQuery As IGetLeasesListQuery
-
 		Private _displayCode As Integer
 
 		Public ReadOnly Property ScreenLeasesList As ScreenLeasesListViewModel
@@ -30,9 +28,7 @@ Namespace Leases.ViewModels
 		End Property
 
 		Public Sub New( getLeasesListQuery As IGetLeasesListQuery )
-			_getLeasesListQuery = getLeasesListQuery
-
-			ScreenLeasesList = New ScreenLeasesListViewModel()
+			ScreenLeasesList = New ScreenLeasesListViewModel( getLeasesListQuery )
 
 			ScreenLeaseDetail = New ScreenLeaseDetailViewModel()
 
