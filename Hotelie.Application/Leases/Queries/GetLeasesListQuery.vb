@@ -1,5 +1,7 @@
 ﻿Imports System.Data.Entity
+Imports Caliburn.Micro
 Imports Hotelie.Application.Services.Persistence
+Imports Hotelie.Domain.Leases
 
 Namespace Leases.Queries
     Public Class GetLeasesListQuery
@@ -17,10 +19,23 @@ Namespace Leases.Queries
                                                              .RoomName = p.Room.Name,
                                                              .BeginDate = p.BeginDate,
                                                              .EndDate = p.EndDate,
-                                                             .RoomCategoryName = p.Room.Category.Name})
+                                                             .RoomCategoryName = p.Room.Category.Name,
+                                                             .Price = p.Room.Category.Price})
+
             For Each leaseModel As LeaseModel In leases
                 Dim customers = _leaseRepository.GetCustomers(leaseModel.Id)
-                leaseModel.NumberOfCustomers = customers.Count()
+                If (customers.Count > 0)
+                    leaseModel.Customers = New BindableCollection(Of LeaseCustomerModel)
+                    For Each leaseCustomer As LeaseDetail In customers
+                        leaseModel.Customers.Add(New LeaseCustomerModel() With {.Id = leaseCustomer.Id, 
+                                                    .Address=leaseCustomer.Address, 
+                                                    .Name = leaseCustomer.CustomerName, 
+                                                    .LisenceId = leaseCustomer.LicenseId, 
+                                                    .CategoryId = leaseCustomer.CustomerCategory.Id, 
+                                                    .CategoryName = leaseCustomer.CustomerCategory.Name})
+                    Next
+                End If
+                leaseModel.TotalPrice = leaseModel.Price*(DateTime.Now().Subtract(leaseModel.BeginDate).Days())
             Next
             Return leases
         End Function
@@ -36,7 +51,18 @@ Namespace Leases.Queries
                     ToListAsync()
             For Each leaseModel As LeaseModel In leases
                 Dim customers = Await _leaseRepository.GetCustomersAsync(leaseModel.Id)
-                leaseModel.NumberOfCustomers = customers.Count()
+                If (customers.Count > 0)
+                    leaseModel.Customers = New BindableCollection(Of LeaseCustomerModel)
+                    For Each leaseCustomer As LeaseDetail In customers
+                        leaseModel.Customers.Add(New LeaseCustomerModel() With {.Id = leaseCustomer.Id, 
+                                                    .Address=leaseCustomer.Address, 
+                                                    .Name = leaseCustomer.CustomerName, 
+                                                    .LisenceId = leaseCustomer.LicenseId, 
+                                                    .CategoryId = leaseCustomer.CustomerCategory.Id, 
+                                                    .CategoryName = leaseCustomer.CustomerCategory.Name})
+                    Next
+                End If
+                leaseModel.TotalPrice = leaseModel.Price*(DateTime.Now().Subtract(leaseModel.BeginDate).Days())
             Next
             Return leases
         End Function

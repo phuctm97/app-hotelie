@@ -10,7 +10,9 @@ Namespace Leases.Queries
         Private _roomCategoryName As String
         Private _beginDate As Date
         Private _endDate As Date
-        Private _numberOfCustomers As Integer
+        Private _customers As IObservableCollection(Of LeaseCustomerModel)
+        Private _price As Decimal
+        Private _totalPrice As Decimal
 
         Public Property Id As String
             Get
@@ -67,16 +69,38 @@ Namespace Leases.Queries
             End Set
         End Property
 
-        Public Property NumberOfCustomers As Integer
+        Public Property Customers As IObservableCollection(Of LeaseCustomerModel)
             Get
-                Return _numberOfCustomers
+                Return _customers
             End Get
             Set
-                If Equals(Value, _numberOfCustomers) Then Return
-                _numberOfCustomers = Value
-                NotifyOfPropertyChange(Function() NumberOfCustomers)
+                If Equals(Value, _customers) Then Return
+                _customers = Value
+                NotifyOfPropertyChange(Function() Customers)
             End Set
         End Property
 
+        Public Property Price As Decimal
+            Get
+                Return _price
+            End Get
+            Set
+                If Equals(Value, _price) Then Return
+                _price = Value
+                NotifyOfPropertyChange(Function() Price)
+            End Set
+        End Property
+
+        Public Property TotalPrice As Decimal
+            Get
+                Return _totalPrice
+            End Get
+            Set
+                If Equals(Value, _totalPrice) Then Return
+                _totalPrice = Value
+                NotifyOfPropertyChange(Function() TotalPrice)
+            End Set
+        End Property
+        
     End Class
 End NameSpace
