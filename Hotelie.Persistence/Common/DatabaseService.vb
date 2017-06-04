@@ -12,13 +12,18 @@ Namespace Common
             End Get
         End Property
 
-        Public Sub SetDatabaseConnection(connectionString As String) Implements IDatabaseService.SetDatabaseConnection
+        Public Sub SetDatabaseConnection(serverName As String, databaseName As String) Implements IDatabaseService.SetDatabaseConnection
             _context?.Dispose()
+            Dim connectionString = $"data source={serverName};initial catalog={databaseName};integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
+
             _context = New DatabaseContext(connectionString)
         End Sub
 
-        Public Function CheckDatabaseConnection(connectionString As String) As Boolean _
+        Public Function CheckDatabaseConnection(serverName As String, databaseName As String) As Boolean _
             Implements IDatabaseService.CheckDatabaseConnection
+
+           Dim connectionString = $"data source={serverName};initial catalog={databaseName};integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
+
             Dim dbContext = New DatabaseContext(connectionString)
             Try
                 dbContext.Database.Connection.Open()
@@ -31,8 +36,11 @@ Namespace Common
             Return True
         End Function
 
-        Public Async Function CheckDatabaseConnectionAsync(connectionString As String) As Task(Of Boolean) _
+        Public Async Function CheckDatabaseConnectionAsync(serverName As String, databaseName As String) As Task(Of Boolean) _
             Implements IDatabaseService.CheckDatabaseConnectionAsync
+
+            Dim connectionString = $"data source={serverName};initial catalog={databaseName};integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
+
             Dim dbContext = New DatabaseContext(connectionString)
             Try
                 Await dbContext.Database.Connection.OpenAsync()

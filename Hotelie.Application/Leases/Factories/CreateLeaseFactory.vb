@@ -60,8 +60,8 @@ Namespace Leases.Factories
             Return lease
         End Function
 
-        Public Function ExecuteAsync(roomId As String, beginDate As Date, endDate As Date) As LeaseModel Implements ICreateLeaseFactory.ExecuteAsync
-            Dim room = _roomRepository.GetOne(roomId)
+        Public Async Function ExecuteAsync(roomId As String, beginDate As Date, endDate As Date) As Task(Of LeaseModel) Implements ICreateLeaseFactory.ExecuteAsync
+            Dim room = Await _roomRepository.GetOneAsync(roomId)
 
             ' create new lease id
             Dim defaultId = 0

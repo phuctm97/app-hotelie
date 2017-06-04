@@ -14,9 +14,8 @@ Namespace Authentication
 
         <TestInitialize>
         Public Sub TestInitialize()
-            _databaseService =
-                New DatabaseService(
-                    $"data source=KHUONG-ASUS\SQLEXPRESS;initial catalog=HotelieDatabase;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
+            _databaseService = New DatabaseService()
+            _databaseService.SetDatabaseConnection($"KHUONG-ASUS\SQLEXPRESS",$"HotelieDatabase")
             _userRepository = new UserRepository(_databaseService)
             _authentication = new Hotelie.Application.Services.Authentication.Authentication(_userRepository)
         End Sub
