@@ -26,6 +26,12 @@ Namespace Infrastructure
 			Next
 		End Sub
 
+		Public Sub OnRoomRemoved( id As String ) Implements IInventory.OnRoomRemoved
+			For Each roomCollectionPresenter As IRoomCollectionPresenter In _roomCollectionPresenters
+				roomCollectionPresenter.OnRoomRemoved( id )
+			Next
+		End Sub
+
 		Public Sub OnRoomUpdated( id As String,
 		                          name As String,
 		                          categoryId As String,

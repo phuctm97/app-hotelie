@@ -352,6 +352,9 @@ Namespace Rooms.ViewModels
 				         .CategoryId=categoryId, .CategoryName=category.Name, 
 				         .CategoryDisplayColor=category.DisplayColor, 
 				         .Price=category.Price, .State=0,.Note=note, .IsVisible=False} )
+
+			RefreshRoomsListVisibility()
+			SortRoomsList()
 		End Sub
 
 		Public Sub OnRoomUpdated( id As String,
@@ -375,6 +378,17 @@ Namespace Rooms.ViewModels
 			room.Price = category.Price
 			room.Note = note
 			room.State = state
+
+			RefreshRoomsListVisibility()
+			SortRoomsList()
+		End Sub
+
+		Public Sub OnRoomRemoved( id As String ) Implements IRoomCollectionPresenter.OnRoomRemoved
+			' find room
+			Dim room = Rooms.FirstOrDefault( Function( r ) r.Id = id )
+			If room Is Nothing Then Throw New DuplicateWaitObjectException()
+
+			Rooms.Remove( room )
 		End Sub
 	End Class
 End Namespace

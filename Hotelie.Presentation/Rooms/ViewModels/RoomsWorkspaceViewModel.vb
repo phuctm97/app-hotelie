@@ -1,7 +1,9 @@
 ﻿Imports Caliburn.Micro
+Imports Hotelie.Application.Rooms.Commands.RemoveRoom
 Imports Hotelie.Application.Rooms.Commands.UpdateRoom
 Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
 Imports Hotelie.Application.Rooms.Queries.GetRoomsList
+Imports Hotelie.Application.Services.Infrastructure
 
 Namespace Rooms.ViewModels
 	Public Class RoomsWorkspaceViewModel
@@ -27,13 +29,20 @@ Namespace Rooms.ViewModels
 		End Property
 
 		Public Sub New( getRoomsListQuery As IGetRoomsListQuery,
-		                getRoomCategoriesListQuery As IGetRoomCategoriesListQuery )
+		                getRoomCategoriesListQuery As IGetRoomCategoriesListQuery,
+		                updateRoomCommand As IUpdateRoomCommand,
+		                removeRoomCommand As IRemoveRoomCommand,
+		                inventory As IInventory )
 			DisplayName = "Danh sách phòng"
 
 			' TODO: delay for loading screens
 			ScreenRoomsList = New ScreenRoomsListViewModel( getRoomsListQuery, getRoomCategoriesListQuery )
 
-			ScreenRoomDetail = New ScreenRoomDetailViewModel( Me, getRoomCategoriesListQuery )
+			ScreenRoomDetail = New ScreenRoomDetailViewModel( Me,
+			                                                  getRoomCategoriesListQuery,
+			                                                  updateRoomCommand,
+			                                                  removeRoomCommand,
+			                                                  inventory )
 
 			ScreenAddRoom = New ScreenAddRoomViewModel( Me, getRoomCategoriesListQuery )
 

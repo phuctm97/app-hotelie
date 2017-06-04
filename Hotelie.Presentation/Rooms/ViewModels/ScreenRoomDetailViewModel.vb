@@ -3,20 +3,20 @@ Imports Hotelie.Application.Rooms.Commands.RemoveRoom
 Imports Hotelie.Application.Rooms.Commands.UpdateRoom
 Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
 Imports Hotelie.Application.Services.Infrastructure
-Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
 Imports Hotelie.Presentation.Start.MainWindow.Models
-Imports MaterialDesignThemes.Wpf
 
 Namespace Rooms.ViewModels
 	Public Class ScreenRoomDetailViewModel
 		Inherits PropertyChangedBase
 		Implements IChild(Of RoomsWorkspaceViewModel)
+		Implements INeedWindowModals
 
 		' Dependencies
 		Private ReadOnly _getRoomCategoriesListQuery As IGetRoomCategoriesListQuery
 		Private ReadOnly _updateRoomCommand As IUpdateRoomCommand
 		Private ReadOnly _removeRoomCommand As IRemoveRoomCommand
+		Private ReadOnly _inventory As IInventory
 
 		' Backing fields
 		Private _roomId As String
@@ -38,12 +38,14 @@ Namespace Rooms.ViewModels
 		Sub New( workspace As RoomsWorkspaceViewModel,
 		         getRoomCategoriesListQuery As IGetRoomCategoriesListQuery,
 		         updateRoomCommand As IUpdateRoomCommand,
-		         removeRoomCommand As IRemoveRoomCommand )
+		         removeRoomCommand As IRemoveRoomCommand,
+		         inventory As IInventory )
 
 			ParentWorkspace = workspace
 			_getRoomCategoriesListQuery = getRoomCategoriesListQuery
 			_updateRoomCommand = updateRoomCommand
 			_removeRoomCommand = removeRoomCommand
+			_inventory = inventory
 
 			InitRoomCategories( RoomCategories )
 
@@ -175,7 +177,7 @@ Namespace Rooms.ViewModels
 			                                    False,
 			                                    True,
 			                                    False )
-			Dim result = Await DialogHost.Show( dialog, "window" )
+			Dim result = Await ShowDynamicWindowDialog( dialog )
 
 			If String.Equals( result, "THOÁT" ) Then Return 0
 			If String.Equals( result, "HỦY" ) Then Return 2
@@ -190,12 +192,12 @@ Namespace Rooms.ViewModels
 
 		Private Async Function Save() As Task(Of Integer)
 			' try update
-			IoC.Get(Of IMainWindow).ShowStaticWindowDialog( New LoadingDialog() )
-			
-			' TODO: call update here
-			IoC.Get(Of IInventory).OnRoomUpdated( _roomId, _roomName, _roomCategory.Id, _roomNote, _roomState )
+			ShowStaticWindowDialog( New LoadingDialog() )
 
-			IoC.Get(Of IMainWindow).CloseStaticWindowDialog()
+			Await _updateRoomCommand.ExecuteAsync( _roomId, _roomName, _roomCategory.Id, _roomNote, _roomState )
+			_inventory.OnRoomUpdated( _roomId, _roomName, _roomCategory.Id, _roomNote, _roomState )
+
+			CloseStaticWindowDialog()
 
 			[Exit]()
 			Return 0
@@ -203,8 +205,8 @@ Namespace Rooms.ViewModels
 
 		Private Function ValidateData() As Boolean
 			If String.IsNullOrWhiteSpace( RoomName )
-				IoC.Get(Of IMainWindow).ShowStaticBottomNotification( StaticNotificationType.Information,
-				                                                      "Vui lòng nhập tên phòng!" )
+				ShowStaticBottomNotification( StaticNotificationType.Information,
+				                              "Vui lòng nhập tên phòng!" )
 				Return False
 			End If
 
@@ -227,7 +229,7 @@ Namespace Rooms.ViewModels
 			                                  "HỦY",
 			                                  True,
 			                                  False )
-			Dim result = Await DialogHost.Show( dialog, "window" )
+			Dim result = Await ShowDynamicWindowDialog( dialog )
 
 			If String.Equals( result, "XÓA" ) Then Return 0
 			Return 1
@@ -235,11 +237,12 @@ Namespace Rooms.ViewModels
 
 		Private Async Function Delete() As Task(Of Integer)
 			' try update
-			IoC.Get(Of IMainWindow).ShowStaticWindowDialog( New LoadingDialog() )
-			
-			' TODO: call delete here
+			ShowStaticWindowDialog( New LoadingDialog() )
 
-			IoC.Get(Of IMainWindow).CloseStaticWindowDialog()
+			Await _removeRoomCommand.ExecuteAsync( _roomId )
+			_inventory.OnRoomRemoved( _roomId )
+
+			CloseStaticWindowDialog()
 
 			[Exit]()
 			Return 0
