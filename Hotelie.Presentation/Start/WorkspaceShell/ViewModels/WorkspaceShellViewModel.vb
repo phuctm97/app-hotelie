@@ -1,4 +1,5 @@
 ﻿Imports Caliburn.Micro
+Imports Hotelie.Application.Services.Authentication
 Imports Hotelie.Presentation.Bills.ViewModels
 Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
@@ -10,6 +11,9 @@ Namespace Start.WorkspaceShell.ViewModels
 		Inherits Conductor(Of IScreen).Collection.OneActive
 		Implements IShell
 		Implements INeedWindowModals
+
+		' Dependencies
+		Private ReadOnly _authentication As IAuthentication
 
 		Private _activeWorkspace As IScreen
 
@@ -43,7 +47,9 @@ Namespace Start.WorkspaceShell.ViewModels
 		End Sub
 
 		' Initialization
-		Public Sub New()
+		Public Sub New( authentication As IAuthentication )
+			_authentication = authentication
+
 			CommandsBar = New WorkspaceShellCommandsBarViewModel( Me )
 
 			DisplayName = "Bàn làm việc"
@@ -73,6 +79,14 @@ Namespace Start.WorkspaceShell.ViewModels
 				callback( True )
 			Else
 				callback( False )
+			End If
+		End Sub
+
+		Protected Overrides Sub OnDeactivate( close As Boolean )
+			MyBase.OnDeactivate( close )
+
+			If close
+				_authentication.Logout()
 			End If
 		End Sub
 	End Class

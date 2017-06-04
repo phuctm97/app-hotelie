@@ -65,7 +65,10 @@ Namespace Start.LoginShell.Views
 
 		Private Sub OnPasswordStorageLoaded( sender As Object,
 		                                     e As RoutedEventArgs )
-			PasswordTextBox.Password = PasswordStorage.Text
+			If Not String.IsNullOrEmpty( PasswordStorage.Text )
+				PasswordTextBox.Password = PasswordStorage.Text
+				RememberCheckBox.IsChecked = True
+			End If
 		End Sub
 	End Class
 End Namespace

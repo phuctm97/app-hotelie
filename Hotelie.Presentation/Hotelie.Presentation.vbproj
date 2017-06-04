@@ -150,8 +150,20 @@
     <Compile Include="Common\IShell.vb" />
     <Compile Include="Common\IWindowCommandsBar.vb" />
     <Compile Include="Leases\ViewModels\LeasesWorkspaceViewModel.vb" />
+    <Compile Include="Leases\ViewModels\ScreenAddLeaseViewModel.vb" />
+    <Compile Include="Leases\ViewModels\ScreenLeaseDetailViewModel.vb" />
+    <Compile Include="Leases\ViewModels\ScreenLeasesListViewModel.vb" />
     <Compile Include="Leases\Views\LeasesWorkspaceView.xaml.vb">
       <DependentUpon>LeasesWorkspaceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Leases\Views\ScreenAddLeaseView.xaml.vb">
+      <DependentUpon>ScreenAddLeaseView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Leases\Views\ScreenLeaseDetailView.xaml.vb">
+      <DependentUpon>ScreenLeaseDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Leases\Views\ScreenLeasesListView.xaml.vb">
+      <DependentUpon>ScreenLeasesListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Rooms\Converters\RoomNameWhenEmptyConverter.vb" />
     <Compile Include="Rooms\Converters\RoomStateToBackColorConverter.vb" />
@@ -284,6 +296,18 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Leases\Views\LeasesWorkspaceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Leases\Views\ScreenAddLeaseView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Leases\Views\ScreenLeaseDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Leases\Views\ScreenLeasesListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

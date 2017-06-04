@@ -88,13 +88,14 @@
                             <cal:ActionMessage MethodName="PreviewLogin">
                                 <cal:Parameter Value="{Binding ElementName=AccountTextBox, Path=Text}" />
                                 <cal:Parameter Value="{Binding ElementName=PasswordStorage, Path=Text}" />
+                                <cal:Parameter Value="{Binding ElementName=RememberCheckBox, Path=IsChecked}" />
                             </cal:ActionMessage>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </Button>
 
                 <!--Remember acount-->
-                <CheckBox DockPanel.Dock="Right" HorizontalAlignment="Right"
+                <CheckBox x:Name="RememberCheckBox" DockPanel.Dock="Right" HorizontalAlignment="Right"
                           FontSize="16"
                           Content="Nhớ tài khoản" />
             </DockPanel>

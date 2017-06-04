@@ -1,4 +1,5 @@
 ﻿Imports Caliburn.Micro
+Imports Hotelie.Application.Services.Authentication
 Imports Hotelie.Presentation.Common
 
 Namespace Start.WorkspaceShell.ViewModels
@@ -19,5 +20,6 @@ Namespace Start.WorkspaceShell.ViewModels
 		Public Sub New( shell As WorkspaceShellViewModel )
 			ParentShell = shell
 		End Sub
+
 	End Class
 End Namespace
