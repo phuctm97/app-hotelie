@@ -4,10 +4,10 @@ Namespace Common
     Public Class DatabaseService
         Implements IDatabaseService
 
-        Private _context As DatabaseContext
+        Private _context As IDatabaseContext
 
         Public ReadOnly Property Context As IDatabaseContext Implements IDatabaseService.Context
-            Get 
+            Get
                 Return _context
             End Get
         End Property
@@ -17,18 +17,22 @@ Namespace Common
             _context = New DatabaseContext(connectionString)
         End Sub
 
-        Public Function CheckDatabaseConnection(connectionString As String) As Boolean Implements IDatabaseService.CheckDatabaseConnection
+        Public Function CheckDatabaseConnection(connectionString As String) As Boolean _
+            Implements IDatabaseService.CheckDatabaseConnection
             Dim dbContext = New DatabaseContext(connectionString)
             Try
                 dbContext.Database.Connection.Open()
                 dbContext.Database.Connection.Close()
             Catch
                 Return False
+            Finally
+                dbContext.Dispose()
             End Try
             Return True
         End Function
 
-        Public Async Function CheckDatabaseConnectionAsync(connectionString As String) As Task(Of Boolean) Implements IDatabaseService.CheckDatabaseConnectionAsync
+        Public Async Function CheckDatabaseConnectionAsync(connectionString As String) As Task(Of Boolean) _
+            Implements IDatabaseService.CheckDatabaseConnectionAsync
             Dim dbContext = New DatabaseContext(connectionString)
             Try
                 Await dbContext.Database.Connection.OpenAsync()
@@ -40,16 +44,11 @@ Namespace Common
         End Function
 
         Public Sub New()
-        End Sub
-
-        Public Sub New(connectionString As String)
-            _context = New DatabaseContext(connectionString)
+            _context = New DatabaseContext()
         End Sub
 
         Public Sub Dispose() Implements IDatabaseService.Dispose
             _context.Dispose()
         End Sub
-
-        
     End Class
 End NameSpace

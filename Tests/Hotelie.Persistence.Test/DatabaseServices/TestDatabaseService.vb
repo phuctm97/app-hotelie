@@ -23,7 +23,7 @@ Namespace DatabaseServices
             Dim valid = $"data source=KHUONG-ASUS\SQLEXPRESS;initial catalog=HotelieDatabase;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
 
             ' invalid connection string
-            Dim inValid  =$"data source=zzzz;initial catalog=HotelieDatabase;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
+            Dim inValid  =$"data source=;initial catalog=;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
 
             ' assert
             _databaseService.SetDatabaseConnection(valid)

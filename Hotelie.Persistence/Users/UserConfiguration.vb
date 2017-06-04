@@ -7,10 +7,10 @@ Namespace Users
 
         Public Sub New()
             HasKey(Function(p)p.Id)
-           
+
             [Property](Function(p)p.Id).
                 IsRequired().
-                IsUnicode( False ).
+                IsUnicode(False).
                 HasMaxLength(20)
 
             [Property](Function(p)p.Password).
@@ -20,7 +20,6 @@ Namespace Users
 
             HasRequired(Function(p)p.Category).
                 WithMany().Map(Function(m)m.MapKey("CategoryId"))
-
         End Sub
     End Class
 End Namespace

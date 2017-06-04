@@ -1,4 +1,5 @@
-﻿Imports Hotelie.Application.Services.Persistence
+﻿Imports System.Data.Entity
+Imports Hotelie.Application.Services.Persistence
 
 Namespace Services.Authentication
     Public Class Authentication
@@ -60,5 +61,33 @@ Namespace Services.Authentication
             Logout()
             _userRepository = userRepository
         End Sub
+
+        Public Async Function TryLoginAsync(username As String, password As String) As Task(Of IEnumerable(Of String)) Implements IAuthentication.TryLoginAsync
+            Dim errorLog = New List(Of String)
+
+            ' Currently logged in
+            If (LoggedIn)
+                errorLog.Add(AlreadyLoggedInError)
+                Return errorLog
+            End If
+
+            ' Username is invalid
+            Dim user = Await _userRepository.Find(Function(p)(p.Id = username)).FirstOrDefaultAsync()
+            If (IsNothing(user))
+                errorLog.Add(UsernameInvalidError)
+                Return errorLog
+            End If
+
+            ' Password is invalid
+            If (user.Password <> password)
+                errorLog.Add(PasswordInvalidError)
+                Return errorLog
+            End If
+
+            ' Logging in
+            LoggedAccount = New Account() With {.Username=username}
+
+            Return errorLog
+        End Function
     End Class
 End Namespace
