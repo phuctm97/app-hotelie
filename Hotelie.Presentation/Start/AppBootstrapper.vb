@@ -15,19 +15,19 @@ Namespace Start
 			MyBase.ComposeDependencies()
 
 			'' Common
-			'_container.RegisterType(Of IInventory, Inventory)( New ContainerControlledLifetimeManager() )
+			_container.RegisterType(Of IInventory, Inventory)(New ContainerControlledLifetimeManager())
 
-			'' Start
-			'_container.RegisterType(Of IMainWindow, MainWindowViewModel)( New ContainerControlledLifetimeManager() )
-			'_container.RegisterType(Of IShell, LoginShellViewModel)( "login-shell", New TransientLifetimeManager() )
-			'_container.RegisterType(Of IShell, WorkspaceShellViewModel)( "workspace-shell", New TransientLifetimeManager() )
+			' Start
+			_container.RegisterType(Of IMainWindow, MainWindowViewModel)(New ContainerControlledLifetimeManager())
+			_container.RegisterType(Of IShell, LoginShellViewModel)("login-shell", New TransientLifetimeManager())
+			_container.RegisterType(Of IShell, WorkspaceShellViewModel)("workspace-shell", New TransientLifetimeManager())
 		End Sub
 
 		Protected Overrides Sub OnStartup( sender As Object,
 		                                   e As StartupEventArgs )
 			MyBase.OnStartup( sender, e )
 
-			DisplayRootViewFor(Of ScreenLeasesListViewModel)()
+			DisplayRootViewFor(Of IMainWindow)()
 		End Sub
 	End Class
 End Namespace
