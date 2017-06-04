@@ -24,14 +24,16 @@ Namespace Start.LoginShell.ViewModels
 		End Sub
 
 		Public Sub PreviewLogin( username As String,
-		                         password As String )
+		                         password As String,
+		                         rememberAccount As Boolean )
 			If Not ValidateAccount( username, password ) Then Return
 
-			LoginAsync( username, password )
+			LoginAsync( username, password, rememberAccount )
 		End Sub
 
 		Private Sub Login( username As String,
-		                  password As String )
+		                   password As String,
+		                   rememberAccount As Boolean )
 			Dim err As String
 			Try
 				' try login
@@ -48,15 +50,16 @@ Namespace Start.LoginShell.ViewModels
 
 			If String.IsNullOrEmpty( err )
 				' success
-				IoC.Get(Of IMainWindow).SwitchShell( "workspace-shell" )
+				OnLoginSuccess( username, password, rememberAccount )
 			Else
 				' fail
-				ShowStaticTopNotification( StaticNotificationType.Error, err )
+				OnLoginFail( err )
 			End If
 		End Sub
 
 		Private Async Sub LoginAsync( username As String,
-		                             password As String )
+		                              password As String,
+		                              rememberAccount As Boolean )
 			Dim err As String
 			Try
 				' try login
@@ -75,10 +78,10 @@ Namespace Start.LoginShell.ViewModels
 
 			If String.IsNullOrEmpty( err )
 				' success
-				IoC.Get(Of IMainWindow).SwitchShell( "workspace-shell" )
+				OnLoginSuccess( username, password, rememberAccount )
 			Else
 				' fail
-				ShowStaticTopNotification( StaticNotificationType.Error, err )
+				OnLoginFail( err )
 			End If
 		End Sub
 
@@ -100,5 +103,20 @@ Namespace Start.LoginShell.ViewModels
 
 			Return True
 		End Function
+
+		Private Sub OnLoginSuccess( username As String,
+		                            password As String,
+		                            rememberAccount As Boolean )
+			IoC.Get(Of IMainWindow).SwitchShell( "workspace-shell" )
+
+			If rememberAccount
+				My.Settings.SavedAccount = username
+				My.Settings.SavedPassword = password
+			End If
+		End Sub
+
+		Private Sub OnLoginFail( err As String )
+			ShowStaticTopNotification( StaticNotificationType.Error, err )
+		End Sub
 	End Class
 End Namespace

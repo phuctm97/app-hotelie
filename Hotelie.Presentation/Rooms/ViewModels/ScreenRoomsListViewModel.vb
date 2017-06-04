@@ -1,6 +1,8 @@
 ﻿Imports Caliburn.Micro
+Imports Hotelie.Application.Rooms.Commands.RemoveRoom
 Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
 Imports Hotelie.Application.Rooms.Queries.GetRoomsList
+Imports Hotelie.Application.Services.Infrastructure
 Imports Hotelie.Presentation.Common.Controls
 Imports Hotelie.Presentation.Infrastructure
 
@@ -22,6 +24,8 @@ Namespace Rooms.ViewModels
 		' Dependencies
 		Private ReadOnly _getRoomListsQuery As IGetRoomsListQuery
 		Private ReadOnly _getRoomCategoriesListQuery As IGetRoomCategoriesListQuery
+		Private ReadOnly _removeRoomCommand As IRemoveRoomCommand
+		Private ReadOnly _inventory As IInventory
 
 		' Data
 		Public Property Rooms As IObservableCollection(Of RoomModel)
@@ -49,9 +53,13 @@ Namespace Rooms.ViewModels
 
 		' Initialization
 		Public Sub New( getRoomListsQuery As IGetRoomsListQuery,
-		                getRoomCategoriesListQuery As IGetRoomCategoriesListQuery )
+		                getRoomCategoriesListQuery As IGetRoomCategoriesListQuery,
+		                removeRoomCommand As IRemoveRoomCommand,
+		                inventory As IInventory )
 			_getRoomListsQuery = getRoomListsQuery
 			_getRoomCategoriesListQuery = getRoomCategoriesListQuery
+			_removeRoomCommand = removeRoomCommand
+			_inventory = inventory
 			RegisterInventory()
 
 			Rooms = New BindableCollection(Of RoomModel)
@@ -371,6 +379,42 @@ Namespace Rooms.ViewModels
 						Rooms = New BindableCollection(Of RoomModel)( Rooms.OrderBy( Function( p ) p.State ) )
 					End If
 			End Select
+		End Sub
+
+		' Delete room
+		Public Async Sub PreviewDelete( roomModel As RoomModel )
+			Dim result = Await ConfirmDelete( roomModel.Name )
+
+			If Equals( result, 0 )
+				DeleteAsync( roomModel.Id )
+			End If
+		End Sub
+
+		Private Async Function ConfirmDelete( roomName As String ) As Task(Of Integer)
+			' show dialog
+			Dim dialog = New TwoButtonDialog( $"Xóa phòng {roomName}. Tiếp tục?",
+			                                  "XÓA",
+			                                  "HỦY",
+			                                  True,
+			                                  False )
+			Dim result = Await ShowDynamicWindowDialog( dialog )
+
+			If String.Equals( result, "XÓA" ) Then Return 0
+			Return 1
+		End Function
+
+		Private Sub Delete( roomId As String )
+			' try update
+			_removeRoomCommand.Execute( roomId )
+			_inventory.OnRoomRemoved( roomId )
+		End Sub
+
+		Private Async Sub DeleteAsync( roomId As String )
+			' try update
+			ShowStaticWindowLoadingDialog()
+			Await _removeRoomCommand.ExecuteAsync( roomId )
+			_inventory.OnRoomRemoved( roomId )
+			CloseStaticWindowDialog()
 		End Sub
 
 		' Infrastructure

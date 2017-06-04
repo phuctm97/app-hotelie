@@ -1,17 +1,21 @@
 ﻿Imports Caliburn.Micro
+Imports Hotelie.Application.Rooms.Factories.CreateRoom
 Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
+Imports Hotelie.Application.Services.Infrastructure
 Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
 Imports Hotelie.Presentation.Start.MainWindow.Models
-Imports MaterialDesignThemes.Wpf
 
 Namespace Rooms.ViewModels
 	Public Class ScreenAddRoomViewModel
 		Inherits PropertyChangedBase
-		Implements IChild(Of RoomsWorkspaceViewModel)
+		Implements IChild(Of RoomsWorkspaceViewModel),
+		           INeedWindowModals
 
 		' Dependencies
 		Private ReadOnly _getRoomCategoriesList As IGetRoomCategoriesListQuery
+		Private ReadOnly _createRoomFactory As ICreateRoomFactory
+		Private ReadOnly _inventory As IInventory
 
 		' Backing fields
 		Private _roomName As String
@@ -25,9 +29,13 @@ Namespace Rooms.ViewModels
 
 		' Initialization
 		Sub New( workspace As RoomsWorkspaceViewModel,
-		         getRoomCategoriesList As IGetRoomCategoriesListQuery )
+		         getRoomCategoriesList As IGetRoomCategoriesListQuery,
+		         createRoomFactory As ICreateRoomFactory,
+		         inventory As IInventory )
 			ParentWorkspace = workspace
 			_getRoomCategoriesList = getRoomCategoriesList
+			_createRoomFactory = createRoomFactory
+			_inventory = inventory
 
 			RoomCategories = New BindableCollection(Of RoomCategoryModel)
 		End Sub
@@ -143,7 +151,7 @@ Namespace Rooms.ViewModels
 			                                    False,
 			                                    True,
 			                                    False )
-			Dim result = Await DialogHost.Show( dialog, "window" )
+			Dim result = Await ShowDynamicWindowDialog( dialog )
 
 			If String.Equals( result, "THOÁT" ) Then Return 0
 			If String.Equals( result, "HỦY" ) Then Return 2
@@ -153,16 +161,32 @@ Namespace Rooms.ViewModels
 		' Save
 		Public Sub PreviewSave()
 			If Not ValidateData() Then Return
-			Save()
+			SaveAsync()
 		End Sub
 
 		Private Sub Save()
 			' try update
-			IoC.Get(Of IMainWindow).ShowStaticWindowDialog( New LoadingDialog() )
-			' TODO: call insert here
-			IoC.Get(Of IMainWindow).CloseStaticWindowDialog()
+			Dim roomModel = _createRoomFactory.Execute( RoomName, RoomCategory.Id, RoomNote )
+			If IsNothing( roomModel )
+				ShowStaticBottomNotification(StaticNotificationType.Error, "Sự cố ngoài ý muốn. Tạo phòng thất bại!")
+			Else
+				_inventory.OnRoomAdded( roomModel.Id, roomModel.Name, roomModel.CategoryId, roomModel.Note )
+				[Exit]()
+			End If
+		End Sub
 
-			[Exit]()
+		Private Async Sub SaveAsync()
+			' try update
+			ShowStaticWindowLoadingDialog()
+			Dim roomModel = Await _createRoomFactory.ExecuteAsync( RoomName, RoomCategory.Id, RoomNote )
+			CloseStaticWindowDialog()
+
+			If IsNothing( roomModel )
+				ShowStaticBottomNotification(StaticNotificationType.Error, "Sự cố ngoài ý muốn. Tạo phòng thất bại!")
+			Else
+				_inventory.OnRoomAdded( roomModel.Id, roomModel.Name, roomModel.CategoryId, roomModel.Note )
+				[Exit]()
+			End If
 		End Sub
 
 		Private Function ValidateData() As Boolean
