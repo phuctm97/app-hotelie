@@ -181,9 +181,9 @@ Namespace Rooms.ViewModels
 
 		Private Sub Save()
 			' try update
-			IoC.Get(Of IMainWindow).ShowStaticShellDialog( New LoadingDialog() )
+			IoC.Get(Of IMainWindow).ShowStaticWindowDialog( New LoadingDialog() )
 			' TODO: call update here
-			IoC.Get(Of IMainWindow).CloseStaticShellDialog()
+			IoC.Get(Of IMainWindow).CloseStaticWindowDialog()
 
 			[Exit]()
 		End Sub
@@ -221,9 +221,9 @@ Namespace Rooms.ViewModels
 
 		Private Sub Delete()
 			' try update
-			IoC.Get(Of IMainWindow).ShowStaticShellDialog( New LoadingDialog() )
+			IoC.Get(Of IMainWindow).ShowStaticWindowDialog( New LoadingDialog() )
 			' TODO: call delete here
-			IoC.Get(Of IMainWindow).CloseStaticShellDialog()
+			IoC.Get(Of IMainWindow).CloseStaticWindowDialog()
 
 			[Exit]()
 		End Sub

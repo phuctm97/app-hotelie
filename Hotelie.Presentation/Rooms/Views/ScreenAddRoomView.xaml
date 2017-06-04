@@ -42,7 +42,7 @@
                 <Button Grid.Column="0" HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Margin="16 0 0 0" Style="{DynamicResource MaterialDesignToolButton}"
-                        cal:Message.Attach="PreviewNavigateToScreenRoomsList">
+                        cal:Message.Attach="PreviewExit">
                     <materialDesign:PackIcon Width="24" Height="24"
                                              Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                                              Kind="KeyboardBackspace" />
@@ -55,7 +55,7 @@
                         <!--Room category-->
                         <Button DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
                                 Margin="0 0 0 8"
-                                Content="{Binding Path=RoomCategory.Name}">
+                                Content="{Binding Path=RoomCategory.Name, FallbackValue=(Loại phòng)}">
                             <Button.Background>
                                 <SolidColorBrush Color="{Binding Path=RoomCategory.DisplayColor}" />
                             </Button.Background>
@@ -70,7 +70,7 @@
                             <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
                                        FontSize="15"
                                        Opacity="0.9"
-                                       Text="{Binding Path=RoomCategory.Price, Converter={StaticResource DecimalToCurrencyStringConverter}}" />
+                                       Text="{Binding Path=RoomCategory.Price, FallbackValue=0, Converter={StaticResource DecimalToCurrencyStringConverter}}" />
                         </StackPanel>
                     </StackPanel>
 
@@ -85,10 +85,12 @@
                     <!--Save button-->
                     <Button DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
                             Padding="8" Height="Auto"
+                            Margin="8 0 16 0"
                             Style="{DynamicResource MaterialDesignToolButton}"
                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                             FontSize="18"
-                            Content="LƯU" />
+                            Content="LƯU"
+                            cal:Message.Attach="PreviewSave"/>
                 </DockPanel>
             </Grid>
 

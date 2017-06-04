@@ -52,7 +52,6 @@ Namespace Rooms.ViewModels
 		End Sub
 
 		Public Sub NavigateToScreenAddRoom()
-			ScreenAddRoom.Reset()
 			DisplayCode = 2
 		End Sub
 	End Class
