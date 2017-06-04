@@ -49,26 +49,53 @@ Namespace Rooms.ViewModels
 
 		' Initialization
 		Public Sub New( getRoomListsQuery As IGetRoomsListQuery,
-		                getRoomCategoriesListQuery As IGetRoomCategoriesListQuery )
+		                getRoomCategoriesListQuery As IGetRoomCategoriesListQuery,
+		                Optional initComponents As Boolean = True )
 			_getRoomListsQuery = getRoomListsQuery
 			_getRoomCategoriesListQuery = getRoomCategoriesListQuery
 
 			RegisterInventory()
 
-			InitRoomsAsync()
+			If initComponents
+				InitRooms()
 
-			InitRoomCategoriesAsync()
+				InitRoomCategories()
 
-			InitRoomStatesAsync()
+				InitRoomStates()
 
-			InitRoomPricesAsync()
+				InitRoomPrices()
 
-			InitFilteringValues()
+				InitFilteringValues()
 
-			InitSortingValues()
+				InitSortingValues()
 
-			RefreshRoomsListVisibility()
+				RefreshRoomsListVisibility()
+			End If
 		End Sub
+
+		Public Shared Async Function CreateAsync( getRoomListsQuery As IGetRoomsListQuery,
+		                                          getRoomCategoriesListQuery As IGetRoomCategoriesListQuery ) _
+			As Task(Of ScreenRoomsListViewModel)
+			Dim screen = New ScreenRoomsListViewModel( getRoomListsQuery, getRoomCategoriesListQuery )
+
+			Await screen.InitRoomsAsync()
+
+			Await screen.InitRoomCategoriesAsync()
+
+			Await screen.InitRoomStatesAsync()
+
+			Await screen.InitRoomPricesAsync()
+
+			screen.InitFilteringValues()
+
+			screen.InitSortingValues()
+
+			screen.RefreshRoomsListVisibility()
+
+			Await Task.Delay( 25 )
+
+			Return screen
+		End Function
 
 		Private Sub InitFilteringValues()
 			_filterRoomNamePrefix = String.Empty
@@ -109,7 +136,7 @@ Namespace Rooms.ViewModels
 			RoomMaxPrices = New BindableCollection(Of Decimal)( maxPrices )
 		End Sub
 
-		Private Async Sub InitRoomPricesAsync()
+		Private Async Function InitRoomPricesAsync() As Task(Of Integer)
 			Dim minPrices = New List(Of Decimal)
 			Dim maxPrices = New List(Of Decimal)
 
@@ -134,10 +161,9 @@ Namespace Rooms.ViewModels
 			RoomMinPrices = New BindableCollection(Of Decimal)( minPrices )
 			RoomMaxPrices = New BindableCollection(Of Decimal)( maxPrices )
 
-			ShowStaticWindowLoadingDialog()
 			Await Task.Delay( 25 )
-			CloseStaticWindowDialog()
-		End Sub
+			Return 0
+		End Function
 
 		Private Sub InitRoomStates()
 			RoomStates = New BindableCollection(Of Integer)()
@@ -145,15 +171,14 @@ Namespace Rooms.ViewModels
 			RoomStates.Add( 2 ) 'filter all
 		End Sub
 
-		Private Async Sub InitRoomStatesAsync()
+		Private Async Function InitRoomStatesAsync() As Task(Of Integer)
 			RoomStates = New BindableCollection(Of Integer)()
 			RoomStates.AddRange( {0, 1} )
 			RoomStates.Add( 2 ) 'filter all
 
-			ShowStaticWindowLoadingDialog()
 			Await Task.Delay( 25 )
-			CloseStaticWindowDialog()
-		End Sub
+			Return 0
+		End Function
 
 		Private Sub InitRoomCategories()
 			RoomCategories = New BindableCollection(Of RoomCategoryModel)()
@@ -161,31 +186,28 @@ Namespace Rooms.ViewModels
 			RoomCategories.Add( New RoomCategoryModel With {.Name = "Tất cả", .Price = - 1} ) 'filter all
 		End Sub
 
-		Private Async Sub InitRoomCategoriesAsync()
+		Private Async Function InitRoomCategoriesAsync() As Task(Of Integer)
 			RoomCategories = New BindableCollection(Of RoomCategoryModel)()
 
-			ShowStaticWindowLoadingDialog()
 			RoomCategories.AddRange( Await _getRoomCategoriesListQuery.ExecuteAsync() )
 			RoomCategories.Add( New RoomCategoryModel With {.Name = "Tất cả", .Price = - 1} ) 'filter all
 
 			Await Task.Delay( 25 )
-			CloseStaticWindowDialog()
-		End Sub
+			Return 0
+		End Function
 
 		Private Sub InitRooms()
 			Rooms = New BindableCollection(Of RoomModel)()
 			Rooms.AddRange( _getRoomListsQuery.Execute() )
 		End Sub
 
-		Private Async Sub InitRoomsAsync()
+		Private Async Function InitRoomsAsync() As Task(Of Integer)
 			Rooms = New BindableCollection(Of RoomModel)()
 
-			ShowStaticWindowLoadingDialog()
 			Rooms.AddRange( Await _getRoomListsQuery.ExecuteAsync() )
-
 			Await Task.Delay( 25 )
-			CloseStaticWindowDialog()
-		End Sub
+			Return 0
+		End Function
 
 		' Filter values
 		Public Property FilterRoomNamePrefix As String
