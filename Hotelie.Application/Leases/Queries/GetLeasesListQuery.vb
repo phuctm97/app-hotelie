@@ -1,6 +1,5 @@
 ﻿Imports System.Data.Entity
 Imports Hotelie.Application.Services.Persistence
-Imports Hotelie.Domain.Leases
 
 Namespace Leases.Queries
     Public Class GetLeasesListQuery
@@ -17,7 +16,8 @@ Namespace Leases.Queries
                                                              {.Id = p.Id,
                                                              .RoomName = p.Room.Name,
                                                              .BeginDate = p.BeginDate,
-                                                             .EndDate = p.EndDate})
+                                                             .EndDate = p.EndDate,
+                                                             .RoomCategoryName = p.Room.Category.Name})
             For Each leaseModel As LeaseModel In leases
                 Dim customers = _leaseRepository.GetCustomers(leaseModel.Id)
                 leaseModel.NumberOfCustomers = customers.Count()
@@ -25,12 +25,15 @@ Namespace Leases.Queries
             Return leases
         End Function
 
-        Public Async Function ExecuteAsync() As Task(Of IEnumerable(Of LeaseModel)) Implements IGetLeasesListQuery.ExecuteAsync
+        Public Async Function ExecuteAsync() As Task(Of IEnumerable(Of LeaseModel)) _
+            Implements IGetLeasesListQuery.ExecuteAsync
             Dim leases = Await _leaseRepository.GetAll().Select(Function(p) New LeaseModel() With _
-                                                             {.Id = p.Id,
-                                                             .RoomName = p.Room.Name,
-                                                             .BeginDate = p.BeginDate,
-                                                             .EndDate = p.EndDate}).ToListAsync()
+                                                                   {.Id = p.Id,
+                                                                   .RoomName = p.Room.Name,
+                                                                   .BeginDate = p.BeginDate,
+                                                                   .EndDate = p.EndDate,
+                                                                   .RoomCategoryName = p.Room.Category.Name}).
+                    ToListAsync()
             For Each leaseModel As LeaseModel In leases
                 Dim customers = Await _leaseRepository.GetCustomersAsync(leaseModel.Id)
                 leaseModel.NumberOfCustomers = customers.Count()
