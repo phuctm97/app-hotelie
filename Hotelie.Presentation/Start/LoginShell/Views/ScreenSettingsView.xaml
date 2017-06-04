@@ -44,7 +44,7 @@
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      FontSize="18"
                      TextChanged="OnServerChanged"
-                     Text="{Binding InitialDataSource}">
+                     Text="{Binding InitialDataSource, Mode=OneWay}">
                 <materialDesign:HintAssist.Hint>
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon VerticalAlignment="Center"
@@ -62,7 +62,7 @@
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      FontSize="18"
                      TextChanged="OnDatabaseChanged"
-                     Text="{Binding InitialCatalog}">
+                     Text="{Binding InitialCatalog, Mode=OneWay}">
                 <materialDesign:HintAssist.Hint>
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon VerticalAlignment="Center"
