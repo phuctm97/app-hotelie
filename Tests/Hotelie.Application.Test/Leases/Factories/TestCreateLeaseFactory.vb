@@ -20,13 +20,13 @@ Namespace Leases.Factories
 
         <TestInitialize>
         Public Sub TestInitialize()
-            _databaseService = New DatabaseService(
-                $"data source=KHUONG-ASUS\SQLEXPRESS;initial catalog=HotelieDatabase;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
+            _databaseService = New DatabaseService()
+            _databaseService.SetDatabaseConnection($"KHUONG-ASUS\SQLEXPRESS",$"HotelieDatabase")
             _leaseRepository = new LeaseRepository(_databaseService)
             _roomRepository = New RoomRepository(_databaseService)
             _unitOfWork = New UnitOfWork(_databaseService)
             _getLeasesQuery = New GetLeasesListQuery(_leaseRepository)
-            _createLeaseFactory = New CreateLeaseFactory(_leaseRepository,_unitOfWork,_roomRepository)
+            _createLeaseFactory = New CreateLeaseFactory(_leaseRepository, _unitOfWork, _roomRepository)
         End Sub
 
         <TestCleanup>
@@ -52,7 +52,6 @@ Namespace Leases.Factories
             _roomsList.Add(room3)
             _roomRepository.AddRange(_roomsList)
             _databaseService.Context.SaveChanges()
-
         End Sub
 
         Public Sub DisposeLeases()
@@ -70,18 +69,18 @@ Namespace Leases.Factories
             LeasesInitialize()
 
             ' Valid new lease info
-            Dim newId  = "LS001"
+            Dim newId = "LS001"
             Dim newRoomId = _roomsList(0).Id
             Dim newBeginDate = DateTime.ParseExact("7/5/2016", "d/m/yyyy", CultureInfo.InvariantCulture)
             Dim newEndDate = DateTime.ParseExact("8/5/2016", "d/m/yyyy", CultureInfo.InvariantCulture)
 
             ' act
-            Dim lease1 = _createLeaseFactory.Execute(newRoomId,newBeginDate,newEndDate)
-            Dim lease2 = _createLeaseFactory.Execute(newRoomId,newBeginDate,newEndDate)
-            Dim lease3 = _createLeaseFactory.Execute(newRoomId,newBeginDate,newEndDate)
-            Dim lease4 = _createLeaseFactory.Execute(newRoomId,newBeginDate,newEndDate)
-            Dim lease5 = _createLeaseFactory.Execute(newRoomId,newBeginDate,newEndDate)
-            
+            Dim lease1 = _createLeaseFactory.Execute(newRoomId, newBeginDate, newEndDate)
+            Dim lease2 = _createLeaseFactory.Execute(newRoomId, newBeginDate, newEndDate)
+            Dim lease3 = _createLeaseFactory.Execute(newRoomId, newBeginDate, newEndDate)
+            Dim lease4 = _createLeaseFactory.Execute(newRoomId, newBeginDate, newEndDate)
+            Dim lease5 = _createLeaseFactory.Execute(newRoomId, newBeginDate, newEndDate)
+
             ' assert
             Assert.IsNotNull(lease1)
             Assert.IsNotNull(lease2)
@@ -90,9 +89,9 @@ Namespace Leases.Factories
             Assert.IsNotNull(lease5)
 
             Dim newLease = _leaseRepository.GetOne(newId)
-            Assert.AreEqual(_roomsList(0).Category.Price,newLease.Price)
-            Assert.AreEqual(newRoomId,newLease.Room.Id)
-            Assert.AreEqual(newRoomId,newLease.Room.Id)
+            Assert.AreEqual(_roomsList(0).Category.Price, newLease.Price)
+            Assert.AreEqual(newRoomId, newLease.Room.Id)
+            Assert.AreEqual(newRoomId, newLease.Room.Id)
 
 
             ' rollback

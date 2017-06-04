@@ -9,8 +9,16 @@ Namespace Start.LoginShell.ViewModels
 		' Dependencies
 		Private ReadOnly _databaseService As IDatabaseService
 
+		' Display
+		Public ReadOnly Property InitialDataSource As String
+
+		Public ReadOnly Property InitialCatalog As String
+
 		Public Sub New( databaseService As IDatabaseService )
 			_databaseService = databaseService
+
+			InitialDataSource = My.Settings.ConnectionDataSource
+			InitialCatalog = My.Settings.ConnectionCatalog
 		End Sub
 
 		Public Async Sub TestConnection( dataSource As String,
@@ -19,11 +27,7 @@ Namespace Start.LoginShell.ViewModels
 			IoC.Get(Of IMainWindow).ShowStaticDialog( New LoadingDialog() )
 
 			' try connection
-			Dim connectionString =
-				    $"data source={dataSource};initial catalog={catalog _
-				    };integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
-
-			Dim result = Await _databaseService.CheckDatabaseConnectionAsync( connectionString )
+			Dim result = Await _databaseService.CheckDatabaseConnectionAsync( dataSource, catalog )
 
 			' finish, close dialog
 			IoC.Get(Of IMainWindow).CloseStaticDialog()
@@ -42,22 +46,19 @@ Namespace Start.LoginShell.ViewModels
 			IoC.Get(Of IMainWindow).ShowStaticDialog( New LoadingDialog() )
 
 			' try connection
-			Dim connectionString =
-				    $"data source={dataSource};initial catalog={catalog _
-				    };integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
-
-			Dim result = Await _databaseService.CheckDatabaseConnectionAsync( connectionString )
+			Dim result = Await _databaseService.CheckDatabaseConnectionAsync( dataSource, catalog )
 
 			' finish, close dialog
 			IoC.Get(Of IMainWindow).CloseStaticDialog()
 
 			If result
 				' save settings
-				My.Settings.HotelieDatabaseConnectionString = connectionString
+				My.Settings.ConnectionDataSource = dataSource
+				My.Settings.ConnectionCatalog = catalog
 				My.Settings.Save()
 
 				' reload database service
-				_databaseService.SetDatabaseConnection( connectionString )
+				_databaseService.SetDatabaseConnection( dataSource, catalog )
 
 				IoC.Get(Of IMainWindow).ShowStaticNotification( StaticNotificationType.Ok, "Đã thiết lập kết nối!" )
 			Else

@@ -74,15 +74,16 @@ Namespace Start.LoginShell.ViewModels
 			IoC.Get(Of IMainWindow).ShowStaticDialog( New LoadingDialog( "Đang kiểm tra kết nối..." ) )
 
 			' try connection
-			Dim connectionString = My.Settings.HotelieDatabaseConnectionString
-			Dim result = Await _databaseService.CheckDatabaseConnectionAsync( connectionString )
+			Dim result = Await _databaseService.CheckDatabaseConnectionAsync( My.Settings.ConnectionDataSource,
+			                                                                  My.Settings.ConnectionCatalog )
 
 			' finish, close dialog
 			IoC.Get(Of IMainWindow).CloseStaticDialog()
 
 			If result
 				' reload database service
-				_databaseService.SetDatabaseConnection( connectionString )
+				_databaseService.SetDatabaseConnection( My.Settings.ConnectionDataSource,
+				                                        My.Settings.ConnectionCatalog )
 				DisplayCode = 0
 			Else
 				IoC.Get(Of IMainWindow).ShowStaticNotification( StaticNotificationType.Error,

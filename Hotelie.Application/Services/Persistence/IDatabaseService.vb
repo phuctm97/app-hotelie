@@ -1,9 +1,9 @@
 ﻿Namespace Services.Persistence
     Public Interface IDatabaseService
         ReadOnly Property Context As IDatabaseContext
-        Function CheckDatabaseConnection(connectionString As String) As Boolean
-        Function CheckDatabaseConnectionAsync(connectionString As String) As Task(Of Boolean)
-        Sub SetDatabaseConnection(connectionString As String)
+        Function CheckDatabaseConnection(serverName As String, databaseName As String) As Boolean
+        Function CheckDatabaseConnectionAsync(serverName As String, databaseName As String) As Task(Of Boolean)
+        Sub SetDatabaseConnection(serverName As String, databaseName As String)
         Sub Dispose()
     End Interface
 End NameSpace
