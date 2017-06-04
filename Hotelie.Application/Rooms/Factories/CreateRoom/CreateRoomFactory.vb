@@ -105,7 +105,7 @@ Namespace Rooms.Factories.CreateRoom
                 New Room() _
                                    With {.Id =room.Id,.State=room.State,.Category=category,.Name=room.Name,
                                    .Note=room.Note})
-            _unitOfWork.CommitAsync()
+            Await _unitOfWork.CommitAsync()
 
             Return room
         End Function
