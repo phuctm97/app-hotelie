@@ -38,8 +38,10 @@ Namespace Rooms.ViewModels
 		                updateRoomCommand As IUpdateRoomCommand,
 		                removeRoomCommand As IRemoveRoomCommand,
 		                inventory As IInventory )
-			ScreenRoomsList = New ScreenRoomsListViewModel( getRoomsListQuery, getRoomCategoriesListQuery )
-
+			ScreenRoomsList = New ScreenRoomsListViewModel( getRoomsListQuery,
+			                                                getRoomCategoriesListQuery,
+			                                                removeRoomCommand,
+			                                                inventory )
 			ScreenRoomDetail = New ScreenRoomDetailViewModel( Me,
 			                                                  getRoomCategoriesListQuery,
 			                                                  updateRoomCommand,

@@ -253,7 +253,7 @@
                                                     Content="THUÊ" />
                                             <materialDesign:PopupBox DockPanel.Dock="Right" HorizontalAlignment="Right"
                                                                      VerticalAlignment="Center">
-                                                <Button Content="XÓA PHÒNG" />
+                                                <Button Content="XÓA PHÒNG" cal:Message.Attach="PreviewDelete($dataContext)" />
                                             </materialDesign:PopupBox>
                                         </DockPanel>
                                     </Grid>

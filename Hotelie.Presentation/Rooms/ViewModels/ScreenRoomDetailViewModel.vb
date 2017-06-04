@@ -282,6 +282,8 @@ Namespace Rooms.ViewModels
 			[Exit]()
 		End Sub
 
+		' Infrastructure
+
 		Public Sub OnRoomUpdated( id As String,
 		                          name As String,
 		                          categoryId As String,
