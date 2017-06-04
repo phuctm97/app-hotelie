@@ -22,5 +22,9 @@ Namespace Tests.Rooms.Queries.GetRoomsList
 		Public Function Execute() As IEnumerable(Of RoomModel) Implements IGetRoomsListQuery.Execute
 			Return _tempRooms
 		End Function
+
+		Public Async Function ExecuteAsync() As Task(Of IEnumerable(Of RoomModel)) Implements IGetRoomsListQuery.ExecuteAsync
+			Return Await Task.Run(Function() Execute())
+		End Function
 	End Class
 End Namespace

@@ -25,5 +25,11 @@ Namespace Tests.Services.Authentication
 
 			LoggedAccount = New Account With {.Username = username}
 		End Function
+
+		Public Async Function TryLoginAsync( username As String,
+		                                     password As String ) As Task(Of IEnumerable(Of String)) _
+			Implements IAuthentication.TryLoginAsync
+			Return Await Task.Run( Function() TryLoginAsync( username, password ) )
+		End Function
 	End Class
 End Namespace
