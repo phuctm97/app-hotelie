@@ -29,7 +29,7 @@ Namespace Rooms.Queries.GetRoomCategoriesList
         Public Async Function ExecuteAsync() As Task(Of IEnumerable(Of RoomCategoryModel)) Implements IGetRoomCategoriesListQuery.ExecuteAsync
             Dim rooms = Await _roomRepository.GetAllRoomCategories().Select(Function(r) New RoomCategoryModel With _
                                                                          { .Id = r.Id,
-                                                                         .Name = r.Id,
+                                                                         .Name = r.Name,
                                                                          .Price = r.Price}).ToListAsync()
             ' Exception: System.NotSupportedException Unable to create a constant value of type 'System.Windows.Media.Color'
             ' TODO: Add Category display color column to database -> add ".DisplayColor = r.Color"
