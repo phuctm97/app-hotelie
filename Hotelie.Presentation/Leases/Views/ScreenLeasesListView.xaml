@@ -1,12 +1,166 @@
 ﻿<UserControl x:Class="Leases.Views.ScreenLeasesListView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Hotelie.Presentation"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             xmlns:commonConverters="clr-namespace:Hotelie.Presentation.Common.Converters"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="700" d:DesignWidth="1024">
+    <!--Resources-->
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <commonConverters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <commonConverters:DecimalToCurrencyStringConverter x:Key="DecimalToCurrencyStringConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="1" />
+        </Grid.RowDefinitions>
+
+        <!--Rooms list-->
+        <ListBox Grid.Row="1">
+
+            <!--panel style-->
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Margin="10" Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+
+            <!--item style-->
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                    <Setter Property="Margin" Value="10" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <!--Container card-->
+                                <materialDesign:Card Width="350" Height="Auto">
+                                    <!--Container-->
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <!--Selector-->
+                                        <Rectangle x:Name="PART_Selector" Grid.Row="0" Grid.RowSpan="3"
+                                                   Grid.Column="0"
+                                                   Width="8"
+                                                   Fill="{DynamicResource SecondaryAccentBrush}"
+                                                   Visibility="Collapsed" />
+
+                                        <!--Primary text-->
+                                        <StackPanel Grid.Row="0" Grid.Column="1"
+                                                    Margin="16 24 16 12">
+                                            <!--Title-->
+                                            <TextBlock Style="{DynamicResource MaterialDesignHeadlineTextBlock}"
+                                                       Text="Title"
+                                                       Margin="0 0 0 8" />
+
+                                            <!--Subtitle-->
+                                            <TextBlock TextWrapping="Wrap"
+                                                       Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
+                                                       Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                                       Text="Subtitle"/>
+                                        </StackPanel>
+
+                                        <!--Action area 1-->
+                                        <StackPanel Grid.Row="0" Grid.Column="2"
+                                                    Width="100" Margin="0 16 0 0">
+                                            <!--Room category-->
+                                            <Button Margin="0 0 8 8" Padding="3" BorderThickness="0"
+                                                    cal:Message.Attach="FilterByRoomCategoryOf($dataContext)">
+                                                <Button.Background>
+                                                    <SolidColorBrush
+                                                        Color="{Binding CategoryDisplayColor, FallbackValue=Black}" />
+                                                </Button.Background>
+                                                <Viewbox StretchDirection="DownOnly" Stretch="Uniform">
+                                                    <TextBlock Text="{Binding CategoryName}" FontSize="14"
+                                                               Foreground="White" />
+                                                </Viewbox>
+                                            </Button>
+                                            <!--Room state-->
+                                            <Button Margin="0 0 8 0" Padding="3" BorderThickness="0"
+                                                    cal:Message.Attach="FilterByRoomStateOf($dataContext)">
+                                                <Button.Background>
+                                                    <SolidColorBrush
+                                                        Color="{Binding State, Converter={StaticResource RoomStateToBackColorConverter}}" />
+                                                </Button.Background>
+                                                <Viewbox StretchDirection="DownOnly" Stretch="Uniform">
+                                                    <TextBlock
+                                                        Text="{Binding State, Converter={StaticResource RoomStateToStringConverter}}"
+                                                        FontSize="14" />
+                                                </Viewbox>
+                                            </Button>
+                                        </StackPanel>
+
+                                        <Separator Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
+                                                   Style="{StaticResource MaterialDesignDarkSeparator}"
+                                                   Margin="8 0 8 0" />
+
+                                        <!--Action area 2-->
+                                        <DockPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
+                                            <Button DockPanel.Dock="Left"
+                                                    HorizontalAlignment="Left"
+                                                    Margin="8 4 4 8"
+                                                    Style="{DynamicResource MaterialDesignFlatButton}"
+                                                    Content="CHI TIẾT"
+                                                    cal:Message.Attach="NavigateToScreenRoomDetail($dataContext)" />
+                                            <Button DockPanel.Dock="Left"
+                                                    HorizontalAlignment="Left"
+                                                    Margin="15 4 4 8"
+                                                    Style="{DynamicResource MaterialDesignFlatAccentButton}"
+                                                    Content="THUÊ" />
+                                            <materialDesign:PopupBox DockPanel.Dock="Right" HorizontalAlignment="Right"
+                                                                     VerticalAlignment="Center">
+                                                <Button Content="XÓA PHÒNG"
+                                                        cal:Message.Attach="PreviewDelete($dataContext)" />
+                                            </materialDesign:PopupBox>
+                                        </DockPanel>
+                                    </Grid>
+                                </materialDesign:Card>
+
+                                <!--Triggers-->
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="PART_Selector" Property="Visibility" Value="Visible" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+
+        <!--Add button-->
+        <Button Grid.Row="2" Style="{DynamicResource MaterialDesignFloatingActionAccentButton}"
+                HorizontalAlignment="Right"
+                ToolTip="Thêm phòng"
+                Margin="0 -119 32 0"
+                cal:Message.Attach="NavigateToScreenAddRoom">
+            <materialDesign:PackIcon Width="24" Height="24"
+                                     Kind="Plus" />
+        </Button>
     </Grid>
 </UserControl>
