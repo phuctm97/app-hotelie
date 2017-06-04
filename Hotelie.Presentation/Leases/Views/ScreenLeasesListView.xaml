@@ -19,6 +19,8 @@
                 <ResourceDictionary
                     Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Flipper.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <commonConverters:DateTimeToShortDateStringConverter x:Key="DateTimeToShortDateStringConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -62,7 +64,7 @@
 
                                             <!--Icon-->
                                             <StackPanel Height="128">
-                                                <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                                                <Button Style="{DynamicResource MaterialDesignToolButton}"
                                                         Height="Auto">
                                                     <materialDesign:PackIcon Width="128" Height="128"
                                                                              Kind="AccountCircle" />
@@ -99,9 +101,9 @@
                                             <StackPanel Margin="0 16 0 0">
                                                 <DockPanel>
                                                     <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left"
-                                                               Text="{Binding BeginDate}" Opacity="0.75" FontSize="12" />
+                                                               Text="{Binding BeginDate, Converter={StaticResource DateTimeToShortDateStringConverter}}" Opacity="0.75" FontSize="12" />
                                                     <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right"
-                                                               Text="{Binding EndDate}" Opacity="0.75" FontSize="12" />
+                                                               Text="{Binding EndDate, Converter={StaticResource DateTimeToShortDateStringConverter}}" Opacity="0.75" FontSize="12" />
                                                 </DockPanel>
                                                 <Slider Margin="20 8 20 0" Orientation="Horizontal" Minimum="0"
                                                         Maximum="100" Value="50"
