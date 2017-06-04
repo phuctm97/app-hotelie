@@ -44,11 +44,8 @@ Public Class AppBootstrapper
         _container.RegisterType _
             (Of IGetRoomCategoriesListQuery, GetRoomCategoriesListQuery)(New ContainerControlledLifetimeManager())
         _container.RegisterType(Of IUpdateRoomCommand, UpdateRoomCommand)(New ContainerControlledLifetimeManager())
-        _container.RegisterType(Of ICreateRoomFactory, CreateRoomFactory)(New ContainerControlledLifetimeManager())
         _container.RegisterType(Of IRemoveRoomCommand, RemoveRoomCommand)(New ContainerControlledLifetimeManager())
-        _container.RegisterType(Of IUpdateLeaseCommand, UpdateLeaseCommand)(New ContainerControlledLifetimeManager())
-        _container.RegisterType(Of ICreateLeaseFactory, CreateLeaseFactory)(New ContainerControlledLifetimeManager())
-        _container.RegisterType(Of IRemoveLeaseCommand, RemoveLeaseCommand)(New ContainerControlledLifetimeManager())
+        _container.RegisterType(Of ICreateRoomFactory, CreateRoomFactory)(New ContainerControlledLifetimeManager())
         _container.RegisterType(Of IUnitOfWork, UnitOfWork)(New ContainerControlledLifetimeManager)
     End Sub
 
