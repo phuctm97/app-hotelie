@@ -174,6 +174,8 @@ Namespace Start.MainWindow.ViewModels
 
 		Public Sub CloseStaticWindowDialog() Implements IMainWindow.CloseStaticWindowDialog
 			_staticWindowDialogRefs -= 1
+			If _staticWindowDialogRefs < 0 Then _staticWindowDialogRefs = 0
+
 			If (_staticWindowDialogRefs = 0)
 				StaticWindowDialog.Content = Nothing
 				StaticWindowDialog.IsVisible = False
@@ -196,6 +198,8 @@ Namespace Start.MainWindow.ViewModels
 
 		Public Sub CloseStaticShellDialog() Implements IMainWindow.CloseStaticShellDialog
 			_staticShellDialogRefs -= 1
+			If _staticShellDialogRefs < 0 Then _staticShellDialogRefs = 0
+
 			If (_staticShellDialogRefs = 0)
 				StaticShellDialog.Content = Nothing
 				StaticShellDialog.IsVisible = False

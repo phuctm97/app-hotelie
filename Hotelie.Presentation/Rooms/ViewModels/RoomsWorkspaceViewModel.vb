@@ -9,13 +9,17 @@ Namespace Rooms.ViewModels
 	Public Class RoomsWorkspaceViewModel
 		Inherits Screen
 
+		' Dependencies
+		Private ReadOnly _getRoomsListQuery As IGetRoomsListQuery
+		Private ReadOnly _getRoomCategoriesListQuery As IGetRoomCategoriesListQuery
+
 		Private _displayCode As Integer
 
-		Public ReadOnly Property ScreenRoomsList As ScreenRoomsListViewModel
+		Public Property ScreenRoomsList As ScreenRoomsListViewModel
 
-		Public ReadOnly Property ScreenRoomDetail As ScreenRoomDetailViewModel
+		Public Property ScreenRoomDetail As ScreenRoomDetailViewModel
 
-		Public ReadOnly Property ScreenAddRoom As ScreenAddRoomViewModel
+		Public Property ScreenAddRoom As ScreenAddRoomViewModel
 
 		Public Property DisplayCode As Integer
 			Get
@@ -33,10 +37,8 @@ Namespace Rooms.ViewModels
 		                updateRoomCommand As IUpdateRoomCommand,
 		                removeRoomCommand As IRemoveRoomCommand,
 		                inventory As IInventory )
-			DisplayName = "Danh sách phòng"
-
-			' TODO: delay for loading screens
-			ScreenRoomsList = New ScreenRoomsListViewModel( getRoomsListQuery, getRoomCategoriesListQuery )
+			_getRoomsListQuery = getRoomsListQuery
+			_getRoomCategoriesListQuery = getRoomCategoriesListQuery
 
 			ScreenRoomDetail = New ScreenRoomDetailViewModel( Me,
 			                                                  getRoomCategoriesListQuery,
@@ -45,6 +47,17 @@ Namespace Rooms.ViewModels
 			                                                  inventory )
 
 			ScreenAddRoom = New ScreenAddRoomViewModel( Me, getRoomCategoriesListQuery )
+
+			DisplayName = "Danh sách phòng"
+
+			DisplayCode = - 1
+		End Sub
+
+		Protected Overrides Async Sub OnViewReady( view As Object )
+			MyBase.OnViewReady( view )
+
+			ScreenRoomsList = Await ScreenRoomsListViewModel.CreateAsync( _getRoomsListQuery, _getRoomCategoriesListQuery )
+			NotifyOfPropertyChange( Function() ScreenRoomsList )
 
 			DisplayCode = 0
 		End Sub
