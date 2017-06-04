@@ -131,6 +131,7 @@
     <Compile Include="Services\Authentication\Account.vb" />
     <Compile Include="Services\Authentication\Authentication.vb" />
     <Compile Include="Services\Authentication\IAuthentication.vb" />
+    <Compile Include="Services\Infrastructure\IInventory.vb" />
     <Compile Include="Services\Persistence\DatabaseConnectionFailedException.vb" />
     <Compile Include="Services\Persistence\IDatabaseContext.vb" />
     <Compile Include="Services\Persistence\IDatabaseService.vb" />
