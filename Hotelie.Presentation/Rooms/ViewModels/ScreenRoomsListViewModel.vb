@@ -55,13 +55,13 @@ Namespace Rooms.ViewModels
 
 			RegisterInventory()
 
-			InitRooms()
+			InitRoomsAsync()
 
-			InitRoomCategories()
+			InitRoomCategoriesAsync()
 
-			InitRoomStates()
+			InitRoomStatesAsync()
 
-			InitRoomPrices()
+			InitRoomPricesAsync()
 
 			InitFilteringValues()
 
