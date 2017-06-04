@@ -18,5 +18,10 @@ Namespace Tests.Rooms.Queries.GetRoomCategoriesList
 		Public Function Execute() As IEnumerable(Of RoomCategoryModel) Implements IGetRoomCategoriesListQuery.Execute
 			Return _categories
 		End Function
+
+		Public Async Function ExecuteAsync() As Task(Of IEnumerable(Of RoomCategoryModel)) _
+			Implements IGetRoomCategoriesListQuery.ExecuteAsync
+			Return Await Task.Run( Function() Execute() )
+		End Function
 	End Class
 End Namespace
