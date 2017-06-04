@@ -55,9 +55,13 @@ Namespace Rooms.ViewModels
 			DisplayCode = - 1
 		End Sub
 
-		Protected Overrides Async Sub OnViewReady( view As Object )
-			MyBase.OnViewReady( view )
+		Protected Overrides Sub OnInitialize()
+			MyBase.OnInitialize()
 
+			InitAsync()
+		End Sub
+
+		Private Async Sub InitAsync()
 			ShowStaticWindowLoadingDialog()
 			ScreenRoomsList = Await ScreenRoomsListViewModel.CreateAsync( _getRoomsListQuery, _getRoomCategoriesListQuery )
 			NotifyOfPropertyChange( Function() ScreenRoomsList )
