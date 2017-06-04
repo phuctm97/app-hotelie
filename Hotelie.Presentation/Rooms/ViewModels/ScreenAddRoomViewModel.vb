@@ -61,9 +61,9 @@ Namespace Rooms.ViewModels
 		End Function
 
 		Private Sub InitValues()
-			_roomName = String.Empty
-			_roomCategory = RoomCategories.FirstOrDefault()
-			_roomNote = String.Empty
+			RoomName = String.Empty
+			RoomCategory = RoomCategories.FirstOrDefault()
+			RoomNote = String.Empty
 		End Sub
 
 		' Data
