@@ -91,8 +91,6 @@ Namespace Rooms.ViewModels
 			InitSortingValues()
 
 			RefreshRoomsListVisibility()
-
-			Await Task.Delay( 100 ) ' delay for binding view
 		End Function
 
 		Private Sub InitRooms()

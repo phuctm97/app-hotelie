@@ -47,10 +47,28 @@ Namespace Rooms.ViewModels
 			_removeRoomCommand = removeRoomCommand
 			_inventory = inventory
 
-			InitRoomCategories( RoomCategories )
+			RoomCategories = New BindableCollection(Of RoomCategoryModel)
+		End Sub
 
+		Public Sub Init()
+			InitRoomCategories()
 			InitValues()
 		End Sub
+
+		Public Async Function InitAsync() As Task
+			Await InitRoomCategoriesAsync()
+			InitValues()
+		End Function
+
+		Private Sub InitRoomCategories()
+			RoomCategories.Clear()
+			RoomCategories.AddRange( _getRoomCategoriesListQuery.Execute() )
+		End Sub
+
+		Private Async Function InitRoomCategoriesAsync() As Task
+			RoomCategories.Clear()
+			RoomCategories.AddRange( Await _getRoomCategoriesListQuery.ExecuteAsync() )
+		End Function
 
 		Private Sub InitValues()
 			_roomId = String.Empty
@@ -62,11 +80,6 @@ Namespace Rooms.ViewModels
 			_originalRoomName = _roomName
 			_originalRoomCategoryId = _roomCategory.Id
 			_originalRoomNote = _roomNote
-		End Sub
-
-		Private Sub InitRoomCategories( ByRef roomCategoryCollection As IObservableCollection(Of RoomCategoryModel) )
-			roomCategoryCollection = New BindableCollection(Of RoomCategoryModel)
-			roomCategoryCollection.AddRange( _getRoomCategoriesListQuery.Execute() )
 		End Sub
 
 		' Data
