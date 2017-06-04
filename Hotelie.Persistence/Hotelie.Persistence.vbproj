@@ -92,6 +92,10 @@
       <DependentUpon>201705301458228_DbUpdate_FixUsersTable_1.vb</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201705301458228_DbUpdate_FixUsersTable_1.vb" />
+    <Compile Include="Migrations\201706042000587_DbUpdate_CustomerCategory_AddCoefficient.Designer.vb">
+      <DependentUpon>201706042000587_DbUpdate_CustomerCategory_AddCoefficient.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706042000587_DbUpdate_CustomerCategory_AddCoefficient.vb" />
     <Compile Include="Migrations\Configuration.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -123,6 +127,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705301458228_DbUpdate_FixUsersTable_1.resx">
       <DependentUpon>201705301458228_DbUpdate_FixUsersTable_1.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706042000587_DbUpdate_CustomerCategory_AddCoefficient.resx">
+      <DependentUpon>201706042000587_DbUpdate_CustomerCategory_AddCoefficient.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
