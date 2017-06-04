@@ -23,13 +23,8 @@ Namespace Start.LoginShell.ViewModels
 
 		Public Async Sub TestConnection( dataSource As String,
 		                                 catalog As String )
-			' show loading dialog
 			IoC.Get(Of IMainWindow).ShowStaticDialog( New LoadingDialog() )
-
-			' try connection
 			Dim result = Await _databaseService.CheckDatabaseConnectionAsync( dataSource, catalog )
-
-			' finish, close dialog
 			IoC.Get(Of IMainWindow).CloseStaticDialog()
 
 			' show result
@@ -42,13 +37,8 @@ Namespace Start.LoginShell.ViewModels
 
 		Public Async Sub ApplyConnection( dataSource As String,
 		                                  catalog As String )
-			' show loading dialog
 			IoC.Get(Of IMainWindow).ShowStaticDialog( New LoadingDialog() )
-
-			' try connection
 			Dim result = Await _databaseService.CheckDatabaseConnectionAsync( dataSource, catalog )
-
-			' finish, close dialog
 			IoC.Get(Of IMainWindow).CloseStaticDialog()
 
 			If result

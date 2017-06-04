@@ -94,7 +94,8 @@
                             Style="{DynamicResource MaterialDesignToolButton}"
                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                             FontSize="18"
-                            Content="LƯU" />
+                            Content="LƯU" 
+                            cal:Message.Attach="SaveChanges"/>
                 </DockPanel>
             </Grid>
 

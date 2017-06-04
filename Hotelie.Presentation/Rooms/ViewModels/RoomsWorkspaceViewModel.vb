@@ -1,4 +1,5 @@
 ﻿Imports Caliburn.Micro
+Imports Hotelie.Application.Rooms.Commands.UpdateRoom
 Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
 Imports Hotelie.Application.Rooms.Queries.GetRoomsList
 
@@ -26,12 +27,13 @@ Namespace Rooms.ViewModels
 		End Property
 
 		Public Sub New( getRoomsListQuery As IGetRoomsListQuery,
-		                getRoomCategoriesListQuery As IGetRoomCategoriesListQuery )
+		                getRoomCategoriesListQuery As IGetRoomCategoriesListQuery,
+		                updateRoomCommand As IUpdateRoomCommand )
 			DisplayName = "Danh sách phòng"
 
 			ScreenRoomsList = New ScreenRoomsListViewModel( getRoomsListQuery, getRoomCategoriesListQuery )
 
-			ScreenRoomDetail = New ScreenRoomDetailViewModel( Me, getRoomCategoriesListQuery )
+			ScreenRoomDetail = New ScreenRoomDetailViewModel( Me, getRoomCategoriesListQuery, updateRoomCommand )
 
 			ScreenAddRoom = New ScreenAddRoomViewModel( Me, getRoomCategoriesListQuery )
 
