@@ -2,6 +2,7 @@
 Imports Hotelie.Application.Services.Authentication
 Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Presentation.Common
+Imports Hotelie.Presentation.Common.Controls
 Imports Hotelie.Presentation.Start.MainWindow.Models
 
 Namespace Start.LoginShell.ViewModels
@@ -16,12 +17,13 @@ Namespace Start.LoginShell.ViewModels
 			_authentication = authentication
 		End Sub
 
-		Public Sub Login( username As String,
-		                  password As String )
+		Public Async Sub Login( username As String,
+		                        password As String )
 
 			' short username
 			If username.Length = 0
-				IoC.Get(Of IMainWindow).ShowStaticNotification( StaticNotificationType.Information, "Nhập tên tài khoản để đăng nhập" )
+				IoC.Get(Of IMainWindow).ShowStaticNotification( StaticNotificationType.Information,
+				                                                "Nhập tên tài khoản để đăng nhập" )
 				Return
 			End If
 
@@ -35,7 +37,12 @@ Namespace Start.LoginShell.ViewModels
 
 			Dim err = String.Empty
 			Try
-				err = _authentication.TryLogin( username, password ).FirstOrDefault()
+
+				IoC.Get(Of IMainWindow).ShowStaticDialog(New LoadingDialog())
+				Dim result = Await _authentication.TryLoginAsync( username, password )
+				IoC.Get(Of IMainWindow).CloseStaticDialog()
+
+				err = result.FirstOrDefault()
 			Catch ex As DatabaseConnectionFailedException
 				err = "Mất kết nối máy chủ. Không thể đăng nhập!"
 			Catch ex As Exception
