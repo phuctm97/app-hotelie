@@ -47,6 +47,9 @@ Public Class AppBootstrapper
         _container.RegisterType(Of IRemoveRoomCommand, RemoveRoomCommand)(New ContainerControlledLifetimeManager())
         _container.RegisterType(Of ICreateRoomFactory, CreateRoomFactory)(New ContainerControlledLifetimeManager())
         _container.RegisterType(Of IUnitOfWork, UnitOfWork)(New ContainerControlledLifetimeManager)
+
+        _container.RegisterType(Of IGetLeasesListQuery, GetLeasesListQuery)(New ContainerControlledLifetimeManager())
+        _container.RegisterType(Of ILeaseRepository, LeaseRepository)(New ContainerControlledLifetimeManager())
     End Sub
 
     Protected Overrides Function GetInstance( service As Type,
