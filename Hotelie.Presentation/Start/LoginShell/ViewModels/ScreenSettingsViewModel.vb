@@ -45,7 +45,7 @@ Namespace Start.LoginShell.ViewModels
 		Private Async Sub TestConnectionAsync( dataSource As String,
 		                                       catalog As String )
 			' try connection
-			ShowStaticWindowDialog( New LoadingDialog() )
+			ShowStaticWindowLoadingDialog()
 			Dim result = Await _databaseService.CheckDatabaseConnectionAsync( dataSource, catalog )
 			CloseStaticWindowDialog()
 
@@ -87,7 +87,7 @@ Namespace Start.LoginShell.ViewModels
 
 		Private Async Sub ApplyConnectionAsync( dataSource As String,
 		                                        catalog As String )
-			ShowStaticWindowDialog( New LoadingDialog() )
+			ShowStaticWindowLoadingDialog()
 			Dim result = Await _databaseService.CheckDatabaseConnectionAsync( dataSource, catalog )
 			CloseStaticWindowDialog()
 
