@@ -151,7 +151,7 @@
                     </Button>
 
                     <!--Log out-->
-                    <Button>
+                    <Button cal:Message.Attach="PreviewLogout">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Logout"
                                                      VerticalAlignment="Center"
@@ -159,13 +159,6 @@
                                                      Margin="0 0 8 0" />
                             <TextBlock Text="Đăng xuất" VerticalAlignment="Center"></TextBlock>
                         </StackPanel>
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="Click">
-                                <cal:ActionMessage MethodName="SwitchShell">
-                                    <cal:Parameter Value="login-shell" />
-                                </cal:ActionMessage>
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
                     </Button>
                 </StackPanel>
             </materialDesign:PopupBox>

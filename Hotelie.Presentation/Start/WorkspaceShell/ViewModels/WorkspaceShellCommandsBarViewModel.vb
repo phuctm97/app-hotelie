@@ -21,5 +21,9 @@ Namespace Start.WorkspaceShell.ViewModels
 			ParentShell = shell
 		End Sub
 
+		Public Sub PreviewLogout()
+			IoC.Get(Of IMainWindow).SwitchShell("login-shell")
+		End Sub
+
 	End Class
 End Namespace
