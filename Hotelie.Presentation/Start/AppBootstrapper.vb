@@ -1,6 +1,5 @@
 ﻿Imports Hotelie.Presentation.Common
-Imports Hotelie.Presentation.Leases.ViewModels
-Imports Hotelie.Presentation.Rooms.ViewModels
+Imports Hotelie.Presentation.Infrastructure
 Imports Hotelie.Presentation.Start.LoginShell.ViewModels
 Imports Hotelie.Presentation.Start.MainWindow.ViewModels
 Imports Hotelie.Presentation.Start.WorkspaceShell.ViewModels
@@ -12,6 +11,9 @@ Namespace Start
 
 		Protected Overrides Sub ComposeDependencies()
 			MyBase.ComposeDependencies()
+
+			' Common
+			_container.RegisterType(Of IInventory, Inventory)( New ContainerControlledLifetimeManager() )
 
 			' Start
 			_container.RegisterType(Of IMainWindow, MainWindowViewModel)( New ContainerControlledLifetimeManager() )

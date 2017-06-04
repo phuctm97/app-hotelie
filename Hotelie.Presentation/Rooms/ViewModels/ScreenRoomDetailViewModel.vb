@@ -2,6 +2,7 @@
 Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
 Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
+Imports Hotelie.Presentation.Infrastructure
 Imports Hotelie.Presentation.Start.MainWindow.Models
 Imports MaterialDesignThemes.Wpf
 
@@ -190,7 +191,8 @@ Namespace Rooms.ViewModels
 
 		Private Function ValidateData() As Boolean
 			If String.IsNullOrWhiteSpace( RoomName )
-				IoC.Get(Of IMainWindow).ShowStaticBottomNotification( StaticNotificationType.Information, "Vui lòng nhập tên phòng!" )
+				IoC.Get(Of IMainWindow).ShowStaticBottomNotification( StaticNotificationType.Information,
+				                                                      "Vui lòng nhập tên phòng!" )
 				Return False
 			End If
 
