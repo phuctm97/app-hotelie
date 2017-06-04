@@ -1,6 +1,7 @@
 ﻿Imports Caliburn.Micro
 Imports Hotelie.Application.Rooms.Commands.RemoveRoom
 Imports Hotelie.Application.Rooms.Commands.UpdateRoom
+Imports Hotelie.Application.Rooms.Factories.CreateRoom
 Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
 Imports Hotelie.Application.Rooms.Queries.GetRoomsList
 Imports Hotelie.Application.Services.Infrastructure
@@ -33,6 +34,7 @@ Namespace Rooms.ViewModels
 
 		Public Sub New( getRoomsListQuery As IGetRoomsListQuery,
 		                getRoomCategoriesListQuery As IGetRoomCategoriesListQuery,
+		                createRoomFactory As ICreateRoomFactory,
 		                updateRoomCommand As IUpdateRoomCommand,
 		                removeRoomCommand As IRemoveRoomCommand,
 		                inventory As IInventory )
@@ -43,8 +45,10 @@ Namespace Rooms.ViewModels
 			                                                  updateRoomCommand,
 			                                                  removeRoomCommand,
 			                                                  inventory )
-
-			ScreenAddRoom = New ScreenAddRoomViewModel( Me, getRoomCategoriesListQuery )
+			ScreenAddRoom = New ScreenAddRoomViewModel( Me,
+			                                            getRoomCategoriesListQuery,
+			                                            createRoomFactory,
+			                                            inventory )
 
 			DisplayName = "Danh sách phòng"
 
@@ -78,7 +82,7 @@ Namespace Rooms.ViewModels
 			DisplayCode = 0
 		End Sub
 
-		Public Sub NavigateToScreenRoomDetail( room As RoomModel )
+		Public Sub NavigateToScreenRoomDetail( room As Hotelie.Application.Rooms.Queries.GetRoomsList.RoomModel )
 			If IsNothing( room ) Then Return
 
 			ScreenRoomDetail.SetRoom( room.Id, room.Name, room.CategoryId, room.Note, room.State )

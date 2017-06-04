@@ -146,6 +146,7 @@
     <Compile Include="Common\IMainWindow.vb" />
     <Compile Include="Common\Infrastructure\Inventory.vb" />
     <Compile Include="Common\Infrastructure\IRoomCollectionPresenter.vb" />
+    <Compile Include="Common\Infrastructure\IRoomPresenter.vb" />
     <Compile Include="Common\IShell.vb" />
     <Compile Include="Common\IWindowCommandsBar.vb" />
     <Compile Include="Leases\ViewModels\LeasesWorkspaceViewModel.vb" />
