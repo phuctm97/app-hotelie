@@ -13,5 +13,6 @@ Namespace Leases
         Public Property ExtraCharge As Decimal
         Public Property TotalPrice As Decimal
         Public Property Bill As Bill
+        Public Property Customers As List(Of LeaseDetail)
     End Class
 End Namespace
