@@ -16,30 +16,30 @@ Namespace Start.LoginShell.ViewModels
 
 		Public Sub New( databaseService As IDatabaseService )
 			_databaseService = databaseService
-
 			InitialDataSource = My.Settings.ConnectionDataSource
 			InitialCatalog = My.Settings.ConnectionCatalog
 		End Sub
 
 		Public Async Sub TestConnection( dataSource As String,
 		                                 catalog As String )
-			IoC.Get(Of IMainWindow).ShowStaticDialog( New LoadingDialog() )
+			' try connection
+			IoC.Get(Of IMainWindow).ShowStaticWindowDialog( New LoadingDialog() )
 			Dim result = Await _databaseService.CheckDatabaseConnectionAsync( dataSource, catalog )
-			IoC.Get(Of IMainWindow).CloseStaticDialog()
+			IoC.Get(Of IMainWindow).CloseStaticWindowDialog()
 
 			' show result
 			If result
-				IoC.Get(Of IMainWindow).ShowStaticNotification( StaticNotificationType.Ok, "Kết nối thành công!" )
+				IoC.Get(Of IMainWindow).ShowStaticTopNotification( StaticNotificationType.Ok, "Kết nối thành công!" )
 			Else
-				IoC.Get(Of IMainWindow).ShowStaticNotification( StaticNotificationType.Error, "Kết nối thất bại!" )
+				IoC.Get(Of IMainWindow).ShowStaticTopNotification( StaticNotificationType.Error, "Kết nối thất bại!" )
 			End If
 		End Sub
 
 		Public Async Sub ApplyConnection( dataSource As String,
 		                                  catalog As String )
-			IoC.Get(Of IMainWindow).ShowStaticDialog( New LoadingDialog() )
+			IoC.Get(Of IMainWindow).ShowStaticWindowDialog( New LoadingDialog() )
 			Dim result = Await _databaseService.CheckDatabaseConnectionAsync( dataSource, catalog )
-			IoC.Get(Of IMainWindow).CloseStaticDialog()
+			IoC.Get(Of IMainWindow).CloseStaticWindowDialog()
 
 			If result
 				' save settings
@@ -50,9 +50,11 @@ Namespace Start.LoginShell.ViewModels
 				' reload database service
 				_databaseService.SetDatabaseConnection( dataSource, catalog )
 
-				IoC.Get(Of IMainWindow).ShowStaticNotification( StaticNotificationType.Ok, "Đã thiết lập kết nối!" )
+				' notification
+				IoC.Get(Of IMainWindow).ShowStaticTopNotification( StaticNotificationType.Ok, "Đã thiết lập kết nối!" )
 			Else
-				IoC.Get(Of IMainWindow).ShowStaticNotification( StaticNotificationType.Error,
+				' report error
+				IoC.Get(Of IMainWindow).ShowStaticTopNotification( StaticNotificationType.Error,
 				                                                "Kết nối thất bại. Thiết lập không hợp lệ!" )
 			End If
 		End Sub

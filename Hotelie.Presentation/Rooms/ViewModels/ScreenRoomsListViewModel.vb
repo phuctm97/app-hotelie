@@ -1,10 +1,12 @@
 ﻿Imports Caliburn.Micro
 Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
 Imports Hotelie.Application.Rooms.Queries.GetRoomsList
+Imports Hotelie.Presentation.Infrastructure
 
 Namespace Rooms.ViewModels
 	Public Class ScreenRoomsListViewModel
 		Inherits PropertyChangedBase
+		Implements IRoomCollectionPresenter
 
 		Private _rooms As IObservableCollection(Of RoomModel)
 		Private _filterRoomNamePrefix As String
@@ -16,12 +18,10 @@ Namespace Rooms.ViewModels
 		Private _isDescendingSort As Boolean
 
 		' Dependencies
-
 		Private ReadOnly _getRoomListsQuery As IGetRoomsListQuery
 		Private ReadOnly _getRoomCategoriesListQuery As IGetRoomCategoriesListQuery
 
 		' Data
-
 		Public Property Rooms As IObservableCollection(Of RoomModel)
 			Get
 				Return _rooms
@@ -46,11 +46,12 @@ Namespace Rooms.ViewModels
 		Public ReadOnly Property RoomMaxPrices As IObservableCollection(Of Decimal)
 
 		' Initialization
-
 		Public Sub New( getRoomListsQuery As IGetRoomsListQuery,
 		                getRoomCategoriesListQuery As IGetRoomCategoriesListQuery )
 			_getRoomListsQuery = getRoomListsQuery
 			_getRoomCategoriesListQuery = getRoomCategoriesListQuery
+
+			RegisterInventory()
 
 			InitRooms( Rooms )
 
@@ -125,7 +126,6 @@ Namespace Rooms.ViewModels
 		End Sub
 
 		' Filter values
-
 		Public Property FilterRoomNamePrefix As String
 			Get
 				Return _filterRoomNamePrefix
@@ -205,7 +205,6 @@ Namespace Rooms.ViewModels
 		End Property
 
 		' Sort values
-
 		Public Property SortingCode As Integer
 			Get
 				Return _sortingCode
@@ -231,7 +230,6 @@ Namespace Rooms.ViewModels
 		End Property
 
 		' Filter 
-
 		Public Sub ResetFilters()
 			_filterRoomNamePrefix = String.Empty
 			NotifyOfPropertyChange( Function() FilterRoomNamePrefix )
@@ -308,7 +306,6 @@ Namespace Rooms.ViewModels
 		End Sub
 
 		' Sort
-
 		Public Sub SortRoomsList()
 			Select Case SortingCode
 				Case 0
@@ -336,6 +333,62 @@ Namespace Rooms.ViewModels
 						Rooms = New BindableCollection(Of RoomModel)( Rooms.OrderBy( Function( p ) p.State ) )
 					End If
 			End Select
+		End Sub
+
+		' Infrastructure
+		Public Sub OnRoomAdded( id As String,
+		                        name As String,
+		                        categoryId As String,
+		                        note As String ) Implements IRoomCollectionPresenter.OnRoomAdded
+			' check for duplicate
+			Dim rc = Rooms.FirstOrDefault( Function( r ) r.Id = id )
+			If rc IsNot Nothing Then Throw New DuplicateWaitObjectException()
+
+			' find category
+			Dim category = RoomCategories.FirstOrDefault( Function( c ) c.Id = categoryId )
+			If categoryId Is Nothing Then Throw New EntryPointNotFoundException()
+
+			Rooms.Add( New RoomModel With {.Id=id, .Name=name, 
+				         .CategoryId=categoryId, .CategoryName=category.Name, 
+				         .CategoryDisplayColor=category.DisplayColor, 
+				         .Price=category.Price, .State=0,.Note=note, .IsVisible=False} )
+
+			RefreshRoomsListVisibility()
+			SortRoomsList()
+		End Sub
+
+		Public Sub OnRoomUpdated( id As String,
+		                          name As String,
+		                          categoryId As String,
+		                          note As String,
+		                          state As Int32 ) Implements IRoomCollectionPresenter.OnRoomUpdated
+			' find room
+			Dim room = Rooms.FirstOrDefault( Function( r ) r.Id = id )
+			If room Is Nothing Then Throw New DuplicateWaitObjectException()
+
+			' find category
+			Dim category = RoomCategories.FirstOrDefault( Function( c ) c.Id = categoryId )
+			If categoryId Is Nothing Then Throw New EntryPointNotFoundException()
+
+			' update
+			room.Name = name
+			room.CategoryId = categoryId
+			room.CategoryName = category.Name
+			room.CategoryDisplayColor = category.DisplayColor
+			room.Price = category.Price
+			room.Note = note
+			room.State = state
+
+			RefreshRoomsListVisibility()
+			SortRoomsList()
+		End Sub
+
+		Public Sub OnRoomRemoved( id As String ) Implements IRoomCollectionPresenter.OnRoomRemoved
+			' find room
+			Dim room = Rooms.FirstOrDefault( Function( r ) r.Id = id )
+			If room Is Nothing Then Throw New DuplicateWaitObjectException()
+
+			Rooms.Remove( room )
 		End Sub
 	End Class
 End Namespace

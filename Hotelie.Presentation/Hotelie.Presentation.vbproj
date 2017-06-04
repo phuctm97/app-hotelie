@@ -139,10 +139,13 @@
     <Compile Include="Common\Controls\OneButtonDialog.xaml.vb">
       <DependentUpon>OneButtonDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\Controls\WindowExtensions.vb" />
     <Compile Include="Common\Converters\BooleanToVisibilityConverter.vb" />
     <Compile Include="Common\Converters\DecimalToCurrencyStringConverter.vb" />
     <Compile Include="Common\Converters\StringToUpperConverter.vb" />
     <Compile Include="Common\IMainWindow.vb" />
+    <Compile Include="Common\Infrastructure\Inventory.vb" />
+    <Compile Include="Common\Infrastructure\IRoomCollectionPresenter.vb" />
     <Compile Include="Common\IShell.vb" />
     <Compile Include="Common\IWindowCommandsBar.vb" />
     <Compile Include="Leases\ViewModels\LeasesWorkspaceViewModel.vb" />

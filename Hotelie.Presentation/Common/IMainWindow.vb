@@ -16,14 +16,23 @@ Namespace Common
 
 		Sub SwitchShell( shellName As String )
 
-		Sub ShowStaticNotification( type As Integer,
-		                            text As String )
+		Sub ShowStaticTopNotification( type As Integer,
+		                               text As String )
 
-		Sub CloseStaticNotification()
+		Sub CloseStaticTopNotification()
 
-		Sub ShowStaticDialog( content As Object )
+		Sub ShowStaticBottomNotification( type As Integer,
+		                                  text As String )
 
-		Sub CloseStaticDialog()
+		Sub CloseStaticBottomNotification()
+
+		Sub ShowStaticShellDialog( content As Object )
+
+		Sub CloseStaticShellDialog()
+
+		Sub ShowStaticWindowDialog( content As Object )
+
+		Sub CloseStaticWindowDialog()
 
 		Sub DragMove()
 

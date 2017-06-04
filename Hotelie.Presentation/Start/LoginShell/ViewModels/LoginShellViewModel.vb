@@ -11,15 +11,11 @@ Namespace Start.LoginShell.ViewModels
 		Implements IShell
 
 		' Dependencies
-
 		Private ReadOnly _databaseService As IDatabaseService
-
-		' Display property backing fields
 
 		Private _displayCode As Integer
 
 		' Parent window
-
 		Public Property ParentWindow As IMainWindow Implements IChild(Of IMainWindow).Parent
 			Get
 				Return CType(Parent, IMainWindow)
@@ -30,7 +26,6 @@ Namespace Start.LoginShell.ViewModels
 		End Property
 
 		' Initialization
-
 		Public Sub New( authentication As IAuthentication,
 		                databaseService As IDatabaseService )
 			_databaseService = databaseService
@@ -70,24 +65,23 @@ Namespace Start.LoginShell.ViewModels
 		End Sub
 
 		Private Async Sub SetUpConnection()
-			' show loading dialog
-			IoC.Get(Of IMainWindow).ShowStaticDialog( New LoadingDialog( "Đang kiểm tra kết nối..." ) )
-
 			' try connection
+			IoC.Get(Of IMainWindow).ShowStaticWindowDialog( New LoadingDialog( "Đang kiểm tra kết nối..." ) )
 			Dim result = Await _databaseService.CheckDatabaseConnectionAsync( My.Settings.ConnectionDataSource,
 			                                                                  My.Settings.ConnectionCatalog )
-
-			' finish, close dialog
-			IoC.Get(Of IMainWindow).CloseStaticDialog()
+			IoC.Get(Of IMainWindow).CloseStaticWindowDialog()
 
 			If result
 				' reload database service
 				_databaseService.SetDatabaseConnection( My.Settings.ConnectionDataSource,
 				                                        My.Settings.ConnectionCatalog )
+				' show login screen
 				DisplayCode = 0
 			Else
-				IoC.Get(Of IMainWindow).ShowStaticNotification( StaticNotificationType.Error,
+				' report error
+				IoC.Get(Of IMainWindow).ShowStaticTopNotification( StaticNotificationType.Error,
 				                                                "Sự cố kết nối! Vui lòng kiểm tra lại thiết lập kết nối!" )
+				' show settings screen
 				DisplayCode = 1
 			End If
 		End Sub

@@ -34,7 +34,7 @@
         </Grid.RowDefinitions>
 
         <!--Toolbar-->
-        <DockPanel Margin="24 24 24 8">
+        <DockPanel Grid.Row="0" Margin="24 24 24 8">
             <!--Clear button-->
             <Button DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
                     Margin="0" Padding="0"

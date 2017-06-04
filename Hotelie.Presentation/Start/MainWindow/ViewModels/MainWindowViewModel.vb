@@ -7,8 +7,6 @@ Namespace Start.MainWindow.ViewModels
 		Inherits Conductor(Of IShell)
 		Implements IMainWindow
 
-		' Window property backing fields
-
 		Private _title As String
 		Private _width As Double
 		Private _height As Double
@@ -25,13 +23,16 @@ Namespace Start.MainWindow.ViewModels
 
 			WindowState = WindowState.Normal
 
-			StaticNotification = New StaticNotificationModel()
+			StaticTopNotification = New StaticNotificationModel()
 
-			StaticDialog = New StaticDialogModel()
+			StaticBottomNotification = New StaticNotificationModel()
+
+			StaticWindowDialog = New StaticDialogModel()
+
+			StaticShellDialog = New StaticDialogModel()
 		End Sub
 
 		' Window properties
-
 		Public Property Title As String Implements IMainWindow.Title
 			Get
 				Return _title
@@ -80,12 +81,15 @@ Namespace Start.MainWindow.ViewModels
 			End Set
 		End Property
 
-		Public ReadOnly Property StaticNotification As StaticNotificationModel
+		Public ReadOnly Property StaticTopNotification As StaticNotificationModel
 
-		Public ReadOnly Property StaticDialog As StaticDialogModel
+		Public ReadOnly Property StaticBottomNotification As StaticNotificationModel
+
+		Public ReadOnly Property StaticWindowDialog As StaticDialogModel
+
+		Public ReadOnly Property StaticShellDialog As StaticDialogModel
 
 		' Shell
-
 		Public ReadOnly Property Shell As IShell Implements IMainWindow.Shell
 			Get
 				Return ActiveItem
@@ -112,7 +116,6 @@ Namespace Start.MainWindow.ViewModels
 		End Sub
 
 		' Window actions
-
 		Public Sub DragMove() Implements IMainWindow.DragMove
 			Windows.Application.Current.MainWindow.DragMove()
 		End Sub
@@ -125,35 +128,56 @@ Namespace Start.MainWindow.ViewModels
 			WindowState = WindowState.Minimized
 		End Sub
 
-		' Closing
-
 		Public Sub Close() Implements IMainWindow.Close
 			Windows.Application.Current.MainWindow.Close()
 		End Sub
 
 		' Notification
-
-		Public Sub ShowStaticNotification( type As Integer,
-		                             text As String ) Implements IMainWindow.ShowStaticNotification
-			StaticNotification.Type = type
-			StaticNotification.Text = text
+		Public Sub ShowStaticTopNotification( type As Integer,
+		                                      text As String ) Implements IMainWindow.ShowStaticTopNotification
+			If StaticTopNotification.Type <> StaticNotificationType.None Then Return
+			StaticTopNotification.Type = type
+			StaticTopNotification.Text = text
 		End Sub
 
-		Public Sub CloseStaticNotification() Implements IMainWindow.CloseStaticNotification
-			StaticNotification.Type = StaticNotificationType.None
-			StaticNotification.Text = String.Empty
+		Public Sub CloseStaticTopNotification() Implements IMainWindow.CloseStaticTopNotification
+			StaticTopNotification.Type = StaticNotificationType.None
+			StaticTopNotification.Text = String.Empty
+		End Sub
+
+		Public Sub ShowStaticBottomNotification( type As Int32,
+		                                         text As String ) Implements IMainWindow.ShowStaticBottomNotification
+			If StaticBottomNotification.Type <> StaticNotificationType.None Then Return
+			StaticBottomNotification.Type = type
+			StaticBottomNotification.Text = text
+		End Sub
+
+		Public Sub CloseStaticBottomNotification() Implements IMainWindow.CloseStaticBottomNotification
+			StaticBottomNotification.Type = StaticNotificationType.None
+			StaticBottomNotification.Text = String.Empty
 		End Sub
 
 		' Dialog
-
-		Public Sub ShowStaticDialog( content As Object ) Implements IMainWindow.ShowStaticDialog
-			StaticDialog.Content = content
-			StaticDialog.IsVisible = True
+		Public Sub ShowStaticWindowDialog( content As Object ) Implements IMainWindow.ShowStaticWindowDialog
+			If StaticWindowDialog.IsVisible Then Return
+			StaticWindowDialog.Content = content
+			StaticWindowDialog.IsVisible = True
 		End Sub
 
-		Public Sub CloseStaticDialog() Implements IMainWindow.CloseStaticDialog
-			StaticDialog.Content = Nothing
-			StaticDialog.IsVisible = False
+		Public Sub CloseStaticWindowDialog() Implements IMainWindow.CloseStaticWindowDialog
+			StaticWindowDialog.Content = Nothing
+			StaticWindowDialog.IsVisible = False
+		End Sub
+
+		Public Sub ShowStaticShellDialog( content As Object ) Implements IMainWindow.ShowStaticShellDialog
+			If StaticShellDialog.IsVisible Then Return
+			StaticShellDialog.Content = content
+			StaticShellDialog.IsVisible = True
+		End Sub
+
+		Public Sub CloseStaticShellDialog() Implements IMainWindow.CloseStaticShellDialog
+			StaticShellDialog.Content = Nothing
+			StaticShellDialog.IsVisible = False
 		End Sub
 	End Class
 End Namespace

@@ -62,5 +62,10 @@ Namespace Start.LoginShell.Views
 
 			_previousAccountLength = accountBox.Text.Length
 		End Sub
+
+		Private Sub OnPasswordStorageLoaded( sender As Object,
+		                                     e As RoutedEventArgs )
+			PasswordTextBox.Password = PasswordStorage.Text
+		End Sub
 	End Class
 End Namespace

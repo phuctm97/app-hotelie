@@ -42,7 +42,7 @@
                 <Button Grid.Column="0" HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Margin="16 0 0 0" Style="{DynamicResource MaterialDesignToolButton}"
-                        cal:Message.Attach="PreviewNavigateToScreenRoomsList">
+                        cal:Message.Attach="PreviewExit">
                     <materialDesign:PackIcon Width="24" Height="24"
                                              Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                                              Kind="KeyboardBackspace" />
@@ -86,7 +86,8 @@
                             Style="{DynamicResource MaterialDesignToolButton}"
                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                             FontSize="18"
-                            Content="XÓA" />
+                            Content="XÓA"
+                            cal:Message.Attach="PreviewDelete" />
 
                     <!--Save button-->
                     <Button DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
@@ -94,8 +95,8 @@
                             Style="{DynamicResource MaterialDesignToolButton}"
                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                             FontSize="18"
-                            Content="LƯU" 
-                            cal:Message.Attach="SaveChanges"/>
+                            Content="LƯU"
+                            cal:Message.Attach="PreviewSave" />
                 </DockPanel>
             </Grid>
 
@@ -167,7 +168,8 @@
                 <Button DockPanel.Dock="Right" HorizontalAlignment="Right"
                         Style="{DynamicResource MaterialDesignFlatAccentButton}"
                         Content="THUÊ PHÒNG"
-                        Margin="8" Height="36" Padding="8" />
+                        Margin="8" Height="36" Padding="8"
+                        cal:Message.Attach="PreviewOrder" />
             </StackPanel>
         </StackPanel>
 

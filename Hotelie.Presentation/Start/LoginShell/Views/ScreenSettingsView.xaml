@@ -23,6 +23,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
+    <!--Content-->
     <materialDesign:Card HorizontalAlignment="Center" VerticalAlignment="Center"
                          Width="400" Height="Auto">
         <StackPanel Orientation="Vertical">

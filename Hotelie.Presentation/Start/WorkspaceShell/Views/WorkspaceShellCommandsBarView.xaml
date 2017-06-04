@@ -127,6 +127,7 @@
                 </materialDesign:PopupBox.ToggleContent>
 
                 <StackPanel Orientation="Vertical">
+                    
                     <!--Account detail-->
                     <Button>
                         <StackPanel Orientation="Horizontal">
