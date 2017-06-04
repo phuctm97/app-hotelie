@@ -11,6 +11,8 @@ Namespace Start.MainWindow.ViewModels
 		Private _width As Double
 		Private _height As Double
 		Private _windowState As WindowState
+		Private _staticWindowDialogRefs As Integer
+		Private _staticShellDialogRefs As Integer
 
 		Public Sub New()
 			DisplayName = "Hotelie"
@@ -28,8 +30,10 @@ Namespace Start.MainWindow.ViewModels
 			StaticBottomNotification = New StaticNotificationModel()
 
 			StaticWindowDialog = New StaticDialogModel()
+			_staticShellDialogRefs = 0
 
 			StaticShellDialog = New StaticDialogModel()
+			_staticWindowDialogRefs = 0
 		End Sub
 
 		' Window properties
@@ -159,25 +163,41 @@ Namespace Start.MainWindow.ViewModels
 
 		' Dialog
 		Public Sub ShowStaticWindowDialog( content As Object ) Implements IMainWindow.ShowStaticWindowDialog
-			If StaticWindowDialog.IsVisible Then Return
+			_staticWindowDialogRefs += 1
 			StaticWindowDialog.Content = content
 			StaticWindowDialog.IsVisible = True
 		End Sub
 
 		Public Sub CloseStaticWindowDialog() Implements IMainWindow.CloseStaticWindowDialog
-			StaticWindowDialog.Content = Nothing
-			StaticWindowDialog.IsVisible = False
+			_staticWindowDialogRefs -= 1
+			If (_staticWindowDialogRefs = 0)
+				StaticWindowDialog.Content = Nothing
+				StaticWindowDialog.IsVisible = False
+			End If
+		End Sub
+
+		Public Sub ForceCloseStaticWindowDialog() Implements IMainWindow.ForceCloseStaticWindowDialog
+			_staticWindowDialogRefs = 1
+			CloseStaticWindowDialog()
 		End Sub
 
 		Public Sub ShowStaticShellDialog( content As Object ) Implements IMainWindow.ShowStaticShellDialog
-			If StaticShellDialog.IsVisible Then Return
+			_staticShellDialogRefs += 1
 			StaticShellDialog.Content = content
 			StaticShellDialog.IsVisible = True
 		End Sub
 
 		Public Sub CloseStaticShellDialog() Implements IMainWindow.CloseStaticShellDialog
-			StaticShellDialog.Content = Nothing
-			StaticShellDialog.IsVisible = False
+			_staticShellDialogRefs -= 1
+			If (_staticShellDialogRefs = 0)
+				StaticShellDialog.Content = Nothing
+				StaticShellDialog.IsVisible = False
+			End If
+		End Sub
+
+		Public Sub ForceCloseStaticShellDialog() Implements IMainWindow.ForceCloseStaticShellDialog
+			_staticShellDialogRefs = 1
+			CloseStaticShellDialog()
 		End Sub
 	End Class
 End Namespace
