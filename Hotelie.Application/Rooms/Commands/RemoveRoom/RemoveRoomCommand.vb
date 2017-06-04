@@ -17,10 +17,11 @@ Namespace Rooms.Commands.RemoveRoom
             _unitOfWork.Commit()
         End Sub
 
-        Public Async Sub ExecuteAsync(id As String) Implements IRemoveRoomCommand.ExecuteAsync
+        Public Async Function ExecuteAsync(id As String) As Task(Of Integer) Implements IRemoveRoomCommand.ExecuteAsync
             Dim room = Await _roomRepository.GetOneAsync(id)
             _roomRepository.Remove(room)
-            _unitOfWork.CommitAsync()
-        End Sub
+            Await _unitOfWork.CommitAsync()
+            Return 1
+        End Function
     End Class
 End NameSpace

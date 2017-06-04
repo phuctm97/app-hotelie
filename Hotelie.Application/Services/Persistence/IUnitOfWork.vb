@@ -2,6 +2,6 @@
 	Public Interface IUnitOfWork
 		Inherits IDisposable
 		Sub Commit()
-        Sub CommitAsync()
+        Function CommitAsync() As Task(Of Integer)
 	End Interface
 End Namespace
