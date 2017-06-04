@@ -167,8 +167,8 @@ Namespace Rooms.ViewModels
 		End Sub
 
 		Private Sub InitSortingValues()
-			_sortingCode = - 1
-			_isDescendingSort = False
+			SortingCode = - 1
+			IsDescendingSort = False
 		End Sub
 
 		' Filter values
