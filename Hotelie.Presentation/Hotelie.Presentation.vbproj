@@ -141,6 +141,7 @@
     </Compile>
     <Compile Include="Common\Controls\WindowExtensions.vb" />
     <Compile Include="Common\Converters\BooleanToVisibilityConverter.vb" />
+    <Compile Include="Common\Converters\DateTimeToShortDateStringConverter.vb" />
     <Compile Include="Common\Converters\DecimalToCurrencyStringConverter.vb" />
     <Compile Include="Common\Converters\StringToUpperConverter.vb" />
     <Compile Include="Common\IMainWindow.vb" />
