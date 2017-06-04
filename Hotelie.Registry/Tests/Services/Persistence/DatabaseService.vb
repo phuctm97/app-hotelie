@@ -26,7 +26,7 @@ Namespace Tests.Services.Persistence
 		Public Async Function CheckDatabaseConnectionAsync( dataSource As String,
 		                                                    catalog As String ) As Task(Of Boolean) _
 			Implements IDatabaseService.CheckDatabaseConnectionAsync
-			Return Await Task.Run( Function() CheckDatabaseConnection( dataSource, catalog ) )
+			Return True
 		End Function
 	End Class
 End Namespace
