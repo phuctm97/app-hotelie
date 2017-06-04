@@ -30,7 +30,7 @@
         </Grid.RowDefinitions>
 
         <!--Rooms list-->
-        <ListBox Grid.Row="1">
+        <ListBox Grid.Row="1" ItemsSource="{Binding Leases}">
 
             <!--panel style-->
             <ListBox.ItemsPanel>
@@ -56,10 +56,11 @@
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
 
-                                        <!--Primary text-->
+                                        <!--Primary content-->
                                         <StackPanel Grid.Row="0"
                                                     Margin="16 24 16 12">
 
+                                            <!--Icon-->
                                             <StackPanel Height="128">
                                                 <Button Style="{DynamicResource MaterialDesignFlatButton}"
                                                         Height="Auto">
@@ -73,7 +74,7 @@
                                                         Background="{DynamicResource SecondaryAccentBrush}"
                                                         CornerRadius="16"
                                                         materialDesign:ShadowAssist.ShadowDepth="Depth2">
-                                                    <TextBlock Text="3"
+                                                    <TextBlock Text="{Binding NumberOfCustomers}"
                                                                Padding="0 0 0 4"
                                                                HorizontalAlignment="Center"
                                                                VerticalAlignment="Center"
@@ -86,21 +87,21 @@
                                             <!--Title-->
                                             <TextBlock HorizontalAlignment="Center"
                                                        Style="{DynamicResource MaterialDesignHeadlineTextBlock}"
-                                                       Text="Tên phòng"
+                                                       Text="{Binding RoomName}"
                                                        Margin="0 0 0 8" />
 
                                             <!--Subtitle-->
                                             <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap"
                                                        Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
                                                        Foreground="{DynamicResource MaterialDesignBodyLight}"
-                                                       Text="Loại phòng" />
+                                                       Text="{Binding RoomCategoryName}" />
 
                                             <StackPanel Margin="0 16 0 0">
                                                 <DockPanel>
                                                     <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left"
-                                                               Text="Ngày bắt đầu" Opacity="0.75" FontSize="12" />
+                                                               Text="{Binding BeginDate}" Opacity="0.75" FontSize="12" />
                                                     <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right"
-                                                               Text="Ngày kết thúc" Opacity="0.75" FontSize="12" />
+                                                               Text="{Binding EndDate}" Opacity="0.75" FontSize="12" />
                                                 </DockPanel>
                                                 <Slider Margin="20 8 20 0" Orientation="Horizontal" Minimum="0"
                                                         Maximum="100" Value="50"
@@ -135,10 +136,6 @@
                     </Setter>
                 </Style>
             </ListBox.ItemContainerStyle>
-
-            <ListBoxItem />
-            <ListBoxItem />
-            <ListBoxItem />
         </ListBox>
     </Grid>
 </UserControl>
