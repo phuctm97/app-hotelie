@@ -18,11 +18,7 @@ Namespace Tests.Services.Persistence
 
 		Public Function CheckDatabaseConnection( connectionString As String ) As Boolean _
 			Implements IDatabaseService.CheckDatabaseConnection
-			If String.Equals( connectionString, "success" )
-				Return True
-			End If
-
-			Return False
+			Return True
 		End Function
 
 		Public Async Function CheckDatabaseConnectionAsync( connectionString As String ) As Task(Of Boolean) _

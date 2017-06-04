@@ -1,6 +1,6 @@
 ﻿Namespace Leases.Factories
     Public Interface ICreateLeaseFactory
         Function Execute(roomId As String, beginDate As DateTime, endDate As DateTime) As LeaseModel
-        Function ExecuteAsync(roomId As String, beginDate As DateTime, endDate As DateTime) As LeaseModel
+        Function ExecuteAsync(roomId As String, beginDate As DateTime, endDate As DateTime) As Task(Of LeaseModel)
     End Interface
 End NameSpace

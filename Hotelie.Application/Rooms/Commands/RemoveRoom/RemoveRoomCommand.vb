@@ -17,8 +17,9 @@ Namespace Rooms.Commands.RemoveRoom
             _unitOfWork.Commit()
         End Sub
 
-        Public Sub ExecuteAsync(id As String) Implements IRemoveRoomCommand.ExecuteAsync
-            _roomRepository.Remove(_roomRepository.GetOne(id))
+        Public Async Sub ExecuteAsync(id As String) Implements IRemoveRoomCommand.ExecuteAsync
+            Dim room = Await _roomRepository.GetOneAsync(id)
+            _roomRepository.Remove(room)
             _unitOfWork.CommitAsync()
         End Sub
     End Class
