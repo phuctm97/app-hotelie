@@ -89,7 +89,7 @@ Namespace Query
             LeasesInitialize()
 
             ' input
-            Dim customerCategory = New CustomerCategory() With {.Id = "ND001",.Name = "Noi Dia"}
+            Dim customerCategory = New CustomerCategory() With {.Id = "ND001",.Name = "Noi Dia",.Coefficient=1.5}
             _databaseService.Context.CustomerCategories.Add(customerCategory)
             _databaseService.Context.SaveChanges()
 
@@ -116,7 +116,6 @@ Namespace Query
             Dim leaseCustomers = _leaseRepository.GetCustomers(_leasesList(0).Id)
             Assert.IsNotNull(leaseCustomers)
             Assert.IsTrue(leaseCustomers(0).Id = leaseCustomer.Id And leaseCustomers(0).CustomerCategory.Id = leaseCustomer.CustomerCategory.Id)
-            
             ' rollback
             _databaseService.Context.LeaseDetails.Remove(leaseCustomer)
             _databaseService.Context.CustomerCategories.Remove(customerCategory)

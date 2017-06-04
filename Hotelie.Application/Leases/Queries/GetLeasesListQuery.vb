@@ -20,22 +20,43 @@ Namespace Leases.Queries
                                                              .BeginDate = p.BeginDate,
                                                              .EndDate = p.EndDate,
                                                              .RoomCategoryName = p.Room.Category.Name,
-                                                             .Price = p.Room.Category.Price})
-
+                                                             .Price = p.Room.Category.Price}).ToList()
             For Each leaseModel As LeaseModel In leases
+
+                Dim maxCoefficient As Double
+                ' Get all customer of each LeaseModel
                 Dim customers = _leaseRepository.GetCustomers(leaseModel.Id)
+
                 If (customers.Count > 0)
+                    maxCoefficient = customers(0).CustomerCategory.Coefficient
                     leaseModel.Customers = New BindableCollection(Of LeaseCustomerModel)
+
                     For Each leaseCustomer As LeaseDetail In customers
+                        ' Add customer to lease's customer collection
                         leaseModel.Customers.Add(New LeaseCustomerModel() With {.Id = leaseCustomer.Id, 
                                                     .Address=leaseCustomer.Address, 
                                                     .Name = leaseCustomer.CustomerName, 
                                                     .LisenceId = leaseCustomer.LicenseId, 
                                                     .CategoryId = leaseCustomer.CustomerCategory.Id, 
                                                     .CategoryName = leaseCustomer.CustomerCategory.Name})
+                        ' Get the highest coefficent
+                        If maxCoefficient < leaseCustomer.CustomerCategory.Coefficient Then _
+                            maxCoefficient = leaseCustomer.CustomerCategory.Coefficient
                     Next
+
                 End If
-                leaseModel.TotalPrice = leaseModel.Price*(DateTime.Now().Subtract(leaseModel.BeginDate).Days())
+
+                ' calculate time
+                Dim days = DateTime.Now().Subtract(leaseModel.BeginDate).Days()
+
+                ' calculate extra charge
+                If (customers.Count>3)
+                    leaseModel.ExtraCharge = leaseModel.Price*leaseModel.ExtraCoefficient*days
+                End If
+
+                ' calculate total price
+                leaseModel.TotalPrice = leaseModel.Price*maxCoefficient*days + leaseModel.ExtraCharge
+
             Next
             Return leases
         End Function
@@ -47,22 +68,43 @@ Namespace Leases.Queries
                                                                    .RoomName = p.Room.Name,
                                                                    .BeginDate = p.BeginDate,
                                                                    .EndDate = p.EndDate,
-                                                                   .RoomCategoryName = p.Room.Category.Name}).
+                                                                   .RoomCategoryName = p.Room.Category.Name,
+                                                                   .ExtraCoefficient = p.ExtraCoefficient}).
                     ToListAsync()
             For Each leaseModel As LeaseModel In leases
+                Dim maxCoefficient As Double
+                ' Get all customer of each LeaseModel
                 Dim customers = Await _leaseRepository.GetCustomersAsync(leaseModel.Id)
+
                 If (customers.Count > 0)
+                    maxCoefficient = customers(0).CustomerCategory.Coefficient
                     leaseModel.Customers = New BindableCollection(Of LeaseCustomerModel)
+
                     For Each leaseCustomer As LeaseDetail In customers
+                        ' Add customer to lease's customer collection
                         leaseModel.Customers.Add(New LeaseCustomerModel() With {.Id = leaseCustomer.Id, 
                                                     .Address=leaseCustomer.Address, 
                                                     .Name = leaseCustomer.CustomerName, 
                                                     .LisenceId = leaseCustomer.LicenseId, 
                                                     .CategoryId = leaseCustomer.CustomerCategory.Id, 
                                                     .CategoryName = leaseCustomer.CustomerCategory.Name})
+                        ' Get the highest coefficent
+                        If maxCoefficient < leaseCustomer.CustomerCategory.Coefficient Then _
+                            maxCoefficient = leaseCustomer.CustomerCategory.Coefficient
                     Next
+
                 End If
-                leaseModel.TotalPrice = leaseModel.Price*(DateTime.Now().Subtract(leaseModel.BeginDate).Days())
+
+                ' calculate time
+                Dim days = DateTime.Now().Subtract(leaseModel.BeginDate).Days()
+
+                ' calculate extra charge
+                If (customers.Count>3)
+                    leaseModel.ExtraCharge = leaseModel.Price*leaseModel.ExtraCoefficient*days
+                End If
+
+                ' calculate total price
+                leaseModel.TotalPrice = leaseModel.Price*maxCoefficient*days + leaseModel.ExtraCharge
             Next
             Return leases
         End Function
