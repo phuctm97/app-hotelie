@@ -83,7 +83,7 @@
                         Content="Lưu">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
-                            <cal:ActionMessage MethodName="ApplyConnection">
+                            <cal:ActionMessage MethodName="PreviewApplyConnection">
                                 <cal:Parameter Value="{Binding ElementName=ServerTextBox, Path=Text}" />
                                 <cal:Parameter Value="{Binding ElementName=DatabaseTextBox, Path=Text}" />
                             </cal:ActionMessage>
@@ -98,7 +98,7 @@
                         Content="Thử kết nối">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
-                            <cal:ActionMessage MethodName="TestConnection">
+                            <cal:ActionMessage MethodName="PreviewTestConnection">
                                 <cal:Parameter Value="{Binding ElementName=ServerTextBox, Path=Text}" />
                                 <cal:Parameter Value="{Binding ElementName=DatabaseTextBox, Path=Text}" />
                             </cal:ActionMessage>

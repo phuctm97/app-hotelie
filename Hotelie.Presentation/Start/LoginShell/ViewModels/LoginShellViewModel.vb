@@ -9,6 +9,7 @@ Namespace Start.LoginShell.ViewModels
 	Public Class LoginShellViewModel
 		Inherits Screen
 		Implements IShell
+		Implements INeedWindowModals
 
 		' Dependencies
 		Private ReadOnly _databaseService As IDatabaseService
@@ -61,15 +62,33 @@ Namespace Start.LoginShell.ViewModels
 		Protected Overrides Sub OnViewReady( view As Object )
 			MyBase.OnViewReady( view )
 
-			SetUpConnection()
+			SetUpConnectionAsync()
 		End Sub
 
-		Private Async Sub SetUpConnection()
+		Private Sub SetUpConnection()
+			Dim result = _databaseService.CheckDatabaseConnection( My.Settings.ConnectionDataSource,
+			                                                       My.Settings.ConnectionCatalog )
+			If result
+				' reload database service
+				_databaseService.SetDatabaseConnection( My.Settings.ConnectionDataSource,
+				                                        My.Settings.ConnectionCatalog )
+				' show login screen
+				DisplayCode = 0
+			Else
+				' report error
+				ShowStaticTopNotification( StaticNotificationType.Error,
+				                           "Sự cố kết nối! Vui lòng kiểm tra lại thiết lập kết nối!" )
+				' show settings screen
+				DisplayCode = 1
+			End If
+		End Sub
+
+		Private Async Sub SetUpConnectionAsync()
 			' try connection
-			IoC.Get(Of IMainWindow).ShowStaticWindowDialog( New LoadingDialog( "Đang kiểm tra kết nối..." ) )
+			ShowStaticWindowDialog( New LoadingDialog( "Đang kiểm tra kết nối..." ) )
 			Dim result = Await _databaseService.CheckDatabaseConnectionAsync( My.Settings.ConnectionDataSource,
 			                                                                  My.Settings.ConnectionCatalog )
-			IoC.Get(Of IMainWindow).CloseStaticWindowDialog()
+			CloseStaticWindowDialog()
 
 			If result
 				' reload database service
@@ -79,8 +98,8 @@ Namespace Start.LoginShell.ViewModels
 				DisplayCode = 0
 			Else
 				' report error
-				IoC.Get(Of IMainWindow).ShowStaticTopNotification( StaticNotificationType.Error,
-				                                                "Sự cố kết nối! Vui lòng kiểm tra lại thiết lập kết nối!" )
+				ShowStaticTopNotification( StaticNotificationType.Error,
+				                           "Sự cố kết nối! Vui lòng kiểm tra lại thiết lập kết nối!" )
 				' show settings screen
 				DisplayCode = 1
 			End If
