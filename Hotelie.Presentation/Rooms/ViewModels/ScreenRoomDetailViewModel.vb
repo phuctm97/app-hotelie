@@ -1,7 +1,9 @@
 ﻿Imports Caliburn.Micro
+Imports Hotelie.Application.Rooms.Commands.UpdateRoom
 Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
-Imports Hotelie.Application.Rooms.Queries.GetRoomsList
+Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
+Imports Hotelie.Presentation.Start.MainWindow.Models
 Imports MaterialDesignThemes.Wpf
 
 Namespace Rooms.ViewModels
@@ -11,6 +13,7 @@ Namespace Rooms.ViewModels
 
 		' Dependencies
 		Private ReadOnly _getRoomCategoriesListQuery As IGetRoomCategoriesListQuery
+		Private ReadOnly _updateRoomCommand As IUpdateRoomCommand
 
 		Private _roomId As String
 		Private _roomName As String
@@ -31,10 +34,12 @@ Namespace Rooms.ViewModels
 		' Initialization
 
 		Sub New( workspace As RoomsWorkspaceViewModel,
-		         getRoomCategoriesListQuery As IGetRoomCategoriesListQuery )
+		         getRoomCategoriesListQuery As IGetRoomCategoriesListQuery,
+		         updateRoomCommand As IUpdateRoomCommand )
 
 			ParentWorkspace = workspace
 			_getRoomCategoriesListQuery = getRoomCategoriesListQuery
+			_updateRoomCommand = updateRoomCommand
 
 			InitRoomCategories( RoomCategories )
 
@@ -108,7 +113,11 @@ Namespace Rooms.ViewModels
 		' ReSharper disable once UnassignedGetOnlyAutoProperty
 		Public ReadOnly Property RoomCategories As IObservableCollection(Of RoomCategoryModel)
 
-		Public Sub SetRoom( id As String, name As String, categoryId As String, note As String, state As Integer )
+		Public Sub SetRoom( id As String,
+		                    name As String,
+		                    categoryId As String,
+		                    note As String,
+		                    state As Integer )
 			' Bind values
 			_roomId = id
 			RoomName = name
@@ -144,8 +153,20 @@ Namespace Rooms.ViewModels
 			If String.Equals( result, "THOÁT" )
 				ParentWorkspace.NavigateToScreenRoomsList()
 			ElseIf String.Equals( result, "LƯU & THOÁT" )
-
+				SaveChanges()
 			End If
+		End Sub
+
+		Public Sub SaveChanges()
+			If String.IsNullOrWhiteSpace( RoomName )
+				IoC.Get(Of IMainWindow).ShowStaticNotification( StaticNotificationType.Information, "Vui lòng nhập tên phòng!" )
+				Return
+			End If
+
+			IoC.Get(Of IMainWindow).ShowStaticDialog( New LoadingDialog() )
+			_updateRoomCommand.ExecuteAsync( _roomId, RoomName, RoomCategory.Id, RoomNote, RoomState )
+			IoC.Get(Of IMainWindow).CloseStaticDialog()
+			ParentWorkspace.NavigateToScreenRoomsList()
 		End Sub
 	End Class
 End Namespace

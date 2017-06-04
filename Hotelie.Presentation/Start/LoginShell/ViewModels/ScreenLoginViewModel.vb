@@ -37,12 +37,9 @@ Namespace Start.LoginShell.ViewModels
 
 			Dim err = String.Empty
 			Try
-
-				IoC.Get(Of IMainWindow).ShowStaticDialog(New LoadingDialog())
-				Dim result = Await _authentication.TryLoginAsync( username, password )
+				IoC.Get(Of IMainWindow).ShowStaticDialog( New LoadingDialog() )
+				err = (Await _authentication.TryLoginAsync( username, password )).FirstOrDefault()
 				IoC.Get(Of IMainWindow).CloseStaticDialog()
-
-				err = result.FirstOrDefault()
 			Catch ex As DatabaseConnectionFailedException
 				err = "Mất kết nối máy chủ. Không thể đăng nhập!"
 			Catch ex As Exception
