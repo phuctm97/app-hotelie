@@ -59,7 +59,7 @@
                                VerticalAlignment="Center"
                                Margin="16 0 0 4"
                                FontSize="36" FontWeight="Light"
-                               Text="Chi tiết thuê phòng" />
+                               Text="#T0001" />
 
                     <!--Delete button-->
                     <Button DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
@@ -88,11 +88,11 @@
                         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
                                    FontSize="15"
                                    Opacity="0.7"
-                                   Text="GIÁ" Margin="0 0 8 0" />
+                                   Text="ĐƠN GIÁ" Margin="0 0 8 0" />
                         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
                                    FontSize="15"
                                    Opacity="0.9"
-                                   Text="100, 000đ" />
+                                   Text="100,000đ" />
                     </StackPanel>
 
                     <!--Begin day-->
@@ -112,11 +112,11 @@
                         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
                                    FontSize="15"
                                    Opacity="0.7"
-                                   Text="ĐẾN" Margin="0 0 8 0" />
+                                   Text="ĐÃ Ở" Margin="0 0 8 0" />
                         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
                                    FontSize="15"
                                    Opacity="0.9"
-                                   Text="05/06/2017" />
+                                   Text="5 NGÀY" />
                     </StackPanel>
 
 
@@ -124,6 +124,81 @@
             </Grid>
 
         </materialDesign:ColorZone>
+
+        <StackPanel Grid.Row="1" Margin="4 0 4 0">
+            <!--Room-->
+            <StackPanel Margin="16 24 16 0">
+                <TextBlock Text="Phòng" IsEnabled="False"
+                           Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                           FontSize="15" Margin="0 0 0 4" />
+                <ComboBox materialDesign:HintAssist.Hint="Tên phòng"
+                          FontSize="35"
+                          ItemsSource="{Binding RoomCategories}"
+                          DisplayMemberPath="Name"
+                          SelectedItem="{Binding RoomCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <StackPanel Margin="16 24 16 0" Orientation="Horizontal">
+                <!--End date-->
+                <StackPanel>
+                    <TextBlock Text="Ngày dự kiến trả" IsEnabled="False"
+                               Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                               FontSize="15" Margin="0 0 0 4" />
+                    <DatePicker Width="100" HorizontalAlignment="Left"
+                                materialDesign:HintAssist.Hint="Future Date" />
+                </StackPanel>
+
+                <!--Room category-->
+                <StackPanel Margin="80 0 0 0">
+                    <TextBlock Text="Loại phòng" IsEnabled="False"
+                               Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                               FontSize="15" Margin="0 0 0 4" />
+                    <materialDesign:Chip
+                        Content="Loại phòng"
+                        FontSize="15"
+                        IconForeground="White">
+                        <materialDesign:Chip.Icon>
+                            <materialDesign:PackIcon
+                                Kind="HomeVariant"
+                                Width="24" Height="24" />
+                        </materialDesign:Chip.Icon>
+                    </materialDesign:Chip>
+                </StackPanel>
+
+            </StackPanel>
+
+            <StackPanel Margin="16 24 16 0">
+                <TextBlock Text="Danh sách khách hàng" IsEnabled="False"
+                           Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                           FontSize="15" Margin="0 0 0 4" />
+                <DataGrid CanUserSortColumns="False" CanUserAddRows="True" CanUserDeleteRows="True"
+                          CanUserResizeColumns="True" AutoGenerateColumns="False"
+                          materialDesign:DataGridAssist.CellPadding="13 8 8 8"
+                          materialDesign:DataGridAssist.ColumnHeaderPadding="8">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Số giấy tờ"
+                                            EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}" />
+                        <DataGridTextColumn Header="Tên"
+                                            EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}" />
+                        <materialDesign:MaterialDataGridComboBoxColumn Header="Loại khách" />
+                        <DataGridTextColumn Header="Địa chỉ"
+                                            EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+
+            <!--Commands-->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 16 0 0">
+                <Button DockPanel.Dock="Right" HorizontalAlignment="Right"
+                        Style="{DynamicResource MaterialDesignFlatAccentButton}"
+                        Content="THANH TOÁN"
+                        Margin="8" Height="36" Padding="8"
+                        cal:Message.Attach="PreviewOrder" />
+            </StackPanel>
+
+
+        </StackPanel>
+
 
     </Grid>
 </UserControl>

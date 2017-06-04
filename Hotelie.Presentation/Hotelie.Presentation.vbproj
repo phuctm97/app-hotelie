@@ -150,6 +150,9 @@
     <Compile Include="Common\Infrastructure\IRoomPresenter.vb" />
     <Compile Include="Common\IShell.vb" />
     <Compile Include="Common\IWindowCommandsBar.vb" />
+    <Compile Include="Leases\Converters\LeaseIdStringDisplayConverter.vb" />
+    <Compile Include="Leases\Converters\NumberOfUsedDaysDisplayConverters.vb" />
+    <Compile Include="Leases\Converters\TotalPriceDisplayConverter.vb" />
     <Compile Include="Leases\ViewModels\LeasesWorkspaceViewModel.vb" />
     <Compile Include="Leases\ViewModels\ScreenAddLeaseViewModel.vb" />
     <Compile Include="Leases\ViewModels\ScreenLeaseDetailViewModel.vb" />
