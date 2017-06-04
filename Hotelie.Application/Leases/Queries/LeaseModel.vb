@@ -13,6 +13,9 @@ Namespace Leases.Queries
         Private _customers As IObservableCollection(Of LeaseCustomerModel)
         Private _price As Decimal
         Private _totalPrice As Decimal
+        Private _extraCharge As Decimal
+        Private _customerCoefficient As Double
+        Private _extraCoefficient As Double
 
         Public Property Id As String
             Get
@@ -101,6 +104,39 @@ Namespace Leases.Queries
                 NotifyOfPropertyChange(Function() TotalPrice)
             End Set
         End Property
+
+        Public Property ExtraCharge As Decimal
+            Get
+                Return _extraCharge
+            End Get
+            Set
+                If Equals(Value, _extraCharge) Then Return
+                _extraCharge = Value
+                NotifyOfPropertyChange(Function() ExtraCharge)
+            End Set
+        End Property
+
+        Public Property CustomerCoefficient As Double
+            Get
+                Return _customerCoefficient
+            End Get
+            Set
+                If Equals(Value, _customerCoefficient) Then Return
+                _customerCoefficient = Value
+                NotifyOfPropertyChange(Function() CustomerCoefficient)
+            End Set
+        End Property
         
+        Public Property ExtraCoefficient As Double
+            Get
+                Return _extraCoefficient
+            End Get
+            Set
+                If Equals(Value, _extraCoefficient) Then Return
+                _extraCoefficient = Value
+                NotifyOfPropertyChange(Function() ExtraCoefficient)
+            End Set
+        End Property
+
     End Class
 End NameSpace
