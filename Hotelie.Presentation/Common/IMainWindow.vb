@@ -29,11 +29,13 @@ Namespace Common
 		Sub ShowStaticShellDialog( content As Object )
 
 		Sub CloseStaticShellDialog()
+
 		Sub ForceCloseStaticShellDialog()
 
 		Sub ShowStaticWindowDialog( content As Object )
 
 		Sub CloseStaticWindowDialog()
+
 		Sub ForceCloseStaticWindowDialog()
 
 		Sub DragMove()

@@ -8,10 +8,17 @@ Namespace Common.Controls
 	End Interface
 
 	Public Module WindowExtensions
+		Private ReadOnly LoadingDialog As LoadingDialog = New LoadingDialog()
+
 		< Extension >
 		Public Sub ShowStaticWindowDialog( component As INeedWindowModals,
 		                                   dialog As Object )
 			IoC.Get(Of IMainWindow).ShowStaticWindowDialog( dialog )
+		End Sub
+
+		< Extension >
+		Public Sub ShowStaticWindowLoadingDialog( component As INeedWindowModals )
+			IoC.Get(Of IMainWindow).ShowStaticWindowDialog( LoadingDialog )
 		End Sub
 
 		< Extension >
