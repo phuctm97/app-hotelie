@@ -63,7 +63,7 @@ Namespace Rooms.Factories.CreateRoom
             Return room
         End Function
 
-        Public Function ExecuteAsync(name As String, categoryId As String, note As String) As Task(Of RoomModel) Implements ICreateRoomFactory.ExecuteAsync
+        Public Async Function ExecuteAsync(name As String, categoryId As String, note As String) As Task(Of RoomModel) Implements ICreateRoomFactory.ExecuteAsync
             ' get category has Id = categoryId
             Dim category = Await _roomRepository.GetRoomCategoryAsync(categoryId)
 
