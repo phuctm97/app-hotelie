@@ -1,8 +1,10 @@
 ﻿Imports Caliburn.Micro
+Imports Hotelie.Application.Rooms.Commands.RemoveRoom
+Imports Hotelie.Application.Rooms.Commands.UpdateRoom
 Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
+Imports Hotelie.Application.Services.Infrastructure
 Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
-Imports Hotelie.Presentation.Infrastructure
 Imports Hotelie.Presentation.Start.MainWindow.Models
 Imports MaterialDesignThemes.Wpf
 
@@ -13,6 +15,8 @@ Namespace Rooms.ViewModels
 
 		' Dependencies
 		Private ReadOnly _getRoomCategoriesListQuery As IGetRoomCategoriesListQuery
+		Private ReadOnly _updateRoomCommand As IUpdateRoomCommand
+		Private ReadOnly _removeRoomCommand As IRemoveRoomCommand
 
 		' Backing fields
 		Private _roomId As String
@@ -32,10 +36,14 @@ Namespace Rooms.ViewModels
 
 		' Initialization
 		Sub New( workspace As RoomsWorkspaceViewModel,
-		         getRoomCategoriesListQuery As IGetRoomCategoriesListQuery )
+		         getRoomCategoriesListQuery As IGetRoomCategoriesListQuery,
+		         updateRoomCommand As IUpdateRoomCommand,
+		         removeRoomCommand As IRemoveRoomCommand )
 
 			ParentWorkspace = workspace
 			_getRoomCategoriesListQuery = getRoomCategoriesListQuery
+			_updateRoomCommand = updateRoomCommand
+			_removeRoomCommand = removeRoomCommand
 
 			InitRoomCategories( RoomCategories )
 
@@ -131,24 +139,24 @@ Namespace Rooms.ViewModels
 			_originalRoomNote = _roomNote
 		End Sub
 
-		Private Sub [Exit]()
-			ResetValues()
-			ParentWorkspace.NavigateToScreenRoomsList()
-		End Sub
-
-		Public Async Sub PreviewExit()
+		Public Async Function PreviewExit() As Task(Of Integer)
 			If CheckForPendingChanges()
 				Dim result = Await ConfirmExit()
 
 				If Equals( result, 1 )
-					PreviewSave()
-					Return
+					Return Await PreviewSave()
 				ElseIf Equals( result, 2 )
-					Return
+					Return 0
 				End If
 			End If
 
 			[Exit]()
+			Return 0
+		End Function
+
+		Private Sub [Exit]()
+			ResetValues()
+			ParentWorkspace.NavigateToScreenRoomsList()
 		End Sub
 
 		Private Function CheckForPendingChanges() As Boolean
@@ -175,19 +183,23 @@ Namespace Rooms.ViewModels
 		End Function
 
 		' Save
-		Public Sub PreviewSave()
-			If Not ValidateData() Then Return
-			Save()
-		End Sub
+		Public Async Function PreviewSave() As Task(Of Integer)
+			If ValidateData() Then Await Save()
+			Return 0
+		End Function
 
-		Private Sub Save()
+		Private Async Function Save() As Task(Of Integer)
 			' try update
 			IoC.Get(Of IMainWindow).ShowStaticWindowDialog( New LoadingDialog() )
+			
 			' TODO: call update here
+			IoC.Get(Of IInventory).OnRoomUpdated( _roomId, _roomName, _roomCategory.Id, _roomNote, _roomState )
+
 			IoC.Get(Of IMainWindow).CloseStaticWindowDialog()
 
 			[Exit]()
-		End Sub
+			Return 0
+		End Function
 
 		Private Function ValidateData() As Boolean
 			If String.IsNullOrWhiteSpace( RoomName )
@@ -200,13 +212,13 @@ Namespace Rooms.ViewModels
 		End Function
 
 		' Delete
-		Public Async Sub PreviewDelete()
+		Public Async Function PreviewDelete() As Task(Of Integer)
 			Dim result = Await ConfirmDelete()
 
-			If Equals( result, 0 )
-				Delete()
-			End If
-		End Sub
+			If Equals( result, 0 ) Then Await Delete()
+
+			Return 0
+		End Function
 
 		Private Async Function ConfirmDelete() As Task(Of Integer)
 			' show dialog
@@ -221,13 +233,16 @@ Namespace Rooms.ViewModels
 			Return 1
 		End Function
 
-		Private Sub Delete()
+		Private Async Function Delete() As Task(Of Integer)
 			' try update
 			IoC.Get(Of IMainWindow).ShowStaticWindowDialog( New LoadingDialog() )
+			
 			' TODO: call delete here
+
 			IoC.Get(Of IMainWindow).CloseStaticWindowDialog()
 
 			[Exit]()
-		End Sub
+			Return 0
+		End Function
 	End Class
 End Namespace

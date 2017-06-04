@@ -1,6 +1,13 @@
 ﻿
+Imports System.Runtime.CompilerServices
+Imports Caliburn.Micro
+Imports Hotelie.Application.Services.Infrastructure
 
 Namespace Infrastructure
+	Public Enum ChildInventoryType
+		RoomCollectionPresenter
+	End Enum
+
 	Public Class Inventory
 		Implements IInventory
 
@@ -29,8 +36,19 @@ Namespace Infrastructure
 			Next
 		End Sub
 
-		Public Sub Track( roomCollectionPresenter As IRoomCollectionPresenter ) Implements IInventory.Track
-			_roomCollectionPresenters.Add( roomCollectionPresenter )
+		Public Sub Track( childInventory As Object,
+		                  code As Integer ) Implements IInventory.Track
+			Select Case code
+				Case ChildInventoryType.RoomCollectionPresenter
+					_roomCollectionPresenters.Add( childInventory )
+			End Select
 		End Sub
 	End Class
+
+	Module InventoryExtensions
+		< Extension >
+		Public Sub RegisterInventory( roomCollectionPresenter As IRoomCollectionPresenter )
+			IoC.Get(Of IInventory).Track( roomCollectionPresenter, ChildInventoryType.RoomCollectionPresenter )
+		End Sub
+	End Module
 End Namespace
