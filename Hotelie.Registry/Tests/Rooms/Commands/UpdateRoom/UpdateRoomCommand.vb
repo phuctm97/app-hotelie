@@ -1,6 +1,6 @@
 ﻿Imports Hotelie.Application.Rooms.Commands.UpdateRoom
 
-Namespace Tests.Rooms.Commands
+Namespace Tests.Rooms.Commands.UpdateRoom
 	Public Class UpdateRoomCommand
 		Implements IUpdateRoomCommand
 
