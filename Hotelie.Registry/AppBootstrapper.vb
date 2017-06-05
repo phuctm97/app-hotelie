@@ -1,4 +1,6 @@
 ﻿Imports Caliburn.Micro
+Imports Hotelie.Application.Rooms.Commands.RemoveRoom
+Imports Hotelie.Application.Rooms.Commands.UpdateRoom
 Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
 Imports Hotelie.Application.Rooms.Queries.GetRoomsList
 Imports Hotelie.Application.Services.Authentication
@@ -36,6 +38,10 @@ Public Class AppBootstrapper
 		_container.RegisterType _
 			(Of IGetRoomCategoriesListQuery, Tests.Rooms.Queries.GetRoomCategoriesList.GetRoomCategoriesListQuery)(
 				New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IUpdateRoomCommand, Tests.Rooms.Commands.UpdateRoomCommand)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IRemoveRoomCommand, Tests.Rooms.Commands.RemoveRoomCommand)(
+			New ContainerControlledLifetimeManager() )
 	End Sub
 
 	Protected Overrides Function GetInstance( service As Type,

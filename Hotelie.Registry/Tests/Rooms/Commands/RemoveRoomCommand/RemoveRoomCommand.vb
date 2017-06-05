@@ -1,6 +1,6 @@
 ﻿Imports Hotelie.Application.Rooms.Commands.RemoveRoom
 
-Namespace Tests.Room.Commands
+Namespace Tests.Rooms.Commands
 	Public Class RemoveRoomCommand
 		Implements IRemoveRoomCommand
 
