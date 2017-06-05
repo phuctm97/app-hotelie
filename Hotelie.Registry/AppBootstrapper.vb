@@ -1,4 +1,5 @@
 ﻿Imports Caliburn.Micro
+Imports Hotelie.Application.Leases.Queries
 Imports Hotelie.Application.Rooms.Commands.RemoveRoom
 Imports Hotelie.Application.Rooms.Commands.UpdateRoom
 Imports Hotelie.Application.Rooms.Factories.CreateRoom
@@ -44,6 +45,9 @@ Public Class AppBootstrapper
 		_container.RegisterType(Of IRemoveRoomCommand, Tests.Rooms.Commands.RemoveRoom.RemoveRoomCommand)(
 			New ContainerControlledLifetimeManager() )
 		_container.RegisterType(Of ICreateRoomFactory, Tests.Rooms.Factories.CreateRoom.CreateRoomFactory)(
+			New ContainerControlledLifetimeManager() )
+
+		_container.RegisterType(Of IGetLeasesListQuery, Tests.Leases.Queries.GetLeasesList.GetLeasesListQuery)(
 			New ContainerControlledLifetimeManager() )
 	End Sub
 

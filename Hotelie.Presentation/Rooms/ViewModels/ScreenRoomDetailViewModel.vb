@@ -75,10 +75,10 @@ Namespace Rooms.ViewModels
 
 		Private Sub InitValues()
 			_roomId = String.Empty
-			_roomName = "Chưa có tên"
-			_roomCategory = RoomCategories.FirstOrDefault()
-			_roomNote = String.Empty
-			_roomState = 0
+			RoomName = "Chưa có tên"
+			RoomCategory = RoomCategories.FirstOrDefault()
+			RoomNote = String.Empty
+			RoomState = 0
 
 			_originalRoomName = _roomName
 			_originalRoomCategoryId = _roomCategory.Id

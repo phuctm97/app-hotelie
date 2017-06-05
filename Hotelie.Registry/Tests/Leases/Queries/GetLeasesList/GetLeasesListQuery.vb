@@ -5,7 +5,7 @@ Namespace Tests.Leases.Queries.GetLeasesList
 		Implements IGetLeasesListQuery
 
 		Public Function Execute() As IEnumerable(Of LeaseModel) Implements IGetLeasesListQuery.Execute
-			Return {}
+			Return LeasesTest.Leases
 		End Function
 
 		Public Async Function ExecuteAsync() As Task(Of IEnumerable(Of LeaseModel)) Implements IGetLeasesListQuery.ExecuteAsync
