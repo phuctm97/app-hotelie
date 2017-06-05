@@ -29,8 +29,7 @@ Namespace Tests.Services.Authentication
 		Public Async Function TryLoginAsync( username As String,
 		                                     password As String ) As Task(Of IEnumerable(Of String)) _
 			Implements IAuthentication.TryLoginAsync
-			TryLogin(username, password)
-			Return {}
+			Return Await Task.Run( Function() TryLogin( username, password ) )
 		End Function
 	End Class
 End Namespace
