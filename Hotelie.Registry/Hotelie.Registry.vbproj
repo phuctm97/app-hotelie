@@ -121,8 +121,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Tests\Rooms\Commands\RemoveRoomCommand\RemoveRoomCommand.vb" />
-    <Compile Include="Tests\Rooms\Commands\UpdateRoomCommand\UpdateRoomCommand.vb" />
+    <Compile Include="Tests\Rooms\Commands\RemoveRoom\RemoveRoomCommand.vb" />
+    <Compile Include="Tests\Rooms\Commands\UpdateRoom\UpdateRoomCommand.vb" />
+    <Compile Include="Tests\Rooms\Factories\CreateRoom\CreateRoomFactory.vb" />
     <Compile Include="Tests\Rooms\Queries\GetRoomCategoriesList\GetRoomCategoriesList.vb" />
     <Compile Include="Tests\Rooms\Queries\GetRoomsList\GetRoomsListQuery.vb" />
     <Compile Include="Tests\Rooms\RoomsTest.vb" />
