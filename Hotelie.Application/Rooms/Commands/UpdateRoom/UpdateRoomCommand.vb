@@ -25,7 +25,7 @@ Namespace Rooms.Commands.UpdateRoom
             _unitOfWork.Commit()
         End Sub
 
-        Public Async Sub ExecuteAsync(id As String, name As String, categoryId As String, note As String, state As Integer) Implements IUpdateRoomCommand.ExecuteAsync
+        Public Async Function ExecuteAsync(id As String, name As String, categoryId As String, note As String, state As Integer) As Task(Of Integer) Implements IUpdateRoomCommand.ExecuteAsync
             Dim room = Await _roomRepository.GetOneAsync(id)
             room.Name = name
             room.Note = note
@@ -34,7 +34,8 @@ Namespace Rooms.Commands.UpdateRoom
             Dim category = _roomRepository.GetRoomCategory(categoryId)
             room.Category = category
 
-            _unitOfWork.CommitAsync()
-        End Sub
+            Await _unitOfWork.CommitAsync()
+            Return 1
+        End Function
     End Class
 End NameSpace

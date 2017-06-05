@@ -20,13 +20,14 @@ Namespace Common
             End Try
         End Sub
 
-        Public Async Sub CommitAsync() Implements IUnitOfWork.CommitAsync
+        Public Async Function CommitAsync() As Task(Of Integer) Implements IUnitOfWork.CommitAsync
             Try
                 Await _databaseService.Context.SaveChangesAsync()
+                Return 1
             Catch
                 Throw New DatabaseConnectionFailedException
             End Try
-        End Sub
+        End Function
 
         Public Sub Dispose() Implements IDisposable.Dispose
             _databaseService.Context.Dispose()

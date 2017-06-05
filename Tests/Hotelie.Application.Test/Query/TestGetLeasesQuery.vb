@@ -105,7 +105,7 @@ Namespace Query
             For Each lease As Lease In _leasesList
                 Dim q = False
                 For Each leaseModel As LeaseModel In leases
-                    If (leaseModel.Id = lease.Id And leaseModel.RoomId = lease.Room.Id And leaseModel?.BillId = lease.Bill?.Id) Then
+                    If (leaseModel.Id = lease.Id) Then
                         q = True
                         Exit For
                     End If
