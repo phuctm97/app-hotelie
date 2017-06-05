@@ -56,7 +56,6 @@ Namespace Start.WorkspaceShell.ViewModels
 
 			' Add all screens
 			Items.Add( IoC.Get(Of RoomsWorkspaceViewModel)() )
-			Items.Add( IoC.Get(Of LeasesWorkspaceViewModel)() )
 			Items.Add( IoC.Get(Of BillsWorkspaceViewModel)() )
 		End Sub
 
