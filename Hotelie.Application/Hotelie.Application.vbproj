@@ -124,6 +124,7 @@
     <Compile Include="Services\Persistence\DatabaseConnectionFailedException.vb" />
     <Compile Include="Services\Persistence\IDatabaseContext.vb" />
     <Compile Include="Services\Persistence\IDatabaseService.vb" />
+    <Compile Include="Services\Persistence\ILeaseRepository.vb" />
     <Compile Include="Services\Persistence\IRepository.vb" />
     <Compile Include="Services\Persistence\IRoomRepository.vb" />
     <Compile Include="Services\Persistence\IUnitOfWork.vb" />
