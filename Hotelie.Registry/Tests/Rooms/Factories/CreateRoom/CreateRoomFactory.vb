@@ -13,6 +13,7 @@ Namespace Tests.Rooms.Factories.CreateRoom
 				Dim rc = RoomsTest.Rooms.FirstOrDefault( Function( r ) r.Id = newIdStr )
 
 				If IsNothing( rc ) Then Exit While
+				newId += 1
 			End While
 
 			Dim category = RoomsTest.RoomCategories.FirstOrDefault( Function( c ) c.Id = categoryId )
