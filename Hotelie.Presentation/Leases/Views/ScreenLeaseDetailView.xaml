@@ -41,7 +41,7 @@
                 <Button Grid.Row="0" Grid.Column="0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Margin="16 0 0 0" Style="{DynamicResource MaterialDesignToolButton}"
+                        Margin="16 24 0 0" Style="{DynamicResource MaterialDesignToolButton}"
                         cal:Message.Attach="PreviewExit">
                     <materialDesign:PackIcon Width="24" Height="24"
                                              Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
