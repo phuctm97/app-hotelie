@@ -26,6 +26,11 @@ Namespace Start.LoginShell.ViewModels
 		' Test connection
 		Public Sub PreviewTestConnection( dataSource As String,
 		                                  catalog As String )
+			TestConnection( dataSource, catalog )
+		End Sub
+
+		Public Sub PreviewTestConnectionAsync( dataSource As String,
+		                                       catalog As String )
 			TestConnectionAsync( dataSource, catalog )
 		End Sub
 
@@ -60,6 +65,11 @@ Namespace Start.LoginShell.ViewModels
 		' Apply connection
 		Public Sub PreviewApplyConnection( dataSource As String,
 		                                   catalog As String )
+			ApplyConnection( dataSource, catalog )
+		End Sub
+
+		Public Sub PreviewApplyConnectionAsync( dataSource As String,
+		                                        catalog As String )
 			ApplyConnectionAsync( dataSource, catalog )
 		End Sub
 

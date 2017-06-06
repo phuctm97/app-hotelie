@@ -28,6 +28,14 @@ Namespace Start.LoginShell.ViewModels
 		                         rememberAccount As Boolean )
 			If Not ValidateAccount( username, password ) Then Return
 
+			Login( username, password, rememberAccount )
+		End Sub
+
+		Public Sub PreviewLoginAsync( username As String,
+		                              password As String,
+		                              rememberAccount As Boolean )
+			If Not ValidateAccount( username, password ) Then Return
+
 			LoginAsync( username, password, rememberAccount )
 		End Sub
 

@@ -89,6 +89,15 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Leases\Commands\RemoveLeaseDetail\IRemoveLeaseDetailCommand.vb" />
+    <Compile Include="Leases\Commands\RemoveLease\IRemoveLeaseCommand.vb" />
+    <Compile Include="Leases\Commands\UpdateLeaseDetail\IUpdateLeaseDetailCommand.vb" />
+    <Compile Include="Leases\Commands\UpdateLease\IUpdateLeaseCommand.vb" />
+    <Compile Include="Leases\Factories\CreateLeaseDetail\ICreateLeaseDetailFactory.vb" />
+    <Compile Include="Leases\Factories\CreateLease\CreateLeaseDetailModel.vb" />
+    <Compile Include="Leases\Factories\CreateLease\ICreateLeaseFactory.vb" />
+    <Compile Include="Leases\Queries\GetCustomerCategoriesList\CustomerCategoriesListItemModel.vb" />
+    <Compile Include="Leases\Queries\GetCustomerCategoriesList\IGetCustomerCategoriesListQuery.vb" />
     <Compile Include="Leases\Queries\GetCustomerCategoryData\CustomerCategoryModel.vb" />
     <Compile Include="Leases\Queries\GetCustomerCategoryData\GetCustomerCategoryData.vb" />
     <Compile Include="Leases\Queries\GetCustomerCategoryData\IGetCustomerCategoryData.vb" />

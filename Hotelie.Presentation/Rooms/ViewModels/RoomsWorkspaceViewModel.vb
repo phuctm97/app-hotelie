@@ -87,9 +87,16 @@ Namespace Rooms.ViewModels
 			DisplayCode = 0
 		End Sub
 
-		Public Async Sub NavigateToScreenRoomDetail(
-		                                            roomsListItem As _
-			                                           Hotelie.Application.Rooms.Queries.GetRoomsList.RoomsListItemModel )
+		Public Sub NavigateToScreenRoomDetail( roomsListItem As _
+			                                     Hotelie.Application.Rooms.Queries.GetRoomsList.RoomsListItemModel )
+			If IsNothing( roomsListItem ) Then Return
+
+			ScreenRoomDetail.SetRoom( roomsListItem.Id )
+			DisplayCode = 1
+		End Sub
+
+		Public Async Sub NavigateToScreenRoomDetailAsync( roomsListItem As _
+			                                                Hotelie.Application.Rooms.Queries.GetRoomsList.RoomsListItemModel )
 			If IsNothing( roomsListItem ) Then Return
 
 			Await ScreenRoomDetail.SetRoomAsync( roomsListItem.Id )

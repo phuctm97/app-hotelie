@@ -1,11 +1,17 @@
 ﻿Imports Caliburn.Micro
+Imports Hotelie.Application.Leases.Commands.RemoveLease
+Imports Hotelie.Application.Leases.Commands.RemoveLeaseDetail
+Imports Hotelie.Application.Leases.Commands.UpdateLease
+Imports Hotelie.Application.Leases.Commands.UpdateLeaseDetail
+Imports Hotelie.Application.Leases.Factories.CreateLease
+Imports Hotelie.Application.Leases.Factories.CreateLeaseDetail
+Imports Hotelie.Application.Leases.Queries.GetCustomerCategoriesList
 Imports Hotelie.Application.Leases.Queries.GetLeaseData
 Imports Hotelie.Application.Leases.Queries.GetLeasesList
 Imports Hotelie.Application.Rooms.Commands.RemoveRoom
 Imports Hotelie.Application.Rooms.Commands.UpdateRoom
 Imports Hotelie.Application.Rooms.Factories.CreateRoom
 Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
-Imports Hotelie.Application.Rooms.Queries.GetRoomCategoryData
 Imports Hotelie.Application.Rooms.Queries.GetRoomData
 Imports Hotelie.Application.Rooms.Queries.GetRoomsList
 Imports Hotelie.Application.Rooms.Queries.GetSimpleRoomsList
@@ -41,9 +47,6 @@ Public Class AppBootstrapper
 
 		_container.RegisterType(Of IGetRoomDataQuery, Tests.Rooms.Queries.GetRoomData.GetRoomDataQuery)(
 			New ContainerControlledLifetimeManager() )
-		_container.RegisterType _
-			(Of IGetRoomCategoryDataQuery, Tests.Rooms.Queries.GetRoomCategoryData.GetRoomCategoryDataQuery)(
-				New ContainerControlledLifetimeManager() )
 		_container.RegisterType(Of IGetRoomsListQuery, Tests.Rooms.Queries.GetRoomsList.GetRoomsListQuery)(
 			New ContainerControlledLifetimeManager() )
 		_container.RegisterType(Of IGetSimpleRoomsListQuery, Tests.Rooms.Queries.GetSimpleRoomsList.GetSimpleRoomsListQuery)(
@@ -61,6 +64,24 @@ Public Class AppBootstrapper
 		_container.RegisterType(Of IGetLeasesListQuery, Tests.Leases.Queries.GetLeasesList.GetLeasesListQuery)(
 			New ContainerControlledLifetimeManager() )
 		_container.RegisterType(Of IGetLeaseDataQuery, Tests.Leases.Queries.GetLeaseData.GetLeaseDataQuery)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType _
+			(Of IGetCustomerCategoriesListQuery, Tests.Leases.Queries.GetCustomerCategoriesList.GetCustomerCategoriesListQuery)(
+				New ContainerControlledLifetimeManager() )
+		_container.RegisterType _
+			(Of IUpdateLeaseDetailCommand, Tests.Leases.Commands.UpdateLeaseDetail.UpdateLeaseDetailCommand)(
+				New ContainerControlledLifetimeManager() )
+		_container.RegisterType _
+			(Of IRemoveLeaseDetailCommand, Tests.Leases.Commands.RemoveLeaseDetail.RemoveLeaseDetailCommand)(
+				New ContainerControlledLifetimeManager() )
+		_container.RegisterType _
+			(Of ICreateLeaseDetailFactory, Tests.Leases.Factories.CreateLeaseDetail.CreateLeaseDetailFactory)(
+				New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IUpdateLeaseCommand, Tests.Leases.Commands.UpdateLease.UpdateLeaseCommand)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IRemoveLeaseCommand, Tests.Leases.Commands.RemoveLease.RemoveLeaseCommand)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of ICreateLeaseFactory, Tests.Leases.Factories.CreateLease.CreateLeaseFactory)(
 			New ContainerControlledLifetimeManager() )
 	End Sub
 

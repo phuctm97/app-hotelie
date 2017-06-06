@@ -24,13 +24,13 @@ Namespace Leases.Queries.GetLeaseDetailData
 
 		Public ReadOnly Property CustomerCategory As GetCustomerCategoryData.CustomerCategoryModel
 
-		Public ReadOnly Property LicenseId As String
+		Public ReadOnly Property CustomerLicenseId As String
 			Get
 				Return _entity.LicenseId
 			End Get
 		End Property
 
-		Public ReadOnly Property Address As String
+		Public ReadOnly Property CustomerAddress As String
 			Get
 				Return _entity.Address
 			End Get

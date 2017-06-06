@@ -245,7 +245,7 @@
                                                     Margin="8 4 4 8"
                                                     Style="{DynamicResource MaterialDesignFlatButton}"
                                                     Content="CHI TIẾT"
-                                                    cal:Message.Attach="NavigateToScreenRoomDetail($dataContext)" />
+                                                    cal:Message.Attach="NavigateToScreenRoomDetailAsync($dataContext)" />
                                             <Button DockPanel.Dock="Left"
                                                     HorizontalAlignment="Left"
                                                     Margin="15 4 4 8"

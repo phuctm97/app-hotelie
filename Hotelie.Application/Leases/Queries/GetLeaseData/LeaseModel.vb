@@ -8,9 +8,9 @@ Namespace Leases.Queries.GetLeaseData
 			_entity = entity
 			Room = new Rooms.Queries.GetRoomData.RoomModel( _entity.Room )
 
-			LeaseDetails = New List(Of GetLeaseDetailData.LeaseDetailModel)()
+			Details = New List(Of GetLeaseDetailData.LeaseDetailModel)()
 			For Each leaseDetail As LeaseDetail In _entity.LeaseDetails
-				LeaseDetails.Add( New GetLeaseDetailData.LeaseDetailModel( leaseDetail ) )
+				Details.Add( New GetLeaseDetailData.LeaseDetailModel( leaseDetail ) )
 			Next
 		End Sub
 
@@ -52,12 +52,12 @@ Namespace Leases.Queries.GetLeaseData
 			End Get
 		End Property
 
+		Public ReadOnly Property Details As List(Of GetLeaseDetailData.LeaseDetailModel)
         Public ReadOnly Property Paid As Byte
             Get
                 Return _entity.Paid
             End Get
         End Property
 
-		Public ReadOnly Property LeaseDetails As List(Of GetLeaseDetailData.LeaseDetailModel)
 	End Class
 End Namespace

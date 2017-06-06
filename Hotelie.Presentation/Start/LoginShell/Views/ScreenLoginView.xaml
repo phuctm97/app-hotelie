@@ -85,7 +85,7 @@
                         Content="Đăng nhập">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
-                            <cal:ActionMessage MethodName="PreviewLogin">
+                            <cal:ActionMessage MethodName="PreviewLoginAsync">
                                 <cal:Parameter Value="{Binding ElementName=AccountTextBox, Path=Text}" />
                                 <cal:Parameter Value="{Binding ElementName=PasswordStorage, Path=Text}" />
                                 <cal:Parameter Value="{Binding ElementName=RememberCheckBox, Path=IsChecked}" />
