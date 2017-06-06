@@ -124,22 +124,66 @@ Namespace Bills
         <TestMethod>
         Public Sub TestRemove_ValidBillId_BillWithIdRemoved()
             ' pre-act
-            DisposeBills()
-
-            ' input valid
-            Dim bill1 = New Bill() With {.Id = "0000001",.CustomerName="CustomerName1",.CustomerAddress="CustomerAddress1",.TotalExpense=200000}
-            Dim bill2 = New Bill() With {.Id = "0000002",.CustomerName="CustomerName2",.CustomerAddress="CustomerAddress2",.TotalExpense=3200000}
-            _databaseService.Context.Bills.Add(bill1)
-            _databaseService.Context.Bills.Add(bill2)
+            InitBills()
 
             ' act
-            _billRepository.Remove(bill1)
-
+            _billRepository.Remove(_billsList(0))
             _databaseService.Context.SaveChanges()
-            ' Assery
-            Assert.IsTrue(1)
+
+            ' assert
+            Dim result = _databaseService.Context.Bills.ToList()
+
+            Assert.IsFalse((result.Exists(Function(p)p.Id = _billsList(0).Id)) Or _
+                           (result.Where(Function(p)p.CustomerAddress= _billsList(0).CustomerAddress).Count>0) Or _
+                           (result.Where(Function(p)p.TotalExpense = _billsList(0).TotalExpense).Count>0))
+
+
             ' rollback 
             DisposeBills
         End Sub
+
+        <TestMethod>
+        Public Sub TestRemoveAll__BillCountEqualsZero()
+            ' pre-act
+            InitBills()
+
+            ' act
+            _billRepository.RemoveRange(_databaseService.Context.Bills)
+            _databaseService.Context.SaveChanges()
+
+            ' Assert
+            Dim result = _databaseService.Context.Bills.ToList()
+            Assert.IsTrue(result.Count = 0)
+            Assert.IsFalse(result.Any(Function (p) p.Id = _billsList(0).Id))
+            Assert.IsFalse(result.Any(Function (p) p.CustomerAddress = _billsList(0).CustomerAddress))
+
+            ' rollback 
+            DisposeBills
+        End Sub
+
+        <TestMethod>
+        Public Sub TestFind_ValidBillId_BillReturn()
+            ' pre-act
+            InitBills()
+
+            ' input
+            Dim index = 1
+            Dim bill = _billsList(index)
+
+            ' act
+            Dim billFound = _billRepository.Find(Function(p)p.Id = bill.Id).FirstOrDefault
+
+            ' Assert
+            Dim result = _databaseService.Context.Bills.ToList()
+            
+            Assert.IsNotNull(billFound)
+            Assert.AreEqual(bill.CustomerAddress, billFound.CustomerAddress)
+            Assert.AreEqual(bill.id, billFound.id)
+            Assert.AreEqual(bill.CustomerName, billFound.CustomerName)
+            ' rollback 
+            DisposeBills
+        End Sub
+
+
     End Class
 End NameSpace
