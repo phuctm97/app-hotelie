@@ -219,12 +219,22 @@
                                     <TextBlock Text="Loại khách" FontSize="18" FontWeight="Bold" />
                                 </materialDesign:MaterialDataGridComboBoxColumn.Header>
                             </materialDesign:MaterialDataGridComboBoxColumn>
-                            <DataGridTextColumn EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}"
-                                                Binding="{Binding CustomerAddress}">
+                            <DataGridTextColumn
+                                EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}"
+                                Binding="{Binding CustomerAddress}">
                                 <DataGridTextColumn.Header>
                                     <TextBlock Text="Địa chỉ" FontSize="18" FontWeight="Bold" />
                                 </DataGridTextColumn.Header>
                             </DataGridTextColumn>
+                            <DataGridTemplateColumn >
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Command="Delete" Style="{DynamicResource MaterialDesignToolButton}">
+                                            <materialDesign:PackIcon Kind="Close" />
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>

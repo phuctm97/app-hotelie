@@ -7,9 +7,11 @@ Imports Hotelie.Application.Leases.Factories.CreateLeaseDetail
 Imports Hotelie.Application.Leases.Queries.GetCustomerCategoriesList
 Imports Hotelie.Application.Leases.Queries.GetLeaseData
 Imports Hotelie.Application.Leases.Queries.GetLeaseDetailData
+Imports Hotelie.Application.Rooms.Queries.GetRoomData
 Imports Hotelie.Application.Rooms.Queries.GetSimpleRoomsList
 Imports Hotelie.Application.Services.Infrastructure
 Imports Hotelie.Presentation.Common.Controls
+Imports Hotelie.Presentation.Infrastructure
 Imports Hotelie.Presentation.Leases.Models
 Imports Hotelie.Presentation.Start.MainWindow.Models
 
@@ -18,6 +20,7 @@ Namespace Leases.ViewModels
 		Inherits PropertyChangedBase
 		Implements IChild(Of LeasesWorkspaceViewModel)
 		Implements INeedWindowModals
+		Implements IRoomsListPresenter
 
 		' Dependencies
 		Private ReadOnly _getLeaseDataQuery As IGetLeaseDataQuery
@@ -36,6 +39,11 @@ Namespace Leases.ViewModels
 		Private _room As SimpleRoomsListItemModel
 		Private _expectedCheckoutDate As Date
 		Private _details As IObservableCollection(Of EditableLeaseDetailModel)
+
+		Private _originalroomUnitPrice As Decimal
+		Private _originalcheckinDate As Date
+		Private _originalroom As SimpleRoomsListItemModel
+		Private _originalexpectedCheckoutDate As Date
 		Private _originalDetails As IObservableCollection(Of EditableLeaseDetailModel)
 
 		Private _maxNumberOfUsers As Integer
@@ -168,13 +176,14 @@ Namespace Leases.ViewModels
 			_removeLeaseDetailCommand = removeLeaseDetailCommand
 			_createLeaseDetailFactory = createLeaseDetailFactory
 			_inventory = inventory
+			RegisterInventory()
 
 			Rooms = New BindableCollection(Of SimpleRoomsListItemModel)
 		End Sub
 
 		Public Sub Init()
 			Rooms.Clear()
-			Rooms.AddRange( _getSimpleRoomsListQuery.Execute() )
+			Rooms.AddRange( _getSimpleRoomsListQuery.Execute().Where( Function( r ) r.State = 0 ) )
 
 			CustomerCategories.Clear()
 			CustomerCategories.AddRange( _getCustomerCategoriesListQuery.Execute() )
@@ -183,7 +192,7 @@ Namespace Leases.ViewModels
 
 		Public Async Function InitAsync() As Task
 			Rooms.Clear()
-			Rooms.AddRange( Await _getSimpleRoomsListQuery.ExecuteAsync() )
+			Rooms.AddRange( (Await _getSimpleRoomsListQuery.ExecuteAsync()).Where( Function( r ) r.State = 0 ) )
 
 			CustomerCategories.Clear()
 			CustomerCategories.AddRange( Await _getCustomerCategoriesListQuery.ExecuteAsync() )
@@ -198,6 +207,11 @@ Namespace Leases.ViewModels
 			CheckinDate = Date.Now
 			ExpectedCheckoutDate = Date.Now
 			Details = New BindableCollection(Of EditableLeaseDetailModel)
+
+			_originalcheckinDate = CheckinDate
+			_originalexpectedCheckoutDate = ExpectedCheckoutDate
+			_originalroomUnitPrice = RoomUnitPrice
+			_originalroom = Room
 			_originalDetails = New BindableCollection(Of EditableLeaseDetailModel)
 		End Sub
 
@@ -207,6 +221,11 @@ Namespace Leases.ViewModels
 			CheckinDate = Date.Now
 			ExpectedCheckoutDate = Date.Now
 			Details.Clear()
+
+			_originalcheckinDate = CheckinDate
+			_originalexpectedCheckoutDate = ExpectedCheckoutDate
+			_originalroomUnitPrice = RoomUnitPrice
+			_originalroom = Room
 			_originalDetails.Clear()
 		End Sub
 
@@ -222,6 +241,11 @@ Namespace Leases.ViewModels
 			RoomUnitPrice = model.RoomPrice
 			CheckinDate = model.CheckinDate
 			ExpectedCheckoutDate = model.ExpectedCheckoutDate
+
+			_originalcheckinDate = CheckinDate
+			_originalexpectedCheckoutDate = ExpectedCheckoutDate
+			_originalroomUnitPrice = RoomUnitPrice
+			_originalroom = Room
 
 			Details.Clear()
 			_originalDetails.Clear()
@@ -291,7 +315,13 @@ Namespace Leases.ViewModels
 		End Sub
 
 		Private Function CheckForPendingChanges() As Boolean
-			Return True
+			If Not Equals( _originalcheckinDate, CheckinDate ) Then Return True
+			If Not Equals( _originalexpectedCheckoutDate, ExpectedCheckoutDate ) Then Return True
+			If Not Equals( _originalroomUnitPrice, RoomUnitPrice ) Then Return True
+			If Not Equals( _originalroom, Room ) Then Return True
+			If Not Equals( _originalDetails.Count, Details.Count ) Then Return True
+			If Details.Any( Function( d ) d.IsEdited ) Then Return True
+			Return False
 		End Function
 
 		Private Async Function ConfirmExit() As Task(Of Integer)
@@ -624,6 +654,56 @@ Namespace Leases.ViewModels
 
 		Private Sub OnDeleteFail( err As String )
 			ShowStaticBottomNotification( StaticNotificationType.Error, err )
+		End Sub
+
+		Public Sub OnRoomAdded( model As RoomModel ) Implements IRoomsListPresenter.OnRoomAdded
+			If model.State <> 0 Then Return
+
+			If Rooms.Any( Function( r ) r.Id = model.Id )
+				Throw New DuplicateWaitObjectException()
+			End If
+
+			Rooms.Add( New SimpleRoomsListItemModel With {
+				         .Id=model.Id,
+				         .CategoryName=model.Category.Name,
+				         .Name=model.Name,
+				         .State=0,
+				         .UnitPrice=model.Category.UnitPrice} )
+		End Sub
+
+		Public Sub OnRoomUpdated( model As RoomModel ) Implements IRoomsListPresenter.OnRoomUpdated
+			Dim roomToUpdate = Rooms.FirstOrDefault( Function( r ) r.Id = model.Id )
+			If IsNothing( roomToUpdate )
+				If model.State = 0
+					Rooms.Add( New SimpleRoomsListItemModel With {
+						         .Id=model.Id,
+						         .Name=model.Name,
+						         .CategoryName=model.Category.Name,
+						         .State=0,
+						         .UnitPrice=model.Category.UnitPrice} )
+				End If
+			Else
+				If model.State <> 0
+					Rooms.Remove( roomToUpdate )
+					If Equals( Room, roomToUpdate )
+						Room = Rooms.FirstOrDefault()
+					End If
+				Else
+					roomToUpdate.Name = model.Name
+					roomToUpdate.CategoryName = model.Category.Name
+					roomToUpdate.UnitPrice = model.Category.UnitPrice
+				End If
+			End If
+		End Sub
+
+		Public Sub OnRoomRemoved( id As String ) Implements IRoomsListPresenter.OnRoomRemoved
+			Dim roomToRemove = Rooms.FirstOrDefault( Function( r ) r.Id = id )
+			If IsNothing( roomToRemove ) Then Return
+
+			Rooms.Remove( roomToRemove )
+			If Equals(Room, roomToRemove)
+				Room = Rooms.FirstOrDefault()
+			End If
 		End Sub
 	End Class
 End Namespace

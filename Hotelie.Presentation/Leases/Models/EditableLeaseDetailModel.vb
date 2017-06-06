@@ -18,6 +18,7 @@ Namespace Leases.Models
 			Set
 				If IsNothing( Value ) OrElse Equals( Value, _id ) Then Return
 				_id = value
+				IsEdited = True
 				NotifyOfPropertyChange( Function() Id )
 			End Set
 		End Property
@@ -29,6 +30,7 @@ Namespace Leases.Models
 			Set
 				If IsNothing( Value ) OrElse Equals( Value, _customerName ) Then Return
 				_customerName = value
+				IsEdited = True
 				NotifyOfPropertyChange( Function() CustomerName )
 			End Set
 		End Property
@@ -40,6 +42,7 @@ Namespace Leases.Models
 			Set
 				If IsNothing( Value ) OrElse Equals( Value, _customerLicenseId ) Then Return
 				_customerLicenseId = value
+				IsEdited = True
 				NotifyOfPropertyChange( Function() CustomerLicenseId )
 			End Set
 		End Property
@@ -51,6 +54,7 @@ Namespace Leases.Models
 			Set
 				If IsNothing( Value ) OrElse Equals( Value, _customerAddress ) Then Return
 				_customerAddress = value
+				IsEdited = True
 				NotifyOfPropertyChange( Function() CustomerAddress )
 			End Set
 		End Property
@@ -62,9 +66,12 @@ Namespace Leases.Models
 			Set
 				If IsNothing( Value ) OrElse Equals( Value, _customerCategory ) Then Return
 				_customerCategory = value
+				IsEdited = True
 				NotifyOfPropertyChange( Function() CustomerCategory )
 			End Set
 		End Property
+
+		Public Property IsEdited As Boolean
 
 		Public Sub New()
 			Id = String.Empty
@@ -72,6 +79,7 @@ Namespace Leases.Models
 			CustomerLicenseId = String.Empty
 			CustomerAddress = String.Empty
 			CustomerCategory = New CustomerCategoriesListItemModel()
+			IsEdited = False
 		End Sub
 	End Class
 End Namespace
