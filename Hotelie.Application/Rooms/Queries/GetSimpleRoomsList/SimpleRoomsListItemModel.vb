@@ -8,6 +8,7 @@ Namespace Rooms.Queries.GetSimpleRoomsList
 		Private _name As String
 		Private _categoryName As String
 		Private _unitPrice As Decimal
+		Private _state As Integer
 
 		Public Property Id As String
 			Get
@@ -36,7 +37,7 @@ Namespace Rooms.Queries.GetSimpleRoomsList
 				Return _categoryName
 			End Get
 			Set
-				If IsNothing(Value) OrElse String.Equals( Value, _categoryName ) Then Return
+				If IsNothing( Value ) OrElse String.Equals( Value, _categoryName ) Then Return
 				_categoryName = value
 				NotifyOfPropertyChange( Function() CategoryName )
 			End Set
@@ -47,9 +48,20 @@ Namespace Rooms.Queries.GetSimpleRoomsList
 				Return _unitPrice
 			End Get
 			Set
-				If IsNothing(Value) OrElse Equals( Value, _unitPrice ) Then Return
+				If IsNothing( Value ) OrElse Equals( Value, _unitPrice ) Then Return
 				_unitPrice = value
 				NotifyOfPropertyChange( Function() UnitPrice )
+			End Set
+		End Property
+
+		Public Property State As Integer
+			Get
+				Return _state
+			End Get
+			Set
+				If IsNothing( Value ) OrElse Equals( Value, _state ) Then Return
+				_state = value
+				NotifyOfPropertyChange( Function() State )
 			End Set
 		End Property
 
@@ -58,6 +70,7 @@ Namespace Rooms.Queries.GetSimpleRoomsList
 			Name = String.Empty
 			CategoryName = String.Empty
 			UnitPrice = 0
+			State = 0
 		End Sub
 	End Class
 End Namespace

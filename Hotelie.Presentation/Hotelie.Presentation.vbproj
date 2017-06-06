@@ -145,6 +145,7 @@
     <Compile Include="Common\Converters\DecimalToCurrencyStringConverter.vb" />
     <Compile Include="Common\Converters\StringToUpperConverter.vb" />
     <Compile Include="Common\IMainWindow.vb" />
+    <Compile Include="Common\Infrastructure\ILeasesListPresenter.vb" />
     <Compile Include="Common\Infrastructure\Inventory.vb" />
     <Compile Include="Common\Infrastructure\IRoomsListPresenter.vb" />
     <Compile Include="Common\Infrastructure\IRoomPresenter.vb" />

@@ -5,6 +5,18 @@ Namespace Leases.Queries.GetLeasesList
 		Inherits PropertyChangedBase
 
 		Private _customerName As String
+		Private _id As String
+
+		Public Property Id As String
+			Get
+				Return _id
+			End Get
+			Set
+				If IsNothing( Value ) OrElse Equals( Value, _id ) Then Return
+				_id = value
+				NotifyOfPropertyChange( Function() Id )
+			End Set
+		End Property
 
 		Public Property CustomerName As String
 			Get
@@ -18,6 +30,7 @@ Namespace Leases.Queries.GetLeasesList
 		End Property
 
 		Public Sub New()
+			Id = String.Empty
 			CustomerName = String.Empty
 		End Sub
 	End Class

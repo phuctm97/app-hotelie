@@ -12,7 +12,8 @@ Namespace Tests.Rooms.Queries.GetSimpleRoomsList
 					        .Id=room.Id, 
 					        .Name=room.Name,
 					        .CategoryName=room.Category.Name,
-					        .UnitPrice=room.Category.Price} )
+					        .UnitPrice=room.Category.Price,
+									.State=room.State} )
 			Next
 
 			Return list

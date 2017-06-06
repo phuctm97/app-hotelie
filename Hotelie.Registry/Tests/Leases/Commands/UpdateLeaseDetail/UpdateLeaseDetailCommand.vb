@@ -10,7 +10,7 @@ Namespace Tests.Leases.Commands.UpdateLeaseDetail
 		                         customerLicenseId As String,
 		                         customerAddress As String,
 		                         customerCategoryId As String ) As String Implements IUpdateLeaseDetailCommand.Execute
-			Dim customerCategory = LeaseRepositoryTest.CustomerCategories.FirstOrDefault( Function( c ) c.Id = id )
+			Dim customerCategory = LeaseRepositoryTest.CustomerCategories.FirstOrDefault( Function( c ) c.Id = customerCategoryId )
 			If customerCategory Is Nothing Then Return "Không tìm thấy loại khách hàng tương ứng"
 
 			For Each lease As Lease In LeaseRepositoryTest.Leases

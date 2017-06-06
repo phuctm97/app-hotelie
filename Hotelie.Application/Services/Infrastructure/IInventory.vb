@@ -14,5 +14,17 @@
 		Sub OnRoomUpdated( id As String )
 
 		Function OnRoomUpdatedAsync( id As String ) As Task
+
+		Sub OnLeaseAdded( id As String )
+
+		Function OnLeaseAddedAsync( id As String ) As Task
+
+		Sub OnLeaseRemoved( id As String )
+
+		Function OnLeaseRemovedAsync( id As String ) As Task
+
+		Sub OnLeaseUpdated( id As String )
+
+		Function OnLeaseUpdatedAsync( id As String ) As Task
 	End Interface
 End Namespace
