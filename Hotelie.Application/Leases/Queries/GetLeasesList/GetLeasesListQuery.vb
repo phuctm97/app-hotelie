@@ -23,7 +23,7 @@ Namespace Leases.Queries.GetLeasesList
             For Each leasesListItemModel As LeasesListItemModel In leases
                 Dim lease = _leaseRepository.GetOne(leasesListItemModel.Id)
                 For Each leaseDetail As LeaseDetail In lease.LeaseDetails
-                    leasesListItemModel.Details.Add(New LeasesListItemDetailModel() With {.CustomerName = leaseDetail.CustomerName})
+                    leasesListItemModel.Details.Add(New LeasesListItemDetailModel() With {.CustomerName = leaseDetail.CustomerName,.Id=leaseDetail.Id})
                 Next
             Next
             Return leases

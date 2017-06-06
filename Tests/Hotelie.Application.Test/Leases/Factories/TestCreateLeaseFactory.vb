@@ -1,10 +1,15 @@
 ﻿Imports System.Globalization
 Imports Hotelie.Application.Leases.Factories
+Imports Hotelie.Application.Leases.Factories.CreateLease
+Imports Hotelie.Application.Leases.Factories.CreateLeaseDetail
 Imports Hotelie.Application.Leases.Queries
+Imports Hotelie.Application.Leases.Queries.GetLeasesList
 Imports Hotelie.Application.Services.Persistence
+Imports Hotelie.Domain.Leases
 Imports Hotelie.Domain.Rooms
 Imports Hotelie.Persistence.Common
 Imports Hotelie.Persistence.Leases
+Imports Hotelie.Persistence.Parameters
 Imports Hotelie.Persistence.Rooms
 
 Namespace Leases.Factories
@@ -15,18 +20,20 @@ Namespace Leases.Factories
         Private _roomRepository As RoomRepository
         Private _roomsList As List(Of Room)
         Private _unitOfWork As IUnitOfWork
-        Private _getLeasesQuery As GetLeasesListQuery
         Private _createLeaseFactory As ICreateLeaseFactory
+        Private _parameterRepository As IParameterRepository
+        Private _createLeaseDetailFactory As CreateLeaseDetailFactory
 
         <TestInitialize>
         Public Sub TestInitialize()
             _databaseService = New DatabaseService()
-            _databaseService.SetDatabaseConnection($"KHUONG-ASUS\SQLEXPRESS",$"HotelieDatabase")
+            _databaseService.SetDatabaseConnection($"KHUONG-ASUS\SQLEXPRESS", $"HotelieDatabase")
             _leaseRepository = new LeaseRepository(_databaseService)
             _roomRepository = New RoomRepository(_databaseService)
             _unitOfWork = New UnitOfWork(_databaseService)
-            _getLeasesQuery = New GetLeasesListQuery(_leaseRepository)
-            _createLeaseFactory = New CreateLeaseFactory(_leaseRepository, _unitOfWork, _roomRepository)
+            _parameterRepository = New ParameterRepository(_databaseService)
+            _createLeaseFactory = New CreateLeaseFactory(_leaseRepository,_roomRepository,_parameterRepository,_unitOfWork)
+            _createLeaseDetailFactory = New CreateLeaseDetailFactory(_leaseRepository,_unitOfWork)
         End Sub
 
         <TestCleanup>
@@ -37,14 +44,14 @@ Namespace Leases.Factories
         Public Sub LeasesInitialize()
             DisposeLeases()
 
-            Dim roomCategory = New RoomCategory() With {.Id = "00001", .Name="Annonymous", .Price=200000}
-
+            Dim roomCategory = New RoomCategory() With {.Id = "00001", .Name = "Annonymous", .Price = 200000}
+            _databaseService.Context.Parameters.Add(New Domain.Parameters.Parameter() With {.Id="00001",.MaximumCustomer=4,.CustomerCoefficient=0.5,.ExtraCoefficient=0.25})
             _roomRepository.AddRoomCategory(roomCategory)
             _databaseService.Context.SaveChanges()
 
-            Dim room1 = New Room() With {.Id="PH001",.Name="101",.Category=roomCategory,.State=0}
-            Dim room2 = New Room() With {.Id="PH002",.Name="201",.Category=roomCategory,.State=0}
-            Dim room3 = New Room() With {.Id="PH003",.Name="301",.Category=roomCategory,.State=0}
+            Dim room1 = New Room() With {.Id = "PH001", .Name = "101", .Category = roomCategory, .State = 0}
+            Dim room2 = New Room() With {.Id = "PH002", .Name = "201", .Category = roomCategory, .State = 0}
+            Dim room3 = New Room() With {.Id = "PH003", .Name = "301", .Category = roomCategory, .State = 0}
 
             _roomsList = New List(Of Room)
             _roomsList.Add(room1)
@@ -56,6 +63,8 @@ Namespace Leases.Factories
 
         Public Sub DisposeLeases()
             _roomsList?.Clear()
+            _databaseService.Context.Parameters.RemoveRange(_databaseService.Context.Parameters)
+            _databaseService.Context.CustomerCategories.RemoveRange(_databaseService.Context.CustomerCategories)
             _leaseRepository.RemoveRange(_leaseRepository.GetAll())
             _roomRepository.RemoveRange(_roomRepository.GetAll())
             _roomRepository.RemoveRoomCategories(_roomRepository.GetAllRoomCategories())
@@ -68,31 +77,27 @@ Namespace Leases.Factories
             ' pre-act
             LeasesInitialize()
 
-            ' Valid new lease info
-            Dim newId = "LS001"
-            Dim newRoomId = _roomsList(0).Id
-            Dim newBeginDate = DateTime.ParseExact("7/5/2016", "d/m/yyyy", CultureInfo.InvariantCulture)
-            Dim newEndDate = DateTime.ParseExact("8/5/2016", "d/m/yyyy", CultureInfo.InvariantCulture)
+            ' input
+            Dim cusCate= New CustomerCategory() With {.Id = "CUS01", .Name = "Khach", .Coefficient =1}
+            _databaseService.Context.CustomerCategories.Add(cusCate)
+            _databaseService.Context.SaveChanges() 
+
+            Dim leaseDetail1 = New CreateLeaseDetailModel() With{.CustomerName="Cus 1", .CustomerAddress="adr 1",.CustomerCategoryId=cusCate.Id,.CustomerLicenseId="lsc id"}
+            Dim leaseDetail2 = New CreateLeaseDetailModel() With{.CustomerName="Cus 2", .CustomerAddress="adr 21",.CustomerCategoryId=cusCate.Id,.CustomerLicenseId="lsc id"}
+            Dim leaseDetail3 = New CreateLeaseDetailModel() With{.CustomerName="Cus 31", .CustomerAddress="adr 421",.CustomerCategoryId=cusCate.Id,.CustomerLicenseId="lsc id"}
+            Dim details = New List(Of CreateLeaseDetailModel)
+            details.Add(leaseDetail1)
+            details.Add(leaseDetail2)
+            details.Add(leaseDetail3)
 
             ' act
-            Dim lease1 = _createLeaseFactory.Execute(newRoomId, newBeginDate, newEndDate)
-            Dim lease2 = _createLeaseFactory.Execute(newRoomId, newBeginDate, newEndDate)
-            Dim lease3 = _createLeaseFactory.Execute(newRoomId, newBeginDate, newEndDate)
-            Dim lease4 = _createLeaseFactory.Execute(newRoomId, newBeginDate, newEndDate)
-            Dim lease5 = _createLeaseFactory.Execute(newRoomId, newBeginDate, newEndDate)
+            Dim lease1 = _createLeaseFactory.Execute(_roomsList(0).Id,DateTime.Now(),DateTime.Now(),details)
+            
+            Dim leaseDetail4 = New CreateLeaseDetailModel() With{.CustomerName="Cus 4 1", .CustomerAddress="adr 31",.CustomerCategoryId=cusCate.Id,.CustomerLicenseId="lsc id"}
+            Dim k = _createLeaseDetailFactory.Execute(lease1,"NewCustomerFromFactory","12345678","Addressssssss","CUS01")
 
             ' assert
             Assert.IsNotNull(lease1)
-            Assert.IsNotNull(lease2)
-            Assert.IsNotNull(lease3)
-            Assert.IsNotNull(lease4)
-            Assert.IsNotNull(lease5)
-
-            Dim newLease = _leaseRepository.GetOne(newId)
-            Assert.AreEqual(_roomsList(0).Category.Price, newLease.Price)
-            Assert.AreEqual(newRoomId, newLease.Room.Id)
-            Assert.AreEqual(newRoomId, newLease.Room.Id)
-
 
             ' rollback
             DisposeLeases()

@@ -103,6 +103,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Parameters\ParameterConfiguration.vb" />
+    <Compile Include="Parameters\ParameterRepository.vb" />
     <Compile Include="Users\PermissionConfiguration.vb" />
     <Compile Include="Rooms\RoomCategoryConfiguration.vb" />
     <Compile Include="Rooms\RoomConfiguration.vb" />

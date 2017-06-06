@@ -1,4 +1,5 @@
-﻿Imports Hotelie.Domain.Rooms
+﻿Imports Hotelie.Domain.Parameters
+Imports Hotelie.Domain.Rooms
 
 Namespace Leases
     Public Class Lease
@@ -19,5 +20,11 @@ Namespace Leases
 
             Return unitPrice+expense
         End Function
+
+        Public Sub UpdateRules(regulation As Parameter, roomChanged As Room)
+            RoomPrice = roomChanged.Category.Price
+            ExtraCoefficient = regulation.CustomerCoefficient
+            CustomerCoefficient = regulation.ExtraCoefficient
+        End Sub
     End Class
 End Namespace

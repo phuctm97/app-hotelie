@@ -14,12 +14,25 @@ Namespace Leases
             _databaseService = databaseService
         End Sub
 
+        Public Sub RemoveLeaseDetail(leaseDetail As LeaseDetail) Implements ILeaseRepository.RemoveLeaseDetail
+            _databaseService.Context.LeaseDetails.Remove(leaseDetail)
+        End Sub
+
+
         Public Function GetCustomerCategories() As List(Of CustomerCategory) Implements ILeaseRepository.GetCustomerCategories
             Return _databaseService.Context.CustomerCategories.ToList()
         End Function
 
         Public Async Function GetCustomerCategoriesAsync() As Task(Of List(Of CustomerCategory)) Implements ILeaseRepository.GetCustomerCategoriesAsync
             Return Await _databaseService.Context.CustomerCategories.ToListAsync()
+        End Function
+
+        Public Function GetLeaseDetail(id As String) As LeaseDetail Implements ILeaseRepository.GetLeaseDetail
+            Return _databaseService.Context.LeaseDetails.FirstOrDefault(Function(p)p.Id = id)
+        End Function
+
+        Public Async Function GetLeaseDetailAsync(id As String) As Task(Of LeaseDetail) Implements ILeaseRepository.GetLeaseDetailAsync
+            Return Await _databaseService.Context.LeaseDetails.FirstOrDefaultAsync(Function(p)p.Id = id)
         End Function
 
         Public Function GetLeaseDetails() As List(Of LeaseDetail) Implements ILeaseRepository.GetLeaseDetails
