@@ -21,7 +21,7 @@ Namespace Tests.Leases.Factories.CreateLease
 			End While
 
 			Dim room = RoomRepositoryTest.Rooms.FirstOrDefault( Function( r ) r.Id = roomId )
-			If IsNothing( room ) Then Return "Không tìm thấy phòng tương ứng"
+			If IsNothing( room ) Then Return String.Empty
 
 			Dim newLease = New Lease With {.Id=newId.ToString(),
 				    .CheckinDate=checkinDate,
@@ -29,13 +29,14 @@ Namespace Tests.Leases.Factories.CreateLease
 				    .CustomerCoefficient=0,
 				    .ExtraCoefficient=0,
 				    .Room=room,
-				    .RoomPrice=room.Category.Price}
+				    .RoomPrice=room.Category.Price,
+						.LeaseDetails=New List(Of LeaseDetail)}
 			LeaseRepositoryTest.Leases.Add( newLease )
 
 			For Each model As CreateLeaseDetailModel In details
 				CreateLeaseDetail( newLease, model )
 			Next
-			Return String.Empty
+			Return newId.ToString()
 		End Function
 
 		Private Sub CreateLeaseDetail( leaseToAdd As Lease,

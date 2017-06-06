@@ -42,7 +42,7 @@ Namespace Tests.Leases
 					.ExtraCoefficient=0,
 					.CustomerCoefficient=0,
 					.RoomPrice=400000,
-					.Room=RoomRepositoryTest.Rooms( 1 ),
+					.Room=RoomRepositoryTest.Rooms( 3 ),
 					.LeaseDetails = New List(Of LeaseDetail) From {
 						New LeaseDetail With {.Id="3",
 							.CustomerName="Cristiano Ronaldo",
@@ -61,7 +61,7 @@ Namespace Tests.Leases
 					.ExtraCoefficient=0,
 					.CustomerCoefficient=0,
 					.RoomPrice=400000,
-					.Room=RoomRepositoryTest.Rooms( 2 ),
+					.Room=RoomRepositoryTest.Rooms( 6 ),
 					.LeaseDetails = New List(Of LeaseDetail) From {
 						New LeaseDetail With {.Id="5",
 							.CustomerName="Lionel Messi",

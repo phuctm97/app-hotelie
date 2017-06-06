@@ -42,7 +42,7 @@ Namespace Leases.ViewModels
 
 		Private _originalroomUnitPrice As Decimal
 		Private _originalcheckinDate As Date
-		Private _originalroom As SimpleRoomsListItemModel
+		Private _originalroomId As String
 		Private _originalexpectedCheckoutDate As Date
 		Private _originalDetails As IObservableCollection(Of EditableLeaseDetailModel)
 
@@ -183,7 +183,7 @@ Namespace Leases.ViewModels
 
 		Public Sub Init()
 			Rooms.Clear()
-			Rooms.AddRange( _getSimpleRoomsListQuery.Execute().Where( Function( r ) r.State = 0 ) )
+			Rooms.AddRange( _getSimpleRoomsListQuery.Execute() )
 
 			CustomerCategories.Clear()
 			CustomerCategories.AddRange( _getCustomerCategoriesListQuery.Execute() )
@@ -192,7 +192,7 @@ Namespace Leases.ViewModels
 
 		Public Async Function InitAsync() As Task
 			Rooms.Clear()
-			Rooms.AddRange( (Await _getSimpleRoomsListQuery.ExecuteAsync()).Where( Function( r ) r.State = 0 ) )
+			Rooms.AddRange( (Await _getSimpleRoomsListQuery.ExecuteAsync()) )
 
 			CustomerCategories.Clear()
 			CustomerCategories.AddRange( Await _getCustomerCategoriesListQuery.ExecuteAsync() )
@@ -211,13 +211,14 @@ Namespace Leases.ViewModels
 			_originalcheckinDate = CheckinDate
 			_originalexpectedCheckoutDate = ExpectedCheckoutDate
 			_originalroomUnitPrice = RoomUnitPrice
-			_originalroom = Room
+			_originalroomId = String.Empty
 			_originalDetails = New BindableCollection(Of EditableLeaseDetailModel)
 		End Sub
 
 		Private Sub ResetValues()
 			LeaseId = String.Empty
 			RoomUnitPrice = 0
+			Room = Rooms.FirstOrDefault()
 			CheckinDate = Date.Now
 			ExpectedCheckoutDate = Date.Now
 			Details.Clear()
@@ -225,7 +226,7 @@ Namespace Leases.ViewModels
 			_originalcheckinDate = CheckinDate
 			_originalexpectedCheckoutDate = ExpectedCheckoutDate
 			_originalroomUnitPrice = RoomUnitPrice
-			_originalroom = Room
+			_originalroomId = Room.Id
 			_originalDetails.Clear()
 		End Sub
 
@@ -233,6 +234,7 @@ Namespace Leases.ViewModels
 			Dim model = _getLeaseDataQuery.Execute( id )
 			If IsNothing( model ) Then Return
 
+			' add selected room to list
 			Dim roomItem = Rooms.FirstOrDefault( Function( r ) r.Id = model.Room.Id )
 			If IsNothing( roomItem ) Then Throw New EntryPointNotFoundException()
 
@@ -245,7 +247,7 @@ Namespace Leases.ViewModels
 			_originalcheckinDate = CheckinDate
 			_originalexpectedCheckoutDate = ExpectedCheckoutDate
 			_originalroomUnitPrice = RoomUnitPrice
-			_originalroom = Room
+			_originalroomId = Room.Id
 
 			Details.Clear()
 			_originalDetails.Clear()
@@ -261,6 +263,7 @@ Namespace Leases.ViewModels
 
 				editableModel.CustomerCategory = customerCategory
 				Details.Add( editableModel )
+				editableModel.IsEdited = False
 
 				' backup details for saving
 				Dim originalModel = New EditableLeaseDetailModel()
@@ -315,10 +318,10 @@ Namespace Leases.ViewModels
 		End Sub
 
 		Private Function CheckForPendingChanges() As Boolean
-			If Not Equals( _originalcheckinDate, CheckinDate ) Then Return True
-			If Not Equals( _originalexpectedCheckoutDate, ExpectedCheckoutDate ) Then Return True
+			If Not Equals( _originalcheckinDate.Date, CheckinDate.Date ) Then Return True
+			If Not Equals( _originalexpectedCheckoutDate.Date, ExpectedCheckoutDate.Date ) Then Return True
 			If Not Equals( _originalroomUnitPrice, RoomUnitPrice ) Then Return True
-			If Not Equals( _originalroom, Room ) Then Return True
+			If Not Equals( _originalroomId, Room.Id ) Then Return True
 			If Not Equals( _originalDetails.Count, Details.Count ) Then Return True
 			If Details.Any( Function( d ) d.IsEdited ) Then Return True
 			Return False
@@ -548,7 +551,7 @@ Namespace Leases.ViewModels
 				Return False
 			End If
 
-			If IsNothing( Room )
+			If IsNothing( Room ) OrElse String.IsNullOrWhiteSpace( Room.Id )
 				ShowStaticBottomNotification( StaticNotificationType.Information, "Vui lòng chọn phòng thuê" )
 				Return False
 			End If
@@ -657,8 +660,6 @@ Namespace Leases.ViewModels
 		End Sub
 
 		Public Sub OnRoomAdded( model As RoomModel ) Implements IRoomsListPresenter.OnRoomAdded
-			If model.State <> 0 Then Return
-
 			If Rooms.Any( Function( r ) r.Id = model.Id )
 				Throw New DuplicateWaitObjectException()
 			End If
@@ -667,33 +668,18 @@ Namespace Leases.ViewModels
 				         .Id=model.Id,
 				         .CategoryName=model.Category.Name,
 				         .Name=model.Name,
-				         .State=0,
+				         .State=model.State,
 				         .UnitPrice=model.Category.UnitPrice} )
 		End Sub
 
 		Public Sub OnRoomUpdated( model As RoomModel ) Implements IRoomsListPresenter.OnRoomUpdated
 			Dim roomToUpdate = Rooms.FirstOrDefault( Function( r ) r.Id = model.Id )
-			If IsNothing( roomToUpdate )
-				If model.State = 0
-					Rooms.Add( New SimpleRoomsListItemModel With {
-						         .Id=model.Id,
-						         .Name=model.Name,
-						         .CategoryName=model.Category.Name,
-						         .State=0,
-						         .UnitPrice=model.Category.UnitPrice} )
-				End If
-			Else
-				If model.State <> 0
-					Rooms.Remove( roomToUpdate )
-					If Equals( Room, roomToUpdate )
-						Room = Rooms.FirstOrDefault()
-					End If
-				Else
-					roomToUpdate.Name = model.Name
-					roomToUpdate.CategoryName = model.Category.Name
-					roomToUpdate.UnitPrice = model.Category.UnitPrice
-				End If
-			End If
+			If IsNothing( roomToUpdate ) Then Throw New EntryPointNotFoundException()
+
+			roomToUpdate.Name = model.Name
+			roomToUpdate.CategoryName = model.Category.Name
+			roomToUpdate.UnitPrice = model.Category.UnitPrice
+			roomToUpdate.State = model.State
 		End Sub
 
 		Public Sub OnRoomRemoved( id As String ) Implements IRoomsListPresenter.OnRoomRemoved
@@ -701,7 +687,7 @@ Namespace Leases.ViewModels
 			If IsNothing( roomToRemove ) Then Return
 
 			Rooms.Remove( roomToRemove )
-			If Equals(Room, roomToRemove)
+			If Equals( Room, roomToRemove )
 				Room = Rooms.FirstOrDefault()
 			End If
 		End Sub

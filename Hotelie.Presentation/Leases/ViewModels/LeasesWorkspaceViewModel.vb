@@ -43,7 +43,9 @@ Namespace Leases.ViewModels
 			              Hotelie.Application.Leases.Commands.RemoveLeaseDetail.IRemoveLeaseDetailCommand,
 		                createLeaseDetailFactory As _
 			              Hotelie.Application.Leases.Factories.CreateLeaseDetail.ICreateLeaseDetailFactory,
-		                inventory As IInventory )
+		                inventory As IInventory,
+		                createLeaseFactory As _
+			              Hotelie.Application.Leases.Factories.CreateLease.ICreateLeaseFactory )
 			ScreenLeasesList = New ScreenLeasesListViewModel( getLeasesListQuery )
 
 			ScreenLeaseDetail = New ScreenLeaseDetailViewModel( Me,
@@ -56,8 +58,11 @@ Namespace Leases.ViewModels
 			                                                    removeLeaseDetailCommand,
 			                                                    createLeaseDetailFactory,
 			                                                    inventory )
-
-			ScreenAddLease = New ScreenAddLeaseViewModel()
+			ScreenAddLease = New ScreenAddLeaseViewModel( Me,
+			                                              getSimpleRoomsListQuery,
+			                                              getCustomerCategoriesListQuery,
+			                                              createLeaseFactory,
+			                                              inventory )
 
 			DisplayName = "Thuê phòng"
 

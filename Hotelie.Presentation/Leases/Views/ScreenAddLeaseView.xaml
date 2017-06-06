@@ -1,12 +1,222 @@
 ﻿<UserControl x:Class="Leases.Views.ScreenAddLeaseView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Hotelie.Presentation"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             xmlns:commonConverters="clr-namespace:Hotelie.Presentation.Common.Converters"
+             xmlns:converters="clr-namespace:Hotelie.Presentation.Leases.Converters"
+             xmlns:viewModels="clr-namespace:Hotelie.Presentation.Leases.ViewModels"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="700" d:DesignWidth="1024">
+    <!--Resources-->
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <commonConverters:DecimalToCurrencyStringConverter x:Key="DecimalToCurrencyStringConverter" />
+            <commonConverters:DateTimeToShortDateStringConverter x:Key="DateTimeToShortDateStringConverter" />
+            <converters:LeaseIdStringDisplayConverter x:Key="LeaseIdStringDisplayConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <!--Content-->
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--Title bar-->
+        <materialDesign:ColorZone Grid.Row="0" Mode="PrimaryDark"
+                                  materialDesign:ShadowAssist.ShadowDepth="Depth2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="72" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!--Back button-->
+                <Button Grid.Row="0" Grid.Column="0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="16 24 0 0" Style="{DynamicResource MaterialDesignToolButton}"
+                        cal:Message.Attach="PreviewExitAsync">
+                    <materialDesign:PackIcon Width="24" Height="24"
+                                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                             Kind="KeyboardBackspace" />
+                </Button>
+
+                <!--Content-->
+                <DockPanel Grid.Row="0" Grid.Column="1" Margin="0 24 0 0">
+                    <!--Room name-->
+                    <Button HorizontalAlignment="Left" VerticalAlignment="Center"
+                            Content="{Binding Path=Room.Name}" />
+
+                    <!--Lease Id-->
+                    <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Margin="16 0 0 4"
+                               FontSize="36" FontWeight="Light"
+                               Text="PHIẾU THUÊ PHÒNG MỚI" />
+
+                    <!--Save button-->
+                    <Button DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
+                            Margin="8 0 16 0" Padding="8" Height="Auto"
+                            Style="{DynamicResource MaterialDesignToolButton}"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            FontSize="18"
+                            Content="LƯU"
+                            cal:Message.Attach="PreviewSaveAsync" />
+                </DockPanel>
+
+                <!--Content-->
+                <DockPanel Grid.Row="1" Grid.Column="1" Margin="0 0 0 20">
+
+                    <!--Room price-->
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   FontSize="15"
+                                   Opacity="0.7"
+                                   Text="ĐƠN GIÁ" Margin="0 0 8 0" />
+                        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   FontSize="15"
+                                   Opacity="0.9"
+                                   Text="{Binding Path=Room.UnitPrice, Converter={StaticResource DecimalToCurrencyStringConverter}}" />
+                    </StackPanel>
+
+                    <!--Begin day-->
+                    <StackPanel Margin="16 0 0 0" Orientation="Horizontal">
+                        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   FontSize="15"
+                                   Opacity="0.7"
+                                   Text="BẮT ĐẦU THUÊ" Margin="0 0 8 0" />
+                        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   FontSize="15"
+                                   Opacity="0.9"
+                                   Text="{Binding CheckinDate, Converter={StaticResource DateTimeToShortDateStringConverter}}" />
+                    </StackPanel>
+
+                </DockPanel>
+            </Grid>
+        </materialDesign:ColorZone>
+
+        <ScrollViewer Grid.Row="1" Margin="4 0 4 0" HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!--Room select-->
+                <StackPanel Margin="16 24 16 0">
+                    <TextBlock Text="Phòng" IsEnabled="False"
+                               Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                               FontSize="15" Margin="0 0 0 4" />
+                    <ComboBox materialDesign:HintAssist.Hint="Tên phòng"
+                              FontSize="35"
+                              ItemsSource="{Binding Rooms}"
+                              DisplayMemberPath="Name"
+                              SelectedItem="{Binding Room, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+
+                <!--Expected checkout day and room category-->
+                <StackPanel Margin="16 24 16 0" Orientation="Horizontal">
+                    <!--Expected checkout date-->
+                    <StackPanel>
+                        <TextBlock Text="Ngày dự kiến trả" IsEnabled="False"
+                                   Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                                   FontSize="15" Margin="0 0 0 4" />
+                        <DatePicker FontSize="15" Width="130" HorizontalAlignment="Left"
+                                    SelectedDate="{Binding ExpectedCheckoutDate, Mode=TwoWay}"
+                                    materialDesign:HintAssist.Hint="Ngày dự kiến trả" FirstDayOfWeek="Monday" />
+                    </StackPanel>
+
+                    <!--Room category-->
+                    <StackPanel Margin="80 0 0 0">
+                        <TextBlock Text="Loại phòng" IsEnabled="False"
+                                   Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                                   FontSize="15" Margin="0 0 0 4" />
+                        <materialDesign:Chip
+                            Content="{Binding Path=Room.CategoryName}"
+                            FontSize="15"
+                            IconForeground="White">
+                            <materialDesign:Chip.Icon>
+                                <materialDesign:PackIcon
+                                    Kind="HomeVariant"
+                                    Width="24" Height="24" />
+                            </materialDesign:Chip.Icon>
+                        </materialDesign:Chip>
+                    </StackPanel>
+
+                </StackPanel>
+
+                <!--Details-->
+                <StackPanel Margin="16 24 16 0">
+                    <TextBlock Text="Danh sách khách hàng" IsEnabled="False"
+                               Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                               FontSize="15" Margin="0 0 0 4" />
+                    <DataGrid CanUserSortColumns="False"
+                              CanUserAddRows="{Binding CanAddDetail}"
+                              CanUserDeleteRows="{Binding CanDeleteDetail}"
+                              CanUserResizeColumns="True" AutoGenerateColumns="False"
+                              materialDesign:DataGridAssist.CellPadding="13 8 8 8"
+                              materialDesign:DataGridAssist.ColumnHeaderPadding="8"
+                              ItemsSource="{Binding Details}"
+                              FontSize="15">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SizeChanged">
+                                <cal:ActionMessage MethodName="CheckNumberOfDetails" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}"
+                                Binding="{Binding CustomerLicenseId}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Số giấy tờ" FontSize="18" FontWeight="Bold" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn
+                                EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}"
+                                Binding="{Binding CustomerName}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Tên khách hàng" FontSize="18" FontWeight="Bold" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <materialDesign:MaterialDataGridComboBoxColumn
+                                ItemsSource="{Binding Source={x:Static viewModels:ScreenLeaseDetailViewModel.CustomerCategories}}"
+                                DisplayMemberPath="Name"
+                                SelectedValuePath="Id"
+                                SelectedItemBinding="{Binding CustomerCategory}">
+                                <materialDesign:MaterialDataGridComboBoxColumn.Header>
+                                    <TextBlock Text="Loại khách" FontSize="18" FontWeight="Bold" />
+                                </materialDesign:MaterialDataGridComboBoxColumn.Header>
+                            </materialDesign:MaterialDataGridComboBoxColumn>
+                            <DataGridTextColumn
+                                EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}"
+                                Binding="{Binding CustomerAddress}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Địa chỉ" FontSize="18" FontWeight="Bold" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Command="Delete" Style="{DynamicResource MaterialDesignToolButton}">
+                                            <materialDesign:PackIcon Kind="Close" />
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+
+            </StackPanel>
+        </ScrollViewer>
+
     </Grid>
 </UserControl>
