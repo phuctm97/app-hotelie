@@ -14,6 +14,14 @@ Namespace Leases
             _databaseService = databaseService
         End Sub
 
+        Public Function GetLeaseDetails() As List(Of LeaseDetail) Implements ILeaseRepository.GetLeaseDetails
+            Return _databaseService.Context.LeaseDetails().ToList()
+        End Function
+
+        Public Async Function GetLeaseDetailsAsync() As Task(Of List(Of LeaseDetail)) Implements ILeaseRepository.GetLeaseDetailsAsync
+            Return Await _databaseService.Context.LeaseDetails().ToListAsync()
+        End Function
+
         Public Overrides Function GetOne(id As Object) As Lease
             Dim  idString = CType(id, String)
             If idString Is Nothing Then Throw new Exception("Id must be string")
