@@ -29,12 +29,15 @@ Namespace Leases.ViewModels
 		Public Sub New( getLeasesListQuery As Hotelie.Application.Leases.Queries.GetLeasesList.IGetLeasesListQuery,
 		                getLeaseDataQuery As Hotelie.Application.Leases.Queries.GetLeaseData.IGetLeaseDataQuery,
 		                getSimpleRoomsListQuery As _
-			              Hotelie.Application.Rooms.Queries.GetSimpleRoomsList.IGetSimpleRoomsListQuery )
+			              Hotelie.Application.Rooms.Queries.GetSimpleRoomsList.IGetSimpleRoomsListQuery,
+		                getCustomerCategoriesListQuery As _
+			              Hotelie.Application.Leases.Queries.GetCustomerCategoriesList.IGetCustomerCategoriesListQuery )
 			ScreenLeasesList = New ScreenLeasesListViewModel( getLeasesListQuery )
 
 			ScreenLeaseDetail = New ScreenLeaseDetailViewModel( Me,
 			                                                    getLeaseDataQuery,
-			                                                    getSimpleRoomsListQuery )
+			                                                    getSimpleRoomsListQuery,
+			                                                    getCustomerCategoriesListQuery )
 
 			ScreenAddLease = New ScreenAddLeaseViewModel()
 

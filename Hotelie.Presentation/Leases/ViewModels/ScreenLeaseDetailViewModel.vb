@@ -1,8 +1,10 @@
 ﻿Imports Caliburn.Micro
+Imports Hotelie.Application.Leases.Queries.GetCustomerCategoriesList
 Imports Hotelie.Application.Leases.Queries.GetLeaseData
 Imports Hotelie.Application.Leases.Queries.GetLeaseDetailData
 Imports Hotelie.Application.Rooms.Queries.GetSimpleRoomsList
 Imports Hotelie.Presentation.Common.Controls
+Imports Hotelie.Presentation.Leases.Models
 Imports Hotelie.Presentation.Start.MainWindow.Models
 
 Namespace Leases.ViewModels
@@ -14,13 +16,16 @@ Namespace Leases.ViewModels
 		' Dependencies
 		Private ReadOnly _getLeaseDataQuery As IGetLeaseDataQuery
 		Private ReadOnly _getSimpleRoomsListQuery As IGetSimpleRoomsListQuery
+		Private ReadOnly _getCustomerCategoriesListQuery As IGetCustomerCategoriesListQuery
 
 		Private _leaseId As String
 		Private _roomUnitPrice As Decimal
 		Private _checkinDate As Date
 		Private _room As SimpleRoomsListItemModel
 		Private _expectedCheckoutDate As Date
-		Private _details As IObservableCollection(Of LeaseDetailModel)
+		Private _details As IObservableCollection(Of EditableLeaseDetailModel)
+
+		Private _maxNumberOfUsers As Integer
 
 		Public Property Parent As Object Implements IChild.Parent
 
@@ -97,27 +102,47 @@ Namespace Leases.ViewModels
 			End Set
 		End Property
 
-		Public Property Details As IObservableCollection(Of LeaseDetailModel)
+		Public Property Details As IObservableCollection(Of EditableLeaseDetailModel)
 			Get
 				Return _details
 			End Get
 			Set
-				If IsNothing( _details ) Or Equals( Value, _details ) Then Return
+				If IsNothing( Value ) Or Equals( Value, _details ) Then Return
 				_details = value
 				NotifyOfPropertyChange( Function() Details )
 			End Set
 		End Property
 
+		Public ReadOnly Property CanAddDetail As Boolean
+			Get
+				Return IsNothing( _details ) OrElse _details.Count < _maxNumberOfUsers
+			End Get
+		End Property
+
+		Public ReadOnly Property CanDeleteDetail As Boolean
+			Get
+				Return IsNothing( _details ) OrElse _details.Count > 0
+			End Get
+		End Property
+
 		Public ReadOnly Property Rooms As IObservableCollection(Of SimpleRoomsListItemModel)
+
+		Public Shared ReadOnly Property CustomerCategories As IObservableCollection(Of CustomerCategoriesListItemModel)
 
 		' Initialization
 
+		Shared Sub New()
+			CustomerCategories = New BindableCollection(Of CustomerCategoriesListItemModel)
+		End Sub
+
 		Public Sub New( workspace As LeasesWorkspaceViewModel,
 		                getLeaseDataQuery As IGetLeaseDataQuery,
-		                getSimpleRoomsListQuery As IGetSimpleRoomsListQuery )
+		                getSimpleRoomsListQuery As IGetSimpleRoomsListQuery,
+		                getCustomerCategoriesListQuery As IGetCustomerCategoriesListQuery )
 			ParentWorkspace = workspace
 			_getLeaseDataQuery = getLeaseDataQuery
 			_getSimpleRoomsListQuery = getSimpleRoomsListQuery
+			_getCustomerCategoriesListQuery = getCustomerCategoriesListQuery
 
 			Rooms = New BindableCollection(Of SimpleRoomsListItemModel)
 		End Sub
@@ -126,6 +151,8 @@ Namespace Leases.ViewModels
 			Rooms.Clear()
 			Rooms.AddRange( _getSimpleRoomsListQuery.Execute() )
 
+			CustomerCategories.Clear()
+			CustomerCategories.AddRange( _getCustomerCategoriesListQuery.Execute() )
 			InitValues()
 		End Sub
 
@@ -133,15 +160,19 @@ Namespace Leases.ViewModels
 			Rooms.Clear()
 			Rooms.AddRange( Await _getSimpleRoomsListQuery.ExecuteAsync() )
 
+			CustomerCategories.Clear()
+			CustomerCategories.AddRange( Await _getCustomerCategoriesListQuery.ExecuteAsync() )
 			InitValues()
 		End Function
 
 		Private Sub InitValues()
+			_maxNumberOfUsers = 4
 			LeaseId = String.Empty
-			Room = New SimpleRoomsListItemModel()
+			Room = Rooms.FirstOrDefault()
 			RoomUnitPrice = 0
 			CheckinDate = Date.Now
 			ExpectedCheckoutDate = Date.Now
+			Details = New BindableCollection(Of EditableLeaseDetailModel)
 		End Sub
 
 		Private Sub ResetValues()
@@ -149,6 +180,7 @@ Namespace Leases.ViewModels
 			RoomUnitPrice = 0
 			CheckinDate = Date.Now
 			ExpectedCheckoutDate = Date.Now
+			Details.Clear()
 		End Sub
 
 		Public Sub SetLease( id As String )
@@ -163,7 +195,26 @@ Namespace Leases.ViewModels
 			RoomUnitPrice = model.RoomPrice
 			CheckinDate = model.CheckinDate
 			ExpectedCheckoutDate = model.ExpectedCheckoutDate
-			Details = New BindableCollection(Of LeaseDetailModel)( model.Details )
+
+			Details.Clear()
+			For Each leaseDetailModel As LeaseDetailModel In model.Details
+				Dim editableModel = New EditableLeaseDetailModel()
+				editableModel.Id = leaseDetailModel.Id
+				editableModel.CustomerName = leaseDetailModel.CustomerName
+				editableModel.CustomerLicenseId = leaseDetailModel.CustomerLicenseId
+				editableModel.CustomerAddress = leaseDetailModel.CustomerAddress
+
+				Dim customerCategory = CustomerCategories.FirstOrDefault( Function( c ) c.Id = leaseDetailModel.CustomerCategory.Id )
+				If IsNothing( customerCategory ) Then Throw New EntryPointNotFoundException()
+
+				editableModel.CustomerCategory = customerCategory
+				Details.Add( editableModel )
+			Next
+		End Sub
+
+		Public Sub CheckNumberOfDetails()
+			NotifyOfPropertyChange( Function() CanAddDetail )
+			NotifyOfPropertyChange( Function() CanDeleteDetail )
 		End Sub
 
 		' Exit
@@ -203,7 +254,7 @@ Namespace Leases.ViewModels
 		End Sub
 
 		Private Function CheckForPendingChanges() As Boolean
-			Return False
+			Return True
 		End Function
 
 		Private Async Function ConfirmExit() As Task(Of Integer)

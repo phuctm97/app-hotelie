@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:Hotelie.Presentation"
              xmlns:commonConverters="clr-namespace:Hotelie.Presentation.Common.Converters"
              xmlns:converters="clr-namespace:Hotelie.Presentation.Leases.Converters"
+             xmlns:viewModels="clr-namespace:Hotelie.Presentation.Leases.ViewModels"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -71,7 +72,7 @@
                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                             FontSize="18"
                             Content="XÓA"
-                            cal:Message.Attach="PreviewDelete" />
+                            cal:Message.Attach="PreviewDeleteAsync" />
 
                     <!--Save button-->
                     <Button DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
@@ -80,7 +81,7 @@
                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                             FontSize="18"
                             Content="LƯU"
-                            cal:Message.Attach="PreviewSave" />
+                            cal:Message.Attach="PreviewSaveAsync" />
                 </DockPanel>
 
                 <!--Content-->
@@ -178,11 +179,19 @@
                 <TextBlock Text="Danh sách khách hàng" IsEnabled="False"
                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
                            FontSize="15" Margin="0 0 0 4" />
-                <DataGrid CanUserSortColumns="False" CanUserAddRows="True" CanUserDeleteRows="True"
+                <DataGrid CanUserSortColumns="False"
+                          CanUserAddRows="{Binding CanAddDetail}"
+                          CanUserDeleteRows="{Binding CanDeleteDetail}"
                           CanUserResizeColumns="True" AutoGenerateColumns="False"
                           materialDesign:DataGridAssist.CellPadding="13 8 8 8"
                           materialDesign:DataGridAssist.ColumnHeaderPadding="8"
                           ItemsSource="{Binding Details}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SizeChanged">
+                            <cal:ActionMessage MethodName="CheckNumberOfDetails" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Số giấy tờ"
                                             EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}"
@@ -191,8 +200,10 @@
                                             EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}"
                                             Binding="{Binding CustomerName}" />
                         <materialDesign:MaterialDataGridComboBoxColumn Header="Loại khách"
-                                                                       ItemsSourceBinding="{Binding CustomerCategories}"
-                                                                       SelectedItemBinding="{Binding CustomerCategory}"/>
+                                                                       ItemsSource="{Binding Source={x:Static viewModels:ScreenLeaseDetailViewModel.CustomerCategories}}"
+                                                                       DisplayMemberPath="Name"
+                                                                       SelectedValuePath="Id"
+                                                                       SelectedItemBinding="{Binding CustomerCategory}" />
                         <DataGridTextColumn Header="Địa chỉ"
                                             EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}"
                                             Binding="{Binding CustomerAddress}" />
