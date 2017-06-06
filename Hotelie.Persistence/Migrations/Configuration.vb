@@ -10,7 +10,7 @@ Namespace Migrations
         Inherits DbMigrationsConfiguration(Of Common.DatabaseContext)
 
         Public Sub New()
-            AutomaticMigrationsEnabled = False
+            AutomaticMigrationsEnabled = True
         End Sub
 
         Protected Overrides Sub Seed(context As Common.DatabaseContext)
