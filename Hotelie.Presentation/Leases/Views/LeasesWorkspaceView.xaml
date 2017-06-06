@@ -1,16 +1,45 @@
 ﻿<UserControl x:Class="Leases.Views.LeasesWorkspaceView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Hotelie.Presentation"
-             xmlns:viewModels="clr-namespace:Hotelie.Presentation.Leases.ViewModels"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignHeight="700" d:DesignWidth="1024">
-    <materialDesign:Card Margin="24">
-        <TextBlock Text="Thuê phòng" Margin="24"/>
-    </materialDesign:Card>
+             d:DesignHeight="600" d:DesignWidth="1024">
+    <materialDesign:Transitioner SelectedIndex="{Binding DisplayCode}" AutoApplyTransitionOrigins="True">
+
+        <materialDesign:TransitionerSlide>
+            <materialDesign:TransitionerSlide.BackwardWipe>
+                <materialDesign:CircleWipe />
+            </materialDesign:TransitionerSlide.BackwardWipe>
+            <materialDesign:TransitionerSlide.ForwardWipe>
+                <materialDesign:CircleWipe />
+            </materialDesign:TransitionerSlide.ForwardWipe>
+
+            <ContentControl cal:View.Model="{Binding ScreenLeasesList}" />
+        </materialDesign:TransitionerSlide>
+
+        <materialDesign:TransitionerSlide>
+            <materialDesign:TransitionerSlide.BackwardWipe>
+                <materialDesign:CircleWipe />
+            </materialDesign:TransitionerSlide.BackwardWipe>
+            <materialDesign:TransitionerSlide.ForwardWipe>
+                <materialDesign:CircleWipe />
+            </materialDesign:TransitionerSlide.ForwardWipe>
+            <ContentControl cal:View.Model="{Binding ScreenLeaseDetail}" />
+        </materialDesign:TransitionerSlide>
+
+        <materialDesign:TransitionerSlide>
+            <materialDesign:TransitionerSlide.BackwardWipe>
+                <materialDesign:CircleWipe />
+            </materialDesign:TransitionerSlide.BackwardWipe>
+            <materialDesign:TransitionerSlide.ForwardWipe>
+                <materialDesign:CircleWipe />
+            </materialDesign:TransitionerSlide.ForwardWipe>
+            <ContentControl cal:View.Model="{Binding ScreenAddLease}" />
+        </materialDesign:TransitionerSlide>
+    </materialDesign:Transitioner>
 </UserControl>

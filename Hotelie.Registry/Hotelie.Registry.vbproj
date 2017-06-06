@@ -121,9 +121,17 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Tests\Rooms\Commands\RemoveRoom\RemoveRoomCommand.vb" />
+    <Compile Include="Tests\Rooms\Commands\UpdateRoom\UpdateRoomCommand.vb" />
+    <Compile Include="Tests\Rooms\Factories\CreateRoom\CreateRoomFactory.vb" />
     <Compile Include="Tests\Rooms\Queries\GetRoomCategoriesList\GetRoomCategoriesList.vb" />
+    <Compile Include="Tests\Rooms\Queries\GetRoomCategoryData\GetRoomCategoryDataQuery.vb" />
+    <Compile Include="Tests\Rooms\Queries\GetRoomData\GetRoomDataQuery.vb" />
     <Compile Include="Tests\Rooms\Queries\GetRoomsList\GetRoomsListQuery.vb" />
+    <Compile Include="Tests\Rooms\Queries\GetSimpleRoomsList\GetSimpleRoomsListQuery.vb" />
+    <Compile Include="Tests\Rooms\RoomRepositoryTest.vb" />
     <Compile Include="Tests\Services\Authentication\Authentication.vb" />
+    <Compile Include="Tests\Services\Persistence\DatabaseService.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -150,6 +158,10 @@
     <ProjectReference Include="..\Hotelie.Application\Hotelie.Application.vbproj">
       <Project>{448cf32f-1323-4d4e-b28c-1dded33124d4}</Project>
       <Name>Hotelie.Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hotelie.Domain\Hotelie.Domain.vbproj">
+      <Project>{490CDDD6-1D75-43C7-972E-52569504050C}</Project>
+      <Name>Hotelie.Domain</Name>
     </ProjectReference>
     <ProjectReference Include="..\Hotelie.Persistence\Hotelie.Persistence.vbproj">
       <Project>{a74d47fe-984a-4efb-83fa-de23f848927d}</Project>

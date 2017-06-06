@@ -1,16 +1,26 @@
 ﻿Imports Caliburn.Micro
+Imports Hotelie.Application.Rooms.Commands.RemoveRoom
+Imports Hotelie.Application.Rooms.Commands.UpdateRoom
+Imports Hotelie.Application.Rooms.Factories.CreateRoom
 Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
+Imports Hotelie.Application.Rooms.Queries.GetRoomData
 Imports Hotelie.Application.Rooms.Queries.GetRoomsList
+Imports Hotelie.Application.Services.Infrastructure
+Imports Hotelie.Presentation.Common.Controls
 
 Namespace Rooms.ViewModels
 	Public Class RoomsWorkspaceViewModel
 		Inherits Screen
+		Implements INeedWindowModals
 
+		' Dependencies
 		Private _displayCode As Integer
 
 		Public ReadOnly Property ScreenRoomsList As ScreenRoomsListViewModel
 
-		Public ReadOnly Property ScreenRoomDetail As ScreenRoomDetailViewModel
+		Public Property ScreenRoomDetail As ScreenRoomDetailViewModel
+
+		Public Property ScreenAddRoom As ScreenAddRoomViewModel
 
 		Public Property DisplayCode As Integer
 			Get
@@ -24,25 +34,70 @@ Namespace Rooms.ViewModels
 		End Property
 
 		Public Sub New( getRoomsListQuery As IGetRoomsListQuery,
-		                getRoomCategoriesListQuery As IGetRoomCategoriesListQuery )
+		                getRoomCategoriesListQuery As IGetRoomCategoriesListQuery,
+		                getRoomDataQuery As IGetRoomDataQuery,
+		                createRoomFactory As ICreateRoomFactory,
+		                updateRoomCommand As IUpdateRoomCommand,
+		                removeRoomCommand As IRemoveRoomCommand,
+		                inventory As IInventory )
+			ScreenRoomsList = New ScreenRoomsListViewModel( getRoomsListQuery,
+			                                                getRoomCategoriesListQuery,
+			                                                removeRoomCommand,
+			                                                inventory )
+			ScreenRoomDetail = New ScreenRoomDetailViewModel( Me,
+			                                                  getRoomDataQuery,
+			                                                  getRoomCategoriesListQuery,
+			                                                  updateRoomCommand,
+			                                                  removeRoomCommand,
+			                                                  inventory )
+			ScreenAddRoom = New ScreenAddRoomViewModel( Me,
+			                                            getRoomCategoriesListQuery,
+			                                            createRoomFactory,
+			                                            inventory )
+
 			DisplayName = "Danh sách phòng"
 
-			ScreenRoomsList = New ScreenRoomsListViewModel( getRoomsListQuery, getRoomCategoriesListQuery )
+			DisplayCode = - 1
+		End Sub
 
-			ScreenRoomDetail = New ScreenRoomDetailViewModel( getRoomCategoriesListQuery )
+		Protected Overrides Async Sub OnInitialize()
+			MyBase.OnInitialize()
 
+			ShowStaticWindowLoadingDialog()
+			Await InitAsync()
+			Await Task.Delay( 100 ) 'allow binding
+			CloseStaticWindowDialog()
+		End Sub
+
+		Private Sub Init()
+			ScreenRoomsList.Init()
+			ScreenRoomDetail.Init()
+			ScreenAddRoom.Init()
 			DisplayCode = 0
 		End Sub
+
+		Private Async Function InitAsync() As Task
+			Await ScreenRoomsList.InitAsync()
+			Await ScreenRoomDetail.InitAsync()
+			Await ScreenAddRoom.InitAsync()
+			DisplayCode = 0
+		End Function
 
 		Public Sub NavigateToScreenRoomsList()
 			DisplayCode = 0
 		End Sub
 
-		Public Sub NavigateToScreenRoomDetail( room As RoomModel )
-			If IsNothing(room) Then Return
+		Public Async Sub NavigateToScreenRoomDetail(
+		                                            roomsListItem As _
+			                                           Hotelie.Application.Rooms.Queries.GetRoomsList.RoomsListItemModel )
+			If IsNothing( roomsListItem ) Then Return
 
-			ScreenRoomDetail.SetRoom( room.Id, room.Name, room.CategoryId, room.State, room.Note )
+			Await ScreenRoomDetail.SetRoomAsync( roomsListItem.Id )
 			DisplayCode = 1
+		End Sub
+
+		Public Sub NavigateToScreenAddRoom()
+			DisplayCode = 2
 		End Sub
 	End Class
 End Namespace

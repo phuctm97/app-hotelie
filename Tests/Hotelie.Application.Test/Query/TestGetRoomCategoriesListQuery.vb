@@ -58,8 +58,8 @@ Namespace Query
 
             For Each room As RoomCategory In _roomCategoriesList
                 Dim q = False
-                For Each rc As RoomCategoryModel In roomCategories
-                    If (room.Id= rc.Id And room.Price = rc.Price) Then 
+                For Each rc As RoomCategoriesListItemModel In roomCategories
+                    If (room.Id= rc.Id And room.Price = rc.UnitPrice) Then 
                         q = True
                         Exit For
                     End If

@@ -62,5 +62,13 @@ Namespace Start.LoginShell.Views
 
 			_previousAccountLength = accountBox.Text.Length
 		End Sub
+
+		Private Sub OnPasswordStorageLoaded( sender As Object,
+		                                     e As RoutedEventArgs )
+			If Not String.IsNullOrEmpty( PasswordStorage.Text )
+				PasswordTextBox.Password = PasswordStorage.Text
+				RememberCheckBox.IsChecked = True
+			End If
+		End Sub
 	End Class
 End Namespace

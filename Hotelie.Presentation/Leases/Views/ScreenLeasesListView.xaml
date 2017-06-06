@@ -1,0 +1,239 @@
+﻿<UserControl x:Class="Leases.Views.ScreenLeasesListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Hotelie.Presentation"
+             xmlns:commonConverters="clr-namespace:Hotelie.Presentation.Common.Converters"
+             xmlns:converters="clr-namespace:Hotelie.Presentation.Leases.Converters"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="700" d:DesignWidth="1024">
+    <!--Resources-->
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Flipper.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <commonConverters:DateTimeToShortDateStringConverter x:Key="DateTimeToShortDateStringConverter" />
+            <converters:LeaseIdStringDisplayConverter x:Key="LeaseIdStringDisplayConverter" />
+            <converters:TotalExpenseDisplayConverter x:Key="TotalExpenseDisplayConverter" />
+            <converters:NumberOfUsedDaysDisplayConverters x:Key="NumberOfUsedDaysDisplayConverters" />
+            <converters:NumberOfCustomersDisplayConverters x:Key="NumberOfCustomersDisplayConverters" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="1" />
+        </Grid.RowDefinitions>
+
+        <!--Rooms list-->
+        <ListBox Grid.Row="1" ItemsSource="{Binding Leases}">
+
+            <!--panel style-->
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Margin="10" Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+
+            <!--item style-->
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                    <Setter Property="Margin" Value="10" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <!--Container card-->
+                                <materialDesign:Card Width="350" Height="Auto"
+                                                     Foreground="{DynamicResource PrimaryHueMidForegroundBrush}">
+                                    <!--Container-->
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <!--Selector-->
+                                        <Rectangle x:Name="PART_Selector" Grid.Row="0" Grid.RowSpan="4"
+                                                   Grid.Column="0"
+                                                   Width="8"
+                                                   Fill="{DynamicResource SecondaryAccentBrush}"
+                                                   Visibility="Collapsed" />
+
+                                        <!--Main content-->
+                                        <Grid Grid.Row="0" Grid.Column="1"
+                                              Background="{DynamicResource PrimaryHueMidBrush}">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+
+                                            <!--Primary contents-->
+                                            <StackPanel Grid.Row="0"
+                                                        Margin="16 24 16 0">
+                                                <!--Id-->
+                                                <TextBlock Style="{DynamicResource MaterialDesignHeadlineTextBlock}"
+                                                           Text="{Binding Id, Converter={StaticResource LeaseIdStringDisplayConverter}}"
+                                                           Margin="0 0 8 0" />
+
+                                                <!--Sub content-->
+                                                <StackPanel Orientation="Horizontal">
+                                                    <!--Eslap date-->
+                                                    <TextBlock
+                                                        Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
+                                                        Text="{Binding CheckinDate, Converter={StaticResource NumberOfUsedDaysDisplayConverters}}"
+                                                        Opacity="0.65" />
+                                                    <TextBlock
+                                                        Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
+                                                        Text=". " Opacity="0.65" />
+                                                    <!--Total expense-->
+                                                    <TextBlock
+                                                        Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
+                                                        Text="{Binding TotalExpense, Converter={StaticResource TotalExpenseDisplayConverter}}"
+                                                        Opacity="0.65" />
+                                                </StackPanel>
+
+                                                <!--Room name-->
+                                                <Button Background="White"
+                                                        Foreground="{DynamicResource PrimaryHueMidBrush}"
+                                                        HorizontalAlignment="Left" Height="Auto" Margin="-4 20 0 0"
+                                                        Padding="8 4">
+                                                    <TextBlock Text="{Binding RoomName}" FontSize="24" />
+                                                </Button>
+                                            </StackPanel>
+
+                                            <!--Extra contents-->
+                                            <Grid Grid.Row="1"
+                                                  Margin="16 8 16 16">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="50" />
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="*" />
+                                                </Grid.RowDefinitions>
+
+                                                <!--Room category-->
+                                                <StackPanel Margin="0 0 4 4" Grid.Row="0" Grid.Column="0"
+                                                            Orientation="Horizontal">
+                                                    <materialDesign:PackIcon Kind="HomeVariant" Margin="0 0 8 0" />
+                                                    <TextBlock Margin="0 0 16 0" Text="{Binding RoomCategoryName}"
+                                                               FontWeight="Light" />
+                                                </StackPanel>
+
+                                                <!--Number of customers-->
+                                                <StackPanel Margin="0 0 0 4" Grid.Row="0" Grid.Column="1"
+                                                            Orientation="Horizontal">
+                                                    <materialDesign:PackIcon Kind="AccountMultiple"
+                                                                             Margin="0 0 8 0" />
+                                                    <TextBlock Text="{Binding Path=Details, Converter={StaticResource NumberOfCustomersDisplayConverters}}" FontWeight="Light" />
+                                                </StackPanel>
+
+                                                <!--Checkin date-->
+                                                <StackPanel Margin="0 4 4 4" Grid.Row="1" Grid.Column="0"
+                                                            Orientation="Horizontal">
+                                                    <materialDesign:PackIcon Kind="CalendarToday" Margin="0 0 8 0" />
+                                                    <TextBlock Margin="0 0 16 0"
+                                                               Text="{Binding CheckinDate, Converter={StaticResource DateTimeToShortDateStringConverter}}"
+                                                               FontWeight="Light" />
+                                                </StackPanel>
+
+                                                <!--Expected checkout date-->
+                                                <StackPanel Margin="0 4 0 4" Grid.Row="1" Grid.Column="1"
+                                                            Orientation="Horizontal">
+                                                    <materialDesign:PackIcon Kind="Calendar" Margin="0 0 8 0" />
+                                                    <TextBlock
+                                                        Text="{Binding ExpectedCheckoutDate, Converter={StaticResource DateTimeToShortDateStringConverter}}"
+                                                        FontWeight="Light" />
+                                                </StackPanel>
+                                            </Grid>
+
+                                            <StackPanel Grid.Row="2" Margin="16 0 0 0" HorizontalAlignment="Left">
+                                                <TextBlock Text="DANH SÁCH KHÁCH HÀNG" Margin="0 0 0 8" />
+                                                <Rectangle VerticalAlignment="Bottom" Height="4" Fill="White" />
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <!--Customers list-->
+                                        <ListBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Details}">
+                                            <ListBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel Margin="8 8 8 4" Orientation="Horizontal" />
+                                                </ItemsPanelTemplate>
+                                            </ListBox.ItemsPanel>
+
+                                            <ListBox.ItemContainerStyle>
+                                                <Style TargetType="ListBoxItem"
+                                                       BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                                                    <Setter Property="Margin" Value="4" />
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="ListBoxItem">
+                                                                <materialDesign:Chip FontSize="12"
+                                                                                     Content="{Binding CustomerName}">
+                                                                    <materialDesign:Chip.Icon>
+                                                                        <materialDesign:PackIcon Height="16" Width="16"
+                                                                                                 Kind="Account" />
+                                                                    </materialDesign:Chip.Icon>
+                                                                </materialDesign:Chip>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </ListBox.ItemContainerStyle>
+                                        </ListBox>
+
+                                        <Separator Grid.Row="2" Grid.Column="1"
+                                                   Style="{StaticResource MaterialDesignDarkSeparator}"
+                                                   Margin="8 0 8 0" />
+
+                                        <!--Action area-->
+                                        <DockPanel Grid.Row="3" Grid.Column="1">
+                                            <Button DockPanel.Dock="Left"
+                                                    HorizontalAlignment="Left"
+                                                    Margin="8 4 4 8"
+                                                    Style="{DynamicResource MaterialDesignFlatButton}"
+                                                    Content="CHI TIẾT" 
+                                                    cal:Message.Attach="NavigateToScreenLeaseDetail($dataContext)"/>
+                                            <Button DockPanel.Dock="Left"
+                                                    HorizontalAlignment="Left"
+                                                    Margin="15 4 4 8"
+                                                    Style="{DynamicResource MaterialDesignFlatAccentButton}"
+                                                    Content="THANH TOÁN" />
+                                        </DockPanel>
+                                    </Grid>
+                                </materialDesign:Card>
+
+                                <!--Triggers-->
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="PART_Selector" Property="Visibility" Value="Visible" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+    </Grid>
+</UserControl>

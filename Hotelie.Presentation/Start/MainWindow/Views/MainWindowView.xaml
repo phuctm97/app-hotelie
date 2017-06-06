@@ -27,9 +27,12 @@
     <!--Resources-->
     <Window.Resources>
         <ResourceDictionary>
+            <commonConverters:StringToUpperConverter x:Key="StringToUpperConverter" />
             <converters:WindowStateReverseNameConverter x:Key="WindowStateReverseNameConverter" />
             <converters:WindowStateReverseIconKindConverter x:Key="WindowStateReverseIconKindConverter" />
-            <commonConverters:StringToUpperConverter x:Key="StringToUpperConverter" />
+            <converters:StaticNotificationTypeToBooleanConverter x:Key="StaticNotificationTypeToBooleanConverter" />
+            <converters:StaticNotificationTypeToColorConverter x:Key="StaticNotificationTypeToColorConverter" />
+            <converters:StaticNotificationTypeToIconKindConverter x:Key="StaticNotificationTypeToIconKindConverter" />
         </ResourceDictionary>
     </Window.Resources>
 
@@ -37,94 +40,172 @@
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <cal:ActionMessage MethodName="SwitchShell">
-                <cal:Parameter Value="workspace-shell" />
+                <cal:Parameter Value="login-shell" />
             </cal:ActionMessage>
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
     <!--Content-->
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    <!--Static dialog-->
+    <materialDesign:DialogHost DialogContent="{Binding Path=StaticWindowDialog.Content}"
+                               IsOpen="{Binding Path=StaticWindowDialog.IsVisible}">
+        <!--Dynamic dialog-->
+        <materialDesign:DialogHost Identifier="window">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-        <!--Titlebar-->
-        <materialDesign:ColorZone x:Name="TitleBar"
-                                  Grid.Row="0"
-                                  Height="76"
-                                  materialDesign:ShadowAssist.ShadowDepth="Depth2"
-                                  Mode="PrimaryDark"
-                                  MouseLeftButtonDown="OnTitleBarLeftMouseDown"
-                                  MouseDoubleClick="OnTitleBarMouseDoubleClick">
-            <DockPanel>
-                <!--Icon-->
-                <Image DockPanel.Dock="Left" HorizontalAlignment="Left"
-                       Margin="16 0 0 0"
-                       Source="/Resources/Icons/icon.png" Height="58" />
+                <!--Titlebar-->
+                <materialDesign:ColorZone x:Name="TitleBar"
+                                          Grid.Row="0"
+                                          Height="76"
+                                          materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                                          Mode="PrimaryDark"
+                                          MouseLeftButtonDown="OnTitleBarLeftMouseDown"
+                                          MouseDoubleClick="OnTitleBarMouseDoubleClick">
+                    <DockPanel>
+                        <!--Icon-->
+                        <Image DockPanel.Dock="Left" HorizontalAlignment="Left"
+                               Margin="16 0 0 0"
+                               Source="/Resources/Icons/icon.png" Height="58" />
 
-                <!--Title-->
-                <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
-                           Margin="16 0 50 0"
-                           FontSize="23" FontWeight="UltraBold"
-                           Text="{Binding Title, Converter={StaticResource StringToUpperConverter}}" />
+                        <!--Title-->
+                        <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   Margin="16 0 50 0"
+                                   FontSize="23" FontWeight="UltraBold"
+                                   Text="{Binding Title, Converter={StaticResource StringToUpperConverter}}" />
 
-                <!--Window commands-->
-                <materialDesign:PopupBox DockPanel.Dock="Right"
-                                         HorizontalAlignment="Right" VerticalAlignment="Center"
-                                         Margin="8 0 8 0"
-                                         PlacementMode="BottomAndAlignRightEdges"
-                                         StaysOpen="False">
-                    <StackPanel Orientation="Vertical">
+                        <!--Window commands-->
+                        <materialDesign:PopupBox DockPanel.Dock="Right"
+                                                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                 Margin="8 0 8 0"
+                                                 PlacementMode="BottomAndAlignRightEdges"
+                                                 StaysOpen="False">
+                            <StackPanel Orientation="Vertical">
 
-                        <!--Toggle fullscreen-->
-                        <Button cal:Message.Attach="ToggleZoomState">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon VerticalAlignment="Center"
-                                                         Margin="0 0 8 0"
-                                                         Width="24" Height="24"
-                                                         Kind="{Binding WindowState, Converter={StaticResource WindowStateReverseIconKindConverter}}" />
-                                <TextBlock VerticalAlignment="Center"
-                                           Text="{Binding WindowState, Converter={StaticResource WindowStateReverseNameConverter}}" />
+                                <!--Toggle fullscreen-->
+                                <Button cal:Message.Attach="ToggleZoomState">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon VerticalAlignment="Center"
+                                                                 Margin="0 0 8 0"
+                                                                 Width="24" Height="24"
+                                                                 Kind="{Binding WindowState, Converter={StaticResource WindowStateReverseIconKindConverter}}" />
+                                        <TextBlock VerticalAlignment="Center"
+                                                   Text="{Binding WindowState, Converter={StaticResource WindowStateReverseNameConverter}}" />
+                                    </StackPanel>
+                                </Button>
+
+                                <!--Hide window-->
+                                <Button cal:Message.Attach="Hide">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon VerticalAlignment="Center"
+                                                                 Margin="0 0 8 0"
+                                                                 Width="24" Height="24"
+                                                                 Kind="WindowMinimize" />
+                                        <TextBlock VerticalAlignment="Center"
+                                                   Text="Ẩn" />
+                                    </StackPanel>
+                                </Button>
+
+                                <!--Close window-->
+                                <Button cal:Message.Attach="Close">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon VerticalAlignment="Center"
+                                                                 Margin="0 0 8 0"
+                                                                 Width="24" Height="24"
+                                                                 Kind="ExitToApp" />
+                                        <TextBlock VerticalAlignment="Center"
+                                                   Text="Thoát" />
+                                    </StackPanel>
+                                </Button>
                             </StackPanel>
-                        </Button>
+                        </materialDesign:PopupBox>
 
-                        <!--Hide window-->
-                        <Button cal:Message.Attach="Hide">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon VerticalAlignment="Center"
-                                                         Margin="0 0 8 0"
-                                                         Width="24" Height="24"
-                                                         Kind="WindowMinimize" />
-                                <TextBlock VerticalAlignment="Center"
-                                           Text="Ẩn" />
-                            </StackPanel>
-                        </Button>
+                        <!--Commands bar-->
+                        <ContentControl x:Name="CommandsBar"
+                                        DockPanel.Dock="Right" HorizontalAlignment="Right"
+                                        HorizontalContentAlignment="Right"
+                                        cal:View.Model="{Binding Path=Shell.CommandsBar}" />
+                    </DockPanel>
+                </materialDesign:ColorZone>
 
-                        <!--Close window-->
-                        <Button cal:Message.Attach="Close">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon VerticalAlignment="Center"
-                                                         Margin="0 0 8 0"
-                                                         Width="24" Height="24"
-                                                         Kind="ExitToApp" />
-                                <TextBlock VerticalAlignment="Center"
-                                           Text="Thoát" />
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
-                </materialDesign:PopupBox>
+                <!--Shell-->
+                <!--Static dialog-->
+                <materialDesign:DialogHost Grid.Row="1"
+                                           DialogContent="{Binding Path=StaticShellDialog.Content}"
+                                           IsOpen="{Binding Path=StaticShellDialog.IsVisible}">
+                    <!--Dynamic dialog-->
+                    <materialDesign:DialogHost Identifier="shell">
 
-                <!--Commands bar-->
-                <ContentControl x:Name="CommandsBar"
-                                DockPanel.Dock="Right" HorizontalAlignment="Right"
-                                HorizontalContentAlignment="Right"
-                                cal:View.Model="{Binding Path=Shell.CommandsBar}" />
-            </DockPanel>
-        </materialDesign:ColorZone>
+                        <!--Static notification-->
+                        <materialDesign:DrawerHost
+                            IsTopDrawerOpen="{Binding Path=StaticTopNotification.Type, Converter={StaticResource StaticNotificationTypeToBooleanConverter}}"
+                            IsBottomDrawerOpen="{Binding Path=StaticBottomNotification.Type, Converter={StaticResource StaticNotificationTypeToBooleanConverter}}">
 
-        <!--Shell-->
-        <ContentControl Grid.Row="1" cal:View.Model="{Binding Shell}" />
-    </Grid>
+                            <!--Notification-->
+                            <materialDesign:DrawerHost.TopDrawerContent>
+                                <DockPanel Margin="16 24 16 24">
 
+                                    <!--Icon-->
+                                    <Border DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                            Margin="0 0 16 0"
+                                            Width="32" Height="32"
+                                            CornerRadius="16">
+                                        <Border.Background>
+                                            <SolidColorBrush
+                                                Color="{Binding Path=StaticTopNotification.Type, Converter={StaticResource StaticNotificationTypeToColorConverter}}" />
+                                        </Border.Background>
+                                        <materialDesign:PackIcon HorizontalAlignment="Center"
+                                                                 VerticalAlignment="Center"
+                                                                 Width="24" Height="24"
+                                                                 Foreground="White"
+                                                                 Kind="{Binding Path=StaticTopNotification.Type, Converter={StaticResource StaticNotificationTypeToIconKindConverter}}" />
+                                    </Border>
+
+                                    <!--Display-->
+                                    <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
+                                               TextWrapping="Wrap"
+                                               Text="{Binding Path=StaticTopNotification.Text}" />
+                                </DockPanel>
+                            </materialDesign:DrawerHost.TopDrawerContent>
+                            <materialDesign:DrawerHost.BottomDrawerContent>
+                                <DockPanel Margin="16 24 16 24">
+
+                                    <!--Icon-->
+                                    <Border DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                            Margin="0 0 16 0"
+                                            Width="32" Height="32"
+                                            CornerRadius="16">
+                                        <Border.Background>
+                                            <SolidColorBrush
+                                                Color="{Binding Path=StaticBottomNotification.Type, Converter={StaticResource StaticNotificationTypeToColorConverter}}" />
+                                        </Border.Background>
+                                        <materialDesign:PackIcon HorizontalAlignment="Center"
+                                                                 VerticalAlignment="Center"
+                                                                 Width="24" Height="24"
+                                                                 Foreground="White"
+                                                                 Kind="{Binding Path=StaticBottomNotification.Type, Converter={StaticResource StaticNotificationTypeToIconKindConverter}}" />
+                                    </Border>
+
+                                    <!--Display-->
+                                    <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
+                                               TextWrapping="Wrap"
+                                               Text="{Binding Path=StaticBottomNotification.Text}" />
+                                </DockPanel>
+                            </materialDesign:DrawerHost.BottomDrawerContent>
+
+                            <!--Shell-->
+                            <ContentControl cal:View.Model="{Binding Shell}" />
+                        </materialDesign:DrawerHost>
+                    </materialDesign:DialogHost>
+                </materialDesign:DialogHost>
+            </Grid>
+        </materialDesign:DialogHost>
+    </materialDesign:DialogHost>
 </Window>

@@ -13,16 +13,23 @@ Namespace Tests.Services.Authentication
 			LoggedIn = False
 		End Sub
 
-		Public Iterator Function TryLogin( account As Account ) As IEnumerable(Of String) Implements IAuthentication.TryLogin
-			If account.Username <> "username"
+		Public Iterator Function TryLogin( username As String,
+		                                   password As String ) As IEnumerable(Of String) Implements IAuthentication.TryLogin
+			If username <> "username"
 				Yield "Tài khoản không tồn tại"
 			End If
 
-			If account.Password <> "password"
+			If password <> "password"
 				Yield "Sai mật khẩu"
 			End If
 
-			LoggedAccount = New Account With {.Username = account.Username, .Password = account.Password}
+			LoggedAccount = New Account With {.Username = username}
+		End Function
+
+		Public Async Function TryLoginAsync( username As String,
+		                                     password As String ) As Task(Of IEnumerable(Of String)) _
+			Implements IAuthentication.TryLoginAsync
+			Return Await Task.Run( Function() TryLogin( username, password ) )
 		End Function
 	End Class
 End Namespace

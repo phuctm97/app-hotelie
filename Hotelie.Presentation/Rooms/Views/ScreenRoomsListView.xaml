@@ -34,7 +34,7 @@
         </Grid.RowDefinitions>
 
         <!--Toolbar-->
-        <DockPanel Margin="24 24 24 8">
+        <DockPanel Grid.Row="0" Margin="24 24 24 8">
             <!--Clear button-->
             <Button DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
                     Margin="0" Padding="0"
@@ -163,7 +163,7 @@
                 <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
                     <Setter Property="Margin" Value="10" />
                     <Setter Property="Visibility"
-                            Value="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                            Value="{Binding IsFiltersMatched, Converter={StaticResource BooleanToVisibilityConverter}}" />
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="ListBoxItem">
@@ -201,7 +201,7 @@
                                             <TextBlock TextWrapping="Wrap"
                                                        Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
                                                        Foreground="{DynamicResource MaterialDesignBodyLight}"
-                                                       Text="{Binding Price, Converter={StaticResource DecimalToCurrencyStringConverter}}" />
+                                                       Text="{Binding UnitPrice, Converter={StaticResource DecimalToCurrencyStringConverter}}" />
                                         </StackPanel>
 
                                         <!--Action area 1-->
@@ -245,8 +245,7 @@
                                                     Margin="8 4 4 8"
                                                     Style="{DynamicResource MaterialDesignFlatButton}"
                                                     Content="CHI TIẾT"
-                                                    cal:Message.Attach="NavigateToScreenRoomDetail($dataContext)"/>
-
+                                                    cal:Message.Attach="NavigateToScreenRoomDetail($dataContext)" />
                                             <Button DockPanel.Dock="Left"
                                                     HorizontalAlignment="Left"
                                                     Margin="15 4 4 8"
@@ -273,7 +272,8 @@
         <Button Grid.Row="2" Style="{DynamicResource MaterialDesignFloatingActionAccentButton}"
                 HorizontalAlignment="Right"
                 ToolTip="Thêm phòng"
-                Margin="0 -119 32 0">
+                Margin="0 -119 32 0"
+                cal:Message.Attach="NavigateToScreenAddRoom">
             <materialDesign:PackIcon Width="24" Height="24"
                                      Kind="Plus" />
         </Button>

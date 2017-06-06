@@ -127,6 +127,7 @@
                 </materialDesign:PopupBox.ToggleContent>
 
                 <StackPanel Orientation="Vertical">
+                    
                     <!--Account detail-->
                     <Button>
                         <StackPanel Orientation="Horizontal">
@@ -150,16 +151,15 @@
                     </Button>
 
                     <!--Log out-->
-                    <Button>
+                    <Button cal:Message.Attach="PreviewLogout">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Logout"
                                                      VerticalAlignment="Center"
                                                      Width="24" Height="24"
                                                      Margin="0 0 8 0" />
-                            <TextBlock Text="Đăng xuất" VerticalAlignment="Center" />
+                            <TextBlock Text="Đăng xuất" VerticalAlignment="Center"></TextBlock>
                         </StackPanel>
                     </Button>
-
                 </StackPanel>
             </materialDesign:PopupBox>
         </StackPanel>
