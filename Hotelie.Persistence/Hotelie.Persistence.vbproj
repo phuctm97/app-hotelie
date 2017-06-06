@@ -118,6 +118,10 @@
       <DependentUpon>201706060921003_DbUpdate_bill_added.vb</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201706060921003_DbUpdate_bill_added.vb" />
+    <Compile Include="Migrations\201706061407467_DbUpdate_Lease_PropertyPaid.Designer.vb">
+      <DependentUpon>201706061407467_DbUpdate_Lease_PropertyPaid.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706061407467_DbUpdate_Lease_PropertyPaid.vb" />
     <Compile Include="Migrations\Configuration.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -167,6 +171,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706060921003_DbUpdate_bill_added.resx">
       <DependentUpon>201706060921003_DbUpdate_bill_added.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706061407467_DbUpdate_Lease_PropertyPaid.resx">
+      <DependentUpon>201706061407467_DbUpdate_Lease_PropertyPaid.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
