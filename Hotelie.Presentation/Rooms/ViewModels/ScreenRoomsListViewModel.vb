@@ -11,7 +11,8 @@ Namespace Rooms.ViewModels
 	Public Class ScreenRoomsListViewModel
 		Inherits PropertyChangedBase
 		Implements IRoomsListPresenter,
-		           INeedWindowModals
+		           INeedWindowModals,
+		           IChild(Of RoomsWorkspaceViewModel)
 
 		Private _rooms As IObservableCollection(Of RoomsListItemModel)
 		Private _filterRoomNamePrefix As String
@@ -27,6 +28,17 @@ Namespace Rooms.ViewModels
 		Private ReadOnly _getRoomCategoriesListQuery As IGetRoomCategoriesListQuery
 		Private ReadOnly _removeRoomCommand As IRemoveRoomCommand
 		Private ReadOnly _inventory As IInventory
+
+		Public Property Parent As Object Implements IChild.Parent
+
+		Public Property ParentWorkspace As RoomsWorkspaceViewModel Implements IChild(Of RoomsWorkspaceViewModel).Parent
+			Get
+				Return CType(Parent, RoomsWorkspaceViewModel)
+			End Get
+			Set
+				Parent = value
+			End Set
+		End Property
 
 		' Data
 		Public Property Rooms As IObservableCollection(Of RoomsListItemModel)
@@ -53,10 +65,12 @@ Namespace Rooms.ViewModels
 		Public ReadOnly Property RoomMaxPrices As IObservableCollection(Of Decimal)
 
 		' Initialization
-		Public Sub New( getRoomListsQuery As IGetRoomsListQuery,
+		Public Sub New( workspace As RoomsWorkspaceViewModel,
+										getRoomListsQuery As IGetRoomsListQuery,
 		                getRoomCategoriesListQuery As IGetRoomCategoriesListQuery,
 		                removeRoomCommand As IRemoveRoomCommand,
 		                inventory As IInventory )
+			ParentWorkspace = workspace
 			_getRoomListsQuery = getRoomListsQuery
 			_getRoomCategoriesListQuery = getRoomCategoriesListQuery
 			_removeRoomCommand = removeRoomCommand
@@ -380,6 +394,9 @@ Namespace Rooms.ViewModels
 						Rooms = New BindableCollection(Of RoomsListItemModel)( Rooms.OrderBy( Function( p ) p.State ) )
 					End If
 			End Select
+		End Sub
+
+		Public Sub PreviewHireAsync( roomModel As RoomsListItemModel )
 		End Sub
 
 		' Infrastructure

@@ -313,6 +313,7 @@ Namespace Rooms.ViewModels
 
 		' Delete
 		Public Async Sub PreviewDelete()
+			If Not ValidateDeleting() Then Return
 			Dim result = Await ConfirmDelete()
 
 			If Equals( result, 0 )
@@ -321,6 +322,7 @@ Namespace Rooms.ViewModels
 		End Sub
 
 		Public Async Sub PreviewDeleteAsync()
+			If Not ValidateDeleting() Then Return
 			Dim result = Await ConfirmDelete()
 
 			If Equals( result, 0 )
@@ -358,6 +360,7 @@ Namespace Rooms.ViewModels
 		End Sub
 
 		Private Async Sub DeleteAsync()
+			If Not ValidateDeleting() Then Return
 			' try update
 			ShowStaticWindowLoadingDialog()
 			Dim err = Await _removeRoomCommand.ExecuteAsync( _roomId )
@@ -379,6 +382,14 @@ Namespace Rooms.ViewModels
 		Private Sub OnDeleteFail( err As String )
 			ShowStaticBottomNotification( StaticNotificationType.Error, err )
 		End Sub
+
+		Private Function ValidateDeleting() As Boolean
+			If RoomState = 1
+				ShowStaticBottomNotification( StaticNotificationType.Information, "Không thể xóa một phòng đang được thuê" )
+				Return False
+			End If
+			Return True
+		End Function
 
 		' Infrastructure
 

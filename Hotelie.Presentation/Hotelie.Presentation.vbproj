@@ -176,6 +176,7 @@
     <Compile Include="Rooms\Converters\RoomStateToBackColorConverter.vb" />
     <Compile Include="Rooms\Converters\RoomStateToIconKindConverter.vb" />
     <Compile Include="Rooms\Converters\RoomStateToStringConverter.vb" />
+    <Compile Include="Rooms\Converters\RoomStateToVisibiltyConverter.vb" />
     <Compile Include="Rooms\ViewModels\ScreenAddRoomViewModel.vb" />
     <Compile Include="Rooms\ViewModels\ScreenRoomDetailViewModel.vb" />
     <Compile Include="Rooms\ViewModels\ScreenRoomsListViewModel.vb" />

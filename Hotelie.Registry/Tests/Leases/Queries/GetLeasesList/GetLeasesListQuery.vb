@@ -12,6 +12,7 @@ Namespace Tests.Leases.Queries.GetLeasesList
 				Dim model = New LeasesListItemModel With {.Id=lease.Id,
 					    .CheckinDate=lease.CheckinDate,
 					    .ExpectedCheckoutDate=lease.ExpectedCheckoutDate,
+							.RoomId=lease.Room.Id,
 					    .RoomName=lease.Room.Name,
 					    .RoomCategoryName=lease.Room.Category.Name}
 				For Each leaseDetail As LeaseDetail In lease.LeaseDetails

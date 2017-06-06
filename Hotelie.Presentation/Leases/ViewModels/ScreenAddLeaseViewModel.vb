@@ -152,6 +152,16 @@ Namespace Leases.ViewModels
 			NotifyOfPropertyChange( Function() CanDeleteDetail )
 		End Sub
 
+		Public Sub SetRoomId( id As String )
+			Dim roomItem = Rooms.FirstOrDefault( Function( r ) r.Id = id )
+			If IsNothing( roomItem )
+				ShowStaticBottomNotification( StaticNotificationType.Error, "Lỗi! Không thể thuê phòng vừa chọn" )
+				Return
+			End If
+
+			Room = roomItem
+		End Sub
+
 		' Exit
 		Public Async Sub PreviewExit()
 			If CheckForPendingChanges()
@@ -277,7 +287,7 @@ Namespace Leases.ViewModels
 		End Sub
 
 		Private Function ValidateData() As Boolean
-			If ExpectedCheckoutDate < CheckinDate
+			If ExpectedCheckoutDate.Date < CheckinDate.Date
 				ShowStaticBottomNotification( StaticNotificationType.Information,
 				                              "Ngày dự kiến trả phải sau ngày đăng ký thuê phòng" )
 				Return False

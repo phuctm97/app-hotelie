@@ -276,6 +276,55 @@ Namespace Leases.ViewModels
 			Next
 		End Sub
 
+		Public Async Function SetLeaseAsync( id As String ) As Task
+			ShowStaticWindowLoadingDialog()
+			Dim model = Await _getLeaseDataQuery.ExecuteAsync( id )
+			CloseStaticWindowDialog()
+
+			If IsNothing( model ) Then Return
+
+			' add selected room to list
+			Dim roomItem = Rooms.FirstOrDefault( Function( r ) r.Id = model.Room.Id )
+			If IsNothing( roomItem ) Then Throw New EntryPointNotFoundException()
+
+			LeaseId = id
+			Room = roomItem
+			RoomUnitPrice = model.RoomPrice
+			CheckinDate = model.CheckinDate
+			ExpectedCheckoutDate = model.ExpectedCheckoutDate
+
+			_originalcheckinDate = CheckinDate
+			_originalexpectedCheckoutDate = ExpectedCheckoutDate
+			_originalroomUnitPrice = RoomUnitPrice
+			_originalroomId = Room.Id
+
+			Details.Clear()
+			_originalDetails.Clear()
+			For Each leaseDetailModel As LeaseDetailModel In model.Details
+				Dim editableModel = New EditableLeaseDetailModel()
+				editableModel.Id = leaseDetailModel.Id
+				editableModel.CustomerName = leaseDetailModel.CustomerName
+				editableModel.CustomerLicenseId = leaseDetailModel.CustomerLicenseId
+				editableModel.CustomerAddress = leaseDetailModel.CustomerAddress
+
+				Dim customerCategory = CustomerCategories.FirstOrDefault( Function( c ) c.Id = leaseDetailModel.CustomerCategory.Id )
+				If IsNothing( customerCategory ) Then Throw New EntryPointNotFoundException()
+
+				editableModel.CustomerCategory = customerCategory
+				Details.Add( editableModel )
+				editableModel.IsEdited = False
+
+				' backup details for saving
+				Dim originalModel = New EditableLeaseDetailModel()
+				originalModel.Id = leaseDetailModel.Id
+				originalModel.CustomerName = leaseDetailModel.CustomerName
+				originalModel.CustomerLicenseId = leaseDetailModel.CustomerLicenseId
+				originalModel.CustomerAddress = leaseDetailModel.CustomerAddress
+				originalModel.CustomerCategory = customerCategory
+				_originalDetails.Add( originalModel )
+			Next
+		End Function
+
 		Public Sub CheckNumberOfDetails()
 			NotifyOfPropertyChange( Function() CanAddDetail )
 			NotifyOfPropertyChange( Function() CanDeleteDetail )
@@ -545,7 +594,7 @@ Namespace Leases.ViewModels
 		Private Function ValidateData() As Boolean
 			If String.IsNullOrWhiteSpace( LeaseId ) Then Return False
 
-			If ExpectedCheckoutDate < CheckinDate
+			If ExpectedCheckoutDate.Date < CheckinDate.Date
 				ShowStaticBottomNotification( StaticNotificationType.Information,
 				                              "Ngày dự kiến trả phải sau ngày đăng ký thuê phòng" )
 				Return False
@@ -556,7 +605,7 @@ Namespace Leases.ViewModels
 				Return False
 			End If
 
-			If Room.State = 1
+			If (Not String.Equals(Room.Id, _originalroomId)) And Room.State = 1
 				ShowStaticBottomNotification( StaticNotificationType.Information,
 				                              $"Phòng {Room.Name} đang thuê bởi khách hàng khác. Vui lòng chọn phòng khác" )
 				Return False

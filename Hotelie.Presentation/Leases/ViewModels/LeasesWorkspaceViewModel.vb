@@ -67,11 +67,11 @@ Namespace Leases.ViewModels
 			DisplayName = "Thuê phòng"
 
 			DisplayCode = - 1
+
+			InitializeComponents()
 		End Sub
 
-		Protected Overrides Async Sub OnInitialize()
-			MyBase.OnInitialize()
-
+		Private Async Sub InitializeComponents()
 			ShowStaticWindowLoadingDialog()
 			Await InitAsync()
 			Await Task.Delay( 100 ) 'allow binding
@@ -104,7 +104,20 @@ Namespace Leases.ViewModels
 			DisplayCode = 1
 		End Sub
 
+		Public Async Sub NavigateToScreenLeaseDetailAsync( leaseListItem As _
+			                                                 Hotelie.Application.Leases.Queries.GetLeasesList.LeasesListItemModel )
+			If IsNothing( leaseListItem ) Then Return
+
+			Await ScreenLeaseDetail.SetLeaseAsync( leaseListItem.Id )
+			DisplayCode = 1
+		End Sub
+
 		Public Sub NavigateToScreenAddLease()
+			DisplayCode = 2
+		End Sub
+
+		Public Sub NavigateToScreenAddLease( roomId As String )
+			ScreenAddLease.SetRoomId( roomId )
 			DisplayCode = 2
 		End Sub
 	End Class

@@ -23,6 +23,7 @@
             <commonConverters:DecimalToCurrencyStringConverter x:Key="DecimalToCurrencyStringConverter" />
             <converters:RoomStateToBackColorConverter x:Key="RoomStateToBackColorConverter" />
             <converters:RoomStateToStringConverter x:Key="RoomStateToStringConverter" />
+            <converters:RoomStateToVisibiltyConverter x:Key="RoomStateToVisibiltyConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -250,7 +251,16 @@
                                                     HorizontalAlignment="Left"
                                                     Margin="15 4 4 8"
                                                     Style="{DynamicResource MaterialDesignFlatAccentButton}"
-                                                    Content="THUÊ" />
+                                                    Visibility="{Binding State, Converter={StaticResource RoomStateToVisibiltyConverter}}"
+                                                    Content="THUÊ">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="Click">
+                                                        <cal:ActionMessage MethodName="NavigateToScreenAddLease">
+                                                            <cal:Parameter Value="{Binding Id}" />
+                                                        </cal:ActionMessage>
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </Button>
                                         </DockPanel>
                                     </Grid>
                                 </materialDesign:Card>
