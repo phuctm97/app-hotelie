@@ -36,6 +36,9 @@ Namespace Leases
             HasMany(Function(p)p.LeaseDetails).
                 WithOptional.Map(Function(l)l.MapKey("LeaseId"))
 
+            [Property](Function(p)p.Paid).
+                IsRequired()
+
         End Sub
 
     End Class
