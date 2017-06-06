@@ -6,6 +6,8 @@ Namespace Common.Converters
 
 		Public Function Convert(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.Convert
 			Dim d = CType(value, DateTime)
+
+			If d.Date = Date.Now.Date Then Return "Hôm nay"
 			Return d.ToShortDateString()
 		End Function
 
