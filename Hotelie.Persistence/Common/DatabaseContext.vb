@@ -44,8 +44,7 @@ Namespace Common
         Public Property UserCategories As DbSet(of UserCategory) Implements IDatabaseContext.UserCategories
 
         Public Sub New()
-            MyBase.New("name=DatabaseContext")
-
+            MyBase.New("data source=KHUONG-ASUS\SQLEXPRESS;initial catalog=HotelieDatabase;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
             Database.SetInitializer(New DatabaseInitializer)
         End Sub
 

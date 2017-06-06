@@ -7,10 +7,9 @@ Namespace Common
 
 		Protected Overrides Sub Seed( context As DatabaseContext )
 			MyBase.Seed( context )
+			' SeedRoomCategories( context )
 
-			SeedRoomCategories( context )
-
-			SeedRooms( context )
+			' SeedRooms( context )
 		End Sub
 
 		Private Sub SeedRooms( context As DatabaseContext )
@@ -35,11 +34,11 @@ Namespace Common
 		Private Sub SeedRoomCategories( context As DatabaseContext )
 
 			context.RoomCategories.Add( New RoomCategory With {.Id="NOR01", .Name="Normal 1 for Single", .Price=150000D } )
-			context.RoomCategories.Add( New RoomCategory With {.Id="NOR01", .Name="Normal 2 for Single", .Price=200000D } )
-			context.RoomCategories.Add( New RoomCategory With {.Id="NOR01", .Name="Normal 1 for Couple", .Price=250000D } )
-			context.RoomCategories.Add( New RoomCategory With {.Id="NOR01", .Name="Normal 2 for Couple", .Price=300000D } )
+			context.RoomCategories.Add( New RoomCategory With {.Id="NOR02", .Name="Normal 2 for Single", .Price=200000D } )
+			context.RoomCategories.Add( New RoomCategory With {.Id="NOR03", .Name="Normal 1 for Couple", .Price=250000D } )
+			context.RoomCategories.Add( New RoomCategory With {.Id="NOR04", .Name="Normal 2 for Couple", .Price=300000D } )
 			context.RoomCategories.Add( New RoomCategory With {.Id="VIP01", .Name="V.I.P 1 for Single", .Price=400000D } )
-			context.RoomCategories.Add( New RoomCategory With {.Id="VIP01", .Name="V.I.P 1 for Couple", .Price=700000D } )
+			context.RoomCategories.Add( New RoomCategory With {.Id="VIP02", .Name="V.I.P 1 for Couple", .Price=700000D } )
 
 			context.SaveChanges()
 		End Sub

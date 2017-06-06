@@ -86,42 +86,6 @@
     <Compile Include="Leases\LeaseConfiguration.vb" />
     <Compile Include="Leases\LeaseDetailConfiguration.vb" />
     <Compile Include="Leases\LeaseRepository.vb" />
-    <Compile Include="Migrations\201705301447357_DbInitialize_FirstComplete.Designer.vb">
-      <DependentUpon>201705301447357_DbInitialize_FirstComplete.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201705301447357_DbInitialize_FirstComplete.vb" />
-    <Compile Include="Migrations\201705301458228_DbUpdate_FixUsersTable_1.Designer.vb">
-      <DependentUpon>201705301458228_DbUpdate_FixUsersTable_1.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201705301458228_DbUpdate_FixUsersTable_1.vb" />
-    <Compile Include="Migrations\201706042000587_DbUpdate_CustomerCategory_AddCoefficient.Designer.vb">
-      <DependentUpon>201706042000587_DbUpdate_CustomerCategory_AddCoefficient.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706042000587_DbUpdate_CustomerCategory_AddCoefficient.vb" />
-    <Compile Include="Migrations\201706042249108_DbUpdate_Rebuild_Lease.Designer.vb">
-      <DependentUpon>201706042249108_DbUpdate_Rebuild_Lease.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706042249108_DbUpdate_Rebuild_Lease.vb" />
-    <Compile Include="Migrations\201706060735297_DbUpdate_lease-room-mapping.Designer.vb">
-      <DependentUpon>201706060735297_DbUpdate_lease-room-mapping.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706060735297_DbUpdate_lease-room-mapping.vb" />
-    <Compile Include="Migrations\201706060902399_DbUpdate_bill.Designer.vb">
-      <DependentUpon>201706060902399_DbUpdate_bill.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706060902399_DbUpdate_bill.vb" />
-    <Compile Include="Migrations\201706060904586_DbUpdate_addBill.Designer.vb">
-      <DependentUpon>201706060904586_DbUpdate_addBill.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706060904586_DbUpdate_addBill.vb" />
-    <Compile Include="Migrations\201706060921003_DbUpdate_bill_added.Designer.vb">
-      <DependentUpon>201706060921003_DbUpdate_bill_added.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706060921003_DbUpdate_bill_added.vb" />
-    <Compile Include="Migrations\201706061407467_DbUpdate_Lease_PropertyPaid.Designer.vb">
-      <DependentUpon>201706061407467_DbUpdate_Lease_PropertyPaid.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706061407467_DbUpdate_Lease_PropertyPaid.vb" />
     <Compile Include="Migrations\Configuration.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -148,33 +112,6 @@
     <Compile Include="Users\UserRepository.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201705301447357_DbInitialize_FirstComplete.resx">
-      <DependentUpon>201705301447357_DbInitialize_FirstComplete.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201705301458228_DbUpdate_FixUsersTable_1.resx">
-      <DependentUpon>201705301458228_DbUpdate_FixUsersTable_1.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706042000587_DbUpdate_CustomerCategory_AddCoefficient.resx">
-      <DependentUpon>201706042000587_DbUpdate_CustomerCategory_AddCoefficient.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706042249108_DbUpdate_Rebuild_Lease.resx">
-      <DependentUpon>201706042249108_DbUpdate_Rebuild_Lease.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706060735297_DbUpdate_lease-room-mapping.resx">
-      <DependentUpon>201706060735297_DbUpdate_lease-room-mapping.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706060902399_DbUpdate_bill.resx">
-      <DependentUpon>201706060902399_DbUpdate_bill.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706060904586_DbUpdate_addBill.resx">
-      <DependentUpon>201706060904586_DbUpdate_addBill.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706060921003_DbUpdate_bill_added.resx">
-      <DependentUpon>201706060921003_DbUpdate_bill_added.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706061407467_DbUpdate_Lease_PropertyPaid.resx">
-      <DependentUpon>201706061407467_DbUpdate_Lease_PropertyPaid.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
