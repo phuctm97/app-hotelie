@@ -1,4 +1,5 @@
 ﻿Imports System.Data.Entity
+Imports Hotelie.Domain.Bills
 Imports Hotelie.Domain.Leases
 Imports Hotelie.Domain.Parameters
 Imports Hotelie.Domain.Rooms
@@ -7,7 +8,6 @@ Imports Hotelie.Domain.Users
 Namespace Services.Persistence
     Public Interface IDatabaseContext
         Inherits IDisposable
-        Property Bills As DbSet(Of Bill)
         Property CustomerCategories As DbSet(Of CustomerCategory)
         Property LeaseDetails As DbSet(Of LeaseDetail)
         Property Leases As DbSet(Of Lease)
@@ -17,6 +17,8 @@ Namespace Services.Persistence
         Property Rooms As DbSet(Of Room)
         Property UserCategories As DbSet(Of UserCategory)
         Property Users As DbSet(Of User)
+        Property Bills As DbSet(Of Bill)
+        Property BillDetails As DbSet(Of BillDetail)
         Function [Set](Of TEntity As Class) As DbSet(Of TEntity)
         Function SaveChanges() As Integer
         Function SaveChangesAsync() As Task(Of Integer)

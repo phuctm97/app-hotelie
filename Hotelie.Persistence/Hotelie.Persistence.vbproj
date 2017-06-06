@@ -74,12 +74,14 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bills\BillConfiguration.vb" />
+    <Compile Include="Bills\BillDetailConfiguration.vb" />
+    <Compile Include="Bills\BillRepository.vb" />
     <Compile Include="Common\DatabaseContext.vb" />
     <Compile Include="Common\DatabaseInitializer.vb" />
     <Compile Include="Common\Repository.vb" />
     <Compile Include="Common\UnitOfWork.vb" />
     <Compile Include="Common\DatabaseService.vb" />
-    <Compile Include="Leases\BillConfiguration.vb" />
     <Compile Include="Leases\CustomerCategoryConfiguration.vb" />
     <Compile Include="Leases\LeaseConfiguration.vb" />
     <Compile Include="Leases\LeaseDetailConfiguration.vb" />
@@ -96,6 +98,26 @@
       <DependentUpon>201706042000587_DbUpdate_CustomerCategory_AddCoefficient.vb</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201706042000587_DbUpdate_CustomerCategory_AddCoefficient.vb" />
+    <Compile Include="Migrations\201706042249108_DbUpdate_Rebuild_Lease.Designer.vb">
+      <DependentUpon>201706042249108_DbUpdate_Rebuild_Lease.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706042249108_DbUpdate_Rebuild_Lease.vb" />
+    <Compile Include="Migrations\201706060735297_DbUpdate_lease-room-mapping.Designer.vb">
+      <DependentUpon>201706060735297_DbUpdate_lease-room-mapping.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706060735297_DbUpdate_lease-room-mapping.vb" />
+    <Compile Include="Migrations\201706060902399_DbUpdate_bill.Designer.vb">
+      <DependentUpon>201706060902399_DbUpdate_bill.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706060902399_DbUpdate_bill.vb" />
+    <Compile Include="Migrations\201706060904586_DbUpdate_addBill.Designer.vb">
+      <DependentUpon>201706060904586_DbUpdate_addBill.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706060904586_DbUpdate_addBill.vb" />
+    <Compile Include="Migrations\201706060921003_DbUpdate_bill_added.Designer.vb">
+      <DependentUpon>201706060921003_DbUpdate_bill_added.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706060921003_DbUpdate_bill_added.vb" />
     <Compile Include="Migrations\Configuration.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -130,6 +152,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706042000587_DbUpdate_CustomerCategory_AddCoefficient.resx">
       <DependentUpon>201706042000587_DbUpdate_CustomerCategory_AddCoefficient.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706042249108_DbUpdate_Rebuild_Lease.resx">
+      <DependentUpon>201706042249108_DbUpdate_Rebuild_Lease.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706060735297_DbUpdate_lease-room-mapping.resx">
+      <DependentUpon>201706060735297_DbUpdate_lease-room-mapping.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706060902399_DbUpdate_bill.resx">
+      <DependentUpon>201706060902399_DbUpdate_bill.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706060904586_DbUpdate_addBill.resx">
+      <DependentUpon>201706060904586_DbUpdate_addBill.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706060921003_DbUpdate_bill_added.resx">
+      <DependentUpon>201706060921003_DbUpdate_bill_added.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

@@ -99,6 +99,7 @@
     <Import Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bills\TestBillRepository.vb" />
     <Compile Include="DatabaseServices\TestDatabaseService.vb" />
     <Compile Include="Leases\TestLeaseRepository.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />

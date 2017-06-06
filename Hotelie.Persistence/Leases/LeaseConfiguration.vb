@@ -6,46 +6,37 @@ Namespace Leases
         Inherits EntityTypeConfiguration(Of Lease)
 
         Public Sub New()
-            HasKey(Function(p) p.Id)
+            HasKey(Function(p)p.Id)
 
-            [Property](Function(p) p.Id).
+            [Property](Function(p)p.Id).
                 IsRequired().
+                HasMaxLength(7).
                 IsUnicode(False).
-                IsFixedLength().
-                HasMaxLength(5)
+                IsFixedLength()
 
-            HasRequired(Function(p) p.Room).
-                WithMany().Map(Function(m) m.MapKey("RoomId"))
+            HasRequired(Function(p)p.Room).
+                WithMany.Map(Function(m)m.MapKey("RoomId"))
 
-            [Property](Function(p) p.BeginDate).
+            [Property](Function(p)p.CheckinDate).
                 IsRequired()
 
-            [Property](Function(p) p.EndDate).
-                IsRequired()
-
-            [Property](Function(p) p.NumberOfDate).
+            [Property](Function(p)p.ExpectedCheckoutDate).
                 IsOptional()
 
-            [Property](Function(p) p.Price).
-                HasColumnType("money").
+            [Property](Function(p)p.RoomPrice).
+                IsOptional().
+                HasColumnType("money")
+
+            [Property](Function(p)p.ExtraCoefficient).
                 IsOptional()
 
-            [Property](Function(p) p.ExtraCoefficient).
-                IsRequired()
-
-            [Property](Function(p) p.CustomerCoefficient).
-                IsRequired()
-
-            [Property](Function(p) p.ExtraCharge).
-                HasColumnType("money").
+            [Property](Function(p)p.CustomerCoefficient).
                 IsOptional()
 
-            [Property](Function(p) p.TotalPrice).
-                HasColumnType("money").
-                IsOptional()
+            HasMany(Function(p)p.LeaseDetails).
+                WithOptional.Map(Function(l)l.MapKey("LeaseId"))
 
-            HasOptional(Function(p)p.Bill).
-                WithMany().Map(Function(m)m.MapKey("BillId"))
         End Sub
+
     End Class
-End Namespace
+End NameSpace
