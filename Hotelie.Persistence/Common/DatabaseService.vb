@@ -12,34 +12,60 @@ Namespace Common
             End Get
         End Property
 
-        Public Sub SetDatabaseConnection(serverName As String, databaseName As String) Implements IDatabaseService.SetDatabaseConnection
+        Public Sub SetDatabaseConnection(serverName As String, databaseName As String) _
+            Implements IDatabaseService.SetDatabaseConnection
             _context?.Dispose()
-            Dim connectionString = $"data source={serverName};initial catalog={databaseName};integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
+            Dim connectionString =
+                    $"data source={serverName};initial catalog={databaseName _
+                    };integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
 
             _context = New DatabaseContext(connectionString)
         End Sub
 
-        Public Function CheckDatabaseConnection(serverName As String, databaseName As String) As Boolean _
+        Public Function CheckDatabaseConnection(serverName As String, databaseName As String) As Integer _
             Implements IDatabaseService.CheckDatabaseConnection
+            Dim checker = 0
 
-           Dim connectionString = $"data source={serverName};initial catalog={databaseName};integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
+            Dim connectionString =
+                    $"data source={serverName};initial catalog={databaseName _
+                    };integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
 
             Dim dbContext = New DatabaseContext(connectionString)
+
+            Try
+                If dbContext.Database.Exists() Then checker = 1
+            Catch
+            End Try
+
+            If checker = 1
+                Dim serverAdmin
+                Try
+                    serverAdmin = dbContext.Users.FirstOrDefault(Function(p)p.Id = "admin")
+                    If IsNothing(serverAdmin) Then
+                        dbContext.Dispose()
+                        Return 1
+                    End If
+                Catch
+                End Try
+            End If
+
             Try
                 dbContext.Database.Connection.Open()
                 dbContext.Database.Connection.Close()
+                checker = 2
             Catch
-                Return False
-            Finally
-                dbContext.Dispose()
+                Return checker
             End Try
-            Return True
+            dbContext.Dispose()
+            Return checker
         End Function
 
-        Public Async Function CheckDatabaseConnectionAsync(serverName As String, databaseName As String) As Task(Of Boolean) _
-            Implements IDatabaseService.CheckDatabaseConnectionAsync
+        Public Async Function CheckDatabaseConnectionAsync(serverName As String, databaseName As String) _
+            As Task(Of Integer) Implements IDatabaseService.CheckDatabaseConnectionAsync
 
-            Dim connectionString = $"data source={serverName};initial catalog={databaseName};integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
+            Dim connectionString =
+                    $"data source={serverName};initial catalog={databaseName _
+                    };integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
 
             Dim dbContext = New DatabaseContext(connectionString)
             Try
