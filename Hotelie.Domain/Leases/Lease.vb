@@ -10,6 +10,7 @@ Namespace Leases
         Public Property ExtraCoefficient As Double
         Public Property CustomerCoefficient As Double
         Public Property LeaseDetails As List(Of LeaseDetail)
+        Public Property Paid As Byte
 
         Public Function CalculateExpense() As Decimal
             Dim numberOfDays = DateTime.Now().Subtract(CheckinDate).Days()
