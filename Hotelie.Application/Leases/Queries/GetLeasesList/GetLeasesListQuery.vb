@@ -19,50 +19,29 @@ Namespace Leases.Queries.GetLeasesList
                                                              .ExpectedCheckoutDate = p.ExpectedCheckoutDate,
                                                              .RoomName = p.Room.Name,
                                                              .RoomCategoryName = p.Room.Category.Name,
-                                                             .TotalExpense = p.CalculateExpense})
-            For Each leaseModel As LeasesListItemModel In leases
-                Dim customers = _leaseRepository.GetCustomers(leaseModel.Id)
-
-                If (customers.Count > 0)
-                    leaseModel.Customers = New List(Of LeaseCustomerModel)
-                    For Each leaseCustomer As LeaseDetail In customers
-                        leaseModel.Customers.Add(New LeaseCustomerModel() With {.Id = leaseCustomer.Id,
-                                                    .Address=leaseCustomer.Address,
-                                                    .Name = leaseCustomer.CustomerName,
-                                                    .LisenceId = leaseCustomer.LicenseId,
-                                                    .CategoryId = leaseCustomer.CustomerCategory.Id,
-                                                    .CategoryName = leaseCustomer.CustomerCategory.Name})
-                    Next
-                End If
+                                                             .TotalExpense = p.CalculateExpense}).ToList()
+            For Each leasesListItemModel As LeasesListItemModel In leases
+                Dim lease = _leaseRepository.GetOne(leasesListItemModel.Id)
+                For Each leaseDetail As LeaseDetail In lease.LeaseDetails
+                    leasesListItemModel.Details.Add(New LeasesListItemDetailModel() With {.CustomerName = leaseDetail.CustomerName})
+                Next
             Next
             Return leases
         End Function
 
-        Public Async Function ExecuteAsync() As Task(Of IEnumerable(Of LeaseModel)) Implements IGetLeasesListQuery.ExecuteAsync
-            Dim leases = Await _leaseRepository.GetAll().Select(Function(p) New LeaseModel() With _
-                                                                   {.Id = p.Id,
-                                                                   .RoomId = p.Room.Id,
-                                                                   .BeginDate = p.BeginDate,
-                                                                   .EndDate = p.EndDate,
-                                                                   .ExtraCoefficient = p.ExtraCoefficient,
-                                                                   .CustomerCoefficient = p.CustomerCoefficient,
-                                                                   .ExtraCharge = p.ExtraCharge,
-                                                                   .NumberOfDate = p.NumberOfDate,
-                                                                   .BillId = p.Bill.Id}).ToListAsync()
-            For Each leaseModel As LeaseModel In leases
-                Dim customers = Await _leaseRepository.GetCustomersAsync(leaseModel.Id)
-
-                If (customers.Count > 0)
-                    leaseModel.Customers = New List(Of LeaseCustomerModel)
-                    For Each leaseCustomer As LeaseDetail In customers
-                        leaseModel.Customers.Add(New LeaseCustomerModel() With {.Id = leaseCustomer.Id,
-                                                    .Address=leaseCustomer.Address,
-                                                    .Name = leaseCustomer.CustomerName,
-                                                    .LisenceId = leaseCustomer.LicenseId,
-                                                    .CategoryId = leaseCustomer.CustomerCategory.Id,
-                                                    .CategoryName = leaseCustomer.CustomerCategory.Name})
-                    Next
-                End If
+        Public Async Function ExecuteAsync() As Task(Of IEnumerable(Of LeasesListItemModel)) Implements IGetLeasesListQuery.ExecuteAsync
+            Dim leases = Await _leaseRepository.GetAll().Select(Function(p) New LeasesListItemModel() With _
+                                                             {.Id = p.Id,
+                                                             .CheckinDate = p.CheckinDate,
+                                                             .ExpectedCheckoutDate = p.ExpectedCheckoutDate,
+                                                             .RoomName = p.Room.Name,
+                                                             .RoomCategoryName = p.Room.Category.Name,
+                                                             .TotalExpense = p.CalculateExpense}).ToListAsync()
+            For Each leasesListItemModel As LeasesListItemModel In leases
+                Dim lease = Await _leaseRepository.GetOneAsync(leasesListItemModel.Id)
+                For Each leaseDetail As LeaseDetail In lease.LeaseDetails
+                    leasesListItemModel.Details.Add(New LeasesListItemDetailModel() With {.CustomerName = leaseDetail.CustomerName})
+                Next
             Next
             Return leases
         End Function
