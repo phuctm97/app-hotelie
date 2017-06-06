@@ -89,18 +89,6 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Leases\Commands\RemoveLease\IRemoveLeaseCommand.vb" />
-    <Compile Include="Leases\Commands\RemoveLease\RemoveLeaseCommand.vb" />
-    <Compile Include="Leases\Commands\UpdateLease\IUpdateLeaseCommand.vb" />
-    <Compile Include="Leases\Commands\UpdateLease\UpdateLeaseCommand.vb" />
-    <Compile Include="Leases\Factories\CreateLeaseFactory.vb" />
-    <Compile Include="Leases\Factories\ICreateLeaseFactory.vb" />
-    <Compile Include="Leases\Factories\LeaseModel.vb" />
-    <Compile Include="Leases\Queries\GetLeaseCustomerCategoriesList\IGetLeaseCustomerCategoriesListQuery.vb" />
-    <Compile Include="Leases\Queries\GetLeaseCustomerCategoriesList\LeaseCustomerCategoryListItemModel.vb" />
-    <Compile Include="Leases\Queries\GetLeasesList\IGetLeasesListQuery.vb" />
-    <Compile Include="Leases\Queries\GetLeasesList\LeasesListItemDetailModel.vb" />
-    <Compile Include="Leases\Queries\GetLeasesList\LeasesListIemModel.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
