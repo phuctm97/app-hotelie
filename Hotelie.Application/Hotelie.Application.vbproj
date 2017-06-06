@@ -90,9 +90,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Leases\Queries\GetCustomerCategoryData\CustomerCategoryModel.vb" />
+    <Compile Include="Leases\Queries\GetCustomerCategoryData\GetCustomerCategoryData.vb" />
+    <Compile Include="Leases\Queries\GetCustomerCategoryData\IGetCustomerCategoryData.vb" />
+    <Compile Include="Leases\Queries\GetLeaseData\GetLeaseDataQuery.vb" />
     <Compile Include="Leases\Queries\GetLeaseData\IGetLeaseDataQuery.vb" />
     <Compile Include="Leases\Queries\GetLeaseData\LeaseModel.vb" />
+    <Compile Include="Leases\Queries\GetLeaseDetailData\GetLeaseDetailData.vb" />
+    <Compile Include="Leases\Queries\GetLeaseDetailData\IGetLeaseDetailData.vb" />
     <Compile Include="Leases\Queries\GetLeaseDetailData\LeaseDetailModel.vb" />
+    <Compile Include="Leases\Queries\GetLeasesList\GetLeasesListQuery.vb" />
     <Compile Include="Leases\Queries\GetLeasesList\IGetLeasesListQuery.vb" />
     <Compile Include="Leases\Queries\GetLeasesList\LeasesListItemDetailModel.vb" />
     <Compile Include="Leases\Queries\GetLeasesList\LeasesListItemModel.vb" />
@@ -128,7 +134,7 @@
     <Compile Include="Rooms\Queries\GetRoomsList\IGetRoomsListQuery.vb" />
     <Compile Include="Rooms\Queries\GetRoomsList\RoomsListItemModel.vb" />
     <Compile Include="Rooms\Queries\GetRoomData\RoomModel.vb" />
-    <Compile Include="Rooms\Queries\GetSimpleRoomsList\GetSimpleRommListQuery.vb" />
+    <Compile Include="Rooms\Queries\GetSimpleRoomsList\GetSimpleRoomListQuery.vb" />
     <Compile Include="Rooms\Queries\GetSimpleRoomsList\IGetSimpleRoomsListQuery.vb" />
     <Compile Include="Rooms\Queries\GetSimpleRoomsList\SimpleRoomsListItemModel.vb" />
     <Compile Include="Services\Authentication\Account.vb" />

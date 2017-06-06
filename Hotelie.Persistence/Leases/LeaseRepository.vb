@@ -14,12 +14,20 @@ Namespace Leases
             _databaseService = databaseService
         End Sub
 
+        Public Function GetCustomerCategories() As List(Of CustomerCategory) Implements ILeaseRepository.GetCustomerCategories
+            Return _databaseService.Context.CustomerCategories.ToList()
+        End Function
+
+        Public Async Function GetCustomerCategoriesAsync() As Task(Of List(Of CustomerCategory)) Implements ILeaseRepository.GetCustomerCategoriesAsync
+            Return Await _databaseService.Context.CustomerCategories.ToListAsync()
+        End Function
+
         Public Function GetLeaseDetails() As List(Of LeaseDetail) Implements ILeaseRepository.GetLeaseDetails
-            Return _databaseService.Context.LeaseDetails().ToList()
+            Return _databaseService.Context.LeaseDetails.ToList()
         End Function
 
         Public Async Function GetLeaseDetailsAsync() As Task(Of List(Of LeaseDetail)) Implements ILeaseRepository.GetLeaseDetailsAsync
-            Return Await _databaseService.Context.LeaseDetails().ToListAsync()
+            Return Await _databaseService.Context.LeaseDetails.ToListAsync()
         End Function
 
         Public Overrides Function GetOne(id As Object) As Lease
