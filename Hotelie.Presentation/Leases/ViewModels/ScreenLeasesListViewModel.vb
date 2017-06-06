@@ -2,6 +2,7 @@
 Imports Hotelie.Application.Leases.Queries.GetLeaseData
 Imports Hotelie.Application.Leases.Queries.GetLeaseDetailData
 Imports Hotelie.Application.Leases.Queries.GetLeasesList
+Imports Hotelie.Application.Rooms.Queries.GetRoomData
 Imports Hotelie.Presentation.Common.Controls
 Imports Hotelie.Presentation.Common.Infrastructure
 Imports Hotelie.Presentation.Infrastructure
@@ -10,6 +11,7 @@ Namespace Leases.ViewModels
 	Public Class ScreenLeasesListViewModel
 		Implements INeedWindowModals
 		Implements ILeasesListPresenter
+		Implements IRoomPresenter
 
 		' Dependencies
 		Private ReadOnly _getLeasesListQuery As IGetLeasesListQuery
@@ -19,7 +21,8 @@ Namespace Leases.ViewModels
 
 		Public Sub New( getLeasesListQuery As IGetLeasesListQuery )
 			_getLeasesListQuery = getLeasesListQuery
-			RegisterInventory()
+			CType(Me, IRoomPresenter).RegisterInventory()
+			CType(Me, ILeasesListPresenter).RegisterInventory()
 
 			Leases = New BindableCollection(Of LeasesListItemModel)()
 		End Sub
@@ -51,11 +54,11 @@ Namespace Leases.ViewModels
 			' add new lease item
 			Dim leaseListItem = New LeasesListItemModel With {
 				    .Id = model.Id,
-				    .CheckinDate=model.CheckinDate,
-				    .ExpectedCheckoutDate=model.ExpectedCheckoutDate,
-				    .RoomName=model.Room.Name,
-				    .RoomCategoryName=model.Room.Category.Name,
-				    .TotalExpense=0}
+				    .CheckinDate = model.CheckinDate,
+				    .ExpectedCheckoutDate = model.ExpectedCheckoutDate,
+				    .RoomName = model.Room.Name,
+				    .RoomCategoryName = model.Room.Category.Name,
+				    .TotalExpense = 0}
 
 			' add lease details
 			For Each detailModel As LeaseDetailModel In model.Details
@@ -81,7 +84,7 @@ Namespace Leases.ViewModels
 			For Each detailModel As LeaseDetailModel In model.Details
 				Dim item = leaseToUpdate.Details.FirstOrDefault( Function( i ) i.Id = detailModel.Id )
 				If IsNothing( item )
-					item = New LeasesListItemDetailModel With {.Id=detailModel.Id, .CustomerName=detailModel.CustomerName}
+					item = New LeasesListItemDetailModel With {.Id = detailModel.Id, .CustomerName = detailModel.CustomerName}
 					leaseToUpdate.Details.Add( item )
 				Else
 					item.CustomerName = detailModel.CustomerName
@@ -105,6 +108,14 @@ Namespace Leases.ViewModels
 			If IsNothing( leaseToRemove ) Then Throw New EntryPointNotFoundException()
 
 			Leases.Remove( leaseToRemove )
+		End Sub
+
+		Public Sub OnRoomUpdated( model As RoomModel ) Implements IRoomPresenter.OnRoomUpdated
+			Dim itemToUpdate = Leases.FirstOrDefault( Function( l ) l.RoomId = model.Id )
+			If IsNothing( itemToUpdate ) Then Return
+
+			itemToUpdate.RoomName = model.Name
+			itemToUpdate.RoomCategoryName = model.Category.Name
 		End Sub
 	End Class
 End Namespace

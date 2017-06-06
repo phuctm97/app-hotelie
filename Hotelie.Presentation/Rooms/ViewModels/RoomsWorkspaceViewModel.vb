@@ -58,11 +58,11 @@ Namespace Rooms.ViewModels
 			DisplayName = "Danh sách phòng"
 
 			DisplayCode = - 1
+
+			InitializeComponents()
 		End Sub
 
-		Protected Overrides Async Sub OnInitialize()
-			MyBase.OnInitialize()
-
+		Private Async Sub InitializeComponents()
 			ShowStaticWindowLoadingDialog()
 			Await InitAsync()
 			Await Task.Delay( 100 ) 'allow binding

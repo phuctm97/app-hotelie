@@ -277,7 +277,7 @@ Namespace Leases.ViewModels
 		End Sub
 
 		Private Function ValidateData() As Boolean
-			If ExpectedCheckoutDate < CheckinDate
+			If ExpectedCheckoutDate.Date < CheckinDate.Date
 				ShowStaticBottomNotification( StaticNotificationType.Information,
 				                              "Ngày dự kiến trả phải sau ngày đăng ký thuê phòng" )
 				Return False

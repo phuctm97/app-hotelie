@@ -382,6 +382,9 @@ Namespace Rooms.ViewModels
 			End Select
 		End Sub
 
+		Public Sub PreviewHireAsync( roomModel As RoomsListItemModel )
+		End Sub
+
 		' Infrastructure
 		Public Sub OnRoomAdded( model As RoomModel ) Implements IRoomsListPresenter.OnRoomAdded
 			' find category

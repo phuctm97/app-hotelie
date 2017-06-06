@@ -11,6 +11,7 @@ Namespace Leases.Queries.GetLeasesList
 		Private _expectedCheckoutDate As Date
 		Private _totalExpense As Decimal
 		Private _details As IObservableCollection(Of LeasesListItemDetailModel)
+		Private _roomId As String
 
 		Public Property Id As String
 			Get
@@ -20,6 +21,17 @@ Namespace Leases.Queries.GetLeasesList
 				If IsNothing( Value ) OrElse String.Equals( Value, _id ) Then Return
 				_id = value
 				NotifyOfPropertyChange( Function() Id )
+			End Set
+		End Property
+
+		Public Property RoomId As String
+			Get
+				Return _roomId
+			End Get
+			Set
+				If IsNothing( Value ) OrElse Equals( Value, _roomId ) Then Return
+				_roomId = value
+				NotifyOfPropertyChange( Function() RoomId )
 			End Set
 		End Property
 
@@ -91,6 +103,7 @@ Namespace Leases.Queries.GetLeasesList
 
 		Public Sub New()
 			Id = String.Empty
+			RoomId = String.Empty
 			RoomName = String.Empty
 			RoomCategoryName = String.Empty
 			CheckinDate = New Date( 2017, 1, 1 )
