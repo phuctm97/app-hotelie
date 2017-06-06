@@ -7,11 +7,13 @@ Imports Hotelie.Application.Rooms.Queries.GetRoomData
 Imports Hotelie.Application.Rooms.Queries.GetRoomsList
 Imports Hotelie.Application.Services.Infrastructure
 Imports Hotelie.Presentation.Common.Controls
+Imports Hotelie.Presentation.Start.WorkspaceShell.ViewModels
 
 Namespace Rooms.ViewModels
 	Public Class RoomsWorkspaceViewModel
 		Inherits Screen
 		Implements INeedWindowModals
+		Implements IChild(Of WorkspaceShellViewModel)
 
 		' Dependencies
 		Private _displayCode As Integer
@@ -33,6 +35,15 @@ Namespace Rooms.ViewModels
 			End Set
 		End Property
 
+		Private Property ParentShell As WorkspaceShellViewModel Implements IChild(Of WorkspaceShellViewModel).Parent
+			Get
+				Return CType(Parent, WorkspaceShellViewModel)
+			End Get
+			Set
+				Parent = Value
+			End Set
+		End Property
+
 		Public Sub New( getRoomsListQuery As IGetRoomsListQuery,
 		                getRoomCategoriesListQuery As IGetRoomCategoriesListQuery,
 		                getRoomDataQuery As IGetRoomDataQuery,
@@ -40,7 +51,8 @@ Namespace Rooms.ViewModels
 		                updateRoomCommand As IUpdateRoomCommand,
 		                removeRoomCommand As IRemoveRoomCommand,
 		                inventory As IInventory )
-			ScreenRoomsList = New ScreenRoomsListViewModel( getRoomsListQuery,
+			ScreenRoomsList = New ScreenRoomsListViewModel( Me,
+			                                                getRoomsListQuery,
 			                                                getRoomCategoriesListQuery,
 			                                                removeRoomCommand,
 			                                                inventory )

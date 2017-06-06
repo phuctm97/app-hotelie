@@ -152,6 +152,16 @@ Namespace Leases.ViewModels
 			NotifyOfPropertyChange( Function() CanDeleteDetail )
 		End Sub
 
+		Public Sub SetRoomId( id As String )
+			Dim roomItem = Rooms.FirstOrDefault( Function( r ) r.Id = id )
+			If IsNothing( roomItem )
+				ShowStaticBottomNotification( StaticNotificationType.Error, "Lỗi! Không thể thuê phòng vừa chọn" )
+				Return
+			End If
+
+			Room = roomItem
+		End Sub
+
 		' Exit
 		Public Async Sub PreviewExit()
 			If CheckForPendingChanges()

@@ -69,6 +69,13 @@ Namespace Start.WorkspaceShell.ViewModels
 		' Display properties
 		Public ReadOnly Property CommandsBar As IWindowCommandsBar Implements IShell.CommandsBar
 
+		Public Sub NavigateToScreenAddLease( roomId As String )
+			Dim workspace = CType(Items( 1 ), LeasesWorkspaceViewModel)
+			ActivateItem( workspace )
+
+			workspace.NavigateToScreenAddLease( roomId )
+		End Sub
+
 		' Closing
 		Public Overrides Async Sub CanClose( callback As Action(Of Boolean) )
 			Dim dialog = New TwoButtonDialog( "Thoát khỏi bàn làm việc?", "THOÁT", "HỦY", True, False )

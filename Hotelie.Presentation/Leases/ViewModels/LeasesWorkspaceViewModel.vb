@@ -115,5 +115,10 @@ Namespace Leases.ViewModels
 		Public Sub NavigateToScreenAddLease()
 			DisplayCode = 2
 		End Sub
+
+		Public Sub NavigateToScreenAddLease( roomId As String )
+			ScreenAddLease.SetRoomId( roomId )
+			DisplayCode = 2
+		End Sub
 	End Class
 End Namespace

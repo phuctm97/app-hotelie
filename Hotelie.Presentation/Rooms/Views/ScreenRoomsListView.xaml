@@ -252,8 +252,15 @@
                                                     Margin="15 4 4 8"
                                                     Style="{DynamicResource MaterialDesignFlatAccentButton}"
                                                     Visibility="{Binding State, Converter={StaticResource RoomStateToVisibiltyConverter}}"
-                                                    Content="THUÊ" 
-                                                    cal:Message.Attach="PreviewHireAsync($dataContext)"/>
+                                                    Content="THUÊ">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="Click">
+                                                        <cal:ActionMessage MethodName="NavigateToScreenAddLease">
+                                                            <cal:Parameter Value="{Binding Id}" />
+                                                        </cal:ActionMessage>
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </Button>
                                         </DockPanel>
                                     </Grid>
                                 </materialDesign:Card>
