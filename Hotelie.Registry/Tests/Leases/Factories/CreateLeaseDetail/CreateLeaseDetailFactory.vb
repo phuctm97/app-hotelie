@@ -31,17 +31,17 @@ Namespace Tests.Leases.Factories.CreateLeaseDetail
 
 			Dim idStr = newId.ToString()
 			Dim leaseToAdd = LeaseRepositoryTest.Leases.FirstOrDefault( Function( l ) l.Id = leaseId )
-			If IsNothing( leaseToAdd ) Then Return "Không tìm thấy phiếu thuê phòng tương ứng"
+			If IsNothing( leaseToAdd ) Then Return String.Empty
 
 			Dim customerCategory = LeaseRepositoryTest.CustomerCategories.FirstOrDefault( Function( c ) c.Id = customerCategoryId )
-			If IsNothing( customerCategory ) Then Return "Không tìm được loại khách tương ứng"
+			If IsNothing( customerCategory ) Then Return String.Empty
 
 			leaseToAdd.LeaseDetails.Add( New LeaseDetail With {.Id=idStr,
 				                           .CustomerName=customerName,
 				                           .LicenseId=customerLicenseId,
 				                           .Address=customerAddress,
 				                           .CustomerCategory=customerCategory} )
-			Return String.Empty
+			Return newId
 		End Function
 
 		Public Async Function ExecuteAsync( leaseId As String,

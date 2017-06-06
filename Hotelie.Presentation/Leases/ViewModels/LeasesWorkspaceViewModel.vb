@@ -1,4 +1,5 @@
 ﻿Imports Caliburn.Micro
+Imports Hotelie.Application.Services.Infrastructure
 Imports Hotelie.Presentation.Common.Controls
 
 Namespace Leases.ViewModels
@@ -31,13 +32,30 @@ Namespace Leases.ViewModels
 		                getSimpleRoomsListQuery As _
 			              Hotelie.Application.Rooms.Queries.GetSimpleRoomsList.IGetSimpleRoomsListQuery,
 		                getCustomerCategoriesListQuery As _
-			              Hotelie.Application.Leases.Queries.GetCustomerCategoriesList.IGetCustomerCategoriesListQuery )
+			              Hotelie.Application.Leases.Queries.GetCustomerCategoriesList.IGetCustomerCategoriesListQuery,
+		                updateLeaseCommand As _
+			              Hotelie.Application.Leases.Commands.UpdateLease.IUpdateLeaseCommand,
+		                removeLeaseCommand As _
+			              Hotelie.Application.Leases.Commands.RemoveLease.IRemoveLeaseCommand,
+		                updateLeaseDetailCommand As _
+			              Hotelie.Application.Leases.Commands.UpdateLeaseDetail.IUpdateLeaseDetailCommand,
+		                removeLeaseDetailCommand As _
+			              Hotelie.Application.Leases.Commands.RemoveLeaseDetail.IRemoveLeaseDetailCommand,
+		                createLeaseDetailFactory As _
+			              Hotelie.Application.Leases.Factories.CreateLeaseDetail.ICreateLeaseDetailFactory,
+		                inventory As IInventory )
 			ScreenLeasesList = New ScreenLeasesListViewModel( getLeasesListQuery )
 
 			ScreenLeaseDetail = New ScreenLeaseDetailViewModel( Me,
 			                                                    getLeaseDataQuery,
 			                                                    getSimpleRoomsListQuery,
-			                                                    getCustomerCategoriesListQuery )
+			                                                    getCustomerCategoriesListQuery,
+			                                                    updateLeaseCommand,
+			                                                    removeLeaseCommand,
+			                                                    updateLeaseDetailCommand,
+			                                                    removeLeaseDetailCommand,
+			                                                    createLeaseDetailFactory,
+			                                                    inventory )
 
 			ScreenAddLease = New ScreenAddLeaseViewModel()
 

@@ -15,7 +15,9 @@ Namespace Tests.Leases.Queries.GetLeasesList
 					    .RoomName=lease.Room.Name,
 					    .RoomCategoryName=lease.Room.Category.Name}
 				For Each leaseDetail As LeaseDetail In lease.LeaseDetails
-					Dim detailModel = New LeasesListItemDetailModel With {.CustomerName=leaseDetail.CustomerName}
+					Dim detailModel = New LeasesListItemDetailModel With {
+						    .Id=leaseDetail.Id,
+						    .CustomerName=leaseDetail.CustomerName}
 					model.Details.Add( detailModel )
 				Next
 

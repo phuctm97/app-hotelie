@@ -130,99 +130,117 @@
             </Grid>
         </materialDesign:ColorZone>
 
-        <StackPanel Grid.Row="1" Margin="4 0 4 0">
-            <!--Room select-->
-            <StackPanel Margin="16 24 16 0">
-                <TextBlock Text="Phòng" IsEnabled="False"
-                           Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                           FontSize="15" Margin="0 0 0 4" />
-                <ComboBox materialDesign:HintAssist.Hint="Tên phòng"
-                          FontSize="35"
-                          ItemsSource="{Binding Rooms}"
-                          DisplayMemberPath="Name"
-                          SelectedItem="{Binding Room, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            </StackPanel>
-
-            <!--Expected checkout day and room category-->
-            <StackPanel Margin="16 24 16 0" Orientation="Horizontal">
-                <!--Expected checkout date-->
-                <StackPanel>
-                    <TextBlock Text="Ngày dự kiến trả" IsEnabled="False"
+        <ScrollViewer Grid.Row="1" Margin="4 0 4 0" HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!--Room select-->
+                <StackPanel Margin="16 24 16 0">
+                    <TextBlock Text="Phòng" IsEnabled="False"
                                Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                FontSize="15" Margin="0 0 0 4" />
-                    <DatePicker FontSize="15" Width="130" HorizontalAlignment="Left"
-                                SelectedDate="{Binding ExpectedCheckoutDate, Mode=TwoWay}"
-                                materialDesign:HintAssist.Hint="Ngày dự kiến trả" FirstDayOfWeek="Monday" />
+                    <ComboBox materialDesign:HintAssist.Hint="Tên phòng"
+                              FontSize="35"
+                              ItemsSource="{Binding Rooms}"
+                              DisplayMemberPath="Name"
+                              SelectedItem="{Binding Room, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
 
-                <!--Room category-->
-                <StackPanel Margin="80 0 0 0">
-                    <TextBlock Text="Loại phòng" IsEnabled="False"
+                <!--Expected checkout day and room category-->
+                <StackPanel Margin="16 24 16 0" Orientation="Horizontal">
+                    <!--Expected checkout date-->
+                    <StackPanel>
+                        <TextBlock Text="Ngày dự kiến trả" IsEnabled="False"
+                                   Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                                   FontSize="15" Margin="0 0 0 4" />
+                        <DatePicker FontSize="15" Width="130" HorizontalAlignment="Left"
+                                    SelectedDate="{Binding ExpectedCheckoutDate, Mode=TwoWay}"
+                                    materialDesign:HintAssist.Hint="Ngày dự kiến trả" FirstDayOfWeek="Monday" />
+                    </StackPanel>
+
+                    <!--Room category-->
+                    <StackPanel Margin="80 0 0 0">
+                        <TextBlock Text="Loại phòng" IsEnabled="False"
+                                   Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                                   FontSize="15" Margin="0 0 0 4" />
+                        <materialDesign:Chip
+                            Content="{Binding Path=Room.CategoryName}"
+                            FontSize="15"
+                            IconForeground="White">
+                            <materialDesign:Chip.Icon>
+                                <materialDesign:PackIcon
+                                    Kind="HomeVariant"
+                                    Width="24" Height="24" />
+                            </materialDesign:Chip.Icon>
+                        </materialDesign:Chip>
+                    </StackPanel>
+
+                </StackPanel>
+
+                <!--Details-->
+                <StackPanel Margin="16 24 16 0">
+                    <TextBlock Text="Danh sách khách hàng" IsEnabled="False"
                                Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                FontSize="15" Margin="0 0 0 4" />
-                    <materialDesign:Chip
-                        Content="{Binding Path=Room.CategoryName}"
-                        FontSize="15"
-                        IconForeground="White">
-                        <materialDesign:Chip.Icon>
-                            <materialDesign:PackIcon
-                                Kind="HomeVariant"
-                                Width="24" Height="24" />
-                        </materialDesign:Chip.Icon>
-                    </materialDesign:Chip>
+                    <DataGrid CanUserSortColumns="False"
+                              CanUserAddRows="{Binding CanAddDetail}"
+                              CanUserDeleteRows="{Binding CanDeleteDetail}"
+                              CanUserResizeColumns="True" AutoGenerateColumns="False"
+                              materialDesign:DataGridAssist.CellPadding="13 8 8 8"
+                              materialDesign:DataGridAssist.ColumnHeaderPadding="8"
+                              ItemsSource="{Binding Details}"
+                              FontSize="15">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SizeChanged">
+                                <cal:ActionMessage MethodName="CheckNumberOfDetails" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}"
+                                Binding="{Binding CustomerLicenseId}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Số giấy tờ" FontSize="18" FontWeight="Bold" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn
+                                EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}"
+                                Binding="{Binding CustomerName}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Tên khách hàng" FontSize="18" FontWeight="Bold" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <materialDesign:MaterialDataGridComboBoxColumn
+                                ItemsSource="{Binding Source={x:Static viewModels:ScreenLeaseDetailViewModel.CustomerCategories}}"
+                                DisplayMemberPath="Name"
+                                SelectedValuePath="Id"
+                                SelectedItemBinding="{Binding CustomerCategory}">
+                                <materialDesign:MaterialDataGridComboBoxColumn.Header>
+                                    <TextBlock Text="Loại khách" FontSize="18" FontWeight="Bold" />
+                                </materialDesign:MaterialDataGridComboBoxColumn.Header>
+                            </materialDesign:MaterialDataGridComboBoxColumn>
+                            <DataGridTextColumn EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}"
+                                                Binding="{Binding CustomerAddress}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Địa chỉ" FontSize="18" FontWeight="Bold" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </StackPanel>
 
+                <!--Commands-->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 16 0 0">
+                    <Button DockPanel.Dock="Right" HorizontalAlignment="Right"
+                            Style="{DynamicResource MaterialDesignFlatAccentButton}"
+                            Content="THANH TOÁN"
+                            Margin="8" Height="36" Padding="8"
+                            cal:Message.Attach="PreviewOrder" />
+                </StackPanel>
+
+
             </StackPanel>
-
-            <!--Details-->
-            <StackPanel Margin="16 24 16 0">
-                <TextBlock Text="Danh sách khách hàng" IsEnabled="False"
-                           Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                           FontSize="15" Margin="0 0 0 4" />
-                <DataGrid CanUserSortColumns="False"
-                          CanUserAddRows="{Binding CanAddDetail}"
-                          CanUserDeleteRows="{Binding CanDeleteDetail}"
-                          CanUserResizeColumns="True" AutoGenerateColumns="False"
-                          materialDesign:DataGridAssist.CellPadding="13 8 8 8"
-                          materialDesign:DataGridAssist.ColumnHeaderPadding="8"
-                          ItemsSource="{Binding Details}">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SizeChanged">
-                            <cal:ActionMessage MethodName="CheckNumberOfDetails" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Số giấy tờ"
-                                            EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}"
-                                            Binding="{Binding CustomerLicenseId}" />
-                        <DataGridTextColumn Header="Tên"
-                                            EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}"
-                                            Binding="{Binding CustomerName}" />
-                        <materialDesign:MaterialDataGridComboBoxColumn Header="Loại khách"
-                                                                       ItemsSource="{Binding Source={x:Static viewModels:ScreenLeaseDetailViewModel.CustomerCategories}}"
-                                                                       DisplayMemberPath="Name"
-                                                                       SelectedValuePath="Id"
-                                                                       SelectedItemBinding="{Binding CustomerCategory}" />
-                        <DataGridTextColumn Header="Địa chỉ"
-                                            EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}"
-                                            Binding="{Binding CustomerAddress}" />
-                    </DataGrid.Columns>
-                </DataGrid>
-            </StackPanel>
-
-            <!--Commands-->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 16 0 0">
-                <Button DockPanel.Dock="Right" HorizontalAlignment="Right"
-                        Style="{DynamicResource MaterialDesignFlatAccentButton}"
-                        Content="THANH TOÁN"
-                        Margin="8" Height="36" Padding="8"
-                        cal:Message.Attach="PreviewOrder" />
-            </StackPanel>
-
-
-        </StackPanel>
-
+        </ScrollViewer>
 
     </Grid>
 </UserControl>
