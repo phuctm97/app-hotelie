@@ -146,14 +146,14 @@
     <Compile Include="Common\Converters\StringToUpperConverter.vb" />
     <Compile Include="Common\IMainWindow.vb" />
     <Compile Include="Common\Infrastructure\Inventory.vb" />
-    <Compile Include="Common\Infrastructure\IRoomCollectionPresenter.vb" />
+    <Compile Include="Common\Infrastructure\IRoomsListPresenter.vb" />
     <Compile Include="Common\Infrastructure\IRoomPresenter.vb" />
     <Compile Include="Common\IShell.vb" />
     <Compile Include="Common\IWindowCommandsBar.vb" />
     <Compile Include="Leases\Converters\LeaseIdStringDisplayConverter.vb" />
     <Compile Include="Leases\Converters\NumberOfCustomersDisplayConverters.vb" />
     <Compile Include="Leases\Converters\NumberOfUsedDaysDisplayConverters.vb" />
-    <Compile Include="Leases\Converters\TotalPriceDisplayConverter.vb" />
+    <Compile Include="Leases\Converters\TotalExpenseDisplayConverter.vb" />
     <Compile Include="Leases\ViewModels\LeasesWorkspaceViewModel.vb" />
     <Compile Include="Leases\ViewModels\ScreenAddLeaseViewModel.vb" />
     <Compile Include="Leases\ViewModels\ScreenLeaseDetailViewModel.vb" />

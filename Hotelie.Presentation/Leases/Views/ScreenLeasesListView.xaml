@@ -23,7 +23,7 @@
 
             <commonConverters:DateTimeToShortDateStringConverter x:Key="DateTimeToShortDateStringConverter" />
             <converters:LeaseIdStringDisplayConverter x:Key="LeaseIdStringDisplayConverter" />
-            <converters:TotalPriceDisplayConverter x:Key="TotalPriceDisplayConverter" />
+            <converters:TotalExpenseDisplayConverter x:Key="TotalExpenseDisplayConverter" />
             <converters:NumberOfUsedDaysDisplayConverters x:Key="NumberOfUsedDaysDisplayConverters" />
             <converters:NumberOfCustomersDisplayConverters x:Key="NumberOfCustomersDisplayConverters" />
         </ResourceDictionary>
@@ -85,26 +85,28 @@
                                                 <RowDefinition Height="Auto" />
                                             </Grid.RowDefinitions>
 
-                                            <!--Primary text-->
+                                            <!--Primary contents-->
                                             <StackPanel Grid.Row="0"
                                                         Margin="16 24 16 0">
-                                                <!--Lease id-->
+                                                <!--Id-->
                                                 <TextBlock Style="{DynamicResource MaterialDesignHeadlineTextBlock}"
                                                            Text="{Binding Id, Converter={StaticResource LeaseIdStringDisplayConverter}}"
                                                            Margin="0 0 8 0" />
 
-                                                <!--Total price-->
+                                                <!--Sub content-->
                                                 <StackPanel Orientation="Horizontal">
+                                                    <!--Eslap date-->
                                                     <TextBlock
                                                         Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
-                                                        Text="{Binding BeginDate, Converter={StaticResource NumberOfUsedDaysDisplayConverters}}"
+                                                        Text="{Binding CheckinDate, Converter={StaticResource NumberOfUsedDaysDisplayConverters}}"
                                                         Opacity="0.65" />
                                                     <TextBlock
                                                         Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
                                                         Text=". " Opacity="0.65" />
+                                                    <!--Total expense-->
                                                     <TextBlock
                                                         Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
-                                                        Text="{Binding TotalPrice, Converter={StaticResource TotalPriceDisplayConverter}}"
+                                                        Text="{Binding TotalExpense, Converter={StaticResource TotalExpenseDisplayConverter}}"
                                                         Opacity="0.65" />
                                                 </StackPanel>
 
@@ -117,7 +119,7 @@
                                                 </Button>
                                             </StackPanel>
 
-                                            <!--Extra info-->
+                                            <!--Extra contents-->
                                             <Grid Grid.Row="1"
                                                   Margin="16 8 16 16">
                                                 <Grid.ColumnDefinitions>
@@ -138,29 +140,29 @@
                                                                FontWeight="Light" />
                                                 </StackPanel>
 
-                                                <!--Number of people-->
+                                                <!--Number of customers-->
                                                 <StackPanel Margin="0 0 0 4" Grid.Row="0" Grid.Column="1"
                                                             Orientation="Horizontal">
                                                     <materialDesign:PackIcon Kind="AccountMultiple"
                                                                              Margin="0 0 8 0" />
-                                                    <TextBlock Text="{Binding Path=Customers, Converter={StaticResource NumberOfCustomersDisplayConverters}}" FontWeight="Light" />
+                                                    <TextBlock Text="{Binding Path=Details, Converter={StaticResource NumberOfCustomersDisplayConverters}}" FontWeight="Light" />
                                                 </StackPanel>
 
-                                                <!--Begin date-->
+                                                <!--Checkin date-->
                                                 <StackPanel Margin="0 4 4 4" Grid.Row="1" Grid.Column="0"
                                                             Orientation="Horizontal">
                                                     <materialDesign:PackIcon Kind="CalendarToday" Margin="0 0 8 0" />
                                                     <TextBlock Margin="0 0 16 0"
-                                                               Text="{Binding BeginDate, Converter={StaticResource DateTimeToShortDateStringConverter}}"
+                                                               Text="{Binding CheckinDate, Converter={StaticResource DateTimeToShortDateStringConverter}}"
                                                                FontWeight="Light" />
                                                 </StackPanel>
 
-                                                <!--End date-->
+                                                <!--Expected checkout date-->
                                                 <StackPanel Margin="0 4 0 4" Grid.Row="1" Grid.Column="1"
                                                             Orientation="Horizontal">
                                                     <materialDesign:PackIcon Kind="Calendar" Margin="0 0 8 0" />
                                                     <TextBlock
-                                                        Text="{Binding EndDate, Converter={StaticResource DateTimeToShortDateStringConverter}}"
+                                                        Text="{Binding ExpectedCheckoutDate, Converter={StaticResource DateTimeToShortDateStringConverter}}"
                                                         FontWeight="Light" />
                                                 </StackPanel>
                                             </Grid>
@@ -171,8 +173,8 @@
                                             </StackPanel>
                                         </Grid>
 
-                                        <!--Customer list-->
-                                        <ListBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Customers}">
+                                        <!--Customers list-->
+                                        <ListBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Details}">
                                             <ListBox.ItemsPanel>
                                                 <ItemsPanelTemplate>
                                                     <WrapPanel Margin="8 8 8 4" Orientation="Horizontal" />
@@ -187,7 +189,7 @@
                                                         <Setter.Value>
                                                             <ControlTemplate TargetType="ListBoxItem">
                                                                 <materialDesign:Chip FontSize="12"
-                                                                                     Content="{Binding Name}">
+                                                                                     Content="{Binding CustomerName}">
                                                                     <materialDesign:Chip.Icon>
                                                                         <materialDesign:PackIcon Height="16" Width="16"
                                                                                                  Kind="Account" />
@@ -204,13 +206,14 @@
                                                    Style="{StaticResource MaterialDesignDarkSeparator}"
                                                    Margin="8 0 8 0" />
 
-                                        <!--Action area 2-->
+                                        <!--Action area-->
                                         <DockPanel Grid.Row="3" Grid.Column="1">
                                             <Button DockPanel.Dock="Left"
                                                     HorizontalAlignment="Left"
                                                     Margin="8 4 4 8"
                                                     Style="{DynamicResource MaterialDesignFlatButton}"
-                                                    Content="CHI TIẾT" />
+                                                    Content="CHI TIẾT" 
+                                                    cal:Message.Attach="NavigateToScreenLeaseDetail($dataContext)"/>
                                             <Button DockPanel.Dock="Left"
                                                     HorizontalAlignment="Left"
                                                     Margin="15 4 4 8"

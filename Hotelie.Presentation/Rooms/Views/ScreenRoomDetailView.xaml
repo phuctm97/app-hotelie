@@ -70,7 +70,7 @@
                             <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
                                        FontSize="15"
                                        Opacity="0.9"
-                                       Text="{Binding Path=RoomCategory.Price, Converter={StaticResource DecimalToCurrencyStringConverter}}" />
+                                       Text="{Binding Path=RoomCategory.UnitPrice, Converter={StaticResource DecimalToCurrencyStringConverter}}" />
                         </StackPanel>
                     </StackPanel>
 

@@ -6,28 +6,30 @@ Namespace Tests.Rooms.Factories.CreateRoom
 
 		Public Function Execute( name As String,
 		                         categoryId As String,
-		                         note As String ) As RoomModel Implements ICreateRoomFactory.Execute
+		                         note As String ) As String Implements ICreateRoomFactory.Execute
 			Dim newId = 1
 			While (True)
 				Dim newIdStr = newId.ToString()
-				Dim rc = RoomsTest.Rooms.FirstOrDefault( Function( r ) r.Id = newIdStr )
+				Dim rc = RoomRepositoryTest.Rooms.FirstOrDefault( Function( r ) r.Id = newIdStr )
 
 				If IsNothing( rc ) Then Exit While
 				newId += 1
 			End While
 
-			Dim category = RoomsTest.RoomCategories.FirstOrDefault( Function( c ) c.Id = categoryId )
-			If IsNothing( category ) Then Throw New EntryPointNotFoundException()
+			Dim category = RoomRepositoryTest.RoomCategories.FirstOrDefault( Function( c ) c.Id = categoryId )
+			If IsNothing( category ) Then Return String.Empty
 
-			Dim newRoom = New RoomModel With {.Id=newId, .Name=name, .Note=note, .State=0,
-				    .CategoryId=categoryId,.CategoryName=category.Name,.CategoryDisplayColor=category.DisplayColor,
-				    .Price=category.Price,.IsVisible=False}
-			Return newRoom
+			RoomRepositoryTest.Rooms.Add( New Domain.Rooms.Room With {.Id = newId,
+				                            .Name = name,
+				                            .Category = category,
+				                            .Note=note,
+				                            .State=0} )
+			Return newId
 		End Function
 
 		Public Async Function ExecuteAsync( name As String,
 		                                    categoryId As String,
-		                                    note As String ) As Task(Of RoomModel) Implements ICreateRoomFactory.ExecuteAsync
+		                                    note As String ) As Task(Of String) Implements ICreateRoomFactory.ExecuteAsync
 			Return Await Task.Run( Function() Execute( name, categoryId, note ) )
 		End Function
 	End Class

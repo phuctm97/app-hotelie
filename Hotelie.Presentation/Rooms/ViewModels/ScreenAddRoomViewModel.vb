@@ -19,7 +19,7 @@ Namespace Rooms.ViewModels
 
 		' Backing fields
 		Private _roomName As String
-		Private _roomCategory As RoomCategoryModel
+		Private _roomCategory As RoomCategoriesListItemModel
 		Private _roomNote As String
 
 		' Parent
@@ -37,7 +37,7 @@ Namespace Rooms.ViewModels
 			_createRoomFactory = createRoomFactory
 			_inventory = inventory
 
-			RoomCategories = New BindableCollection(Of RoomCategoryModel)
+			RoomCategories = New BindableCollection(Of RoomCategoriesListItemModel)
 		End Sub
 
 		Public Sub Init()
@@ -72,18 +72,18 @@ Namespace Rooms.ViewModels
 				Return _roomName
 			End Get
 			Set
-				If String.Equals( Value, _roomName ) Then Return
+				If IsNothing( Value ) OrElse String.Equals( Value, _roomName ) Then Return
 				_roomName = value
 				NotifyOfPropertyChange( Function() RoomName )
 			End Set
 		End Property
 
-		Public Property RoomCategory As RoomCategoryModel
+		Public Property RoomCategory As RoomCategoriesListItemModel
 			Get
 				Return _roomCategory
 			End Get
 			Set
-				If Equals( Value, _roomCategory ) Then Return
+				If IsNothing( Value ) OrElse Equals( Value, _roomCategory ) Then Return
 				_roomCategory = value
 				NotifyOfPropertyChange( Function() RoomCategory )
 			End Set
@@ -94,7 +94,7 @@ Namespace Rooms.ViewModels
 				Return _roomNote
 			End Get
 			Set
-				If String.Equals( Value, _roomNote ) Then Return
+				If IsNothing( Value ) OrElse String.Equals( Value, _roomNote ) Then Return
 				_roomNote = value
 				NotifyOfPropertyChange( Function() RoomNote )
 			End Set
@@ -108,7 +108,7 @@ Namespace Rooms.ViewModels
 
 		' ReSharper disable once CollectionNeverUpdated.Global
 		' ReSharper disable once UnassignedGetOnlyAutoProperty
-		Public ReadOnly Property RoomCategories As IObservableCollection(Of RoomCategoryModel)
+		Public ReadOnly Property RoomCategories As IObservableCollection(Of RoomCategoriesListItemModel)
 
 		' Exit
 		Private Sub ResetValues()
@@ -165,28 +165,43 @@ Namespace Rooms.ViewModels
 		End Sub
 
 		Private Sub Save()
-			' try update
-			Dim roomModel = _createRoomFactory.Execute( RoomName, RoomCategory.Id, RoomNote )
-			If IsNothing( roomModel )
-				ShowStaticBottomNotification(StaticNotificationType.Error, "Sự cố ngoài ý muốn. Tạo phòng thất bại!")
+			' try create
+			Dim newRoomId = _createRoomFactory.Execute( RoomName, RoomCategory.Id, RoomNote )
+
+			If String.IsNullOrEmpty( newRoomId )
+				OnSaveFail()
 			Else
-				_inventory.OnRoomAdded( roomModel.Id, roomModel.Name, roomModel.CategoryId, roomModel.Note )
-				[Exit]()
+				OnSaveSuccess( newRoomId )
 			End If
 		End Sub
 
-		Private Async Sub SaveAsync()
-			' try update
-			ShowStaticWindowLoadingDialog()
-			Dim roomModel = Await _createRoomFactory.ExecuteAsync( RoomName, RoomCategory.Id, RoomNote )
-			CloseStaticWindowDialog()
+		Private Sub OnSaveSuccess( newRoomId As String )
+			_inventory.OnRoomAdded( newRoomId )
+			[Exit]()
+		End Sub
 
-			If IsNothing( roomModel )
-				ShowStaticBottomNotification(StaticNotificationType.Error, "Sự cố ngoài ý muốn. Tạo phòng thất bại!")
+		Private Async Sub SaveAsync()
+			' try create
+
+			ShowStaticWindowLoadingDialog()
+			Dim newRoomId = Await _createRoomFactory.ExecuteAsync( RoomName, RoomCategory.Id, RoomNote )
+
+			If String.IsNullOrEmpty( newRoomId )
+				OnSaveFail()
 			Else
-				_inventory.OnRoomAdded( roomModel.Id, roomModel.Name, roomModel.CategoryId, roomModel.Note )
-				[Exit]()
+				Await OnSaveSuccessAsync( newRoomId )
 			End If
+
+			CloseStaticWindowDialog()
+		End Sub
+
+		Private Async Function OnSaveSuccessAsync( newRoomId ) As Task
+			Await _inventory.OnRoomAddedAsync( newRoomId )
+			[Exit]()
+		End Function
+
+		Private Sub OnSaveFail()
+			ShowStaticBottomNotification( StaticNotificationType.Error, "Sự cố ngoài ý muốn. Tạo phòng thất bại!" )
 		End Sub
 
 		Private Function ValidateData() As Boolean

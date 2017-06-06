@@ -1,5 +1,5 @@
 ﻿Imports Caliburn.Micro
-Imports Hotelie.Application.Leases.Queries
+Imports Hotelie.Application.Leases.Queries.GetLeasesList
 
 Namespace Leases.ViewModels
 	Public Class ScreenLeasesListViewModel
@@ -7,12 +7,12 @@ Namespace Leases.ViewModels
 		Private ReadOnly _getLeasesListQuery As IGetLeasesListQuery
 
 		' Data
-		Public ReadOnly Property Leases As IObservableCollection(Of LeaseModel)
+		Public ReadOnly Property Leases As IObservableCollection(Of LeasesListIemModel)
 
 		Public Sub New( getLeasesListQuery As IGetLeasesListQuery )
 			_getLeasesListQuery = getLeasesListQuery
 
-			Leases = New BindableCollection(Of LeaseModel)()
+			Leases = New BindableCollection(Of LeasesListIemModel)()
 		End Sub
 
 		Public Sub Init()

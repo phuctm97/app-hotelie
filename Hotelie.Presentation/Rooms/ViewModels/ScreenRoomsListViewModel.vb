@@ -1,6 +1,7 @@
 ﻿Imports Caliburn.Micro
 Imports Hotelie.Application.Rooms.Commands.RemoveRoom
 Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
+Imports Hotelie.Application.Rooms.Queries.GetRoomData
 Imports Hotelie.Application.Rooms.Queries.GetRoomsList
 Imports Hotelie.Application.Services.Infrastructure
 Imports Hotelie.Presentation.Common.Controls
@@ -9,12 +10,12 @@ Imports Hotelie.Presentation.Infrastructure
 Namespace Rooms.ViewModels
 	Public Class ScreenRoomsListViewModel
 		Inherits PropertyChangedBase
-		Implements IRoomCollectionPresenter,
+		Implements IRoomsListPresenter,
 		           INeedWindowModals
 
-		Private _rooms As IObservableCollection(Of RoomModel)
+		Private _rooms As IObservableCollection(Of RoomsListItemModel)
 		Private _filterRoomNamePrefix As String
-		Private _filterRoomCategory As RoomCategoryModel
+		Private _filterRoomCategory As RoomCategoriesListItemModel
 		Private _filterRoomState As Integer?
 		Private _filterRoomMinPrice As Decimal?
 		Private _filterRoomMaxPrice As Decimal?
@@ -28,7 +29,7 @@ Namespace Rooms.ViewModels
 		Private ReadOnly _inventory As IInventory
 
 		' Data
-		Public Property Rooms As IObservableCollection(Of RoomModel)
+		Public Property Rooms As IObservableCollection(Of RoomsListItemModel)
 			Get
 				Return _rooms
 			End Get
@@ -40,7 +41,7 @@ Namespace Rooms.ViewModels
 		End Property
 
 		' ReSharper disable once UnassignedGetOnlyAutoProperty
-		Public ReadOnly Property RoomCategories As IObservableCollection(Of RoomCategoryModel)
+		Public ReadOnly Property RoomCategories As IObservableCollection(Of RoomCategoriesListItemModel)
 
 		' ReSharper disable once UnassignedGetOnlyAutoProperty
 		Public ReadOnly Property RoomStates As IObservableCollection(Of Integer)
@@ -62,8 +63,8 @@ Namespace Rooms.ViewModels
 			_inventory = inventory
 			RegisterInventory()
 
-			Rooms = New BindableCollection(Of RoomModel)
-			RoomCategories = New BindableCollection(Of RoomCategoryModel)
+			Rooms = New BindableCollection(Of RoomsListItemModel)
+			RoomCategories = New BindableCollection(Of RoomCategoriesListItemModel)
 			RoomStates = New BindableCollection(Of Integer)
 			RoomMinPrices = New BindableCollection(Of Decimal)
 			RoomMaxPrices = New BindableCollection(Of Decimal)
@@ -114,13 +115,13 @@ Namespace Rooms.ViewModels
 		Private Sub InitRoomCategories()
 			RoomCategories.Clear()
 			RoomCategories.AddRange( _getRoomCategoriesListQuery.Execute() )
-			RoomCategories.Add( New RoomCategoryModel With {.Name = "Tất cả", .Price = - 1} ) 'filter all
+			RoomCategories.Add( New RoomCategoriesListItemModel With {.Name = "Tất cả", .UnitPrice = - 1} ) 'filter all
 		End Sub
 
 		Private Async Function InitRoomCategoriesAsync() As Task
 			RoomCategories.Clear()
 			RoomCategories.AddRange( Await _getRoomCategoriesListQuery.ExecuteAsync() )
-			RoomCategories.Add( New RoomCategoryModel With {.Name = "Tất cả", .Price = - 1} ) 'filter all
+			RoomCategories.Add( New RoomCategoriesListItemModel With {.Name = "Tất cả", .UnitPrice = - 1} ) 'filter all
 		End Function
 
 		Private Sub InitRoomPrices()
@@ -128,7 +129,7 @@ Namespace Rooms.ViewModels
 			Dim maxPrices = New List(Of Decimal)
 
 			For i = 0 To RoomCategories.Count - 2
-				Dim price = RoomCategories( i ).Price
+				Dim price = RoomCategories( i ).UnitPrice
 
 				If Not minPrices.Contains( price ) Then _
 					minPrices.Add( price )
@@ -177,14 +178,14 @@ Namespace Rooms.ViewModels
 				Return _filterRoomNamePrefix
 			End Get
 			Set
-				If String.Equals( Value, _filterRoomNamePrefix ) Then Return
+				If IsNothing( Value ) OrElse String.Equals( Value, _filterRoomNamePrefix ) Then Return
 				_filterRoomNamePrefix = value
 				NotifyOfPropertyChange( Function() FilterRoomNamePrefix )
 				RefreshRoomsListVisibility()
 			End Set
 		End Property
 
-		Public Property FilterRoomCategory As RoomCategoryModel
+		Public Property FilterRoomCategory As RoomCategoriesListItemModel
 			Get
 				Return _filterRoomCategory
 			End Get
@@ -295,15 +296,15 @@ Namespace Rooms.ViewModels
 			RefreshRoomsListVisibility()
 		End Sub
 
-		Public Sub FilterByRoomCategoryOf( room As RoomModel )
-			Dim category = RoomCategories.FirstOrDefault( Function( c ) String.Equals( c.Id, room.CategoryId ) )
+		Public Sub FilterByRoomCategoryOf( roomsListItem As RoomsListItemModel )
+			Dim category = RoomCategories.FirstOrDefault( Function( c ) String.Equals( c.Id, roomsListItem.CategoryId ) )
 			If IsNothing( category ) Then Return
 
 			FilterRoomCategory = category
 		End Sub
 
-		Public Sub FilterByRoomStateOf( room As RoomModel )
-			Dim state = RoomStates.FirstOrDefault( Function( s ) Equals( s, room.State ) )
+		Public Sub FilterByRoomStateOf( roomsListItem As RoomsListItemModel )
+			Dim state = RoomStates.FirstOrDefault( Function( s ) Equals( s, roomsListItem.State ) )
 			If IsNothing( state ) Then Return
 
 			FilterRoomState = state
@@ -316,7 +317,7 @@ Namespace Rooms.ViewModels
 			Dim matchMinPrice As Boolean
 			Dim matchMaxPrice As Boolean
 
-			For Each room As RoomModel In Rooms
+			For Each room As RoomsListItemModel In Rooms
 				matchNamePrefix = String.IsNullOrWhiteSpace( FilterRoomNamePrefix ) OrElse
 				                  (room.Name.ToLower().Contains( FilterRoomNamePrefix ))
 
@@ -333,20 +334,20 @@ Namespace Rooms.ViewModels
 
 				matchMinPrice = IsNothing( FilterRoomMinPrice ) OrElse
 				                (FilterRoomMinPrice < 0 OrElse
-				                 (FilterRoomMinPrice <= room.Price))
+				                 (FilterRoomMinPrice <= room.UnitPrice))
 
 				matchMaxPrice = IsNothing( FilterRoomMaxPrice ) OrElse
 				                (FilterRoomMaxPrice < 0 OrElse
-				                 (FilterRoomMaxPrice >= room.Price))
+				                 (FilterRoomMaxPrice >= room.UnitPrice))
 
 				If matchNamePrefix And
 				   matchCategory And
 				   matchState And
 				   matchMinPrice And
 				   matchMaxPrice
-					room.IsVisible = True
+					room.IsFiltersMatched = True
 				Else
-					room.IsVisible = False
+					room.IsFiltersMatched = False
 				End If
 			Next
 		End Sub
@@ -356,83 +357,75 @@ Namespace Rooms.ViewModels
 			Select Case SortingCode
 				Case 0
 					If IsDescendingSort
-						Rooms = New BindableCollection(Of RoomModel)( Rooms.OrderByDescending( Function( p ) p.Name ) )
+						Rooms = New BindableCollection(Of RoomsListItemModel)( Rooms.OrderByDescending( Function( p ) p.Name ) )
 					Else
-						Rooms = New BindableCollection(Of RoomModel)( Rooms.OrderBy( Function( p ) p.Name ) )
+						Rooms = New BindableCollection(Of RoomsListItemModel)( Rooms.OrderBy( Function( p ) p.Name ) )
 					End If
 				Case 1
 					If IsDescendingSort
-						Rooms = New BindableCollection(Of RoomModel)( Rooms.OrderByDescending( Function( p ) p.CategoryName ) )
+						Rooms = New BindableCollection(Of RoomsListItemModel)( Rooms.OrderByDescending( Function( p ) p.CategoryName ) )
 					Else
-						Rooms = New BindableCollection(Of RoomModel)( Rooms.OrderBy( Function( p ) p.CategoryName ) )
+						Rooms = New BindableCollection(Of RoomsListItemModel)( Rooms.OrderBy( Function( p ) p.CategoryName ) )
 					End If
 				Case 2
 					If IsDescendingSort
-						Rooms = New BindableCollection(Of RoomModel)( Rooms.OrderByDescending( Function( p ) p.Price ) )
+						Rooms = New BindableCollection(Of RoomsListItemModel)( Rooms.OrderByDescending( Function( p ) p.UnitPrice ) )
 					Else
-						Rooms = New BindableCollection(Of RoomModel)( Rooms.OrderBy( Function( p ) p.Price ) )
+						Rooms = New BindableCollection(Of RoomsListItemModel)( Rooms.OrderBy( Function( p ) p.UnitPrice ) )
 					End If
 				Case 3
 					If IsDescendingSort
-						Rooms = New BindableCollection(Of RoomModel)( Rooms.OrderByDescending( Function( p ) p.State ) )
+						Rooms = New BindableCollection(Of RoomsListItemModel)( Rooms.OrderByDescending( Function( p ) p.State ) )
 					Else
-						Rooms = New BindableCollection(Of RoomModel)( Rooms.OrderBy( Function( p ) p.State ) )
+						Rooms = New BindableCollection(Of RoomsListItemModel)( Rooms.OrderBy( Function( p ) p.State ) )
 					End If
 			End Select
 		End Sub
 
 		' Infrastructure
-		Public Sub OnRoomAdded( id As String,
-		                        name As String,
-		                        categoryId As String,
-		                        note As String ) Implements IRoomCollectionPresenter.OnRoomAdded
-			' check for duplicate
-			Dim rc = Rooms.FirstOrDefault( Function( r ) r.Id = id )
-			If rc IsNot Nothing Then Throw New DuplicateWaitObjectException()
-
+		Public Sub OnRoomAdded( model As RoomModel ) Implements IRoomsListPresenter.OnRoomAdded
 			' find category
-			Dim category = RoomCategories.FirstOrDefault( Function( c ) c.Id = categoryId )
-			If categoryId Is Nothing Then Throw New EntryPointNotFoundException()
+			Dim category = RoomCategories.FirstOrDefault( Function( c ) c.Id = model.Category.Id )
+			If category Is Nothing Then Throw New EntryPointNotFoundException()
 
-			Rooms.Add( New RoomModel With {.Id=id, .Name=name, 
-				         .CategoryId=categoryId, .CategoryName=category.Name, 
+			Rooms.Add( New RoomsListItemModel With {.Id=model.Id, 
+				         .Name=model.Name, 
+				         .CategoryId=category.Id,
+				         .CategoryName=category.Name, 
 				         .CategoryDisplayColor=category.DisplayColor, 
-				         .Price=category.Price, .State=0,.Note=note, .IsVisible=False} )
+				         .UnitPrice=category.UnitPrice, 
+				         .State=0, 
+				         .IsFiltersMatched=False} )
 
 			RefreshRoomsListVisibility()
 			SortRoomsList()
 		End Sub
 
-		Public Sub OnRoomUpdated( id As String,
-		                          name As String,
-		                          categoryId As String,
-		                          note As String,
-		                          state As Int32 ) Implements IRoomCollectionPresenter.OnRoomUpdated
+		Public Sub OnRoomUpdated( model As RoomModel ) Implements IRoomsListPresenter.OnRoomUpdated
 			' find room
-			Dim room = Rooms.FirstOrDefault( Function( r ) r.Id = id )
+			Dim room = Rooms.FirstOrDefault( Function( r ) r.Id = model.Id )
 			If room Is Nothing Then Throw New DuplicateWaitObjectException()
 
 			' find category
-			Dim category = RoomCategories.FirstOrDefault( Function( c ) c.Id = categoryId )
-			If categoryId Is Nothing Then Throw New EntryPointNotFoundException()
+			Dim category = RoomCategories.FirstOrDefault( Function( c ) c.Id = model.Category.Id )
+			If category Is Nothing Then Throw New EntryPointNotFoundException()
 
 			' update
-			room.Name = name
-			room.CategoryId = categoryId
+			room.Name = model.Name
+			room.CategoryId = category.id
 			room.CategoryName = category.Name
 			room.CategoryDisplayColor = category.DisplayColor
-			room.Price = category.Price
-			room.Note = note
-			room.State = state
+			room.UnitPrice = category.UnitPrice
+			room.State = model.State
 
 			RefreshRoomsListVisibility()
 			SortRoomsList()
 		End Sub
 
-		Public Sub OnRoomRemoved( id As String ) Implements IRoomCollectionPresenter.OnRoomRemoved
+		Public Sub OnRoomRemoved( id As String ) Implements IRoomsListPresenter.OnRoomRemoved
 			' find room
 			Dim room = Rooms.FirstOrDefault( Function( r ) r.Id = id )
-			If room Is Nothing Then Throw New DuplicateWaitObjectException()
+			If room Is Nothing Then Return
 
 			Rooms.Remove( room )
 		End Sub

@@ -1,10 +1,12 @@
 ﻿Imports Caliburn.Micro
-Imports Hotelie.Application.Leases.Queries
 Imports Hotelie.Application.Rooms.Commands.RemoveRoom
 Imports Hotelie.Application.Rooms.Commands.UpdateRoom
 Imports Hotelie.Application.Rooms.Factories.CreateRoom
 Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
+Imports Hotelie.Application.Rooms.Queries.GetRoomCategoryData
+Imports Hotelie.Application.Rooms.Queries.GetRoomData
 Imports Hotelie.Application.Rooms.Queries.GetRoomsList
+Imports Hotelie.Application.Rooms.Queries.GetSimpleRoomsList
 Imports Hotelie.Application.Services.Authentication
 Imports Hotelie.Application.Services.Persistence
 Imports Microsoft.Practices.Unity
@@ -35,8 +37,16 @@ Public Class AppBootstrapper
 		_container.RegisterType(Of IAuthentication, Tests.Services.Authentication.Authentication)(
 			New ContainerControlledLifetimeManager() )
 
+		_container.RegisterType(Of IGetRoomDataQuery, Tests.Rooms.Queries.GetRoomData.GetRoomDataQuery)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType _
+			(Of IGetRoomCategoryDataQuery, Tests.Rooms.Queries.GetRoomCategoryData.GetRoomCategoryDataQuery)(
+				New ContainerControlledLifetimeManager() )
 		_container.RegisterType(Of IGetRoomsListQuery, Tests.Rooms.Queries.GetRoomsList.GetRoomsListQuery)(
 			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IGetSimpleRoomsListQuery, Tests.Rooms.Queries.GetSimpleRoomsList.GetSimpleRoomsListQuery)(
+			New ContainerControlledLifetimeManager() )
+
 		_container.RegisterType _
 			(Of IGetRoomCategoriesListQuery, Tests.Rooms.Queries.GetRoomCategoriesList.GetRoomCategoriesListQuery)(
 				New ContainerControlledLifetimeManager() )
@@ -45,9 +55,6 @@ Public Class AppBootstrapper
 		_container.RegisterType(Of IRemoveRoomCommand, Tests.Rooms.Commands.RemoveRoom.RemoveRoomCommand)(
 			New ContainerControlledLifetimeManager() )
 		_container.RegisterType(Of ICreateRoomFactory, Tests.Rooms.Factories.CreateRoom.CreateRoomFactory)(
-			New ContainerControlledLifetimeManager() )
-
-		_container.RegisterType(Of IGetLeasesListQuery, Tests.Leases.Queries.GetLeasesList.GetLeasesListQuery)(
 			New ContainerControlledLifetimeManager() )
 	End Sub
 

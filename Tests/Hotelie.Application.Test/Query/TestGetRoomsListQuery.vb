@@ -73,7 +73,7 @@ Namespace Query
             Assert.AreEqual(_roomsList.Count, rooms.Count)
             For Each room As Room In _roomsList
                 Dim q = False
-                For Each rm As RoomModel In rooms
+                For Each rm As RoomsListItemModel In rooms
                     If room.Id= rm.Id Then 
                         q = True
                         Exit For

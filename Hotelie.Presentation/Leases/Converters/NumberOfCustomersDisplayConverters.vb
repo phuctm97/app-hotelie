@@ -1,6 +1,6 @@
 ﻿Imports System.Globalization
 Imports Caliburn.Micro
-Imports Hotelie.Application.Leases.Queries
+Imports Hotelie.Application.Leases.Queries.GetLeasesList
 
 Namespace Leases.Converters
 	Public Class NumberOfCustomersDisplayConverters
@@ -9,7 +9,7 @@ Namespace Leases.Converters
 		Public Function Convert(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.Convert
 			If IsNothing(value) Then Return "0 người"
 
-			Dim collection = CType(value, IObservableCollection(Of LeaseCustomerModel))
+			Dim collection = CType(value, IObservableCollection(Of LeasesListItemDetailModel))
 			If IsNothing(collection) Then Return "0 người"
 
 			Return $"{collection.Count} người"

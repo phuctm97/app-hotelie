@@ -1,7 +1,7 @@
 ﻿Imports System.Globalization
 
 Namespace Leases.Converters
-	Public Class TotalPriceDisplayConverter
+	Public Class TotalExpenseDisplayConverter
 		Implements IValueConverter
 
 		Public Function Convert(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.Convert
