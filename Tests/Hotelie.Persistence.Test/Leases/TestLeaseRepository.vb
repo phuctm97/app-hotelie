@@ -14,11 +14,12 @@ Namespace Leases
         Private _roomRepository As RoomRepository
         Private _leasesList As List(Of Lease)
         Private _roomsList As List(Of Room)
+        Private _leaseDetailsList As List(Of LeaseDetail)
 
         <TestInitialize>
         Public Sub TestInitialize()
             _databaseService = New DatabaseService()
-            _databaseService.SetDatabaseConnection($"KHUONG-ASUS\SQLEXPRESS",$"HotelieDatabase")
+            _databaseService.SetDatabaseConnection($"KHUONG-ASUS\SQLEXPRESS", $"HotelieDatabase")
             _leaseRepository = new LeaseRepository(_databaseService)
             _roomRepository = New RoomRepository(_databaseService)
         End Sub
@@ -30,8 +31,11 @@ Namespace Leases
 
         Public Sub LeasesInitialize()
             DisposeLeases()
+            _databaseService.Context.CustomerCategories.RemoveRange(_databaseService.Context.CustomerCategories)
+            _databaseService.Context.LeaseDetails.RemoveRange(_databaseService.Context.LeaseDetails)
 
             Dim roomCategory = New RoomCategory() With {.Id = "00001", .Name="Annonymous", .Price=200000}
+            Dim customerCategory = New CustomerCategory() With {.Id="CTEST",.Name="Category",.Coefficient=22}
 
             _roomRepository.AddRoomCategory(roomCategory)
             _databaseService.Context.SaveChanges()
@@ -47,20 +51,23 @@ Namespace Leases
             _roomRepository.AddRange(_roomsList)
             _databaseService.Context.SaveChanges()
 
-            Dim lease1 = New Lease() With{.Id = "LS001", 
-                    .BeginDate=DateTime.ParseExact("5/12/2016", "d/m/yyyy", CultureInfo.InvariantCulture), 
-                    .EndDate=DateTime.ParseExact("26/12/2016", "d/m/yyyy", CultureInfo.InvariantCulture),
-                    .Room=room1,.Price=room1.Category.Price}
+            Dim lease1 = New Lease() With{.Id = "LS00100",
+                    .CheckinDate = DateTime.ParseExact("5/12/2016", "d/m/yyyy", CultureInfo.InvariantCulture),
+                    .ExpectedCheckoutDate = DateTime.ParseExact("26/12/2016", "d/m/yyyy", CultureInfo.InvariantCulture),
+                    .Room = room1, .RoomPrice = room1.Category.Price}
 
-            Dim lease2 = New Lease() With{.Id = "LS002", 
-                    .BeginDate=DateTime.ParseExact("7/5/2016", "d/m/yyyy", CultureInfo.InvariantCulture), 
-                    .EndDate=DateTime.ParseExact("8/5/2016", "d/m/yyyy", CultureInfo.InvariantCulture),
-                    .Room=room2,.Price=room2.Category.Price}
 
-            Dim lease3 = New Lease() With{.Id = "LS003", 
-                    .BeginDate=DateTime.ParseExact("15/11/2016", "d/m/yyyy", CultureInfo.InvariantCulture), 
-                    .EndDate=DateTime.ParseExact("16/12/2016", "d/m/yyyy", CultureInfo.InvariantCulture),
-                    .Room=room3,.Price=room3.Category.Price}
+            Dim lease2 = New Lease() With {.Id = "LS00200",
+                    .CheckinDate = DateTime.ParseExact("7/5/2016", "d/m/yyyy", CultureInfo.InvariantCulture),
+                    .ExpectedCheckoutDate = DateTime.ParseExact("8/5/2016", "d/m/yyyy", CultureInfo.InvariantCulture),
+                    .Room = room2, .RoomPrice = room2.Category.Price}
+
+
+            Dim lease3 = New Lease() With {.Id = "LS00300",
+                    .CheckinDate = DateTime.ParseExact("15/11/2016", "d/m/yyyy", CultureInfo.InvariantCulture),
+                    .ExpectedCheckoutDate = DateTime.ParseExact("16/12/2016", "d/m/yyyy", CultureInfo.InvariantCulture),
+                    .Room = room3, .RoomPrice = room3.Category.Price}
+
 
             _leasesList = new List(Of Lease)
             _leasesList.Add(lease1)
@@ -92,8 +99,12 @@ Namespace Leases
 
             ' assert
             Assert.IsNotNull(leaseFound)
-            Assert.IsTrue(leaseFound.Id = lease.Id And leaseFound.BeginDate = lease.BeginDate)
-
+            Assert.IsTrue(leaseFound.Id = lease.Id)
+            Assert.AreEqual(lease.CheckinDate, leaseFound.CheckinDate)
+            Assert.AreEqual(lease.ExpectedCheckoutDate, leaseFound.ExpectedCheckoutDate)
+            Assert.AreEqual(lease.ExtraCoefficient, leaseFound.ExtraCoefficient)
+            Assert.AreEqual(lease.RoomPrice, leaseFound.RoomPrice)
+            Assert.AreEqual(lease.CustomerCoefficient, leaseFound.CustomerCoefficient)
 
             ' rollback
             DisposeLeases()
@@ -155,21 +166,38 @@ Namespace Leases
         <TestMethod>
         Public Sub TestAddLease_ValidLease_LeaseCountIncrease()
             ' pre-input
-            LeasesInitialize()
-            _leaseRepository.RemoveRange(_leaseRepository.GetAll())
+            DisposeLeases()
+
+            ' input
+            Dim roomCategory = New RoomCategory() With {.Id = "00001", .Name="Annonymous", .Price=200000}
+            _databaseService.Context.RoomCategories.Add(roomCategory)
             _databaseService.Context.SaveChanges()
 
+            Dim room1 = New Room() With {.Id="PH001",.Name="101",.Category=roomCategory,.State=0}
+            _databaseService.Context.Rooms.Add(room1)
+            _databaseService.Context.SaveChanges()
+
+            Dim leasez = New Lease() With{.Id = "LS00100",
+                    .CheckinDate = DateTime.ParseExact("5/12/2016", "d/m/yyyy", CultureInfo.InvariantCulture),
+                    .ExpectedCheckoutDate = DateTime.ParseExact("26/12/2016", "d/m/yyyy", CultureInfo.InvariantCulture),
+                    .Room = room1, .RoomPrice = room1.Category.Price}
+
             ' act
-            _leaseRepository.Add(New Lease() With {.Room = _roomsList(0), 
-                                    .BeginDate = _leasesList(0).BeginDate,
-                                    .EndDate = _leasesList(0).EndDate,
-                                    .Id = _leasesList(0).Id,
-                                    .Price = _leasesList(0).Price})
+            _leaseRepository.Add(New Lease() With {.Room = room1,
+                                    .CheckinDate =leasez.CheckinDate,
+                                    .ExpectedCheckoutDate = leasez.ExpectedCheckoutDate,
+                                    .Id = leasez.Id,
+                                    .RoomPrice = leasez.RoomPrice})
+
             _databaseService.Context.SaveChanges()
 
             ' assert
             Dim lease = _leaseRepository.GetAll().ToList
             Assert.AreEqual(1, lease.Count)
+            Assert.AreEqual(leasez.Id, lease(0).Id)
+            Assert.AreEqual(leasez.Room.Id, lease(0).Room.Id)
+            Assert.AreEqual(leasez.ExpectedCheckoutDate, lease(0).ExpectedCheckoutDate)
+            Assert.AreEqual(leasez.CheckinDate, lease(0).CheckinDate)
 
             ' rollback
             DisposeLeases()
@@ -178,21 +206,40 @@ Namespace Leases
         <TestMethod>
         Public Sub TestAddLeases_ValidLeases_LeasesCountExactly()
             ' pre-input
-            LeasesInitialize()
-            _leaseRepository.RemoveRange(_leaseRepository.GetAll())
+            DisposeLeases()
+
+            ' input
+            Dim roomCategory = New RoomCategory() With {.Id = "00001", .Name="Annonymous", .Price=200000}
+            _databaseService.Context.RoomCategories.Add(roomCategory)
             _databaseService.Context.SaveChanges()
 
+            Dim room1 = New Room() With {.Id="PH001",.Name="101",.Category=roomCategory,.State=0}
+            _databaseService.Context.Rooms.Add(room1)
+            _databaseService.Context.SaveChanges()
+
+            ' declare
+                ' lease1 info
+            Dim id1 = "LS00001"
+            Dim checkinDate1 = DateTime.ParseExact("5/12/2016", "d/m/yyyy", CultureInfo.InvariantCulture)
+            Dim exCDate1 = DateTime.ParseExact("26/12/2016", "d/m/yyyy", CultureInfo.InvariantCulture)
+
+                ' lease 2 info
+            Dim id2 = "LS00002"
+            Dim checkinDate2 = DateTime.ParseExact("7/12/2016", "d/m/yyyy", CultureInfo.InvariantCulture)
+            Dim exCDate2 = DateTime.ParseExact("9/12/2016", "d/m/yyyy", CultureInfo.InvariantCulture)
+
             ' act
-            Dim lease1 = New Lease() With {.Room = _roomsList(0), 
-                    .BeginDate = _leasesList(0).BeginDate,
-                    .EndDate = _leasesList(0).EndDate,
-                    .Id = _leasesList(0).Id,
-                    .Price = _leasesList(0).Price}
-            Dim lease2 = New Lease() With {.Room = _roomsList(1), 
-                    .BeginDate = _leasesList(1).BeginDate,
-                    .EndDate = _leasesList(1).EndDate,
-                    .Id = _leasesList(1).Id,
-                    .Price = _leasesList(1).Price}
+            Dim lease1 = New Lease() With {.Room = room1,
+                    .CheckinDate = checkinDate1,
+                    .ExpectedCheckoutDate = exCDate1,
+                    .Id = id1,
+                    .RoomPrice = 200000}
+            Dim lease2 = New Lease() With {.Room = room1,
+                    .CheckinDate = checkinDate2,
+                    .ExpectedCheckoutDate = exCDate2,
+                    .Id = id2,
+                    .RoomPrice = 300000}
+
             Dim leases = New List(Of Lease)
             leases.Add(lease1)
             leases.Add(lease2)
@@ -218,60 +265,16 @@ Namespace Leases
             Dim lease = _leasesList(2)
 
             ' act
-            Dim leaseFound = _leaseRepository.Find(Function(o)o.Id = lease.Id).FirstOrDefault()
+            Dim leaseFound = _leaseRepository.Find(Function(o) o.Id = lease.Id).FirstOrDefault()
 
             ' assert
-            Assert.AreEqual(lease.BeginDate, leaseFound.BeginDate)
+            Assert.AreEqual(lease.CheckinDate, leaseFound.CheckinDate)
             Assert.AreEqual(lease.Room.Id, leaseFound.Room.Id)
+            Assert.AreEqual(lease.RoomPrice, leaseFound.RoomPrice)
+            Assert.AreEqual(lease.Room.Category.Id, leaseFound.Room.Category.Id)
+            Assert.AreEqual(lease.ExtraCoefficient, leaseFound.ExtraCoefficient)
 
             ' rollback
-            DisposeLeases()
-        End Sub
-
-        <TestMethod>
-        Public Sub TestGetLeaseCustomers_ValidLeaseId_AllLeaseCustomers()
-            ' pre-input
-            LeasesInitialize()
-
-            ' valid lease
-            Dim index = 1
-            Dim lease = _leasesList(index)
-
-            ' input
-            Dim customerCategory = New CustomerCategory() With {.Id="CUS01",.Name="Noi Dia"}
-            _databaseService.Context.CustomerCategories.Add(customerCategory)
-            _databaseService.Context.SaveChanges()
-
-            Dim leaseCustomer1 = New LeaseDetail() _
-                    With {.Lease = lease,.Address="Address 1",.CustomerCategory=customerCategory,
-                    .Id="LD001",.CustomerName="Nguyen Van Thi",.LicenseId="123123"}
-            _databaseService.Context.LeaseDetails.Add(leaseCustomer1)
-
-            Dim leaseCustomer2 = New LeaseDetail() _
-                    With {.Lease = lease,.Address="Address 2",.CustomerCategory=customerCategory,
-                    .Id="LD002",.CustomerName="Nguyen Van No",.LicenseId="444555"}
-            _databaseService.Context.LeaseDetails.Add(leaseCustomer2)
-
-            _databaseService.Context.SaveChanges()
-
-            ' act
-            Dim leaseCustomers = _leaseRepository.GetCustomers(lease.Id)
-
-            ' assert
-            Assert.AreEqual(2,leaseCustomers.Count)
-
-            CollectionAssert.AllItemsAreNotNull(leaseCustomers)
-            For Each leaseCustomer As LeaseDetail In leaseCustomers
-                Dim q = (Equals(leaseCustomer1.Id,leaseCustomer.Id) And (Equals(leaseCustomer1.CustomerCategory.Id,leaseCustomer.CustomerCategory.Id))) _
-                        Or (Equals(leaseCustomer2.Id,leaseCustomer.Id) And (Equals(leaseCustomer2.CustomerCategory.Id,leaseCustomer.CustomerCategory.Id)))
-                Assert.IsTrue(q)
-            Next
-
-            ' rollback
-            _databaseService.Context.LeaseDetails.Remove(leaseCustomer1)
-            _databaseService.Context.LeaseDetails.Remove(leaseCustomer2)
-            _databaseService.Context.CustomerCategories.Remove(customerCategory)
-            _databaseService.Context.SaveChanges()
             DisposeLeases()
         End Sub
     End Class

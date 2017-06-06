@@ -15,7 +15,7 @@ Namespace Leases
                 IsFixedLength()
 
             HasRequired(Function(p)p.Room).
-                WithOptional.Map(Function(m)m.MapKey("RoomId"))
+                WithMany.Map(Function(m)m.MapKey("RoomId"))
 
             [Property](Function(p)p.CheckinDate).
                 IsRequired()

@@ -82,6 +82,7 @@
     <Compile Include="Leases\CustomerCategoryConfiguration.vb" />
     <Compile Include="Leases\LeaseConfiguration.vb" />
     <Compile Include="Leases\LeaseDetailConfiguration.vb" />
+    <Compile Include="Leases\LeaseRepository.vb" />
     <Compile Include="Migrations\201705301447357_DbInitialize_FirstComplete.Designer.vb">
       <DependentUpon>201705301447357_DbInitialize_FirstComplete.vb</DependentUpon>
     </Compile>
@@ -98,6 +99,10 @@
       <DependentUpon>201706042249108_DbUpdate_Rebuild_Lease.vb</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201706042249108_DbUpdate_Rebuild_Lease.vb" />
+    <Compile Include="Migrations\201706060735297_DbUpdate_lease-room-mapping.Designer.vb">
+      <DependentUpon>201706060735297_DbUpdate_lease-room-mapping.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706060735297_DbUpdate_lease-room-mapping.vb" />
     <Compile Include="Migrations\Configuration.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -135,6 +140,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706042249108_DbUpdate_Rebuild_Lease.resx">
       <DependentUpon>201706042249108_DbUpdate_Rebuild_Lease.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706060735297_DbUpdate_lease-room-mapping.resx">
+      <DependentUpon>201706060735297_DbUpdate_lease-room-mapping.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
