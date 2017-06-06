@@ -90,7 +90,7 @@
                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                             FontSize="18"
                             Content="LƯU"
-                            cal:Message.Attach="PreviewSave"/>
+                            cal:Message.Attach="PreviewSaveAsync"/>
                 </DockPanel>
             </Grid>
 

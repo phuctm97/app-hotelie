@@ -205,6 +205,21 @@ Namespace Rooms.ViewModels
 			[Exit]()
 		End Sub
 
+		Public Async Sub PreviewExitAsync()
+			If CheckForPendingChanges()
+				Dim result = Await ConfirmExit()
+
+				If Equals( result, 1 )
+					PreviewSaveAsync()
+					Return
+				ElseIf Equals( result, 2 )
+					Return
+				End If
+			End If
+
+			[Exit]()
+		End Sub
+
 		Private Sub [Exit]()
 			ParentWorkspace.NavigateToScreenRoomsList()
 			ResetValues()
@@ -235,6 +250,12 @@ Namespace Rooms.ViewModels
 
 		' Save
 		Public Sub PreviewSave()
+			If ValidateData()
+				Save()
+			End If
+		End Sub
+
+		Public Sub PreviewSaveAsync()
 			If ValidateData()
 				SaveAsync()
 			End If
@@ -292,6 +313,14 @@ Namespace Rooms.ViewModels
 
 		' Delete
 		Public Async Sub PreviewDelete()
+			Dim result = Await ConfirmDelete()
+
+			If Equals( result, 0 )
+				Delete()
+			End If
+		End Sub
+
+		Public Async Sub PreviewDeleteAsync()
 			Dim result = Await ConfirmDelete()
 
 			If Equals( result, 0 )

@@ -161,6 +161,11 @@ Namespace Rooms.ViewModels
 		' Save
 		Public Sub PreviewSave()
 			If Not ValidateData() Then Return
+			Save()
+		End Sub
+
+		Public Sub PreviewSaveAsync()
+			If Not ValidateData() Then Return
 			SaveAsync()
 		End Sub
 

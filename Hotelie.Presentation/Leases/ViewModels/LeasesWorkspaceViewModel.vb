@@ -26,10 +26,15 @@ Namespace Leases.ViewModels
 			End Set
 		End Property
 
-		Public Sub New( getLeasesListQuery As Hotelie.Application.Leases.Queries.GetLeasesList.IGetLeasesListQuery )
+		Public Sub New( getLeasesListQuery As Hotelie.Application.Leases.Queries.GetLeasesList.IGetLeasesListQuery,
+		                getLeaseDataQuery As Hotelie.Application.Leases.Queries.GetLeaseData.IGetLeaseDataQuery,
+		                getSimpleRoomsListQuery As _
+			              Hotelie.Application.Rooms.Queries.GetSimpleRoomsList.IGetSimpleRoomsListQuery )
 			ScreenLeasesList = New ScreenLeasesListViewModel( getLeasesListQuery )
 
-			ScreenLeaseDetail = New ScreenLeaseDetailViewModel()
+			ScreenLeaseDetail = New ScreenLeaseDetailViewModel( Me,
+			                                                    getLeaseDataQuery,
+			                                                    getSimpleRoomsListQuery )
 
 			ScreenAddLease = New ScreenAddLeaseViewModel()
 

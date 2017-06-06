@@ -122,6 +122,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Tests\Leases\LeaseRepositoryTest.vb" />
+    <Compile Include="Tests\Leases\Queries\GetLeaseData\GetLeaseDataQuery.vb" />
     <Compile Include="Tests\Leases\Queries\GetLeasesList\GetLeasesListQuery.vb" />
     <Compile Include="Tests\Rooms\Commands\RemoveRoom\RemoveRoomCommand.vb" />
     <Compile Include="Tests\Rooms\Commands\UpdateRoom\UpdateRoomCommand.vb" />
