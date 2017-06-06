@@ -2,7 +2,7 @@
 Imports Hotelie.Application.Services.Persistence
 
 Namespace Rooms.Queries.GetSimpleRoomsList
-    Public Class GetSimpleRommListQuery
+    Public Class GetSimpleRoomListQuery
         Implements IGetSimpleRoomsListQuery
         
         Private _roomRepository As IRoomRepository

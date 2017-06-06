@@ -26,8 +26,8 @@ Namespace Leases.ViewModels
 			End Set
 		End Property
 
-		Public Sub New()
-			ScreenLeasesList = New ScreenLeasesListViewModel( Nothing )
+		Public Sub New( getLeasesListQuery As Hotelie.Application.Leases.Queries.GetLeasesList.IGetLeasesListQuery )
+			ScreenLeasesList = New ScreenLeasesListViewModel( getLeasesListQuery )
 
 			ScreenLeaseDetail = New ScreenLeaseDetailViewModel()
 
@@ -65,12 +65,11 @@ Namespace Leases.ViewModels
 			DisplayCode = 0
 		End Sub
 
-		Public Sub NavigateToScreenLeaseDetail(
-		                                       leasesListIem As _
-			                                      Hotelie.Application.Leases.Queries.GetLeasesList.LeasesListIemModel )
-			If IsNothing( leasesListIem ) Then Return
+		Public Sub NavigateToScreenLeaseDetail( leaseListItem As _
+			                                      Hotelie.Application.Leases.Queries.GetLeasesList.LeasesListItemModel )
+			If IsNothing( leaseListItem ) Then Return
 
-			ScreenLeaseDetail.SetLease( leasesListIem.Id )
+			ScreenLeaseDetail.SetLease( leaseListItem.Id )
 			DisplayCode = 1
 		End Sub
 

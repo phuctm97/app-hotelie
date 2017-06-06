@@ -89,6 +89,13 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Leases\Queries\GetCustomerCategoryData\CustomerCategoryModel.vb" />
+    <Compile Include="Leases\Queries\GetLeaseData\IGetLeaseDataQuery.vb" />
+    <Compile Include="Leases\Queries\GetLeaseData\LeaseModel.vb" />
+    <Compile Include="Leases\Queries\GetLeaseDetailData\LeaseDetailModel.vb" />
+    <Compile Include="Leases\Queries\GetLeasesList\IGetLeasesListQuery.vb" />
+    <Compile Include="Leases\Queries\GetLeasesList\LeasesListItemDetailModel.vb" />
+    <Compile Include="Leases\Queries\GetLeasesList\LeasesListItemModel.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
