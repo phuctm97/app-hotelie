@@ -1,5 +1,6 @@
 Imports System.Data.Entity
 Imports Hotelie.Application.Services.Persistence
+Imports Hotelie.Domain.Bills
 Imports Hotelie.Domain.Leases
 Imports Hotelie.Domain.Parameters
 Imports Hotelie.Domain.Rooms
@@ -22,6 +23,9 @@ Namespace Common
         Public Property CustomerCategories As DbSet(Of CustomerCategory) Implements IDatabaseContext.CustomerCategories
         Public Property Parameters As DbSet(Of Parameter) Implements IDatabaseContext.Parameters
         Public Property Users As DbSet(of User) Implements IDatabaseContext.Users
+        Public Property Bills As DbSet(of Bill) Implements IDatabaseContext.Bills
+        Public Property BillDetails As DbSet(Of BillDetail) Implements IDatabaseContext.BillDetails
+
 
         Public Overrides Function [Set] (Of TEntity As Class)() As DbSet(Of TEntity) Implements IDatabaseContext.[Set]
             Return MyBase.[Set] (Of TEntity)()

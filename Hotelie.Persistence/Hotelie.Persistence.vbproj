@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="Bills\BillConfiguration.vb" />
     <Compile Include="Bills\BillDetailConfiguration.vb" />
+    <Compile Include="Bills\BillRepository.vb" />
     <Compile Include="Common\DatabaseContext.vb" />
     <Compile Include="Common\DatabaseInitializer.vb" />
     <Compile Include="Common\Repository.vb" />
@@ -113,6 +114,10 @@
       <DependentUpon>201706060904586_DbUpdate_addBill.vb</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201706060904586_DbUpdate_addBill.vb" />
+    <Compile Include="Migrations\201706060921003_DbUpdate_bill_added.Designer.vb">
+      <DependentUpon>201706060921003_DbUpdate_bill_added.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706060921003_DbUpdate_bill_added.vb" />
     <Compile Include="Migrations\Configuration.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -159,6 +164,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706060904586_DbUpdate_addBill.resx">
       <DependentUpon>201706060904586_DbUpdate_addBill.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706060921003_DbUpdate_bill_added.resx">
+      <DependentUpon>201706060921003_DbUpdate_bill_added.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

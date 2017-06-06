@@ -14,7 +14,6 @@ Namespace Leases
         Private _roomRepository As RoomRepository
         Private _leasesList As List(Of Lease)
         Private _roomsList As List(Of Room)
-        Private _leaseDetailsList As List(Of LeaseDetail)
 
         <TestInitialize>
         Public Sub TestInitialize()
