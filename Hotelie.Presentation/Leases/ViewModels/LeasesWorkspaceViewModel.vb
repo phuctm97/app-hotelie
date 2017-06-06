@@ -1,5 +1,4 @@
 ﻿Imports Caliburn.Micro
-Imports Hotelie.Application.Leases.Queries
 Imports Hotelie.Presentation.Common.Controls
 
 Namespace Leases.ViewModels
@@ -27,8 +26,8 @@ Namespace Leases.ViewModels
 			End Set
 		End Property
 
-		Public Sub New( getLeasesListQuery As IGetLeasesListQuery )
-			ScreenLeasesList = New ScreenLeasesListViewModel( getLeasesListQuery )
+		Public Sub New()
+			ScreenLeasesList = New ScreenLeasesListViewModel( Nothing )
 
 			ScreenLeaseDetail = New ScreenLeaseDetailViewModel()
 
@@ -66,10 +65,12 @@ Namespace Leases.ViewModels
 			DisplayCode = 0
 		End Sub
 
-		Public Sub NavigateToScreenLeaseDetail( lease As LeaseModel )
-			If IsNothing( lease ) Then Return
+		Public Sub NavigateToScreenLeaseDetail(
+		                                       leasesListIem As _
+			                                      Hotelie.Application.Leases.Queries.GetLeasesList.LeasesListIemModel )
+			If IsNothing( leasesListIem ) Then Return
 
-			ScreenLeaseDetail.SetLease( lease.Id )
+			ScreenLeaseDetail.SetLease( leasesListIem.Id )
 			DisplayCode = 1
 		End Sub
 

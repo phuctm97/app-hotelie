@@ -163,7 +163,7 @@
                 <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
                     <Setter Property="Margin" Value="10" />
                     <Setter Property="Visibility"
-                            Value="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                            Value="{Binding IsFiltersMatched, Converter={StaticResource BooleanToVisibilityConverter}}" />
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="ListBoxItem">
@@ -201,7 +201,7 @@
                                             <TextBlock TextWrapping="Wrap"
                                                        Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
                                                        Foreground="{DynamicResource MaterialDesignBodyLight}"
-                                                       Text="{Binding Price, Converter={StaticResource DecimalToCurrencyStringConverter}}" />
+                                                       Text="{Binding UnitPrice, Converter={StaticResource DecimalToCurrencyStringConverter}}" />
                                         </StackPanel>
 
                                         <!--Action area 1-->

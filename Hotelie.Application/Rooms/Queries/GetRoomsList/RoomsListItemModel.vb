@@ -2,7 +2,7 @@
 Imports Caliburn.Micro
 
 Namespace Rooms.Queries.GetRoomsList
-	Public Class RoomModel
+	Public Class RoomsListItemModel
 		Inherits PropertyChangedBase
 
 		Private _id As String
@@ -11,16 +11,15 @@ Namespace Rooms.Queries.GetRoomsList
 		Private _categoryName As String
 		Private _categoryDisplayColor As Color
 		Private _state As Integer
-		Private _price As Decimal
-		Private _note As String
-		Private _isVisible As Boolean
+		Private _unitPrice As Decimal
+		Private _isFiltersMatched As Boolean
 
 		Property Id As String
 			Get
 				Return _id
 			End Get
 			Set
-				If String.Equals( Value, _id ) Then Return
+				If IsNothing( Value ) OrElse String.Equals( Value, _id ) Then Return
 				_id = value
 				NotifyOfPropertyChange( Function() Id )
 			End Set
@@ -31,7 +30,7 @@ Namespace Rooms.Queries.GetRoomsList
 				Return _name
 			End Get
 			Set
-				If String.Equals( Value, _name ) Then Return
+				If IsNothing( Value ) OrElse String.Equals( Value, _name ) Then Return
 				_name = value
 				NotifyOfPropertyChange( Function() Name )
 			End Set
@@ -42,7 +41,9 @@ Namespace Rooms.Queries.GetRoomsList
 				Return _categoryId
 			End Get
 			Set
+				If IsNothing( Value ) OrElse String.Equals( Value, _categoryId ) Then Return
 				_categoryId = value
+				NotifyOfPropertyChange( Function() CategoryId )
 			End Set
 		End Property
 
@@ -51,7 +52,7 @@ Namespace Rooms.Queries.GetRoomsList
 				Return _categoryName
 			End Get
 			Set
-				If String.Equals( Value, _categoryName ) Then Return
+				If IsNothing(Value) OrElse String.Equals( Value, _categoryName ) Then Return
 				_categoryName = value
 				NotifyOfPropertyChange( Function() CategoryName )
 			End Set
@@ -62,7 +63,7 @@ Namespace Rooms.Queries.GetRoomsList
 				Return _categoryDisplayColor
 			End Get
 			Set
-				If Equals( Value, _categoryDisplayColor ) Then Return
+				If IsNothing(Value) OrElse Equals( Value, _categoryDisplayColor ) Then Return
 				_categoryDisplayColor = value
 				NotifyOfPropertyChange( Function() CategoryDisplayColor )
 			End Set
@@ -73,48 +74,43 @@ Namespace Rooms.Queries.GetRoomsList
 				Return _state
 			End Get
 			Set
-				If Equals( Value, _state ) Then Return
+				If IsNothing(Value) OrElse Equals( Value, _state ) Then Return
 				_state = value
 				NotifyOfPropertyChange( Function() State )
 			End Set
 		End Property
 
-		Property Price As Decimal
+		Property UnitPrice As Decimal
 			Get
-				Return _price
+				Return _unitPrice
 			End Get
 			Set
-				If Equals( Value, _price ) Then Return
-				_price = value
-				NotifyOfPropertyChange( Function() Price )
+				If IsNothing(Value) OrElse Equals( Value, _unitPrice ) Then Return
+				_unitPrice = value
+				NotifyOfPropertyChange( Function() UnitPrice )
 			End Set
 		End Property
 
-		Property Note As String
+		Property IsFiltersMatched As Boolean
 			Get
-				Return _note
+				Return _isFiltersMatched
 			End Get
 			Set
-				If String.Equals( Value, _note ) Then Return
-				_note = value
-				NotifyOfPropertyChange( Function() Note )
-			End Set
-		End Property
-
-		Property IsVisible As Boolean
-			Get
-				Return _isVisible
-			End Get
-			Set
-				If Equals( Value, _isVisible ) Then Return
-				_isVisible = value
-				NotifyOfPropertyChange( Function() IsVisible )
+				If IsNothing(Value) OrElse Equals( Value, _isFiltersMatched ) Then Return
+				_isFiltersMatched = value
+				NotifyOfPropertyChange( Function() IsFiltersMatched )
 			End Set
 		End Property
 
 		Public Sub New()
+			Id = String.Empty
+			Name = String.Empty
+			CategoryId = String.Empty
+			CategoryName = String.Empty
 			CategoryDisplayColor = Colors.Black
-			IsVisible = False
+			State = 0
+			UnitPrice = 0
+			IsFiltersMatched = False
 		End Sub
 	End Class
 End Namespace

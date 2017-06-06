@@ -2,6 +2,7 @@
 Imports Hotelie.Application.Rooms.Commands.RemoveRoom
 Imports Hotelie.Application.Rooms.Commands.UpdateRoom
 Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
+Imports Hotelie.Application.Rooms.Queries.GetRoomData
 Imports Hotelie.Application.Services.Infrastructure
 Imports Hotelie.Presentation.Common.Controls
 Imports Hotelie.Presentation.Infrastructure
@@ -16,6 +17,7 @@ Namespace Rooms.ViewModels
 
 		' Dependencies
 		Private ReadOnly _getRoomCategoriesListQuery As IGetRoomCategoriesListQuery
+		Private ReadOnly _getRoomDataQuery As IGetRoomDataQuery
 		Private ReadOnly _updateRoomCommand As IUpdateRoomCommand
 		Private ReadOnly _removeRoomCommand As IRemoveRoomCommand
 		Private ReadOnly _inventory As IInventory
@@ -23,7 +25,7 @@ Namespace Rooms.ViewModels
 		' Backing fields
 		Private _roomId As String
 		Private _roomName As String
-		Private _roomCategory As RoomCategoryModel
+		Private _roomCategory As RoomCategoriesListItemModel
 		Private _roomNote As String
 		Private _roomState As Integer
 
@@ -38,6 +40,7 @@ Namespace Rooms.ViewModels
 
 		' Initialization
 		Public Sub New( workspace As RoomsWorkspaceViewModel,
+		                getRoomDataQuery As IGetRoomDataQuery,
 		                getRoomCategoriesListQuery As IGetRoomCategoriesListQuery,
 		                updateRoomCommand As IUpdateRoomCommand,
 		                removeRoomCommand As IRemoveRoomCommand,
@@ -45,12 +48,13 @@ Namespace Rooms.ViewModels
 
 			ParentWorkspace = workspace
 			_getRoomCategoriesListQuery = getRoomCategoriesListQuery
+			_getRoomDataQuery = getRoomDataQuery
 			_updateRoomCommand = updateRoomCommand
 			_removeRoomCommand = removeRoomCommand
 			_inventory = inventory
 			RegisterInventory()
 
-			RoomCategories = New BindableCollection(Of RoomCategoryModel)
+			RoomCategories = New BindableCollection(Of RoomCategoriesListItemModel)
 		End Sub
 
 		Public Sub Init()
@@ -75,10 +79,10 @@ Namespace Rooms.ViewModels
 
 		Private Sub InitValues()
 			_roomId = String.Empty
-			_roomName = "Chưa có tên"
-			_roomCategory = RoomCategories.FirstOrDefault()
-			_roomNote = String.Empty
-			_roomState = 0
+			RoomName = "Chưa có tên"
+			RoomCategory = RoomCategories.FirstOrDefault()
+			RoomNote = String.Empty
+			RoomState = 0
 
 			_originalRoomName = _roomName
 			_originalRoomCategoryId = _roomCategory.Id
@@ -91,18 +95,18 @@ Namespace Rooms.ViewModels
 				Return _roomName
 			End Get
 			Set
-				If String.Equals( Value, _roomName ) Then Return
+				If IsNothing( Value ) OrElse String.Equals( Value, _roomName ) Then Return
 				_roomName = value
 				NotifyOfPropertyChange( Function() RoomName )
 			End Set
 		End Property
 
-		Public Property RoomCategory As RoomCategoryModel
+		Public Property RoomCategory As RoomCategoriesListItemModel
 			Get
 				Return _roomCategory
 			End Get
 			Set
-				If Equals( Value, _roomCategory ) Then Return
+				If IsNothing( Value ) OrElse Equals( Value, _roomCategory ) Then Return
 				_roomCategory = value
 				NotifyOfPropertyChange( Function() RoomCategory )
 			End Set
@@ -113,7 +117,7 @@ Namespace Rooms.ViewModels
 				Return _roomNote
 			End Get
 			Set
-				If String.Equals( Value, _roomNote ) Then Return
+				If IsNothing( Value ) OrElse String.Equals( Value, _roomNote ) Then Return
 				_roomNote = value
 				NotifyOfPropertyChange( Function() RoomNote )
 			End Set
@@ -124,7 +128,7 @@ Namespace Rooms.ViewModels
 				Return _roomState
 			End Get
 			Set
-				If Equals( Value, _roomState ) Then Return
+				If IsNothing( Value ) OrElse Equals( Value, _roomState ) Then Return
 				_roomState = value
 				NotifyOfPropertyChange( Function() RoomState )
 			End Set
@@ -132,25 +136,46 @@ Namespace Rooms.ViewModels
 
 		' ReSharper disable once CollectionNeverUpdated.Global
 		' ReSharper disable once UnassignedGetOnlyAutoProperty
-		Public ReadOnly Property RoomCategories As IObservableCollection(Of RoomCategoryModel)
+		Public ReadOnly Property RoomCategories As IObservableCollection(Of RoomCategoriesListItemModel)
 
-		Public Sub SetRoom( id As String,
-		                    name As String,
-		                    categoryId As String,
-		                    note As String,
-		                    state As Integer )
+		Public Sub SetRoom( id As String )
+			Dim model = _getRoomDataQuery.Execute( id )
+			Dim category = RoomCategories.FirstOrDefault( Function( c ) Equals( c.Id, model.Category.Id ) )
+			If IsNothing( category ) Then Throw New EntryPointNotFoundException()
+
 			' Bind values
 			_roomId = id
-			RoomName = name
-			RoomCategory = RoomCategories.FirstOrDefault( Function( c ) Equals( c.Id, categoryId ) )
-			RoomState = state
-			RoomNote = note
+			RoomName = model.Name
+			RoomCategory = category
+			RoomState = model.State
+			RoomNote = model.Note
 
 			' Backup old values
 			_originalRoomName = _roomName
 			_originalRoomCategoryId = _roomCategory.Id
 			_originalRoomNote = _roomNote
 		End Sub
+
+		Public Async Function SetRoomAsync( id As String ) As Task
+			ShowStaticWindowLoadingDialog()
+			Dim model = Await _getRoomDataQuery.ExecuteAsync( id )
+			CloseStaticWindowDialog()
+
+			Dim category = RoomCategories.FirstOrDefault( Function( c ) Equals( c.Id, model.Category.Id ) )
+			If IsNothing( category ) Then Throw New EntryPointNotFoundException()
+
+			' Bind values
+			_roomId = id
+			RoomName = model.Name
+			RoomCategory = category
+			RoomState = model.State
+			RoomNote = model.Note
+
+			' Backup old values
+			_originalRoomName = _roomName
+			_originalRoomCategoryId = _roomCategory.Id
+			_originalRoomNote = _roomNote
+		End Function
 
 		' Exit
 		Private Sub ResetValues()
@@ -181,8 +206,8 @@ Namespace Rooms.ViewModels
 		End Sub
 
 		Private Sub [Exit]()
-			ResetValues()
 			ParentWorkspace.NavigateToScreenRoomsList()
+			ResetValues()
 		End Sub
 
 		Private Function CheckForPendingChanges() As Boolean
@@ -217,8 +242,17 @@ Namespace Rooms.ViewModels
 
 		Private Sub Save()
 			' try update
-			_updateRoomCommand.Execute( _roomId, _roomName, _roomCategory.Id, _roomNote, _roomState )
-			_inventory.OnRoomUpdated( _roomId, _roomName, _roomCategory.Id, _roomNote, _roomState )
+			Dim err = _updateRoomCommand.Execute( _roomId, _roomName, _roomCategory.Id, _roomNote, _roomState )
+
+			If String.IsNullOrEmpty( err )
+				OnSaveSuccess()
+			Else
+				OnSaveFail( err )
+			End If
+		End Sub
+
+		Private Sub OnSaveSuccess()
+			_inventory.OnRoomUpdated( _roomId )
 			[Exit]()
 		End Sub
 
@@ -226,12 +260,24 @@ Namespace Rooms.ViewModels
 			' try update
 			ShowStaticWindowLoadingDialog()
 
-			Await _updateRoomCommand.ExecuteAsync( _roomId, _roomName, _roomCategory.Id, _roomNote, _roomState )
-			_inventory.OnRoomUpdated( _roomId, _roomName, _roomCategory.Id, _roomNote, _roomState )
+			Dim err = Await _updateRoomCommand.ExecuteAsync( _roomId, _roomName, _roomCategory.Id, _roomNote, _roomState )
+
+			If String.IsNullOrEmpty( err )
+				Await OnSaveSuccessAsync()
+			Else
+				OnSaveFail( err )
+			End If
 
 			CloseStaticWindowDialog()
+		End Sub
 
+		Private Async Function OnSaveSuccessAsync() As Task
+			Await _inventory.OnRoomUpdatedAsync( _roomId )
 			[Exit]()
+		End Function
+
+		Private Sub OnSaveFail( err As String )
+			ShowStaticBottomNotification( StaticNotificationType.Error, err )
 		End Sub
 
 		Private Function ValidateData() As Boolean
@@ -268,7 +314,16 @@ Namespace Rooms.ViewModels
 
 		Private Sub Delete()
 			' try update
-			_removeRoomCommand.Execute( _roomId )
+			Dim err = _removeRoomCommand.Execute( _roomId )
+
+			If String.IsNullOrEmpty( err )
+				OnDeleteSuccess()
+			Else
+				OnDeleteFail( err )
+			End If
+		End Sub
+
+		Private Sub OnDeleteSuccess()
 			_inventory.OnRoomRemoved( _roomId )
 			[Exit]()
 		End Sub
@@ -276,28 +331,40 @@ Namespace Rooms.ViewModels
 		Private Async Sub DeleteAsync()
 			' try update
 			ShowStaticWindowLoadingDialog()
-			Await _removeRoomCommand.ExecuteAsync( _roomId )
-			_inventory.OnRoomRemoved( _roomId )
+			Dim err = Await _removeRoomCommand.ExecuteAsync( _roomId )
+
+			If String.IsNullOrEmpty( err )
+				Await OnDeleteSuccessAsync()
+			Else
+				OnDeleteFail( err )
+			End If
+
 			CloseStaticWindowDialog()
+		End Sub
+
+		Private Async Function OnDeleteSuccessAsync() As Task
+			Await _inventory.OnRoomRemovedAsync( _roomId )
 			[Exit]()
+		End Function
+
+		Private Sub OnDeleteFail( err As String )
+			ShowStaticBottomNotification( StaticNotificationType.Error, err )
 		End Sub
 
 		' Infrastructure
 
-		Public Sub OnRoomUpdated( id As String,
-		                          name As String,
-		                          categoryId As String,
-		                          note As String,
-		                          state As Int32 ) Implements IRoomPresenter.OnRoomUpdated
+		Public Sub OnRoomUpdated( model As RoomModel ) Implements IRoomPresenter.OnRoomUpdated
 			If String.IsNullOrEmpty( _roomId ) Then Return
-			If String.IsNullOrEmpty( id ) Then Return
-			If Not String.Equals( _roomId, id ) Then Return
+			If String.IsNullOrEmpty( model.Id ) Then Return
+			If Not String.Equals( _roomId, model.Id ) Then Return
 
-			RoomName = name
-			RoomCategory = RoomCategories.FirstOrDefault( Function( c ) c.Id = categoryId )
-			If IsNothing( RoomCategory ) Then Throw New EntryPointNotFoundException()
-			RoomNote = note
-			RoomState = state
+			Dim category = RoomCategories.FirstOrDefault( Function( c ) c.Id = model.Category.Id )
+			If IsNothing( category ) Then Throw New EntryPointNotFoundException()
+
+			RoomName = model.Name
+			RoomCategory = category
+			RoomNote = model.Note
+			RoomState = model.State
 		End Sub
 	End Class
 End Namespace

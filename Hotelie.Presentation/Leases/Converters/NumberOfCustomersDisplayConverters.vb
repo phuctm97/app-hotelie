@@ -1,14 +1,18 @@
 ﻿Imports System.Globalization
+Imports Caliburn.Micro
+Imports Hotelie.Application.Leases.Queries.GetLeasesList
 
 Namespace Leases.Converters
-	Public Class TotalPriceDisplayConverter
+	Public Class NumberOfCustomersDisplayConverters
 		Implements IValueConverter
 
 		Public Function Convert(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.Convert
-			If IsNothing(value) Then Return "Tổng chi phí: 0đ"
+			If IsNothing(value) Then Return "0 người"
 
-			Dim total = CType(value, Decimal)
-			Return $"Tổng chi phí: {total:N0}đ"
+			Dim collection = CType(value, IObservableCollection(Of LeasesListItemDetailModel))
+			If IsNothing(collection) Then Return "0 người"
+
+			Return $"{collection.Count} người"
 		End Function
 
 		Public Function ConvertBack(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.ConvertBack

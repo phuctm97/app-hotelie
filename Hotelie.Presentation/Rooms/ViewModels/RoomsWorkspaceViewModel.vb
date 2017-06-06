@@ -3,6 +3,7 @@ Imports Hotelie.Application.Rooms.Commands.RemoveRoom
 Imports Hotelie.Application.Rooms.Commands.UpdateRoom
 Imports Hotelie.Application.Rooms.Factories.CreateRoom
 Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
+Imports Hotelie.Application.Rooms.Queries.GetRoomData
 Imports Hotelie.Application.Rooms.Queries.GetRoomsList
 Imports Hotelie.Application.Services.Infrastructure
 Imports Hotelie.Presentation.Common.Controls
@@ -34,6 +35,7 @@ Namespace Rooms.ViewModels
 
 		Public Sub New( getRoomsListQuery As IGetRoomsListQuery,
 		                getRoomCategoriesListQuery As IGetRoomCategoriesListQuery,
+		                getRoomDataQuery As IGetRoomDataQuery,
 		                createRoomFactory As ICreateRoomFactory,
 		                updateRoomCommand As IUpdateRoomCommand,
 		                removeRoomCommand As IRemoveRoomCommand,
@@ -43,6 +45,7 @@ Namespace Rooms.ViewModels
 			                                                removeRoomCommand,
 			                                                inventory )
 			ScreenRoomDetail = New ScreenRoomDetailViewModel( Me,
+			                                                  getRoomDataQuery,
 			                                                  getRoomCategoriesListQuery,
 			                                                  updateRoomCommand,
 			                                                  removeRoomCommand,
@@ -84,10 +87,12 @@ Namespace Rooms.ViewModels
 			DisplayCode = 0
 		End Sub
 
-		Public Sub NavigateToScreenRoomDetail( room As Hotelie.Application.Rooms.Queries.GetRoomsList.RoomModel )
-			If IsNothing( room ) Then Return
+		Public Async Sub NavigateToScreenRoomDetail(
+		                                            roomsListItem As _
+			                                           Hotelie.Application.Rooms.Queries.GetRoomsList.RoomsListItemModel )
+			If IsNothing( roomsListItem ) Then Return
 
-			ScreenRoomDetail.SetRoom( room.Id, room.Name, room.CategoryId, room.Note, room.State )
+			Await ScreenRoomDetail.SetRoomAsync( roomsListItem.Id )
 			DisplayCode = 1
 		End Sub
 
