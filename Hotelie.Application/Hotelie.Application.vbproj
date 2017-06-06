@@ -89,6 +89,13 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Leases\Queries\GetCustomerCategoryData\CustomerCategoryModel.vb" />
+    <Compile Include="Leases\Queries\GetLeaseData\IGetLeaseDataQuery.vb" />
+    <Compile Include="Leases\Queries\GetLeaseData\LeaseModel.vb" />
+    <Compile Include="Leases\Queries\GetLeaseDetailData\LeaseDetailModel.vb" />
+    <Compile Include="Leases\Queries\GetLeasesList\IGetLeasesListQuery.vb" />
+    <Compile Include="Leases\Queries\GetLeasesList\LeasesListItemDetailModel.vb" />
+    <Compile Include="Leases\Queries\GetLeasesList\LeasesListItemModel.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -110,13 +117,20 @@
     <Compile Include="Rooms\Commands\UpdateRoom\UpdateRoomCommand.vb" />
     <Compile Include="Rooms\Factories\CreateRoom\CreateRoomFactory.vb" />
     <Compile Include="Rooms\Factories\CreateRoom\ICreateRoomFactory.vb" />
-    <Compile Include="Rooms\Factories\CreateRoom\RoomModel.vb" />
-    <Compile Include="Rooms\Queries\GetRoomCategoriesList\GetRoomCategoriesListQuery.vb" />
+    <Compile Include="Rooms\Queries\GetRoomCategoriesList\GetRoomCategoriesList.vb" />
     <Compile Include="Rooms\Queries\GetRoomCategoriesList\IGetRoomCategoriesListQuery.vb" />
-    <Compile Include="Rooms\Queries\GetRoomCategoriesList\RoomCategoryModel.vb" />
+    <Compile Include="Rooms\Queries\GetRoomCategoriesList\RoomCategoriesListItemModel.vb" />
+    <Compile Include="Rooms\Queries\GetRoomCategoryData\IGetRoomCategoryDataQuery.vb" />
+    <Compile Include="Rooms\Queries\GetRoomData\GetRoomDataQuery.vb" />
+    <Compile Include="Rooms\Queries\GetRoomData\IGetRoomDataQuery.vb" />
+    <Compile Include="Rooms\Queries\GetRoomCategoryData\RoomCategoryModel.vb" />
     <Compile Include="Rooms\Queries\GetRoomsList\GetRoomsListQuery.vb" />
     <Compile Include="Rooms\Queries\GetRoomsList\IGetRoomsListQuery.vb" />
-    <Compile Include="Rooms\Queries\GetRoomsList\RoomModel.vb" />
+    <Compile Include="Rooms\Queries\GetRoomsList\RoomsListItemModel.vb" />
+    <Compile Include="Rooms\Queries\GetRoomData\RoomModel.vb" />
+    <Compile Include="Rooms\Queries\GetSimpleRoomsList\GetSimpleRommListQuery.vb" />
+    <Compile Include="Rooms\Queries\GetSimpleRoomsList\IGetSimpleRoomsListQuery.vb" />
+    <Compile Include="Rooms\Queries\GetSimpleRoomsList\SimpleRoomsListItemModel.vb" />
     <Compile Include="Services\Authentication\Account.vb" />
     <Compile Include="Services\Authentication\Authentication.vb" />
     <Compile Include="Services\Authentication\IAuthentication.vb" />

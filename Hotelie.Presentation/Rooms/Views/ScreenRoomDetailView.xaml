@@ -17,9 +17,11 @@
             <commonConverters:DecimalToCurrencyStringConverter x:Key="DecimalToCurrencyStringConverter" />
             <converters:RoomStateToBackColorConverter x:Key="RoomStateToBackColorConverter" />
             <converters:RoomStateToStringConverter x:Key="RoomStateToStringConverter" />
+            <converters:RoomStateToIconKindConverter x:Key="RoomStateToIconKindConverter" />
+            <converters:RoomNameWhenEmptyConverter x:Key="RoomNameWhenEmptyConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
-    
+
     <!--Content-->
     <Grid>
         <Grid.RowDefinitions>
@@ -40,7 +42,7 @@
                 <Button Grid.Column="0" HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Margin="16 0 0 0" Style="{DynamicResource MaterialDesignToolButton}"
-                        cal:Message.Attach="NavigateToScreenRoomsList">
+                        cal:Message.Attach="PreviewExit">
                     <materialDesign:PackIcon Width="24" Height="24"
                                              Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                                              Kind="KeyboardBackspace" />
@@ -64,21 +66,19 @@
                             <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
                                        FontSize="15"
                                        Opacity="0.7"
-                                       Text="GIÁ" Margin="0 0 8 0" />
+                                       Text="ĐƠN GIÁ" Margin="0 0 8 0" />
                             <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
                                        FontSize="15"
                                        Opacity="0.9"
-                                       Text="100, 000đ" />
+                                       Text="{Binding Path=RoomCategory.UnitPrice, Converter={StaticResource DecimalToCurrencyStringConverter}}" />
                         </StackPanel>
                     </StackPanel>
 
                     <!--Room name-->
-                    <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
-                               Margin="0 0 0 4"
-                               FontSize="60"
-                               Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-                               FontWeight="Light"
-                               Text="{Binding RoomName}" />
+                    <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               FontSize="60" FontWeight="Light"
+                               Text="{Binding RoomName, Converter={StaticResource RoomNameWhenEmptyConverter}}" />
 
                     <!--Delete button-->
                     <Button DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
@@ -86,7 +86,8 @@
                             Style="{DynamicResource MaterialDesignToolButton}"
                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                             FontSize="18"
-                            Content="XÓA" />
+                            Content="XÓA"
+                            cal:Message.Attach="PreviewDelete" />
 
                     <!--Save button-->
                     <Button DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
@@ -94,77 +95,84 @@
                             Style="{DynamicResource MaterialDesignToolButton}"
                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                             FontSize="18"
-                            Content="LƯU" />
+                            Content="LƯU"
+                            cal:Message.Attach="PreviewSave" />
                 </DockPanel>
             </Grid>
 
         </materialDesign:ColorZone>
 
         <!--Content-->
-        <StackPanel Grid.Row="1" Margin="4 0 4 0">
-            <!--Room name-->
-            <StackPanel Margin="16 24 16 0">
-                <TextBlock Text="Tên phòng" IsEnabled="False"
-                           Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                           FontSize="15" Margin="0 0 0 4" />
-                <TextBox materialDesign:HintAssist.Hint="Tên phòng"
-                         Text="{Binding RoomName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         FontSize="35" />
-            </StackPanel>
+        <ScrollViewer Grid.Row="1" Margin="4 0 4 0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!--Room name-->
+                <StackPanel Margin="16 24 16 0">
+                    <TextBlock Text="Tên phòng" IsEnabled="False"
+                               Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                               FontSize="15" Margin="0 0 0 4" />
+                    <TextBox materialDesign:HintAssist.Hint="Tên phòng"
+                             Text="{Binding RoomName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             FontSize="35" />
+                </StackPanel>
 
-            <!--Room category-->
-            <StackPanel Margin="16 24 16 0">
-                <TextBlock Text="Loại phòng" IsEnabled="False"
-                           Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                           FontSize="15" Margin="0 0 0 4" />
-                <ComboBox materialDesign:HintAssist.Hint="Loại phòng"
-                          FontSize="20"
-                          ItemsSource="{Binding RoomCategories}"
-                          DisplayMemberPath="Name" 
-                          SelectedItem="{Binding RoomCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            </StackPanel>
+                <!--Room category-->
+                <StackPanel Margin="16 24 16 0">
+                    <TextBlock Text="Loại phòng" IsEnabled="False"
+                               Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                               FontSize="15" Margin="0 0 0 4" />
+                    <ComboBox materialDesign:HintAssist.Hint="Loại phòng"
+                              FontSize="20"
+                              ItemsSource="{Binding RoomCategories}"
+                              DisplayMemberPath="Name"
+                              SelectedItem="{Binding RoomCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
 
-            <!--Room note-->
-            <StackPanel Margin="16 24 16 0">
-                <TextBlock Text="Ghi chú" IsEnabled="False"
-                           Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                           FontSize="15" Margin="0 0 0 4" />
-                <TextBox materialDesign:HintAssist.Hint="Thông tin thêm về phòng"
-                         TextWrapping="Wrap"
-                         AcceptsReturn="True"
-                         VerticalScrollBarVisibility="Auto"
-                         FontSize="15"
-                         Padding="0 0 4 0"
-                         Height="Auto"
-                         MaxHeight="130" 
-                         Text="{Binding RoomNote}"/>
-            </StackPanel>
+                <!--Room note-->
+                <StackPanel Margin="16 24 16 0">
+                    <TextBlock Text="Ghi chú" IsEnabled="False"
+                               Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                               FontSize="15" Margin="0 0 0 4" />
+                    <TextBox materialDesign:HintAssist.Hint="Thông tin thêm về phòng"
+                             TextWrapping="Wrap"
+                             AcceptsReturn="True"
+                             VerticalScrollBarVisibility="Auto"
+                             FontSize="15"
+                             Padding="0 0 4 0"
+                             Height="Auto"
+                             Text="{Binding RoomNote, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
 
-            <!--Room state-->
-            <StackPanel Margin="16 24 16 0">
-                <TextBlock Text="Tình trạng" IsEnabled="False"
-                           Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                           FontSize="15" Margin="0 0 0 4" />
-                <materialDesign:Chip Content="{Binding RoomState, Converter={StaticResource RoomStateToStringConverter}}"
-                                     FontSize="15"
-                                     IconForeground="White">
-                    <materialDesign:Chip.IconBackground>
-                        <SolidColorBrush Color="{Binding RoomState, Converter={StaticResource RoomStateToBackColorConverter}}" />
-                    </materialDesign:Chip.IconBackground>
-                    <materialDesign:Chip.Icon>
-                        <materialDesign:PackIcon Kind="Check" Width="24" Height="24" />
-                    </materialDesign:Chip.Icon>
-                </materialDesign:Chip>
-            </StackPanel>
+                <!--Room state-->
+                <StackPanel Margin="16 24 16 0">
+                    <TextBlock Text="Tình trạng" IsEnabled="False"
+                               Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                               FontSize="15" Margin="0 0 0 4" />
+                    <materialDesign:Chip
+                        Content="{Binding RoomState, Converter={StaticResource RoomStateToStringConverter}}"
+                        FontSize="15"
+                        IconForeground="White">
+                        <materialDesign:Chip.IconBackground>
+                            <SolidColorBrush
+                                Color="{Binding RoomState, Converter={StaticResource RoomStateToBackColorConverter}}" />
+                        </materialDesign:Chip.IconBackground>
+                        <materialDesign:Chip.Icon>
+                            <materialDesign:PackIcon
+                                Kind="{Binding RoomState, Converter={StaticResource RoomStateToIconKindConverter}}"
+                                Width="24" Height="24" />
+                        </materialDesign:Chip.Icon>
+                    </materialDesign:Chip>
+                </StackPanel>
 
-            <!--Commands-->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 16 0 0">
-                <Button DockPanel.Dock="Right" HorizontalAlignment="Right"
-                        Style="{DynamicResource MaterialDesignFlatAccentButton}"
-                        Content="THUÊ PHÒNG"
-                        Margin="8" Height="36" Padding="8" />
+                <!--Commands-->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 16 0 0">
+                    <Button DockPanel.Dock="Right" HorizontalAlignment="Right"
+                            Style="{DynamicResource MaterialDesignFlatAccentButton}"
+                            Content="THUÊ PHÒNG"
+                            Margin="8" Height="36" Padding="8"
+                            cal:Message.Attach="PreviewOrder" />
+                </StackPanel>
             </StackPanel>
-        </StackPanel>
+        </ScrollViewer>
 
     </Grid>
 </UserControl>

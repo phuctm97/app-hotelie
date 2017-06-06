@@ -130,21 +130,57 @@
     <Compile Include="Bills\Views\BillsWorkspaceView.xaml.vb">
       <DependentUpon>BillsWorkspaceView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\Controls\LoadingDialog.xaml.vb">
+      <DependentUpon>LoadingDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Controls\ThreeButtonDialog.xaml.vb">
+      <DependentUpon>ThreeButtonDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Controls\OneButtonDialog.xaml.vb">
+      <DependentUpon>OneButtonDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Controls\WindowExtensions.vb" />
     <Compile Include="Common\Converters\BooleanToVisibilityConverter.vb" />
+    <Compile Include="Common\Converters\DateTimeToShortDateStringConverter.vb" />
     <Compile Include="Common\Converters\DecimalToCurrencyStringConverter.vb" />
     <Compile Include="Common\Converters\StringToUpperConverter.vb" />
     <Compile Include="Common\IMainWindow.vb" />
+    <Compile Include="Common\Infrastructure\Inventory.vb" />
+    <Compile Include="Common\Infrastructure\IRoomsListPresenter.vb" />
+    <Compile Include="Common\Infrastructure\IRoomPresenter.vb" />
     <Compile Include="Common\IShell.vb" />
     <Compile Include="Common\IWindowCommandsBar.vb" />
+    <Compile Include="Leases\Converters\LeaseIdStringDisplayConverter.vb" />
+    <Compile Include="Leases\Converters\NumberOfCustomersDisplayConverters.vb" />
+    <Compile Include="Leases\Converters\NumberOfUsedDaysDisplayConverters.vb" />
+    <Compile Include="Leases\Converters\TotalExpenseDisplayConverter.vb" />
     <Compile Include="Leases\ViewModels\LeasesWorkspaceViewModel.vb" />
+    <Compile Include="Leases\ViewModels\ScreenAddLeaseViewModel.vb" />
+    <Compile Include="Leases\ViewModels\ScreenLeaseDetailViewModel.vb" />
+    <Compile Include="Leases\ViewModels\ScreenLeasesListViewModel.vb" />
     <Compile Include="Leases\Views\LeasesWorkspaceView.xaml.vb">
       <DependentUpon>LeasesWorkspaceView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Leases\Views\ScreenAddLeaseView.xaml.vb">
+      <DependentUpon>ScreenAddLeaseView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Leases\Views\ScreenLeaseDetailView.xaml.vb">
+      <DependentUpon>ScreenLeaseDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Leases\Views\ScreenLeasesListView.xaml.vb">
+      <DependentUpon>ScreenLeasesListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Rooms\Converters\RoomNameWhenEmptyConverter.vb" />
     <Compile Include="Rooms\Converters\RoomStateToBackColorConverter.vb" />
+    <Compile Include="Rooms\Converters\RoomStateToIconKindConverter.vb" />
     <Compile Include="Rooms\Converters\RoomStateToStringConverter.vb" />
+    <Compile Include="Rooms\ViewModels\ScreenAddRoomViewModel.vb" />
     <Compile Include="Rooms\ViewModels\ScreenRoomDetailViewModel.vb" />
     <Compile Include="Rooms\ViewModels\ScreenRoomsListViewModel.vb" />
     <Compile Include="Rooms\ViewModels\RoomsWorkspaceViewModel.vb" />
+    <Compile Include="Rooms\Views\ScreenAddRoomView.xaml.vb">
+      <DependentUpon>ScreenAddRoomView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Rooms\Views\ScreenRoomDetailView.xaml.vb">
       <DependentUpon>ScreenRoomDetailView.xaml</DependentUpon>
     </Compile>
@@ -155,10 +191,6 @@
       <DependentUpon>RoomsWorkspaceView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Start\AppBootstrapper.vb" />
-    <Compile Include="Start\LoginShell\Converters\NotificationTypeToBooleanConverter.vb" />
-    <Compile Include="Start\LoginShell\Converters\NotificationTypeToColorConverter.vb" />
-    <Compile Include="Start\LoginShell\Converters\NotificationTypeToPackIconKindConverter.vb" />
-    <Compile Include="Start\LoginShell\Models\Notification.vb" />
     <Compile Include="Start\LoginShell\ViewModels\ScreenLoginViewModel.vb" />
     <Compile Include="Start\LoginShell\ViewModels\LoginShellCommandsBarViewModel.vb" />
     <Compile Include="Start\LoginShell\ViewModels\LoginShellViewModel.vb" />
@@ -175,8 +207,13 @@
     <Compile Include="Start\LoginShell\Views\ScreenSettingsView.xaml.vb">
       <DependentUpon>ScreenSettingsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Start\MainWindow\Converters\StaticNotificationTypeToBooleanConverter.vb" />
+    <Compile Include="Start\MainWindow\Converters\StaticNotificationTypeToColorConverter.vb" />
+    <Compile Include="Start\MainWindow\Converters\StaticNotificationTypeToIconKindConverter.vb" />
     <Compile Include="Start\MainWindow\Converters\WindowStateReverseIconKindConverter.vb" />
     <Compile Include="Start\MainWindow\Converters\WindowStateReverseNameConverter.vb" />
+    <Compile Include="Start\MainWindow\Models\StaticDialogModel.vb" />
+    <Compile Include="Start\MainWindow\Models\StaticNotificationModel.vb" />
     <Compile Include="Start\MainWindow\ViewModels\MainWindowViewModel.vb" />
     <Compile Include="Start\MainWindow\Views\MainWindowView.xaml.vb">
       <DependentUpon>MainWindowView.xaml</DependentUpon>
@@ -251,7 +288,35 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Common\Controls\LoadingDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Common\Controls\ThreeButtonDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Common\Controls\OneButtonDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Leases\Views\LeasesWorkspaceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Leases\Views\ScreenAddLeaseView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Leases\Views\ScreenLeaseDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Leases\Views\ScreenLeasesListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Rooms\Views\ScreenAddRoomView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

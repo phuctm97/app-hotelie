@@ -12,30 +12,50 @@ Namespace Rooms.Commands.UpdateRoom
             _unitOfWork = unitOfWork
         End Sub
 
-        Public Sub Execute(id As String, name As String, categoryId As String, note As String, state As Integer) _
+        Public Function Execute(id As String, name As String, categoryId As String, note As String, state As Integer) _
+            As String _
             Implements IUpdateRoomCommand.Execute
             Dim room = _roomRepository.GetOne(id)
+            If IsNothing(room) Then Return "Không tìm thấy phòng"
+
             room.Name = name
             room.Note = note
             room.State = state
 
-            Dim category = _roomRepository.GetRoomCategory(categoryId)
-            room.Category = category
+            Try
+                Dim category = _roomRepository.GetRoomCategory(categoryId)
+                room.Category = category
 
-            _unitOfWork.Commit()
-        End Sub
+                _unitOfWork.Commit()
+            Catch
+                Return "Lỗi không xác định"
+            End Try
 
-        Public Async Function ExecuteAsync(id As String, name As String, categoryId As String, note As String, state As Integer) As Task(Of Integer) Implements IUpdateRoomCommand.ExecuteAsync
+            Return String.Empty
+        End Function
+
+        Public Async Function ExecuteAsync(id As String, name As String, categoryId As String, note As String,
+                                           state As Integer) As Task(Of String) _
+            Implements IUpdateRoomCommand.ExecuteAsync
             Dim room = Await _roomRepository.GetOneAsync(id)
+            If IsNothing(room) Then Return "Không tìm thấy phòng"
+
             room.Name = name
             room.Note = note
             room.State = state
 
-            Dim category = _roomRepository.GetRoomCategory(categoryId)
-            room.Category = category
+            
+                Dim category = Await _roomRepository.GetRoomCategoryAsync(categoryId)
+                If IsNothing(category) Then Return "Không tìm thấy loại phòng"
 
-            Await _unitOfWork.CommitAsync()
-            Return 1
+                room.Category = category
+            Try
+                Await _unitOfWork.CommitAsync()
+            Catch
+                Return "Lỗi không xác định"
+            End Try
+
+            Return String.Empty
         End Function
     End Class
 End NameSpace

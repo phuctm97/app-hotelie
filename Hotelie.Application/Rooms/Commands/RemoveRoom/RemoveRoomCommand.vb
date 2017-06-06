@@ -12,16 +12,28 @@ Namespace Rooms.Commands.RemoveRoom
             _unitOfWork = unitOfWork
         End Sub
 
-        Public Sub Execute(id As String) Implements IRemoveRoomCommand.Execute
-             _roomRepository.Remove(_roomRepository.GetOne(id))
-            _unitOfWork.Commit()
-        End Sub
+        Public Function Execute(id As String) As String Implements IRemoveRoomCommand.Execute
+            Dim room = _roomRepository.GetOne(id)
+            If room Is Nothing Then Return "Không tìm thấy phòng có"
+            Try
+                _roomRepository.Remove(_roomRepository.GetOne(id))
+                _unitOfWork.Commit()
+            Catch
+                Return "Lỗi không thể xác định"
+            End Try
+            Return String.Empty
+        End Function
 
-        Public Async Function ExecuteAsync(id As String) As Task(Of Integer) Implements IRemoveRoomCommand.ExecuteAsync
+        Public Async Function ExecuteAsync(id As String) As Task(Of String) Implements IRemoveRoomCommand.ExecuteAsync
             Dim room = Await _roomRepository.GetOneAsync(id)
-            _roomRepository.Remove(room)
-            Await _unitOfWork.CommitAsync()
-            Return 1
+            If room Is Nothing Then Return "Không tìm thấy phòng"
+            Try
+                _roomRepository.Remove(_roomRepository.GetOne(id))
+                Await _unitOfWork.CommitAsync()
+            Catch
+                Return "Lỗi không thể xác định"
+            End Try
+            Return String.Empty
         End Function
     End Class
 End NameSpace

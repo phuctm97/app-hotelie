@@ -16,6 +16,28 @@ Namespace Common
 
 		Sub SwitchShell( shellName As String )
 
+		Sub ShowStaticTopNotification( type As Integer,
+		                               text As String )
+
+		Sub CloseStaticTopNotification()
+
+		Sub ShowStaticBottomNotification( type As Integer,
+		                                  text As String )
+
+		Sub CloseStaticBottomNotification()
+
+		Sub ShowStaticShellDialog( content As Object )
+
+		Sub CloseStaticShellDialog()
+
+		Sub ForceCloseStaticShellDialog()
+
+		Sub ShowStaticWindowDialog( content As Object )
+
+		Sub CloseStaticWindowDialog()
+
+		Sub ForceCloseStaticWindowDialog()
+
 		Sub DragMove()
 
 		Sub ToggleZoomState()

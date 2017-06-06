@@ -2,7 +2,6 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Hotelie.Presentation"
-             xmlns:converters="clr-namespace:Hotelie.Presentation.Start.LoginShell.Converters"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -21,72 +20,37 @@
                 <ResourceDictionary
                     Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PasswordBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <converters:NotificationTypeToBooleanConverter x:Key="NotificationTypeToBooleanConverter" />
-            <converters:NotificationTypeToColorConverter x:Key="NotificationTypeToColorConverter" />
-            <converters:NotificationTypeToPackIconKindConverter x:Key="NotificationTypeToPackIconKindConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
     <!--Content-->
     <materialDesign:TransitioningContent OpeningEffect="{materialDesign:TransitionEffect Kind=SlideInFromBottom}">
 
-        <materialDesign:DrawerHost
-            IsTopDrawerOpen="{Binding Path=Notification.Type, Converter={StaticResource NotificationTypeToBooleanConverter}}">
+        <materialDesign:Transitioner SelectedIndex="{Binding DisplayCode}">
+            <!--Login form-->
+            <materialDesign:TransitionerSlide>
+                <materialDesign:TransitionerSlide.BackwardWipe>
+                    <materialDesign:SlideOutWipe />
+                </materialDesign:TransitionerSlide.BackwardWipe>
+                <materialDesign:TransitionerSlide.ForwardWipe>
+                    <materialDesign:SlideOutWipe />
+                </materialDesign:TransitionerSlide.ForwardWipe>
 
-            <!--Notification-->
-            <materialDesign:DrawerHost.TopDrawerContent>
-                <DockPanel Margin="16 24 16 24">
+                <ContentControl cal:View.Model="{Binding ScreenLogin}" />
+            </materialDesign:TransitionerSlide>
 
-                    <!--Icon-->
-                    <Border DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
-                            Margin="0 0 16 0"
-                            Width="32" Height="32"
-                            CornerRadius="16">
-                        <Border.Background>
-                            <SolidColorBrush
-                                Color="{Binding Path=Notification.Type, Converter={StaticResource NotificationTypeToColorConverter}}" />
-                        </Border.Background>
-                        <materialDesign:PackIcon HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                 Width="24" Height="24"
-                                                 Foreground="White"
-                                                 Kind="{Binding Path=Notification.Type, Converter={StaticResource NotificationTypeToPackIconKindConverter}}" />
-                    </Border>
+            <!--Connection settings form-->
+            <materialDesign:TransitionerSlide>
+                <materialDesign:TransitionerSlide.BackwardWipe>
+                    <materialDesign:SlideOutWipe />
+                </materialDesign:TransitionerSlide.BackwardWipe>
+                <materialDesign:TransitionerSlide.ForwardWipe>
+                    <materialDesign:SlideOutWipe />
+                </materialDesign:TransitionerSlide.ForwardWipe>
 
-                    <!--Display-->
-                    <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
-                               Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
-                               TextWrapping="Wrap"
-                               Text="{Binding Path=Notification.Text}" />
-                </DockPanel>
-            </materialDesign:DrawerHost.TopDrawerContent>
+                <ContentControl cal:View.Model="{Binding ScreenSettings}" />
+            </materialDesign:TransitionerSlide>
+        </materialDesign:Transitioner>
 
-            <materialDesign:Transitioner SelectedIndex="{Binding DisplayCode}">
-                <!--Login form-->
-                <materialDesign:TransitionerSlide>
-                    <materialDesign:TransitionerSlide.BackwardWipe>
-                        <materialDesign:SlideOutWipe />
-                    </materialDesign:TransitionerSlide.BackwardWipe>
-                    <materialDesign:TransitionerSlide.ForwardWipe>
-                        <materialDesign:SlideOutWipe />
-                    </materialDesign:TransitionerSlide.ForwardWipe>
-
-                    <ContentControl cal:View.Model="{Binding ScreenLogin}" />
-                </materialDesign:TransitionerSlide>
-
-                <!--Connection settings form-->
-                <materialDesign:TransitionerSlide>
-                    <materialDesign:TransitionerSlide.BackwardWipe>
-                        <materialDesign:SlideOutWipe />
-                    </materialDesign:TransitionerSlide.BackwardWipe>
-                    <materialDesign:TransitionerSlide.ForwardWipe>
-                        <materialDesign:SlideOutWipe />
-                    </materialDesign:TransitionerSlide.ForwardWipe>
-
-                    <ContentControl cal:View.Model="{Binding ScreenSettings}" />
-                </materialDesign:TransitionerSlide>
-            </materialDesign:Transitioner>
-
-        </materialDesign:DrawerHost>
     </materialDesign:TransitioningContent>
 </UserControl>

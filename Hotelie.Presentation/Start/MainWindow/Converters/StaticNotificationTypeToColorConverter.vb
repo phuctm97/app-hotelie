@@ -1,26 +1,26 @@
 ﻿Imports System.Globalization
-Imports Hotelie.Presentation.Start.Login.Models
+Imports Hotelie.Presentation.Start.MainWindow.Models
 
-Namespace Start.LoginShell.Converters
-	Public Class NotificationTypeToColorConverter
+Namespace Start.MainWindow.Converters
+	Public Class StaticNotificationTypeToColorConverter
 		Implements IValueConverter
 
 		Public Function Convert( value As Object,
 		                         targetType As Type,
 		                         parameter As Object,
 		                         culture As CultureInfo ) As Object Implements IValueConverter.Convert
-			Dim type = CType(value, NotificationType)
+			Dim type = CType(value, StaticNotificationType)
 
 			Select type
-				Case NotificationType.None
+				Case StaticNotificationType.None
 					Return Colors.White
-				Case NotificationType.Ok
+				Case StaticNotificationType.Ok
 					Return Colors.Green
-				Case NotificationType.Information
+				Case StaticNotificationType.Information
 					Return Colors.DodgerBlue
-				Case NotificationType.Error
+				Case StaticNotificationType.Error
 					Return Colors.Red
-				Case NotificationType.Warning
+				Case StaticNotificationType.Warning
 					Return Colors.Gold
 			End Select
 

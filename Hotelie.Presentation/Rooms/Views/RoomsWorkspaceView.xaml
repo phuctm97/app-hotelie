@@ -31,5 +31,15 @@
             </materialDesign:TransitionerSlide.ForwardWipe>
             <ContentControl cal:View.Model="{Binding ScreenRoomDetail}" />
         </materialDesign:TransitionerSlide>
+
+        <materialDesign:TransitionerSlide>
+            <materialDesign:TransitionerSlide.BackwardWipe>
+                <materialDesign:CircleWipe />
+            </materialDesign:TransitionerSlide.BackwardWipe>
+            <materialDesign:TransitionerSlide.ForwardWipe>
+                <materialDesign:CircleWipe />
+            </materialDesign:TransitionerSlide.ForwardWipe>
+            <ContentControl cal:View.Model="{Binding ScreenAddRoom}" />
+        </materialDesign:TransitionerSlide>
     </materialDesign:Transitioner>
 </UserControl>

@@ -15,7 +15,7 @@ Namespace Rooms.Converters
 				Case 0
 					Return "Trống"
 				Case 1
-					Return "Đã thuê"
+					Return "Đang thuê"
 			End Select
 
 			Return "Tất cả"

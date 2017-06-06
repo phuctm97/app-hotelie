@@ -23,6 +23,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
+    <!--Content-->
     <materialDesign:Card HorizontalAlignment="Center" VerticalAlignment="Center"
                          Width="400" Height="Auto">
         <StackPanel Orientation="Vertical">
@@ -38,11 +39,13 @@
             </StackPanel>
 
             <!--Server name-->
-            <TextBox Margin="40 0 40 16"
+            <TextBox x:Name="ServerTextBox"
+                     Margin="40 0 40 16"
                      materialDesign:HintAssist.FloatingOffset="0, -24"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      FontSize="18"
-                     TextChanged="OnServerChanged">
+                     TextChanged="OnServerChanged"
+                     Text="{Binding InitialDataSource, Mode=OneWay}">
                 <materialDesign:HintAssist.Hint>
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon VerticalAlignment="Center"
@@ -54,11 +57,13 @@
             </TextBox>
 
             <!--Database name-->
-            <TextBox Margin="40 0 40 32"
+            <TextBox x:Name="DatabaseTextBox"
+                     Margin="40 0 40 32"
                      materialDesign:HintAssist.FloatingOffset="0, -24"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      FontSize="18"
-                     TextChanged="OnDatabaseChanged">
+                     TextChanged="OnDatabaseChanged"
+                     Text="{Binding InitialCatalog, Mode=OneWay}">
                 <materialDesign:HintAssist.Hint>
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon VerticalAlignment="Center"
@@ -75,13 +80,31 @@
                 <Button DockPanel.Dock="Left" HorizontalAlignment="Left"
                         Style="{DynamicResource MaterialDesignRaisedButton}"
                         FontSize="16"
-                        Content="Lưu" />
+                        Content="Lưu">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="PreviewApplyConnection">
+                                <cal:Parameter Value="{Binding ElementName=ServerTextBox, Path=Text}" />
+                                <cal:Parameter Value="{Binding ElementName=DatabaseTextBox, Path=Text}" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
                 <!--Test-->
                 <Button DockPanel.Dock="Right" HorizontalAlignment="Right"
                         Style="{DynamicResource MaterialDesignToolButton}"
                         FontSize="16"
                         IsDefault="True"
-                        Content="Thử kết nối" />
+                        Content="Thử kết nối">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="PreviewTestConnection">
+                                <cal:Parameter Value="{Binding ElementName=ServerTextBox, Path=Text}" />
+                                <cal:Parameter Value="{Binding ElementName=DatabaseTextBox, Path=Text}" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
             </DockPanel>
 
         </StackPanel>

@@ -26,7 +26,7 @@
                     Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                     CommandParameter="{Binding ElementName=Button1, Path=Content}">
             </Button>
-            <Button x:Name="Button2" Style="{DynamicResource MaterialDesignFlatAccentButton}"
+            <Button x:Name="Button2" Style="{DynamicResource MaterialDesignFlatButton}"
                     Padding="8" Margin="8" Height="36"
                     Content="NO"
                     Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
