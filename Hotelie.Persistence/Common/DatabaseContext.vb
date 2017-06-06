@@ -4,6 +4,7 @@ Imports Hotelie.Domain.Leases
 Imports Hotelie.Domain.Parameters
 Imports Hotelie.Domain.Rooms
 Imports Hotelie.Domain.Users
+Imports Hotelie.Persistence.Bills
 Imports Hotelie.Persistence.Leases
 Imports Hotelie.Persistence.Parameters
 Imports Hotelie.Persistence.Rooms
@@ -63,6 +64,8 @@ Namespace Common
             modelBuilder.Configurations.Add(New LeaseConfiguration)
             modelBuilder.Configurations.Add(New LeaseDetailConfiguration)
             modelBuilder.Configurations.Add(New CustomerCategoryConfiguration)
+            modelBuilder.Configurations.Add(New BillConfiguration)
+            modelBuilder.Configurations.Add(New BillDetailConfiguration)
         End Sub
     End Class
 End Namespace
