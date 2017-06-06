@@ -11,6 +11,7 @@ Namespace Leases.Queries.GetLeasesList
 		Private _expectedCheckoutDate As Date
 		Private _totalExpense As Decimal
 		Private _details As IObservableCollection(Of LeasesListItemDetailModel)
+        Private _paid As Byte
 
 		Public Property Id As String
 			Get
@@ -89,6 +90,17 @@ Namespace Leases.Queries.GetLeasesList
 			End Set
 		End Property
 
+		Public Property Paid As Byte
+		    Get
+		        Return _paid
+		    End Get
+		    Set
+		        If IsNothing( Value ) OrElse Equals( Value, _paid ) Then Return
+		        _paid = value
+		        NotifyOfPropertyChange( Function() Paid )
+		    End Set
+		End Property
+
 		Public Sub New()
 			Id = String.Empty
 			RoomName = String.Empty
@@ -96,6 +108,7 @@ Namespace Leases.Queries.GetLeasesList
 			CheckinDate = New Date( 2017, 1, 1 )
 			ExpectedCheckoutDate = New Date( 2017, 1, 1 )
 			TotalExpense = 0
+            Paid = 0
 			Details = New BindableCollection(Of LeasesListItemDetailModel)
 		End Sub
 	End Class

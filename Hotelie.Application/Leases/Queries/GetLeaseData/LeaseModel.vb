@@ -52,6 +52,12 @@ Namespace Leases.Queries.GetLeaseData
 			End Get
 		End Property
 
+        Public ReadOnly Property Paid As Byte
+            Get
+                Return _entity.Paid
+            End Get
+        End Property
+
 		Public ReadOnly Property LeaseDetails As List(Of GetLeaseDetailData.LeaseDetailModel)
 	End Class
 End Namespace
