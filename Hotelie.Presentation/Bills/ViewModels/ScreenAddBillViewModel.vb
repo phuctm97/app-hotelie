@@ -216,6 +216,7 @@ Namespace Bills.ViewModels
 		End Sub
 
 		Private Sub [Exit]()
+			ParentWorkspace.NavigateToScreenBillsList()
 			ResetValues()
 		End Sub
 

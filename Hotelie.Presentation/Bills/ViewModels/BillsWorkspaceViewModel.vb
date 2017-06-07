@@ -12,7 +12,9 @@ Namespace Bills.ViewModels
 
 		Private _displayCode As Integer
 
-		Public Property ScreenAddBill As ScreenAddBillViewModel
+		Public ReadOnly Property ScreenBillsList As ScreenBillsListVIewModel
+
+		Public ReadOnly Property ScreenAddBill As ScreenAddBillViewModel
 
 		Public Property DisplayCode As Integer
 			Get
@@ -30,6 +32,8 @@ Namespace Bills.ViewModels
 		                getSimpleLeasesListQuery As IGetSimpleLeasesListQuery,
 		                createBillFactory As ICreateBillFactory )
 			DisplayName = "Thanh toán"
+
+			ScreenBillsList = New ScreenBillsListVIewModel()
 
 			ScreenAddBill = New ScreenAddBillViewModel( Me,
 			                                            inventory,
@@ -55,5 +59,13 @@ Namespace Bills.ViewModels
 			Await ScreenAddBill.InitAsync()
 			DisplayCode = 0
 		End Function
+
+		Public Sub NavigateToScreenAddBill()
+			DisplayCode = 1
+		End Sub
+
+		Public Sub NavigateToScreenBillsList()
+			DisplayCode = 0
+		End Sub
 	End Class
 End Namespace

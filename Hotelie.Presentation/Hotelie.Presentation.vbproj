@@ -129,11 +129,15 @@
     <Compile Include="Bills\Models\EditableBillDetailModel.vb" />
     <Compile Include="Bills\ViewModels\BillsWorkspaceViewModel.vb" />
     <Compile Include="Bills\ViewModels\ScreenAddBillViewModel.vb" />
+    <Compile Include="Bills\ViewModels\ScreenBillsListViewModel.vb" />
     <Compile Include="Bills\Views\BillsWorkspaceView.xaml.vb">
       <DependentUpon>BillsWorkspaceView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Bills\Views\ScreenAddBillView.xaml.vb">
       <DependentUpon>ScreenAddBillView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Bills\Views\ScreenBillsListView.xaml.vb">
+      <DependentUpon>ScreenBillsListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\Controls\LoadingDialog.xaml.vb">
       <DependentUpon>LoadingDialog.xaml</DependentUpon>
@@ -296,6 +300,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Bills\Views\ScreenAddBillView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Bills\Views\ScreenBillsListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

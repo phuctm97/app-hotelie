@@ -18,6 +18,17 @@
                 <materialDesign:CircleWipe />
             </materialDesign:TransitionerSlide.ForwardWipe>
 
+            <ContentControl cal:View.Model="{Binding ScreenBillsList}" />
+        </materialDesign:TransitionerSlide>
+
+        <materialDesign:TransitionerSlide>
+            <materialDesign:TransitionerSlide.BackwardWipe>
+                <materialDesign:CircleWipe />
+            </materialDesign:TransitionerSlide.BackwardWipe>
+            <materialDesign:TransitionerSlide.ForwardWipe>
+                <materialDesign:CircleWipe />
+            </materialDesign:TransitionerSlide.ForwardWipe>
+
             <ContentControl cal:View.Model="{Binding ScreenAddBill}" />
         </materialDesign:TransitionerSlide>
     </materialDesign:Transitioner>

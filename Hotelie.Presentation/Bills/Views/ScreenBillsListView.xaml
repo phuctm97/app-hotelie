@@ -1,12 +1,129 @@
-﻿<UserControl x:Class="ScreenBillsListView"
+﻿<UserControl x:Class="Bills.Views.ScreenBillsListView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Hotelie.Presentation"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             xmlns:commonConverters="clr-namespace:Hotelie.Presentation.Common.Converters"
+             xmlns:converters="clr-namespace:Hotelie.Presentation.Rooms.Converters"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="700" d:DesignWidth="1024">
+    <!--Resources-->
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <commonConverters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <commonConverters:DecimalToCurrencyStringConverter x:Key="DecimalToCurrencyStringConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="1" />
+        </Grid.RowDefinitions>
+
+        <!--Bills list-->
+        <ListBox Grid.Row="1">
+
+            <!--panel style-->
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Margin="10" Orientation="Vertical" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+
+            <!--item style-->
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <materialDesign:Card Background="White">
+                                    <Expander HorizontalAlignment="Stretch" Background="White">
+                                        <Expander.Header>
+                                            <Grid Margin="0 8 0 8">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="3*" />
+                                                    <ColumnDefinition Width="4*" />
+                                                    <ColumnDefinition Width="4*" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" HorizontalAlignment="Left"
+                                                           VerticalAlignment="Center"
+                                                           Text="#H1000000" FontSize="24" FontWeight="Medium" />
+                                                <StackPanel Grid.Column="1">
+                                                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top"
+                                                               Text="THANH TOÁN:" FontSize="14" FontWeight="Light" />
+                                                    <TextBlock Margin="0 4 0 0" HorizontalAlignment="Left"
+                                                               VerticalAlignment="Bottom"
+                                                               Text="Nguyễn Bảo Khương" FontSize="18"
+                                                               FontWeight="Regular" />
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="2">
+                                                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top"
+                                                               Text="THÀNH TIỀN:" FontSize="14" FontWeight="Light" />
+                                                    <TextBlock Margin="0 4 0 0" HorizontalAlignment="Left"
+                                                               VerticalAlignment="Bottom"
+                                                               Text="500,000 đ" FontSize="18" FontWeight="Regular" />
+                                                </StackPanel>
+                                            </Grid>
+                                        </Expander.Header>
+
+                                        <StackPanel Margin="24 16 24 0">
+                                            <TextBlock Margin="13 0 0 4" Text="Chi tiết hóa đơn" IsEnabled="False"
+                                                       Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                                                       FontSize="15" VerticalAlignment="Center" />
+                                            <DataGrid Background="White"
+                                                      CanUserSortColumns="True"
+                                                      CanUserAddRows="False"
+                                                      CanUserDeleteRows="False"
+                                                      CanUserResizeColumns="True"
+                                                      AutoGenerateColumns="False"
+                                                      materialDesign:DataGridAssist.CellPadding="13 8 8 8"
+                                                      materialDesign:DataGridAssist.ColumnHeaderPadding="8"
+                                                      FontSize="15">
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Header="Phiếu thuê" />
+                                                    <DataGridTextColumn Header="Phòng" />
+                                                    <DataGridTextColumn Header="Đơn giá" />
+                                                    <DataGridTextColumn Header="Thời gian" />
+                                                    <DataGridTextColumn Header="Khách hàng" />
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+
+                                            <Button Margin="0 16 0 8" Content="XÓA HÓA ĐƠN" HorizontalAlignment="Right"
+                                                    Style="{DynamicResource MaterialDesignFlatAccentButton}" />
+                                        </StackPanel>
+                                    </Expander>
+                                </materialDesign:Card>
+
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+
+            <ListBoxItem />
+            <ListBoxItem />
+            <ListBoxItem />
+        </ListBox>
+
+        <!--Add button-->
+        <Button Grid.Row="2" Style="{DynamicResource MaterialDesignFloatingActionAccentButton}"
+                HorizontalAlignment="Right"
+                ToolTip="Lập hóa đơn mới"
+                Margin="0 -119 32 0"
+                cal:Message.Attach="NavigateToScreenAddBill">
+            <materialDesign:PackIcon Width="24" Height="24"
+                                     Kind="Plus" />
+        </Button>
     </Grid>
 </UserControl>
