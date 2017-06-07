@@ -53,7 +53,7 @@
                      Width="150"
                      FontSize="15"
                      materialDesign:HintAssist.Hint="Tên phòng"
-                     Text="{Binding FilterRoomNamePrefix, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                     Text="{Binding Path=FilterRoomModel.NamePrefix, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <!--Room category-->
             <ComboBox DockPanel.Dock="Left" HorizontalAlignment="Left"
@@ -63,9 +63,9 @@
                       FontSize="15"
                       materialDesign:HintAssist.Hint="Loại phòng"
                       ToolTip="Loại phòng"
-                      ItemsSource="{Binding RoomCategories}"
+                      ItemsSource="{Binding Categories}"
                       DisplayMemberPath="Name"
-                      SelectedItem="{Binding FilterRoomCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                      SelectedItem="{Binding Path=FilterRoomModel.Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <!--Room state-->
             <ComboBox DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
@@ -74,8 +74,8 @@
                       FontSize="15"
                       materialDesign:HintAssist.Hint="Tình trạng"
                       ToolTip="Tình trạng"
-                      ItemsSource="{Binding RoomStates}"
-                      SelectedItem="{Binding FilterRoomState, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                      ItemsSource="{Binding States}"
+                      SelectedItem="{Binding Path=FilterRoomModel.State, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Converter={StaticResource RoomStateToStringConverter}}" />
@@ -88,14 +88,14 @@
                                      Width="20" Height="20"
                                      Kind="CashMultiple" />
 
-            <!--Min price-->
+            <!--Min unit price-->
             <ComboBox DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
                       Margin="16 0 8 0"
                       Width="100"
                       FontSize="15"
                       materialDesign:HintAssist.Hint="Từ"
-                      ItemsSource="{Binding RoomMinPrices}"
-                      SelectedItem="{Binding FilterRoomMinPrice, Mode=TwoWay}">
+                      ItemsSource="{Binding MinUnitPrices}"
+                      SelectedItem="{Binding Path=FilterRoomModel.MinUnitPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Converter={StaticResource DecimalToCurrencyStringConverter}}" />
@@ -103,14 +103,14 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <!--Max Price-->
+            <!--Max unit price-->
             <ComboBox DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
                       Margin="0 0 32 0"
                       Width="100"
                       materialDesign:HintAssist.Hint="Đến"
                       FontSize="15"
-                      ItemsSource="{Binding RoomMaxPrices}"
-                      SelectedItem="{Binding FilterRoomMaxPrice, Mode=TwoWay}">
+                      ItemsSource="{Binding MaxUnitPrices}"
+                      SelectedItem="{Binding Path=FilterRoomModel.MaxUnitPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Converter={StaticResource DecimalToCurrencyStringConverter}}" />
@@ -125,7 +125,7 @@
                       Width="120"
                       FontSize="15"
                       materialDesign:HintAssist.Hint="Dựa trên"
-                      SelectedIndex="{Binding SortingCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                      SelectedIndex="{Binding Path=SortRoomModel.SortingCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <ComboBoxItem Content="Tên phòng" />
                 <ComboBoxItem Content="Loại phòng" />
                 <ComboBoxItem Content="Giá" />
@@ -138,7 +138,7 @@
                           Style="{StaticResource MaterialDesignActionToggleButton}"
                           Background="Transparent" Foreground="Black"
                           ToolTip="Đảo thứ tự sắp xếp"
-                          IsChecked="{Binding IsDescendingSort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                          IsChecked="{Binding Path=SortRoomModel.IsDescendingSort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <ToggleButton.Content>
                     <materialDesign:PackIcon Width="20" Height="20" Kind="SortAscending" />
                 </ToggleButton.Content>
@@ -193,16 +193,16 @@
                                         <!--Primary text-->
                                         <StackPanel Grid.Row="0" Grid.Column="1"
                                                     Margin="16 24 16 12">
-                                            <!--Title-->
+                                            <!--Room name-->
                                             <TextBlock Style="{DynamicResource MaterialDesignHeadlineTextBlock}"
-                                                       Text="{Binding Name}"
+                                                       Text="{Binding Path=Model.Name, Mode=OneWay}"
                                                        Margin="0 0 0 8" />
 
-                                            <!--Subtitle-->
+                                            <!--Unit price-->
                                             <TextBlock TextWrapping="Wrap"
                                                        Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
                                                        Foreground="{DynamicResource MaterialDesignBodyLight}"
-                                                       Text="{Binding UnitPrice, Converter={StaticResource DecimalToCurrencyStringConverter}}" />
+                                                       Text="{Binding Path=Model.Category.UnitPrice, Mode=OneWay, Converter={StaticResource DecimalToCurrencyStringConverter}}" />
                                         </StackPanel>
 
                                         <!--Action area 1-->
@@ -211,12 +211,9 @@
                                             <!--Room category-->
                                             <Button Margin="0 0 8 8" Padding="3" BorderThickness="0"
                                                     cal:Message.Attach="FilterByRoomCategoryOf($dataContext)">
-                                                <Button.Background>
-                                                    <SolidColorBrush
-                                                        Color="{Binding CategoryDisplayColor, FallbackValue=Black}" />
-                                                </Button.Background>
                                                 <Viewbox StretchDirection="DownOnly" Stretch="Uniform">
-                                                    <TextBlock Text="{Binding CategoryName}" FontSize="14"
+                                                    <TextBlock Text="{Binding Path=Model.Category.Name, Mode=OneWay}"
+                                                               FontSize="14"
                                                                Foreground="White" />
                                                 </Viewbox>
                                             </Button>
@@ -225,11 +222,11 @@
                                                     cal:Message.Attach="FilterByRoomStateOf($dataContext)">
                                                 <Button.Background>
                                                     <SolidColorBrush
-                                                        Color="{Binding State, Converter={StaticResource RoomStateToBackColorConverter}}" />
+                                                        Color="{Binding Path=Model.State, Mode=OneWay, Converter={StaticResource RoomStateToBackColorConverter}}" />
                                                 </Button.Background>
                                                 <Viewbox StretchDirection="DownOnly" Stretch="Uniform">
                                                     <TextBlock
-                                                        Text="{Binding State, Converter={StaticResource RoomStateToStringConverter}}"
+                                                        Text="{Binding Path=Model.State, Mode=OneWay, Converter={StaticResource RoomStateToStringConverter}}"
                                                         FontSize="14" />
                                                 </Viewbox>
                                             </Button>
@@ -245,8 +242,15 @@
                                                     HorizontalAlignment="Left"
                                                     Margin="8 4 4 8"
                                                     Style="{DynamicResource MaterialDesignFlatButton}"
-                                                    Content="CHI TIẾT"
-                                                    cal:Message.Attach="NavigateToScreenRoomDetailAsync($dataContext)" />
+                                                    Content="CHI TIẾT">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="Click">
+                                                        <cal:ActionMessage MethodName="NavigateToScreenRoomDetail">
+                                                            <cal:Parameter Value="{Binding Path=Model.Id}" />
+                                                        </cal:ActionMessage>
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </Button>
                                             <Button DockPanel.Dock="Left"
                                                     HorizontalAlignment="Left"
                                                     Margin="15 4 4 8"
@@ -256,7 +260,7 @@
                                                 <i:Interaction.Triggers>
                                                     <i:EventTrigger EventName="Click">
                                                         <cal:ActionMessage MethodName="NavigateToScreenAddLease">
-                                                            <cal:Parameter Value="{Binding Id}" />
+                                                            <cal:Parameter Value="{Binding Path=Model.Id}" />
                                                         </cal:ActionMessage>
                                                     </i:EventTrigger>
                                                 </i:Interaction.Triggers>

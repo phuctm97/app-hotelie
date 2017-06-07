@@ -8,19 +8,23 @@ Namespace Rooms.Models
 			_entity = entity
 		End Sub
 
-		Public ReadOnly Property Id As String
+		Protected Sub New()
+			_entity = Nothing
+		End Sub
+
+		Public Overridable ReadOnly Property Id As String
 			Get
 				Return _entity.Id
 			End Get
 		End Property
 
-		Public ReadOnly Property Name As String
+		Public Overridable ReadOnly Property Name As String
 			Get
 				Return _entity.Name
 			End Get
 		End Property
 
-		Public ReadOnly Property UnitPrice As Decimal
+		Public Overridable ReadOnly Property UnitPrice As Decimal
 			Get
 				Return _entity.Price
 			End Get

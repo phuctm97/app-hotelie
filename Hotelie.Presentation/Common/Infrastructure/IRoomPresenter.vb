@@ -1,4 +1,4 @@
-﻿Imports Hotelie.Application.Rooms.Queries.GetRoomData
+﻿Imports Hotelie.Application.Rooms.Models
 
 Namespace Infrastructure
 	Public Interface IRoomPresenter
