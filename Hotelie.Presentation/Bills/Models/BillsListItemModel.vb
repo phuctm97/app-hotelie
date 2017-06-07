@@ -17,6 +17,5 @@ Namespace Bills.Models
 			End Set
 		End Property
 
-		Public Property 
 	End Class
 End Namespace

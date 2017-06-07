@@ -5,6 +5,11 @@ Namespace Bills.Queries.GetBillData
         Private ReadOnly _entity As Bill
         Public Sub New(entity As Bill)
             _entity = entity
+            
+            Details = New List(Of BillDetailModel)
+            For Each billDetail As BillDetail In _entity.Details
+                Details.Add(New BillDetailModel(billDetail))
+            Next
         End Sub
 
         Public ReadOnly Property Id As String
@@ -31,11 +36,8 @@ Namespace Bills.Queries.GetBillData
             End Get
         End Property
 
-        Public ReadOnly Property Details As List(Of BillDetail)
-            Get
-                Return _entity.Details
-            End Get
-        End Property
+        Public ReadOnly Property Details As List(Of BillDetailModel)
+           
 
     End Class
 End NameSpace

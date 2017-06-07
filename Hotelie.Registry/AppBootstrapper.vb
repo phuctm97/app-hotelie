@@ -104,7 +104,7 @@ Public Class AppBootstrapper
 		_container.RegisterType _
 			(Of IGetSimpleLeasesListQuery, GetSimpleLeasesListQuery)(
 				New ContainerControlledLifetimeManager() )
-		_container.RegisterType(Of ICreateBillFactory, Tests.Bills.Factories.CreateBill.CreateBillFactory)(
+		_container.RegisterType(Of ICreateBillFactory, CreateBillFactory)(
 			New ContainerControlledLifetimeManager() )
 	End Sub
 
