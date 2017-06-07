@@ -89,7 +89,19 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bills\IGetBillsListQuery.vb" />
+    <Compile Include="Bills\Commands\RemoveBill\IRemoveBillCommand.vb" />
+    <Compile Include="Bills\Commands\RemoveBill\RemoveBillCommand.vb" />
+    <Compile Include="Bills\Factories\CreateBillFactory.vb" />
+    <Compile Include="Bills\Factories\ICreateBillFactory.vb" />
+    <Compile Include="Bills\Queries\GetBillData\BillModel.vb" />
+    <Compile Include="Bills\Queries\GetBillData\GetBillDataQuery.vb" />
+    <Compile Include="Bills\Queries\GetBillData\IGetBillDataQuery.vb" />
+    <Compile Include="Bills\Queries\GetBillDetailData\BillDetailModel.vb" />
+    <Compile Include="Bills\Queries\GetBillDetailData\IGetBillDetailData.vb" />
+    <Compile Include="Bills\Queries\GetBillsList\BillsListItemDetailModel.vb" />
+    <Compile Include="Bills\Queries\GetBillsList\BillsListItemModel.vb" />
+    <Compile Include="Bills\Queries\GetBillsList\GetBillsListQuery.vb" />
+    <Compile Include="Bills\Queries\GetBillsList\IGetBillsListQuery.vb" />
     <Compile Include="Leases\Commands\RemoveLeaseDetail\IRemoveLeaseDetailCommand.vb" />
     <Compile Include="Leases\Commands\RemoveLeaseDetail\RemoveLeaseDetailCommand.vb" />
     <Compile Include="Leases\Commands\RemoveLease\IRemoveLeaseCommand.vb" />

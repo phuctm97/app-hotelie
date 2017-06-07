@@ -31,6 +31,9 @@ Namespace Bills
                 IsRequired().
                 HasColumnType("money")
 
+            HasOptional(Function(p)p.User).
+                WithMany.Map(Function(r)r.MapKey("UserId"))
+
         End Sub
 
     End Class

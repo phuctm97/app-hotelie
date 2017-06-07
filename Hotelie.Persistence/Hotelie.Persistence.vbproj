@@ -98,6 +98,14 @@
       <DependentUpon>201706070612129_TestLease.vb</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201706070612129_TestLease.vb" />
+    <Compile Include="Migrations\201706071346000_FixBillDetail.Designer.vb">
+      <DependentUpon>201706071346000_FixBillDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706071346000_FixBillDetail.vb" />
+    <Compile Include="Migrations\201706071350579_DbUpdate_User_Bill.Designer.vb">
+      <DependentUpon>201706071350579_DbUpdate_User_Bill.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706071350579_DbUpdate_User_Bill.vb" />
     <Compile Include="Migrations\Configuration.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -133,6 +141,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706070612129_TestLease.resx">
       <DependentUpon>201706070612129_TestLease.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706071346000_FixBillDetail.resx">
+      <DependentUpon>201706071346000_FixBillDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706071350579_DbUpdate_User_Bill.resx">
+      <DependentUpon>201706071350579_DbUpdate_User_Bill.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

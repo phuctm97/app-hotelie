@@ -8,6 +8,12 @@ Namespace Bills
         Public Sub New()
             HasKey(Function(p)p.Id)
 
+            [Property](Function(p)p.Id).
+                HasMaxLength(10).
+                IsUnicode(False).
+                IsFixedLength().
+                IsRequired()
+
             HasRequired(Function(p)p.Lease).
                 WithOptional.Map(Function(m)m.MapKey("LeaseId"))
 

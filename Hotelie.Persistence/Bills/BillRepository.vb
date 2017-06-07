@@ -14,6 +14,14 @@ Namespace Bills
             _databaseService = databaseService
         End Sub
 
+        Public Function GetBillDetails() As List(Of BillDetail) Implements IBillRepository.GetBillDetails
+            Return _databaseService.Context.BillDetails.ToList()
+        End Function
+
+        Public Async Function GetBillDetailsAsync() As Task(Of List(Of BillDetail)) Implements IBillRepository.GetBillDetailsAsync
+            Return Await _databaseService.Context.BillDetails.ToListAsync()
+        End Function
+
         Public Overrides Function GetOne(id As Object) As Bill
             Dim idString = CType(id, String)
             If IsNothing(idString) Then Throw New Exception("id phải là string")

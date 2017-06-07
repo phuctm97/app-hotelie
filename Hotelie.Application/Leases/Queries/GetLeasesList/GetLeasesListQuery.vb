@@ -29,7 +29,7 @@ Namespace Leases.Queries.GetLeasesList
                 Next
 
                 ' calculate total expense
-                Dim numberOfDays = DateTime.Now().Subtract(lease.CheckinDate).Days()
+                Dim numberOfDays = DateTime.Now().Subtract(lease.CheckinDate).TotalDays()
                 Dim unitPrice = lease.RoomPrice*lease.ExtraCoefficient*numberOfDays
                 Dim expense = lease.RoomPrice*(1 + lease.CustomerCoefficient)*numberOfDays
                 leasesListItemModel.TotalExpense = unitPrice + expense
@@ -52,7 +52,7 @@ Namespace Leases.Queries.GetLeasesList
                     leasesListItemModel.Details.Add(New LeasesListItemDetailModel() With {.CustomerName = leaseDetail.CustomerName})
                 Next
                 ' calculate total expense
-                Dim numberOfDays = DateTime.Now().Subtract(lease.CheckinDate).Days()
+                Dim numberOfDays = DateTime.Now().Subtract(lease.CheckinDate).TotalDays()
                 Dim unitPrice = lease.RoomPrice*lease.ExtraCoefficient*numberOfDays
                 Dim expense = lease.RoomPrice*(1 + lease.CustomerCoefficient)*numberOfDays
 
