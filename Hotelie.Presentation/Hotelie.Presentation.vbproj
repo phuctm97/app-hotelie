@@ -126,6 +126,7 @@
       <DependentUpon>Application.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AppScreenHasSavingAndDeleting.vb" />
     <Compile Include="Bills\Models\EditableBillDetailModel.vb" />
     <Compile Include="Bills\ViewModels\BillsWorkspaceViewModel.vb" />
     <Compile Include="Bills\ViewModels\ScreenAddBillViewModel.vb" />
@@ -167,6 +168,7 @@
     <Compile Include="Common\Infrastructure\IRoomPresenter.vb" />
     <Compile Include="Common\IShell.vb" />
     <Compile Include="Common\IWindowCommandsBar.vb" />
+    <Compile Include="Common\IAppScreenHasDeleting.vb" />
     <Compile Include="Leases\Converters\NumberOfUsedDaysDisplayConverters.vb" />
     <Compile Include="Leases\Converters\TotalExpenseDisplayConverter.vb" />
     <Compile Include="Leases\Models\EditableLeaseDetailModel.vb" />

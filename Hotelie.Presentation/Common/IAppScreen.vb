@@ -18,5 +18,6 @@ Namespace Common
 		Sub [Exit]()
 
 		Function ExitAsync() As Task
+
 	End Interface
 End Namespace

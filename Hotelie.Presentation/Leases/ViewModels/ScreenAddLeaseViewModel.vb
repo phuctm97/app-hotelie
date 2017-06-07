@@ -5,6 +5,7 @@ Imports Hotelie.Application.Leases.Queries.GetCustomerCategoriesList
 Imports Hotelie.Application.Rooms.Queries.GetRoomData
 Imports Hotelie.Application.Rooms.Queries.GetSimpleRoomsList
 Imports Hotelie.Application.Services.Infrastructure
+Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
 Imports Hotelie.Presentation.Infrastructure
 Imports Hotelie.Presentation.Leases.Models
@@ -12,7 +13,7 @@ Imports Hotelie.Presentation.Start.MainWindow.Models
 
 Namespace Leases.ViewModels
 	Public Class ScreenAddLeaseViewModel
-		Inherits PropertyChangedBase
+		Inherits AppScreenHasSaving
 		Implements IChild(Of LeasesWorkspaceViewModel)
 		Implements INeedWindowModals
 		Implements IRoomsListPresenter
@@ -23,11 +24,12 @@ Namespace Leases.ViewModels
 		Private ReadOnly _createLeaseFactory As ICreateLeaseFactory
 		Private ReadOnly _inventory As IInventory
 
+		' Backing fields
 		Private _room As SimpleRoomsListItemModel
 		Private _expectedCheckoutDate As Date
-
 		Private _maxNumberOfUsers As Integer
 
+		' Parent
 		Public Property Parent As Object Implements IChild.Parent
 
 		Public Property ParentWorkspace As LeasesWorkspaceViewModel Implements IChild(Of LeasesWorkspaceViewModel).Parent
@@ -39,6 +41,7 @@ Namespace Leases.ViewModels
 			End Set
 		End Property
 
+		' Binding models
 		Public ReadOnly Property CheckinDate As Date
 			Get
 				Return Today
@@ -81,6 +84,7 @@ Namespace Leases.ViewModels
 			End Get
 		End Property
 
+		' Binding data
 		Public ReadOnly Property Rooms As IObservableCollection(Of SimpleRoomsListItemModel)
 
 		Public Shared ReadOnly Property CustomerCategories As IObservableCollection(Of CustomerCategoriesListItemModel)
@@ -95,6 +99,8 @@ Namespace Leases.ViewModels
 		                getCustomerCategoriesListQuery As IGetCustomerCategoriesListQuery,
 		                createLeaseFactory As ICreateLeaseFactory,
 		                inventory As IInventory )
+			MyBase.New( MaterialDesignThemes.Wpf.ColorZoneMode.PrimaryDark )
+
 			ParentWorkspace = workspace
 			_getSimpleRoomsListQuery = getSimpleRoomsListQuery
 			_getCustomerCategoriesListQuery = getCustomerCategoriesListQuery
@@ -145,6 +151,7 @@ Namespace Leases.ViewModels
 			Details.Clear()
 		End Sub
 
+		' Domain actions
 		Public Sub SetRoomId( id As String )
 			Dim roomItem = Rooms.FirstOrDefault( Function( r ) r.Id = id )
 			If IsNothing( roomItem )
@@ -161,129 +168,25 @@ Namespace Leases.ViewModels
 		End Sub
 
 		' Exit
-		Public Async Sub PreviewExit()
-			If CheckForPendingChanges()
-				Dim result = Await ConfirmExit()
-
-				If Equals( result, 1 )
-					PreviewSave()
-					Return
-				ElseIf Equals( result, 2 )
-					Return
-				End If
-			End If
-
-			[Exit]()
-		End Sub
-
-		Public Async Sub PreviewExitAsync()
-			If CheckForPendingChanges()
-				Dim result = Await ConfirmExit()
-
-				If Equals( result, 1 )
-					PreviewSaveAsync()
-					Return
-				ElseIf Equals( result, 2 )
-					Return
-				End If
-			End If
-
-			[Exit]()
-		End Sub
-
-		Private Sub [Exit]()
-			ParentWorkspace.NavigateToScreenLeasesList()
-			ResetValues()
-		End Sub
+		Public Overrides ReadOnly Property IsEdited As Boolean
+			Get
+				Return CheckForPendingChanges()
+			End Get
+		End Property
 
 		Private Function CheckForPendingChanges() As Boolean
 			If Details.Count > 0 Then Return True
 			Return False
 		End Function
 
-		Private Async Function ConfirmExit() As Task(Of Integer)
-			' show dialog
-			Dim dialog = New ThreeButtonDialog( "Thoát mà không lưu các thay đổi?",
-			                                    "THOÁT",
-			                                    "LƯU & THOÁT",
-			                                    "HỦY",
-			                                    False,
-			                                    True,
-			                                    False )
-			Dim result = Await ShowDynamicWindowDialog( dialog )
+		Public Overrides Function ActualExitAsync() As Task
+			ResetValues()
 
-			If String.Equals( result, "THOÁT" ) Then Return 0
-			If String.Equals( result, "HỦY" ) Then Return 2
-			Return 1
+			ParentWorkspace.NavigateToScreenLeasesList()
+			Return MyBase.ActualExitAsync()
 		End Function
 
 		' Save
-		Public Sub PreviewSave()
-			If ValidateData()
-				Save()
-			End If
-		End Sub
-
-		Public Sub PreviewSaveAsync()
-			If ValidateData()
-				SaveAsync()
-			End If
-		End Sub
-
-		Private Sub Save()
-			' try create lease
-			Dim detailModels = New List(Of CreateLeaseDetailModel)
-			For Each detail As EditableLeaseDetailModel In Details
-				detailModels.Add( New CreateLeaseDetailModel With {
-					                .CustomerName=detail.CustomerName,
-					                .CustomerLicenseId=detail.CustomerLicenseId,
-					                .CustomerAddress=detail.CustomerAddress,
-					                .CustomerCategoryId=detail.CustomerCategory.Id} )
-			Next
-
-			Dim newId = _createLeaseFactory.Execute( Room.Id, CheckinDate, ExpectedCheckoutDate, detailModels )
-
-			If String.IsNullOrEmpty( newId )
-				OnSaveFail()
-			Else
-				OnSaveSuccess( newId )
-			End If
-		End Sub
-
-		Private Sub OnSaveSuccess( newId As String )
-			_inventory.OnLeaseAdded( newId )
-			[Exit]()
-		End Sub
-
-		Private Async Sub SaveAsync()
-			' try create lease
-			Dim detailModels = New List(Of CreateLeaseDetailModel)
-			For Each detail As EditableLeaseDetailModel In Details
-				detailModels.Add( New CreateLeaseDetailModel With {
-					                .CustomerName=detail.CustomerName,
-					                .CustomerLicenseId=detail.CustomerLicenseId,
-					                .CustomerAddress=detail.CustomerAddress,
-					                .CustomerCategoryId=detail.CustomerCategory.Id} )
-			Next
-
-			Dim newId = Await _createLeaseFactory.ExecuteAsync( Room.Id, CheckinDate, ExpectedCheckoutDate, detailModels )
-
-			If String.IsNullOrEmpty( newId )
-				OnSaveFail()
-			Else
-				Await OnSaveSuccessAsync( newId )
-			End If
-		End Sub
-
-		Private Async Function OnSaveSuccessAsync( newId As String ) As Task
-			Await _inventory.OnLeaseAddedAsync( newId )
-			[Exit]()
-		End Function
-
-		Private Sub OnSaveFail()
-			ShowStaticBottomNotification( StaticNotificationType.Error, "Gặp sự cố trong lúc tạo phiếu thuê phòng" )
-		End Sub
-
 		Private Function ValidateData() As Boolean
 			If ExpectedCheckoutDate.Date < CheckinDate.Date
 				ShowStaticBottomNotification( StaticNotificationType.Information,
@@ -329,6 +232,40 @@ Namespace Leases.ViewModels
 			Return True
 		End Function
 
+		Public Overrides Function CanSave() As Task(Of Boolean)
+			Return Task.Run(Function() ValidateData())
+		End Function
+
+		Public Overrides Async Function ActualSaveAsync() As Task
+			' try create lease
+			Dim detailModels = New List(Of CreateLeaseDetailModel)
+			For Each detail As EditableLeaseDetailModel In Details
+				detailModels.Add( New CreateLeaseDetailModel With {
+					                .CustomerName=detail.CustomerName,
+					                .CustomerLicenseId=detail.CustomerLicenseId,
+					                .CustomerAddress=detail.CustomerAddress,
+					                .CustomerCategoryId=detail.CustomerCategory.Id} )
+			Next
+
+			Dim newId = Await _createLeaseFactory.ExecuteAsync( Room.Id, CheckinDate, ExpectedCheckoutDate, detailModels )
+
+			If String.IsNullOrEmpty( newId )
+				OnSaveFail()
+			Else
+				Await OnSaveSuccessAsync( newId )
+			End If
+		End Function
+
+		Private Async Function OnSaveSuccessAsync( newId As String ) As Task
+			Await _inventory.OnLeaseAddedAsync( newId )
+			Await ActualExitAsync()
+		End Function
+
+		Private Sub OnSaveFail()
+			ShowStaticBottomNotification( StaticNotificationType.Error, "Gặp sự cố trong lúc tạo phiếu thuê phòng" )
+		End Sub
+
+		' Infrastructure
 		Public Sub OnRoomAdded( model As RoomModel ) Implements IRoomsListPresenter.OnRoomAdded
 			If model.State <> 0 Then Return
 

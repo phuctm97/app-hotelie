@@ -48,7 +48,7 @@ Namespace Common
 
 		Public Overridable Function ExitAsync() As Task Implements IAppScreen.ExitAsync
 			RaiseEventOnExited()
-			Return Nothing
+			Return Task.FromResult( True )
 		End Function
 	End Class
 End Namespace

@@ -11,6 +11,7 @@ Imports Hotelie.Application.Leases.Queries.GetLeaseDetailData
 Imports Hotelie.Application.Rooms.Queries.GetRoomData
 Imports Hotelie.Application.Rooms.Queries.GetSimpleRoomsList
 Imports Hotelie.Application.Services.Infrastructure
+Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
 Imports Hotelie.Presentation.Infrastructure
 Imports Hotelie.Presentation.Leases.Models
@@ -18,7 +19,7 @@ Imports Hotelie.Presentation.Start.MainWindow.Models
 
 Namespace Leases.ViewModels
 	Public Class ScreenLeaseDetailViewModel
-		Inherits PropertyChangedBase
+		Inherits AppScreenHasSavingAndDeleting
 		Implements IChild(Of LeasesWorkspaceViewModel)
 		Implements INeedWindowModals
 		Implements IRoomsListPresenter
@@ -34,6 +35,7 @@ Namespace Leases.ViewModels
 		Private ReadOnly _createLeaseDetailFactory As ICreateLeaseDetailFactory
 		Private ReadOnly _inventory As IInventory
 
+		' Backing fields
 		Private _leaseId As String
 		Private _roomUnitPrice As Decimal
 		Private _checkinDate As Date
@@ -45,9 +47,9 @@ Namespace Leases.ViewModels
 		Private _originalroomId As String
 		Private _originalexpectedCheckoutDate As Date
 		Private _originalDetails As IObservableCollection(Of EditableLeaseDetailModel)
-
 		Private _maxNumberOfUsers As Integer
 
+		' Parent
 		Public Property Parent As Object Implements IChild.Parent
 
 		Public Property ParentWorkspace As LeasesWorkspaceViewModel Implements IChild(Of LeasesWorkspaceViewModel).Parent
@@ -59,6 +61,7 @@ Namespace Leases.ViewModels
 			End Set
 		End Property
 
+		' Binding models
 		Public Property LeaseId As String
 			Get
 				Return _leaseId
@@ -137,6 +140,7 @@ Namespace Leases.ViewModels
 			End Get
 		End Property
 
+		' Binding data
 		Public ReadOnly Property Rooms As IObservableCollection(Of SimpleRoomsListItemModel)
 
 		Public Shared ReadOnly Property CustomerCategories As IObservableCollection(Of CustomerCategoriesListItemModel)
@@ -157,6 +161,8 @@ Namespace Leases.ViewModels
 		                removeLeaseDetailCommand As IRemoveLeaseDetailCommand,
 		                createLeaseDetailFactory As ICreateLeaseDetailFactory,
 		                inventory As IInventory )
+			MyBase.New( MaterialDesignThemes.Wpf.ColorZoneMode.PrimaryDark )
+
 			ParentWorkspace = workspace
 			_getLeaseDataQuery = getLeaseDataQuery
 			_getSimpleRoomsListQuery = getSimpleRoomsListQuery
@@ -228,6 +234,7 @@ Namespace Leases.ViewModels
 			_originalDetails.Clear()
 		End Sub
 
+		' Domain actions
 		Public Sub SetLease( id As String )
 			Dim model = _getLeaseDataQuery.Execute( id )
 			If IsNothing( model ) Then Return
@@ -272,6 +279,7 @@ Namespace Leases.ViewModels
 				originalModel.CustomerCategory = customerCategory
 				_originalDetails.Add( originalModel )
 			Next
+
 		End Sub
 
 		Public Async Function SetLeaseAsync( id As String ) As Task
@@ -329,40 +337,11 @@ Namespace Leases.ViewModels
 		End Sub
 
 		' Exit
-		Public Async Sub PreviewExit()
-			If CheckForPendingChanges()
-				Dim result = Await ConfirmExit()
-
-				If Equals( result, 1 )
-					PreviewSave()
-					Return
-				ElseIf Equals( result, 2 )
-					Return
-				End If
-			End If
-
-			[Exit]()
-		End Sub
-
-		Public Async Sub PreviewExitAsync()
-			If CheckForPendingChanges()
-				Dim result = Await ConfirmExit()
-
-				If Equals( result, 1 )
-					PreviewSaveAsync()
-					Return
-				ElseIf Equals( result, 2 )
-					Return
-				End If
-			End If
-
-			[Exit]()
-		End Sub
-
-		Private Sub [Exit]()
-			ParentWorkspace.NavigateToScreenLeasesList()
-			ResetValues()
-		End Sub
+		Public Overrides ReadOnly Property IsEdited As Boolean
+			Get
+				Return CheckForPendingChanges()
+			End Get
+		End Property
 
 		Private Function CheckForPendingChanges() As Boolean
 			If Not Equals( _originalcheckinDate.Date, CheckinDate.Date ) Then Return True
@@ -374,123 +353,62 @@ Namespace Leases.ViewModels
 			Return False
 		End Function
 
-		Private Async Function ConfirmExit() As Task(Of Integer)
-			' show dialog
-			Dim dialog = New ThreeButtonDialog( "Thoát mà không lưu các thay đổi?",
-			                                    "THOÁT",
-			                                    "LƯU & THOÁT",
-			                                    "HỦY",
-			                                    False,
-			                                    True,
-			                                    False )
-			Dim result = Await ShowDynamicWindowDialog( dialog )
+		Public Overrides Function ActualExitAsync() As Task
+			ResetValues()
 
-			If String.Equals( result, "THOÁT" ) Then Return 0
-			If String.Equals( result, "HỦY" ) Then Return 2
-			Return 1
+			ParentWorkspace.NavigateToScreenLeasesList()
+			Return MyBase.ActualExitAsync()
 		End Function
 
 		' Save
-		Public Sub PreviewSave()
-			If ValidateData()
-				Save()
-			End If
-		End Sub
+		Public Overrides Function CanSave() As Task(Of Boolean)
+			If String.IsNullOrWhiteSpace( LeaseId ) Then Return Task.FromResult( False )
 
-		Public Sub PreviewSaveAsync()
-			If ValidateData()
-				SaveAsync()
+			If ExpectedCheckoutDate.Date < CheckinDate.Date
+				ShowStaticBottomNotification( StaticNotificationType.Information,
+				                              "Ngày dự kiến trả phải sau ngày đăng ký thuê phòng" )
+				Return Task.FromResult( False )
 			End If
-		End Sub
 
-		Private Sub Save()
-			' try update lease details
-			Dim hasError = False
+			If IsNothing( Room ) OrElse String.IsNullOrWhiteSpace( Room.Id )
+				ShowStaticBottomNotification( StaticNotificationType.Information, "Vui lòng chọn phòng thuê" )
+				Return Task.FromResult( False )
+			End If
+
+			If (Not String.Equals( Room.Id, _originalroomId )) And Room.State = 1
+				ShowStaticBottomNotification( StaticNotificationType.Information,
+				                              $"Phòng {Room.Name} đang thuê bởi khách hàng khác. Vui lòng chọn phòng khác" )
+				Return Task.FromResult( False )
+			End If
+
+			If Details.Count > _maxNumberOfUsers
+				ShowStaticBottomNotification( StaticNotificationType.Information,
+				                              $"Vượt quá số khách quy định. Mỗi phòng chỉ có tối đa {_maxNumberOfUsers} người" )
+				Return Task.FromResult( False )
+			End If
+
+			If Details.Count <= 0
+				ShowStaticBottomNotification( StaticNotificationType.Information,
+				                              $"Phải có ít nhất 1 khách thuê phòng" )
+				Return Task.FromResult( False )
+			End If
 
 			For Each detail As EditableLeaseDetailModel In Details
-				If Not String.IsNullOrWhiteSpace( detail.Id )
-					' update lease detail
-					If Not UpdateLeaseDetail( detail )
-						hasError = True
-						Exit For
-					End If
-				Else
-					' create lease detail
-					If Not CreateLeaseDetail( detail )
-						hasError = True
-						Exit For
-					End If
+				If String.IsNullOrWhiteSpace( detail.CustomerName )
+					ShowStaticBottomNotification( StaticNotificationType.Information, "Vui lòng nhập đầy đủ tên khách hàng" )
+					Return Task.FromResult( False )
 				End If
-			Next
-			' remove lease detail
-			For Each originalDetail As EditableLeaseDetailModel In _originalDetails
-				If Not Details.Any( Function( d ) d.Id = originalDetail.Id )
-					If Not RemoveLeaseDetail( originalDetail )
-						hasError = True
-						Exit For
-					End If
+
+				If IsNothing( detail.CustomerCategory ) OrElse String.IsNullOrWhiteSpace( detail.CustomerCategory.Id )
+					ShowStaticBottomNotification( StaticNotificationType.Information, "Vui chọn đầy đủ loại khách hàng" )
+					Return Task.FromResult( False )
 				End If
 			Next
 
-			' try update lease
-			If hasError Then Return
-
-			Dim err = _updateLeaseCommand.Execute( LeaseId, Room.Id, ExpectedCheckoutDate )
-
-			If String.IsNullOrEmpty( err )
-				OnSaveSuccess()
-			Else
-				OnSaveFail( err )
-			End If
-		End Sub
-
-		Private Function UpdateLeaseDetail( detail As EditableLeaseDetailModel ) As Boolean
-			Dim err = _updateLeaseDetailCommand.Execute( detail.Id,
-			                                             detail.CustomerName,
-			                                             detail.CustomerLicenseId,
-			                                             detail.CustomerAddress,
-			                                             detail.CustomerCategory.Id )
-			' error
-			If Not String.IsNullOrEmpty( err )
-				OnSaveFail( err )
-				Return False
-			End If
-
-			Return True
+			Return Task.FromResult( True )
 		End Function
 
-		Private Function CreateLeaseDetail( detail As EditableLeaseDetailModel ) As Boolean
-			' create lease detail
-			Dim newId = _createLeaseDetailFactory.Execute( LeaseId,
-			                                               detail.CustomerName,
-			                                               detail.CustomerLicenseId,
-			                                               detail.CustomerAddress,
-			                                               detail.CustomerCategory.Id )
-			If String.IsNullOrEmpty( newId )
-				OnSaveFail( $"Gặp sự cố trong lúc tạo chi tiết thuê phòng cho khách hàng {detail.CustomerName}" )
-				Return False
-			End If
-
-			Return True
-		End Function
-
-		Private Function RemoveLeaseDetail( detail As EditableLeaseDetailModel ) As Boolean
-			Dim err = _removeLeaseDetailCommand.Execute( detail.Id )
-			' error
-			If Not String.IsNullOrEmpty( err )
-				OnSaveFail( err )
-				Return False
-			End If
-
-			Return True
-		End Function
-
-		Private Sub OnSaveSuccess()
-			_inventory.OnLeaseUpdated( LeaseId )
-			[Exit]()
-		End Sub
-
-		Private Async Sub SaveAsync()
+		Public Overrides Async Function ActualSaveAsync() As Task
 			' try update
 			ShowStaticWindowLoadingDialog()
 
@@ -537,7 +455,7 @@ Namespace Leases.ViewModels
 				OnSaveFail( err )
 			End If
 			CloseStaticWindowDialog()
-		End Sub
+		End Function
 
 		Private Async Function UpdateLeaseDetailAsync( detail As EditableLeaseDetailModel ) As Task(Of Boolean)
 			Dim err = Await _updateLeaseDetailCommand.ExecuteAsync( detail.Id,
@@ -582,108 +500,15 @@ Namespace Leases.ViewModels
 
 		Private Async Function OnSaveSuccessAsync() As Task
 			Await _inventory.OnLeaseUpdatedAsync( LeaseId )
-			[Exit]()
+			Await ActualExitAsync()
 		End Function
 
 		Private Sub OnSaveFail( err As String )
 			ShowStaticBottomNotification( StaticNotificationType.Error, err )
 		End Sub
 
-		Private Function ValidateData() As Boolean
-			If String.IsNullOrWhiteSpace( LeaseId ) Then Return False
-
-			If ExpectedCheckoutDate.Date < CheckinDate.Date
-				ShowStaticBottomNotification( StaticNotificationType.Information,
-				                              "Ngày dự kiến trả phải sau ngày đăng ký thuê phòng" )
-				Return False
-			End If
-
-			If IsNothing( Room ) OrElse String.IsNullOrWhiteSpace( Room.Id )
-				ShowStaticBottomNotification( StaticNotificationType.Information, "Vui lòng chọn phòng thuê" )
-				Return False
-			End If
-
-			If (Not String.Equals( Room.Id, _originalroomId )) And Room.State = 1
-				ShowStaticBottomNotification( StaticNotificationType.Information,
-				                              $"Phòng {Room.Name} đang thuê bởi khách hàng khác. Vui lòng chọn phòng khác" )
-				Return False
-			End If
-
-			If Details.Count > _maxNumberOfUsers
-				ShowStaticBottomNotification( StaticNotificationType.Information,
-				                              $"Vượt quá số khách quy định. Mỗi phòng chỉ có tối đa {_maxNumberOfUsers} người" )
-				Return False
-			End If
-
-			If Details.Count <= 0
-				ShowStaticBottomNotification( StaticNotificationType.Information,
-				                              $"Phải có ít nhất 1 khách thuê phòng" )
-				Return False
-			End If
-
-			For Each detail As EditableLeaseDetailModel In Details
-				If String.IsNullOrWhiteSpace( detail.CustomerName )
-					ShowStaticBottomNotification( StaticNotificationType.Information, "Vui lòng nhập đầy đủ tên khách hàng" )
-					Return False
-				End If
-
-				If IsNothing( detail.CustomerCategory ) OrElse String.IsNullOrWhiteSpace( detail.CustomerCategory.Id )
-					ShowStaticBottomNotification( StaticNotificationType.Information, "Vui chọn đầy đủ loại khách hàng" )
-					Return False
-				End If
-			Next
-
-			Return True
-		End Function
-
 		' Delete
-		Public Async Sub PreviewDelete()
-			Dim result = Await ConfirmDelete()
-
-			If Equals( result, 0 )
-				Delete()
-			End If
-		End Sub
-
-		Public Async Sub PreviewDeleteAsync()
-			Dim result = Await ConfirmDelete()
-
-			If Equals( result, 0 )
-				DeleteAsync()
-			End If
-		End Sub
-
-		Private Async Function ConfirmDelete() As Task(Of Integer)
-			' show dialog
-			Dim dialog =
-				    New TwoButtonDialog( "Xóa phiếu thuê phòng sẽ dẫn tới xóa tất cả thông tin khác hàng thuê phòng. Tiếp tục?",
-				                         "XÓA",
-				                         "HỦY",
-				                         True,
-				                         False )
-			Dim result = Await ShowDynamicWindowDialog( dialog )
-
-			If String.Equals( result, "XÓA" ) Then Return 0
-			Return 1
-		End Function
-
-		Private Sub Delete()
-			' try update
-			Dim err = _removeLeaseCommmand.Execute( LeaseId )
-
-			If String.IsNullOrEmpty( err )
-				OnDeleteSuccess()
-			Else
-				OnDeleteFail( err )
-			End If
-		End Sub
-
-		Private Sub OnDeleteSuccess()
-			_inventory.OnLeaseRemoved( LeaseId )
-			[Exit]()
-		End Sub
-
-		Private Async Sub DeleteAsync()
+		Public Overrides Async Function ActualDeleteAsync() As Task
 			' try update
 			ShowStaticWindowLoadingDialog()
 			Dim err = Await _removeLeaseCommmand.ExecuteAsync( LeaseId )
@@ -695,17 +520,18 @@ Namespace Leases.ViewModels
 			End If
 
 			CloseStaticWindowDialog()
-		End Sub
+		End Function
 
 		Private Async Function OnDeleteSuccessAsync() As Task
 			Await _inventory.OnLeaseRemovedAsync( LeaseId )
-			[Exit]()
+			Await ActualExitAsync()
 		End Function
 
 		Private Sub OnDeleteFail( err As String )
 			ShowStaticBottomNotification( StaticNotificationType.Error, err )
 		End Sub
 
+		' Infrastructure
 		Public Sub OnRoomAdded( model As RoomModel ) Implements IRoomsListPresenter.OnRoomAdded
 			If Rooms.Any( Function( r ) r.Id = model.Id )
 				Throw New DuplicateWaitObjectException()

@@ -2,7 +2,7 @@
 	Public Interface IAppScreenHasSaving
 		Inherits IAppScreen
 
-		Property IsEdited As Boolean
+		ReadOnly Property IsEdited As Boolean
 
 		Function CanExit( Optional message As String = "Thoát mà không lưu các thay đổi?",
 		                  Optional buttonExit As String = "THOÁT",
@@ -13,8 +13,14 @@
 
 		Function ActualExitAsync() As Task
 
-		Function Save() As Object
+		Function CanSave() As Task(Of Boolean)
 
-		Function SaveAsync() As Task(Of Object)
+		Sub Save()
+
+		Function SaveAsync() As Task
+
+		Sub ActualSave()
+
+		Function ActualSaveAsync() As Task
 	End Interface
 End Namespace

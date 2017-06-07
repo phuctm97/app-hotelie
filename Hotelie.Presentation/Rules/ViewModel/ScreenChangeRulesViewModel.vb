@@ -18,7 +18,6 @@ Namespace Rules.ViewModels
 			DisplayName = "Thay đổi quy định"
 			Username = "<tên người dùng>"
 			Rule = New RuleModel()
-			IsEdited = False
 		End Sub
 
 		Private Sub ResetValues()
@@ -27,7 +26,6 @@ Namespace Rules.ViewModels
 			Rule.RoomCategories.Clear()
 			Rule.RoomCapacity = 0
 			Rule.ExtraCoefficient = 0
-			IsEdited = False
 		End Sub
 
 		' Show
@@ -36,7 +34,6 @@ Namespace Rules.ViewModels
 		End Sub
 
 		Private Sub ReloadRules()
-			IsEdited = False
 		End Sub
 
 		Public Overrides Async Function ShowAsync() As Task

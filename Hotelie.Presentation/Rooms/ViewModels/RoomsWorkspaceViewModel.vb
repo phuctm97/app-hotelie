@@ -19,6 +19,7 @@ Namespace Rooms.ViewModels
 		' Dependencies
 		Private _displayCode As Integer
 
+		' Screens
 		Public ReadOnly Property ScreenRoomsList As ScreenRoomsListViewModel
 
 		Public ReadOnly Property ScreenRoomDetail As ScreenRoomDetailViewModel
@@ -36,6 +37,7 @@ Namespace Rooms.ViewModels
 			End Set
 		End Property
 
+		' Parent
 		Public Property Parent As Object Implements IChild.Parent
 
 		Private Property ParentShell As WorkspaceShellViewModel Implements IChild(Of WorkspaceShellViewModel).Parent
@@ -47,6 +49,7 @@ Namespace Rooms.ViewModels
 			End Set
 		End Property
 
+		' Initializations
 		Public Sub New( getRoomsListQuery As IGetRoomsListQuery,
 		                getRoomCategoriesListQuery As IGetRoomCategoriesListQuery,
 		                getRoomDataQuery As IGetRoomDataQuery,
@@ -79,11 +82,8 @@ Namespace Rooms.ViewModels
 			InitializeComponents()
 		End Sub
 
-		Private Async Sub InitializeComponents()
-			ShowStaticWindowLoadingDialog()
-			Await InitAsync()
-			Await Task.Delay( 100 ) 'allow binding
-			CloseStaticWindowDialog()
+		Private Sub InitializeComponents()
+			Init()
 		End Sub
 
 		Private Sub Init()
@@ -100,6 +100,7 @@ Namespace Rooms.ViewModels
 			DisplayCode = 0
 		End Function
 
+		' Navigations
 		Public Sub NavigateToScreenRoomsList()
 			DisplayCode = 0
 		End Sub

@@ -7,9 +7,10 @@ Namespace Leases.ViewModels
 		Inherits AppScreen
 		Implements INeedWindowModals
 
-		' Dependencies
+		' Backing fields
 		Private _displayCode As Integer
 
+		' Screens
 		Public ReadOnly Property ScreenLeasesList As ScreenLeasesListViewModel
 
 		Public ReadOnly Property ScreenLeaseDetail As ScreenLeaseDetailViewModel
@@ -27,6 +28,7 @@ Namespace Leases.ViewModels
 			End Set
 		End Property
 
+		' Initializations
 		Public Sub New( getLeasesListQuery As Hotelie.Application.Leases.Queries.GetLeasesList.IGetLeasesListQuery,
 		                getLeaseDataQuery As Hotelie.Application.Leases.Queries.GetLeaseData.IGetLeaseDataQuery,
 		                getSimpleRoomsListQuery As _
@@ -73,11 +75,8 @@ Namespace Leases.ViewModels
 			InitializeComponents()
 		End Sub
 
-		Private Async Sub InitializeComponents()
-			ShowStaticWindowLoadingDialog()
-			Await InitAsync()
-			Await Task.Delay( 100 ) 'allow binding
-			CloseStaticWindowDialog()
+		Private Sub InitializeComponents()
+			Init()
 		End Sub
 
 		Private Sub Init()
@@ -94,20 +93,13 @@ Namespace Leases.ViewModels
 			DisplayCode = 0
 		End Function
 
+		' Navigations
 		Public Sub NavigateToScreenLeasesList()
 			DisplayCode = 0
 		End Sub
 
-		Public Sub NavigateToScreenLeaseDetail( leaseListItem As _
-			                                      Hotelie.Application.Leases.Queries.GetLeasesList.LeasesListItemModel )
-			If IsNothing( leaseListItem ) Then Return
-
-			ScreenLeaseDetail.SetLease( leaseListItem.Id )
-			DisplayCode = 1
-		End Sub
-
-		Public Async Sub NavigateToScreenLeaseDetailAsync( leaseListItem As _
-			                                                 Hotelie.Application.Leases.Queries.GetLeasesList.LeasesListItemModel )
+		Public Async Sub NavigateToScreenLeaseDetail( leaseListItem As _
+			                                            Hotelie.Application.Leases.Queries.GetLeasesList.LeasesListItemModel )
 			If IsNothing( leaseListItem ) Then Return
 
 			Await ScreenLeaseDetail.SetLeaseAsync( leaseListItem.Id )

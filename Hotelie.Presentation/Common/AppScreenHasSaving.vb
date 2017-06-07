@@ -2,12 +2,13 @@
 Imports MaterialDesignThemes.Wpf
 
 Namespace Common
-	Public Class AppScreenHasSaving
+	Public MustInherit Class AppScreenHasSaving
 		Inherits AppScreen
 		Implements IAppScreenHasSaving
+
 		Implements INeedWindowModals
 
-		Public Property IsEdited As Boolean Implements IAppScreenHasSaving.IsEdited
+		Public Overridable ReadOnly Property IsEdited As Boolean Implements IAppScreenHasSaving.IsEdited
 
 		Public Sub New( colorMode As ColorZoneMode )
 			MyBase.New( colorMode )
@@ -16,12 +17,10 @@ Namespace Common
 		End Sub
 
 		Public Overrides Sub Show()
-			IsEdited = False
 			MyBase.Show()
 		End Sub
 
 		Public Overrides Function ShowAsync() As Task
-			IsEdited = False
 			Return MyBase.ShowAsync()
 		End Function
 
@@ -85,15 +84,28 @@ Namespace Common
 
 		Public Overridable Function ActualExitAsync() As Task Implements IAppScreenHasSaving.ActualExitAsync
 			RaiseEventOnExited()
-			Return Nothing
+			Return Task.FromResult( True )
 		End Function
 
-		Public Function Save() As Object Implements IAppScreenHasSaving.Save
-			Return True
+		Public Overridable Function CanSave() As Task(Of Boolean) Implements IAppScreenHasSaving.CanSave
+			Return Task.FromResult( True )
 		End Function
 
-		Public Async Function SaveAsync() As Task(Of Object) Implements IAppScreenHasSaving.SaveAsync
-			Return  Await Task.FromResult( True )
+		Public Overridable Async Sub Save() Implements IAppScreenHasSaving.Save
+			If Not Await CanSave() Then Return
+			ActualSave()
+		End Sub
+
+		Public Overridable Async Function SaveAsync() As Task Implements IAppScreenHasSaving.SaveAsync
+			If Not Await CanSave() Then Return
+			Await ActualSaveAsync()
+		End Function
+
+		Public Overridable Sub ActualSave() Implements IAppScreenHasSaving.ActualSave
+		End Sub
+
+		Public Overridable Function ActualSaveAsync() As Task Implements IAppScreenHasSaving.ActualSaveAsync
+			Return Task.FromResult( True )
 		End Function
 	End Class
 End Namespace
