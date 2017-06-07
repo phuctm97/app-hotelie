@@ -106,8 +106,8 @@ Namespace Rooms.Models
 		End Sub
 
 		Public Function IsMatch( roomModel As RoomModel,
-		                         allCategories As List(Of RoomCategoryModel),
-		                         allStates As List(Of Integer) ) As Boolean
+		                         allCategories As ICollection(Of RoomCategoryModel),
+		                         allStates As ICollection(Of Integer) ) As Boolean
 			Dim matchNamePrefix As Boolean = String.IsNullOrWhiteSpace( NamePrefix ) OrElse
 			                                 (roomModel.Name.ToLower().Contains( NamePrefix ))
 

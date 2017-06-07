@@ -1,4 +1,4 @@
-﻿Namespace Rooms.Commands.RemoveRoom
+﻿Namespace Rooms.Commands
 	Public Interface IRemoveRoomCommand
 		Function Execute( id As String ) As String
 

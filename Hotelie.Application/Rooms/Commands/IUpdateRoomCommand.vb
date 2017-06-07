@@ -1,4 +1,4 @@
-﻿Namespace Rooms.Commands.UpdateRoom
+﻿Namespace Rooms.Commands
 	Public Interface IUpdateRoomCommand
 		Function Execute( id As String,
 		                  name As String,

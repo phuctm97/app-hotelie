@@ -55,11 +55,7 @@
                         <!--Room category-->
                         <Button DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
                                 Margin="0 0 0 8"
-                                Content="{Binding Path=RoomCategory.Name}">
-                            <Button.Background>
-                                <SolidColorBrush Color="{Binding Path=RoomCategory.DisplayColor}" />
-                            </Button.Background>
-                        </Button>
+                                Content="{Binding Path=Room.Category.Name, Mode=OneWay}" />
 
                         <!--Room price-->
                         <StackPanel Orientation="Horizontal">
@@ -70,7 +66,7 @@
                             <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
                                        FontSize="15"
                                        Opacity="0.9"
-                                       Text="{Binding Path=RoomCategory.UnitPrice, FallbackValue=0, Converter={StaticResource DecimalToCurrencyStringConverter}}" />
+                                       Text="{Binding Path=Room.Category.UnitPrice, Mode=OneWay, Converter={StaticResource DecimalToCurrencyStringConverter}}" />
                         </StackPanel>
                     </StackPanel>
 
@@ -80,7 +76,7 @@
                                FontSize="60"
                                Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                                FontWeight="Light"
-                               Text="{Binding RoomName, Converter={StaticResource RoomNameWhenEmptyConverter}}" />
+                               Text="{Binding Path=Room.Name, Converter={StaticResource RoomNameWhenEmptyConverter}}" />
 
                     <!--Save button-->
                     <Button DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
@@ -105,7 +101,7 @@
                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
                            FontSize="15" Margin="0 0 0 4" />
                     <TextBox materialDesign:HintAssist.Hint="Tên phòng"
-                         Text="{Binding RoomName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Text="{Binding Path=Room.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          FontSize="35" />
                 </StackPanel>
 
@@ -116,9 +112,9 @@
                            FontSize="15" Margin="0 0 0 4" />
                     <ComboBox materialDesign:HintAssist.Hint="Loại phòng"
                           FontSize="20"
-                          ItemsSource="{Binding RoomCategories}"
+                          ItemsSource="{Binding Categories}"
                           DisplayMemberPath="Name"
-                          SelectedItem="{Binding RoomCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                          SelectedItem="{Binding Path=Room.Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
 
                 <!--Room note-->
@@ -133,7 +129,7 @@
                          FontSize="15"
                          Padding="0 0 4 0"
                          Height="Auto"
-                         Text="{Binding RoomNote, Mode=TwoWay}" />
+                         Text="{Binding Path=Room.Note, Mode=TwoWay}" />
                 </StackPanel>
 
                 <!--Room state-->
@@ -142,7 +138,7 @@
                            Foreground="{DynamicResource PrimaryHueDarkBrush}"
                            FontSize="15" Margin="0 0 0 4" />
                     <materialDesign:Chip
-                    Content="{Binding RoomState, Converter={StaticResource RoomStateToStringConverter}}"
+                    Content="{Binding Path=Room.State, Mode=OneWay, Converter={StaticResource RoomStateToStringConverter}}"
                     FontSize="15"
                     IconForeground="White">
                         <materialDesign:Chip.IconBackground>

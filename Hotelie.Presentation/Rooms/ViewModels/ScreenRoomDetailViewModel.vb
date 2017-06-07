@@ -1,6 +1,5 @@
 ﻿Imports Caliburn.Micro
-Imports Hotelie.Application.Rooms.Commands.RemoveRoom
-Imports Hotelie.Application.Rooms.Commands.UpdateRoom
+Imports Hotelie.Application.Rooms.Commands
 Imports Hotelie.Application.Rooms.Models
 Imports Hotelie.Application.Rooms.Queries
 Imports Hotelie.Application.Services.Infrastructure
@@ -246,7 +245,7 @@ Namespace Rooms.ViewModels
 		End Sub
 
 		Public Function CanAddLease() As Boolean
-			If String.IsNullOrWhiteSpace(Room.Id) 
+			If String.IsNullOrWhiteSpace( Room.Id )
 				ShowStaticBottomNotification( StaticNotificationType.Error,
 				                              "Phòng không tồn tại" )
 				Return False
