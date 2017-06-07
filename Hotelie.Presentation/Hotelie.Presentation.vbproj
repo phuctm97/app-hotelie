@@ -126,9 +126,14 @@
       <DependentUpon>Application.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Bills\Models\EditableBillDetailModel.vb" />
     <Compile Include="Bills\ViewModels\BillsWorkspaceViewModel.vb" />
+    <Compile Include="Bills\ViewModels\ScreenAddBillViewModel.vb" />
     <Compile Include="Bills\Views\BillsWorkspaceView.xaml.vb">
       <DependentUpon>BillsWorkspaceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Bills\Views\ScreenAddBillView.xaml.vb">
+      <DependentUpon>ScreenAddBillView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\Controls\LoadingDialog.xaml.vb">
       <DependentUpon>LoadingDialog.xaml</DependentUpon>
@@ -141,6 +146,7 @@
     </Compile>
     <Compile Include="Common\Controls\WindowExtensions.vb" />
     <Compile Include="Common\Converters\BooleanToVisibilityConverter.vb" />
+    <Compile Include="Common\Converters\DateTimeToShortDateStringConverter2.vb" />
     <Compile Include="Common\Converters\DateTimeToShortDateStringConverter.vb" />
     <Compile Include="Common\Converters\DecimalToCurrencyStringConverter.vb" />
     <Compile Include="Common\Converters\StringToUpperConverter.vb" />
@@ -288,6 +294,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Bills\Views\BillsWorkspaceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Bills\Views\ScreenAddBillView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

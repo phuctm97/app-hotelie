@@ -20,9 +20,9 @@ Namespace Rooms.ViewModels
 
 		Public ReadOnly Property ScreenRoomsList As ScreenRoomsListViewModel
 
-		Public Property ScreenRoomDetail As ScreenRoomDetailViewModel
+		Public ReadOnly Property ScreenRoomDetail As ScreenRoomDetailViewModel
 
-		Public Property ScreenAddRoom As ScreenAddRoomViewModel
+		Public ReadOnly Property ScreenAddRoom As ScreenAddRoomViewModel
 
 		Public Property DisplayCode As Integer
 			Get

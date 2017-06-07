@@ -41,7 +41,7 @@ Namespace Leases.ViewModels
 
 		Public ReadOnly Property CheckinDate As Date
 			Get
-				Return Date.Now
+				Return Today
 			End Get
 		End Property
 
@@ -136,14 +136,14 @@ Namespace Leases.ViewModels
 			_maxNumberOfUsers = 4
 			Room = Rooms.FirstOrDefault()
 			NotifyOfPropertyChange( Function() CheckinDate )
-			ExpectedCheckoutDate = Date.Now
+			ExpectedCheckoutDate = Today
 			Details = New BindableCollection(Of EditableLeaseDetailModel)
 		End Sub
 
 		Private Sub ResetValues()
 			Room = Rooms.FirstOrDefault()
 			NotifyOfPropertyChange( Function() CheckinDate )
-			ExpectedCheckoutDate = Date.Now
+			ExpectedCheckoutDate = Today
 			Details.Clear()
 		End Sub
 

@@ -89,6 +89,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bills\Factories\CreateBill\ICreateBillFactory.vb" />
     <Compile Include="Leases\Commands\RemoveLeaseDetail\IRemoveLeaseDetailCommand.vb" />
     <Compile Include="Leases\Commands\RemoveLease\IRemoveLeaseCommand.vb" />
     <Compile Include="Leases\Commands\UpdateLeaseDetail\IUpdateLeaseDetailCommand.vb" />
@@ -105,6 +106,8 @@
     <Compile Include="Leases\Queries\GetLeasesList\IGetLeasesListQuery.vb" />
     <Compile Include="Leases\Queries\GetLeasesList\LeasesListItemDetailModel.vb" />
     <Compile Include="Leases\Queries\GetLeasesList\LeasesListItemModel.vb" />
+    <Compile Include="Leases\Queries\GetSimpleLeasesList\IGetSimpleLeasesListQuery.vb" />
+    <Compile Include="Leases\Queries\GetSimpleLeasesList\SimpleLeasesListItemModel.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

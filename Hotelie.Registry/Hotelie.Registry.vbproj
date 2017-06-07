@@ -121,6 +121,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Tests\Bills\BillRepositoryTest.vb" />
+    <Compile Include="Tests\Bills\Factories\CreateBill\CreateBillFactory.vb" />
     <Compile Include="Tests\Leases\Commands\RemoveLeaseDetail\RemoveLeaseDetailCommand.vb" />
     <Compile Include="Tests\Leases\Commands\RemoveLease\RemoveLeaseCommand.vb" />
     <Compile Include="Tests\Leases\Commands\UpdateLeaseDetail\UpdateLeaseDetailCommand.vb" />
@@ -131,6 +133,7 @@
     <Compile Include="Tests\Leases\Queries\GetCustomerCategoriesList\GetCustomerCategoriesListQuery.vb" />
     <Compile Include="Tests\Leases\Queries\GetLeaseData\GetLeaseDataQuery.vb" />
     <Compile Include="Tests\Leases\Queries\GetLeasesList\GetLeasesListQuery.vb" />
+    <Compile Include="Tests\Leases\Queries\GetSimpleLeasesList\GetSimpleLeasesListQuery.vb" />
     <Compile Include="Tests\Rooms\Commands\RemoveRoom\RemoveRoomCommand.vb" />
     <Compile Include="Tests\Rooms\Commands\UpdateRoom\UpdateRoomCommand.vb" />
     <Compile Include="Tests\Rooms\Factories\CreateRoom\CreateRoomFactory.vb" />

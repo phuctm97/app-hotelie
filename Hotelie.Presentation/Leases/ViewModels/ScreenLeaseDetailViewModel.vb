@@ -95,7 +95,7 @@ Namespace Leases.ViewModels
 
 		Public ReadOnly Property NumberOfUsedDays As Integer
 			Get
-				Return (Date.Now - CheckinDate).TotalDays
+				Return (Today - CheckinDate).TotalDays
 			End Get
 		End Property
 
@@ -204,8 +204,8 @@ Namespace Leases.ViewModels
 			LeaseId = String.Empty
 			Room = Rooms.FirstOrDefault()
 			RoomUnitPrice = 0
-			CheckinDate = Date.Now
-			ExpectedCheckoutDate = Date.Now
+			CheckinDate = Today
+			ExpectedCheckoutDate = Today
 			Details = New BindableCollection(Of EditableLeaseDetailModel)
 
 			_originalcheckinDate = CheckinDate
@@ -219,8 +219,8 @@ Namespace Leases.ViewModels
 			LeaseId = String.Empty
 			RoomUnitPrice = 0
 			Room = Rooms.FirstOrDefault()
-			CheckinDate = Date.Now
-			ExpectedCheckoutDate = Date.Now
+			CheckinDate = Today
+			ExpectedCheckoutDate = Today
 			Details.Clear()
 
 			_originalcheckinDate = CheckinDate

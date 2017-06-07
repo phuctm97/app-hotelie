@@ -62,7 +62,7 @@
                     <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left"
                                VerticalAlignment="Center"
                                Margin="16 0 0 4"
-                               FontSize="36" FontWeight="Light"
+                               FontSize="60" FontWeight="Light"
                                Text="{Binding LeaseId, Converter={StaticResource LeaseIdStringDisplayConverter}}" />
 
                     <!--Delete button-->
@@ -198,14 +198,14 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn
                                 EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}"
-                                Binding="{Binding CustomerLicenseId}">
+                                Binding="{Binding CustomerLicenseId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <DataGridTextColumn.Header>
                                     <TextBlock Text="Số giấy tờ" FontSize="18" FontWeight="Bold" />
                                 </DataGridTextColumn.Header>
                             </DataGridTextColumn>
                             <DataGridTextColumn
                                 EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}"
-                                Binding="{Binding CustomerName}">
+                                Binding="{Binding CustomerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <DataGridTextColumn.Header>
                                     <TextBlock Text="Tên khách hàng" FontSize="18" FontWeight="Bold" />
                                 </DataGridTextColumn.Header>
@@ -214,14 +214,14 @@
                                 ItemsSource="{Binding Source={x:Static viewModels:ScreenLeaseDetailViewModel.CustomerCategories}}"
                                 DisplayMemberPath="Name"
                                 SelectedValuePath="Id"
-                                SelectedItemBinding="{Binding CustomerCategory}">
+                                SelectedItemBinding="{Binding CustomerCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <materialDesign:MaterialDataGridComboBoxColumn.Header>
                                     <TextBlock Text="Loại khách" FontSize="18" FontWeight="Bold" />
                                 </materialDesign:MaterialDataGridComboBoxColumn.Header>
                             </materialDesign:MaterialDataGridComboBoxColumn>
                             <DataGridTextColumn
                                 EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}"
-                                Binding="{Binding CustomerAddress}">
+                                Binding="{Binding CustomerAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <DataGridTextColumn.Header>
                                     <TextBlock Text="Địa chỉ" FontSize="18" FontWeight="Bold" />
                                 </DataGridTextColumn.Header>

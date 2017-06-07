@@ -12,9 +12,9 @@ Namespace Leases.ViewModels
 
 		Public ReadOnly Property ScreenLeasesList As ScreenLeasesListViewModel
 
-		Public Property ScreenLeaseDetail As ScreenLeaseDetailViewModel
+		Public ReadOnly Property ScreenLeaseDetail As ScreenLeaseDetailViewModel
 
-		Public Property ScreenAddLease As ScreenAddLeaseViewModel
+		Public ReadOnly Property ScreenAddLease As ScreenAddLeaseViewModel
 
 		Public Property DisplayCode As Integer
 			Get
