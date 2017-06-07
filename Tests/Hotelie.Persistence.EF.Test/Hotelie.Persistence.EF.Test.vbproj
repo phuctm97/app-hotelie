@@ -107,6 +107,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Rooms\TestRoomCategoryTransaction.vb" />
+    <Compile Include="TestLease.vb" />
     <Compile Include="Users\TestUserCategory.vb" />
     <Compile Include="Users\TestUserTransaction.vb" />
   </ItemGroup>
@@ -132,6 +133,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Hotelie.Application\Hotelie.Application.vbproj">
+      <Project>{448CF32F-1323-4D4E-B28C-1DDED33124D4}</Project>
+      <Name>Hotelie.Application</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Hotelie.Domain\Hotelie.Domain.vbproj">
       <Project>{490cddd6-1d75-43c7-972e-52569504050c}</Project>
       <Name>Hotelie.Domain</Name>

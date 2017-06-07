@@ -78,7 +78,7 @@ Namespace Leases.ViewModels
 			leaseToUpdate.ExpectedCheckoutDate = model.ExpectedCheckoutDate
 			leaseToUpdate.RoomName = model.Room.Name
 			leaseToUpdate.RoomCategoryName = model.Room.Category.Name
-			leaseToUpdate.TotalExpense = 0
+			leaseToUpdate.TotalExpense = model.TotalExpense
 
 			' update and add lease details
 			For Each detailModel As LeaseDetailModel In model.Details

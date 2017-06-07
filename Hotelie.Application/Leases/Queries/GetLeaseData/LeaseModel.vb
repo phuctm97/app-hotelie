@@ -59,5 +59,15 @@ Namespace Leases.Queries.GetLeaseData
             End Get
         End Property
 
+		Public ReadOnly Property TotalExpense As Decimal
+		    Get
+		        Dim numberOfDays = DateTime.Now().Subtract(_entity.CheckinDate).Days()
+                If numberOfDays = 0  Then numberOfDays = 1
+		        Dim unitPrice = _entity.RoomPrice*_entity.ExtraCoefficient*numberOfDays
+		        Dim expense = _entity.RoomPrice*(1 + _entity.CustomerCoefficient)*numberOfDays
+		        Return unitPrice + expense
+		    End Get
+		End Property
+
 	End Class
 End Namespace

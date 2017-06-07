@@ -89,6 +89,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bills\IGetBillsListQuery.vb" />
     <Compile Include="Leases\Commands\RemoveLeaseDetail\IRemoveLeaseDetailCommand.vb" />
     <Compile Include="Leases\Commands\RemoveLeaseDetail\RemoveLeaseDetailCommand.vb" />
     <Compile Include="Leases\Commands\RemoveLease\IRemoveLeaseCommand.vb" />
@@ -151,7 +152,7 @@
     <Compile Include="Rooms\Queries\GetRoomsList\IGetRoomsListQuery.vb" />
     <Compile Include="Rooms\Queries\GetRoomsList\RoomsListItemModel.vb" />
     <Compile Include="Rooms\Queries\GetRoomData\RoomModel.vb" />
-    <Compile Include="Rooms\Queries\GetSimpleRoomsList\GetSimpleRoomListQuery.vb" />
+    <Compile Include="Rooms\Queries\GetSimpleRoomsList\GetSimpleRoomsListQuery.vb" />
     <Compile Include="Rooms\Queries\GetSimpleRoomsList\IGetSimpleRoomsListQuery.vb" />
     <Compile Include="Rooms\Queries\GetSimpleRoomsList\SimpleRoomsListItemModel.vb" />
     <Compile Include="Services\Authentication\Account.vb" />

@@ -103,6 +103,7 @@ Namespace Leases
             Assert.AreEqual(lease.ExpectedCheckoutDate, leaseFound.ExpectedCheckoutDate)
             Assert.AreEqual(lease.ExtraCoefficient, leaseFound.ExtraCoefficient)
             Assert.AreEqual(lease.RoomPrice, leaseFound.RoomPrice)
+            Assert.AreEqual(lease.Room.Id, leaseFound.Room.Id)
             Assert.AreEqual(lease.CustomerCoefficient, leaseFound.CustomerCoefficient)
 
             ' rollback

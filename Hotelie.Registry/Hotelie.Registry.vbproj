@@ -121,27 +121,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Tests\Leases\Commands\RemoveLeaseDetail\RemoveLeaseDetailCommand.vb" />
-    <Compile Include="Tests\Leases\Commands\RemoveLease\RemoveLeaseCommand.vb" />
-    <Compile Include="Tests\Leases\Commands\UpdateLeaseDetail\UpdateLeaseDetailCommand.vb" />
-    <Compile Include="Tests\Leases\Commands\UpdateLease\UpdateLeaseCommand.vb" />
-    <Compile Include="Tests\Leases\Factories\CreateLeaseDetail\CreateLeaseDetailFactory.vb" />
-    <Compile Include="Tests\Leases\Factories\CreateLease\CreateLeaseFactory.vb" />
-    <Compile Include="Tests\Leases\LeaseRepositoryTest.vb" />
-    <Compile Include="Tests\Leases\Queries\GetCustomerCategoriesList\GetCustomerCategoriesListQuery.vb" />
-    <Compile Include="Tests\Leases\Queries\GetLeaseData\GetLeaseDataQuery.vb" />
-    <Compile Include="Tests\Leases\Queries\GetLeasesList\GetLeasesListQuery.vb" />
-    <Compile Include="Tests\Rooms\Commands\RemoveRoom\RemoveRoomCommand.vb" />
-    <Compile Include="Tests\Rooms\Commands\UpdateRoom\UpdateRoomCommand.vb" />
-    <Compile Include="Tests\Rooms\Factories\CreateRoom\CreateRoomFactory.vb" />
-    <Compile Include="Tests\Rooms\Queries\GetRoomCategoriesList\GetRoomCategoriesList.vb" />
-    <Compile Include="Tests\Rooms\Queries\GetRoomCategoryData\GetRoomCategoryDataQuery.vb" />
-    <Compile Include="Tests\Rooms\Queries\GetRoomData\GetRoomDataQuery.vb" />
-    <Compile Include="Tests\Rooms\Queries\GetRoomsList\GetRoomsListQuery.vb" />
-    <Compile Include="Tests\Rooms\Queries\GetSimpleRoomsList\GetSimpleRoomsListQuery.vb" />
-    <Compile Include="Tests\Rooms\RoomRepositoryTest.vb" />
-    <Compile Include="Tests\Services\Authentication\Authentication.vb" />
-    <Compile Include="Tests\Services\Persistence\DatabaseService.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

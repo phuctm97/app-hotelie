@@ -20,6 +20,17 @@ Namespace Common
                     };integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
 
             _context = New DatabaseContext(connectionString)
+            Dim leases = _context.Leases.ToList()
+            Dim leaseDetails = _context.LeaseDetails.ToList()
+            Dim bills = _context.Bills.ToList()
+            Dim billDetails = _context.BillDetails.ToList()
+            Dim parameters = _context.Parameters.ToList()
+            Dim permissions = _context.Permissions.ToList()
+            Dim roomCategories = _context.RoomCategories.ToList()
+            Dim userCategories = _context.UserCategories.ToList()
+            Dim users = _context.Users.ToList()
+            Dim customerCategories = _context.CustomerCategories.ToList()
+            Dim rooms = _context.Rooms.ToList()
         End Sub
 
         Public Function CheckDatabaseConnection(serverName As String, databaseName As String) As Integer _

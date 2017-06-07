@@ -29,7 +29,6 @@ Namespace Leases
             HasRequired(Function(p)p.CustomerCategory).
                 WithMany.Map(Function(l)l.MapKey("CustomerCategoryId"))
 
-
         End Sub
     End Class
 End NameSpace

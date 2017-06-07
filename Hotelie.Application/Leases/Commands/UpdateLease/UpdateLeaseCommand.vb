@@ -21,11 +21,15 @@ Namespace Leases.Commands.UpdateLease
             Implements IUpdateLeaseCommand.Execute
             Try
                 Dim lease = _leaseRepository.GetOne(id)
+                lease.Room.State = 0
                 Dim room = _roomRepository.GetOne(roomId)
                 Dim rules = _parameterRepository.GetRules()
 
-                lease.UpdateRules(rules, room)
-
+                lease.CustomerCoefficient = rules.CustomerCoefficient
+                lease.ExtraCoefficient = rules.ExtraCoefficient
+                lease.RoomPrice = room.Category.Price
+                lease.Room = room
+                lease.Room.State = 1
                 lease.ExpectedCheckoutDate = expectedCheckoutDate
                 _unitOfWork.Commit()
                 Return String.Empty
@@ -38,10 +42,15 @@ Namespace Leases.Commands.UpdateLease
             Implements IUpdateLeaseCommand.ExecuteAsync
             Try
                 Dim lease = Await _leaseRepository.GetOneAsync(id)
+                lease.room.State = 0
                 Dim room = Await _roomRepository.GetOneAsync(roomId)
                 Dim rules = Await _parameterRepository.GetRulesAsync()
 
-                lease.UpdateRules(rules, room)
+                lease.CustomerCoefficient = rules.CustomerCoefficient
+                lease.ExtraCoefficient = rules.ExtraCoefficient
+                lease.RoomPrice = room.Category.Price
+                lease.Room = room
+                room.State = 1
 
                 lease.ExpectedCheckoutDate = expectedCheckoutDate
                 Await _unitOfWork.CommitAsync()

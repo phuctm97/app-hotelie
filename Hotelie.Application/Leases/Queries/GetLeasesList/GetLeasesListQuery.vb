@@ -18,13 +18,21 @@ Namespace Leases.Queries.GetLeasesList
                                                              .CheckinDate = p.CheckinDate,
                                                              .ExpectedCheckoutDate = p.ExpectedCheckoutDate,
                                                              .RoomName = p.Room.Name,
+                                                             .RoomId = p.Room.Id,
                                                              .RoomCategoryName = p.Room.Category.Name,
-                                                             .TotalExpense = p.CalculateExpense}).ToList()
+                                                             .Paid = p.Paid}).ToList()
+
             For Each leasesListItemModel As LeasesListItemModel In leases
                 Dim lease = _leaseRepository.GetOne(leasesListItemModel.Id)
                 For Each leaseDetail As LeaseDetail In lease.LeaseDetails
                     leasesListItemModel.Details.Add(New LeasesListItemDetailModel() With {.CustomerName = leaseDetail.CustomerName,.Id=leaseDetail.Id})
                 Next
+
+                ' calculate total expense
+                Dim numberOfDays = DateTime.Now().Subtract(lease.CheckinDate).Days()
+                Dim unitPrice = lease.RoomPrice*lease.ExtraCoefficient*numberOfDays
+                Dim expense = lease.RoomPrice*(1 + lease.CustomerCoefficient)*numberOfDays
+                leasesListItemModel.TotalExpense = unitPrice + expense
             Next
             Return leases
         End Function
@@ -34,14 +42,21 @@ Namespace Leases.Queries.GetLeasesList
                                                              {.Id = p.Id,
                                                              .CheckinDate = p.CheckinDate,
                                                              .ExpectedCheckoutDate = p.ExpectedCheckoutDate,
+                                                             .RoomId = p.Room.Id,
                                                              .RoomName = p.Room.Name,
                                                              .RoomCategoryName = p.Room.Category.Name,
-                                                             .TotalExpense = p.CalculateExpense}).ToListAsync()
+                                                             .Paid = p.Paid}).ToListAsync()
             For Each leasesListItemModel As LeasesListItemModel In leases
                 Dim lease = Await _leaseRepository.GetOneAsync(leasesListItemModel.Id)
                 For Each leaseDetail As LeaseDetail In lease.LeaseDetails
                     leasesListItemModel.Details.Add(New LeasesListItemDetailModel() With {.CustomerName = leaseDetail.CustomerName})
                 Next
+                ' calculate total expense
+                Dim numberOfDays = DateTime.Now().Subtract(lease.CheckinDate).Days()
+                Dim unitPrice = lease.RoomPrice*lease.ExtraCoefficient*numberOfDays
+                Dim expense = lease.RoomPrice*(1 + lease.CustomerCoefficient)*numberOfDays
+
+                leasesListItemModel.TotalExpense = unitPrice + expense
             Next
             Return leases
         End Function

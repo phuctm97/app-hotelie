@@ -34,12 +34,11 @@ Namespace Leases
                 IsOptional()
 
             HasMany(Function(p)p.LeaseDetails).
-                WithOptional.Map(Function(l)l.MapKey("LeaseId"))
+                WithRequired.Map(Function(l)l.MapKey("LeaseId"))
 
             [Property](Function(p)p.Paid).
                 IsRequired()
 
         End Sub
-
     End Class
 End NameSpace

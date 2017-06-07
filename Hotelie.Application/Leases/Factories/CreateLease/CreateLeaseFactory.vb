@@ -50,11 +50,15 @@ Namespace Leases.Factories.CreateLease
                 Dim rules = _paramaterRepository.GetRules()
                 Dim newLease = New Lease() _
                         With {.Id = newId, .CheckinDate = checkinDate, .ExpectedCheckoutDate =expectedCheckoutDate}
-                newLease.UpdateRules(rules, room)
+                newLease.CustomerCoefficient = rules.CustomerCoefficient
+                newLease.ExtraCoefficient = rules.ExtraCoefficient
+                newLease.RoomPrice = room.Category.Price
 
                 ' add lease details of lease
                 newLease.LeaseDetails = New List(Of LeaseDetail)
                 newLease.Room = room
+                room.State = 1
+                newLease.Paid = 0
 
 
                 ' get new lease detail list id
@@ -143,12 +147,15 @@ Namespace Leases.Factories.CreateLease
                 Dim rules = Await _paramaterRepository.GetRulesAsync()
                 Dim newLease = New Lease() _
                         With {.Id = newId, .CheckinDate = checkinDate, .ExpectedCheckoutDate =expectedCheckoutDate}
-                newLease.UpdateRules(rules, room)
+                newLease.CustomerCoefficient = rules.CustomerCoefficient
+                newLease.ExtraCoefficient = rules.ExtraCoefficient
+                newLease.RoomPrice = room.Category.Price
 
                 ' add lease details of lease
                 newLease.LeaseDetails = New List(Of LeaseDetail)
                 newLease.Room = room
-
+                room.State =1
+                newLease.Paid = 0
 
                 ' get new lease detail list id
 
