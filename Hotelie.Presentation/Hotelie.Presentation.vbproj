@@ -139,6 +139,8 @@
     <Compile Include="Bills\Views\ScreenBillsListView.xaml.vb">
       <DependentUpon>ScreenBillsListView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\AppScreen.vb" />
+    <Compile Include="Common\AppScreenHasSaving.vb" />
     <Compile Include="Common\Controls\LoadingDialog.xaml.vb">
       <DependentUpon>LoadingDialog.xaml</DependentUpon>
     </Compile>
@@ -153,7 +155,11 @@
     <Compile Include="Common\Converters\DateTimeToShortDateStringConverter2.vb" />
     <Compile Include="Common\Converters\DateTimeToShortDateStringConverter.vb" />
     <Compile Include="Common\Converters\DecimalToCurrencyStringConverter.vb" />
+    <Compile Include="Common\Converters\DecimalToStringConverter.vb" />
+    <Compile Include="Common\Converters\DoubleToStringConverter.vb" />
     <Compile Include="Common\Converters\StringToUpperConverter.vb" />
+    <Compile Include="Common\IAppScreen.vb" />
+    <Compile Include="Common\IAppScreenHasSaving.vb" />
     <Compile Include="Common\IMainWindow.vb" />
     <Compile Include="Common\Infrastructure\ILeasesListPresenter.vb" />
     <Compile Include="Common\Infrastructure\Inventory.vb" />
@@ -201,7 +207,10 @@
     <Compile Include="Rooms\Views\RoomsWorkspaceView.xaml.vb">
       <DependentUpon>RoomsWorkspaceView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Rules\Views\ScreenChangeRulesViewModel.vb" />
+    <Compile Include="Rules\Models\CustomerCategoryModel.vb" />
+    <Compile Include="Rules\Models\RoomCategoryModel.vb" />
+    <Compile Include="Rules\Models\RuleModel.vb" />
+    <Compile Include="Rules\ViewModel\ScreenChangeRulesViewModel.vb" />
     <Compile Include="Rules\Views\ScreenChangeRulesView.xaml.vb">
       <DependentUpon>ScreenChangeRulesView.xaml</DependentUpon>
     </Compile>
@@ -408,7 +417,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Reports\" />
-    <Folder Include="Rules\ViewModel\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

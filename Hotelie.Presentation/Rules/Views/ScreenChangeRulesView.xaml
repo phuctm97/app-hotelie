@@ -14,6 +14,8 @@
     <!--Resources-->
     <UserControl.Resources>
         <ResourceDictionary>
+            <commonConverters:StringToUpperConverter x:Key="StringToUpperConverter" />
+            <commonConverters:DoubleToStringConverter x:Key="DoubleToStringConverter" />
             <commonConverters:DecimalToCurrencyStringConverter x:Key="DecimalToCurrencyStringConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
@@ -43,18 +45,19 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Margin="16 24 0 0" Style="{DynamicResource MaterialDesignToolButton}"
-                        cal:Message.Attach="PreviewExitAsync">
+                        cal:Message.Attach="ExitAsync">
                     <materialDesign:PackIcon Width="24" Height="24"
                                              Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                                              Kind="Close" />
                 </Button>
 
-                <!--Content-->
+                <!--Title and save-->
                 <DockPanel Grid.Row="0" Grid.Column="1" Margin="0 24 0 8">
+                    <!--Title-->
                     <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left"
                                VerticalAlignment="Center"
                                FontSize="36" FontWeight="Light"
-                               Text="THAY ĐỔI QUY ĐỊNH" />
+                               Text="{Binding DisplayName, Converter={StaticResource StringToUpperConverter}}" />
 
                     <!--Save button-->
                     <Button DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
@@ -63,7 +66,8 @@
                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                             FontSize="18"
                             Content="LƯU"
-                            cal:Message.Attach="PreviewSaveAsync" />
+                            ToolTip="Thoát"
+                            cal:Message.Attach="SaveAsync" />
                 </DockPanel>
 
                 <!--Content-->
@@ -77,28 +81,36 @@
                         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
                                    FontSize="15"
                                    Opacity="0.9"
-                                   Text="USERNAME" />
+                                   Text="{Binding Username, Converter={StaticResource StringToUpperConverter}}" />
                     </StackPanel>
                 </DockPanel>
             </Grid>
         </materialDesign:ColorZone>
 
+        <!--Main content-->
         <ScrollViewer Grid.Row="1" Margin="4 0 4 0" HorizontalScrollBarVisibility="Disabled"
                       VerticalScrollBarVisibility="Auto">
             <StackPanel>
+                <!--Rule 1-->
                 <StackPanel Orientation="Horizontal" Margin="16 24 16 0">
                     <TextBlock Text="Mỗi phòng cho phép có tối đa" IsEnabled="False"
                                VerticalAlignment="Center"
                                Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                FontSize="20" Margin="0 0 0 4" />
+                    <!--main-->
                     <TextBox Margin="8 0 8 4" HorizontalAlignment="Left"
-                             Text="25" FontWeight="Medium"
-                             FontSize="28" />
+                             Text="{Binding Path=Rule.RoomCapacity, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" FontWeight="Medium"
+                             FontSize="28"
+                             PreviewTextInput="OnNumericTextboxPreviewTextInput"
+                             LostFocus="OnNumericTextBoxLostFocus" />
+
                     <TextBlock Text="khách hàng." IsEnabled="False"
                                VerticalAlignment="Center"
                                Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                FontSize="20" Margin="0 0 0 4" />
                 </StackPanel>
+
+                <!--Rule 2-->
                 <StackPanel Orientation="Horizontal" Margin="16 24 16 0">
                     <TextBlock Text="Khi có nhiều hơn" IsEnabled="False"
                                VerticalAlignment="Center"
@@ -112,53 +124,70 @@
                                VerticalAlignment="Center"
                                Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                FontSize="20" Margin="0 0 0 4" />
+
+                    <!--main-->
                     <TextBox Margin="8 0 8 4" HorizontalAlignment="Left"
-                             Text="25" FontWeight="Medium"
-                             FontSize="28" />
+                             Text="{Binding Path=Rule.ExtraCoefficient, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" FontWeight="Medium"
+                             FontSize="28" PreviewTextInput="OnNumericTextboxPreviewTextInput"
+                             LostFocus="OnNumericTextBoxLostFocus" />
+
                     <TextBlock Text="%." IsEnabled="False"
                                VerticalAlignment="Center"
                                Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                FontSize="20" Margin="0 0 0 4" />
                 </StackPanel>
+
+                <!--Rule 3 & 4-->
                 <StackPanel Margin="16 24 16 0" Orientation="Horizontal">
-                    
+
+                    <!--Room categories list-->
                     <StackPanel Margin="0 0 32 0">
+
+                        <!--title-->
                         <StackPanel Orientation="Horizontal" Margin="0 0 0 4">
                             <TextBlock Text="Danh sách loại phòng" IsEnabled="False"
                                        Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                        FontSize="20" VerticalAlignment="Center" />
                             <Button Style="{DynamicResource MaterialDesignFloatingActionButton}" Width="32" Height="32"
                                     Margin="8 0 0 0"
-                                    cal:Message.Attach="AddEmptyDetail">
+                                    cal:Message.Attach="AddEmptyRoomCategory">
                                 <materialDesign:PackIcon Kind="Plus" />
                             </Button>
                         </StackPanel>
-                        <DataGrid Width="450" HorizontalAlignment="Left"
+
+                        <!--table-->
+                        <DataGrid ItemsSource="{Binding Path=Rule.RoomCategories}"
+                                  Width="450" HorizontalAlignment="Left"
                                   CanUserSortColumns="True"
                                   CanUserAddRows="True"
                                   CanUserDeleteRows="True"
-                                  CanUserResizeColumns="True" AutoGenerateColumns="False"
+                                  CanUserResizeColumns="True"
+                                  AutoGenerateColumns="False"
                                   materialDesign:DataGridAssist.CellPadding="13 8 8 8"
                                   materialDesign:DataGridAssist.ColumnHeaderPadding="8"
-                                  ItemsSource="{Binding Details}"
                                   FontSize="20">
                             <DataGrid.Columns>
-                                <DataGridTextColumn
+                                <DataGridTextColumn Width="250"
+                                    Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                     EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}">
                                     <DataGridTextColumn.Header>
                                         <TextBlock Text="Loại phòng" FontSize="20" FontWeight="Bold" />
                                     </DataGridTextColumn.Header>
                                 </DataGridTextColumn>
-                                <DataGridTextColumn
+
+                                <DataGridTextColumn Width="150"
+                                    Binding="{Binding UnitPrice, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource DecimalToCurrencyStringConverter}}"
                                     EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}">
                                     <DataGridTextColumn.Header>
                                         <TextBlock Text="Đơn giá" FontSize="20" FontWeight="Bold" />
                                     </DataGridTextColumn.Header>
                                 </DataGridTextColumn>
+
                                 <DataGridTemplateColumn>
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Button Command="Delete" Style="{DynamicResource MaterialDesignToolButton}">
+                                            <Button VerticalAlignment="Center" HorizontalAlignment="Right" 
+                                                    Command="Delete" Style="{DynamicResource MaterialDesignToolButton}">
                                                 <materialDesign:PackIcon Kind="Close" />
                                             </Button>
                                         </DataTemplate>
@@ -168,43 +197,53 @@
                         </DataGrid>
                     </StackPanel>
 
+                    <!--Customer categories list-->
                     <StackPanel>
+                        <!--title-->
                         <StackPanel Orientation="Horizontal" Margin="0 0 0 4">
                             <TextBlock Text="Danh sách loại khách" IsEnabled="False"
                                        Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                        FontSize="20" VerticalAlignment="Center" />
                             <Button Style="{DynamicResource MaterialDesignFloatingActionButton}" Width="32" Height="32"
                                     Margin="8 0 0 0"
-                                    cal:Message.Attach="AddEmptyDetail">
+                                    cal:Message.Attach="AddEmptyCustomerCategory">
                                 <materialDesign:PackIcon Kind="Plus" />
                             </Button>
                         </StackPanel>
-                        <DataGrid Width="450" HorizontalAlignment="Left"
+
+                        <!--table-->
+                        <DataGrid ItemsSource="{Binding Path=Rule.CustomerCategories}"
+                                  Width="450" HorizontalAlignment="Left"
                                   CanUserSortColumns="True"
                                   CanUserAddRows="True"
                                   CanUserDeleteRows="True"
-                                  CanUserResizeColumns="True" AutoGenerateColumns="False"
+                                  CanUserResizeColumns="True"
+                                  AutoGenerateColumns="False"
                                   materialDesign:DataGridAssist.CellPadding="13 8 8 8"
                                   materialDesign:DataGridAssist.ColumnHeaderPadding="8"
-                                  ItemsSource="{Binding Details}"
                                   FontSize="20">
                             <DataGrid.Columns>
-                                <DataGridTextColumn
+                                <DataGridTextColumn Width="250"
+                                    Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                     EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}">
                                     <DataGridTextColumn.Header>
                                         <TextBlock Text="Loại khách" FontSize="20" FontWeight="Bold" />
                                     </DataGridTextColumn.Header>
                                 </DataGridTextColumn>
-                                <DataGridTextColumn
+                                
+                                <DataGridTextColumn Width="150"
+                                    Binding="{Binding Coefficient, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource DoubleToStringConverter}}"
                                     EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}">
                                     <DataGridTextColumn.Header>
                                         <TextBlock Text="Hệ số" FontSize="20" FontWeight="Bold" />
                                     </DataGridTextColumn.Header>
                                 </DataGridTextColumn>
+                                
                                 <DataGridTemplateColumn>
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Button Command="Delete" Style="{DynamicResource MaterialDesignToolButton}">
+                                            <Button VerticalAlignment="Center" HorizontalAlignment="Right" 
+                                                    Command="Delete" Style="{DynamicResource MaterialDesignToolButton}">
                                                 <materialDesign:PackIcon Kind="Close" />
                                             </Button>
                                         </DataTemplate>

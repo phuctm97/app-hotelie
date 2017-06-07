@@ -1,10 +1,10 @@
-﻿Imports Caliburn.Micro
-Imports Hotelie.Application.Services.Infrastructure
+﻿Imports Hotelie.Application.Services.Infrastructure
+Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
 
 Namespace Leases.ViewModels
 	Public Class LeasesWorkspaceViewModel
-		Inherits Screen
+		Inherits AppScreen
 		Implements INeedWindowModals
 
 		' Dependencies
@@ -46,6 +46,8 @@ Namespace Leases.ViewModels
 		                inventory As IInventory,
 		                createLeaseFactory As _
 			              Hotelie.Application.Leases.Factories.CreateLease.ICreateLeaseFactory )
+			MyBase.New( MaterialDesignThemes.Wpf.ColorZoneMode.PrimaryDark )
+
 			ScreenLeasesList = New ScreenLeasesListViewModel( getLeasesListQuery )
 
 			ScreenLeaseDetail = New ScreenLeaseDetailViewModel( Me,

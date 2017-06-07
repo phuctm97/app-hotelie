@@ -35,19 +35,33 @@ Namespace Start.WorkspaceShell.ViewModels
 		Public Sub New( authentication As IAuthentication )
 			_authentication = authentication
 
+			DisplayName = "Bàn làm việc"
+
+			' load command bar
 			CommandsBar = New WorkspaceShellCommandsBarViewModel( Me )
 
-			DisplayName = "Bàn làm việc"
+			' load workspace
 			WorkspaceRooms = IoC.Get(Of RoomsWorkspaceViewModel)
 			WorkspaceLeases = IoC.Get(Of LeasesWorkspaceViewModel)
 			WorkspaceBills = IoC.Get(Of BillsWorkspaceViewModel)
-			Workspaces = New BindableCollection(Of IScreen) From {WorkspaceRooms, WorkspaceLeases, WorkspaceBills}
+			Workspaces = New BindableCollection(Of IAppScreen) From {WorkspaceRooms, WorkspaceLeases, WorkspaceBills}
 
+			' load other screens
 			ScreenChangeRules = IoC.Get(Of ScreenChangeRulesViewModel)
+			Screens = New BindableCollection(Of IAppScreen) From {
+				WorkspaceRooms, WorkspaceLeases, WorkspaceBills,
+				ScreenChangeRules}
+
+			' subcribe exited event
+			For Each screen As IAppScreen In Screens
+				AddHandler screen.OnExited, AddressOf OnScreenExited
+			Next
+
+			' initial screen
 			DisplayWorkspaceCode = 0
 		End Sub
 
-		' Display properties
+		' Display
 		Public ReadOnly Property CommandsBar As IWindowCommandsBar Implements IShell.CommandsBar
 
 		Public ReadOnly Property WorkspaceRooms As RoomsWorkspaceViewModel
@@ -58,7 +72,9 @@ Namespace Start.WorkspaceShell.ViewModels
 
 		Public ReadOnly Property ScreenChangeRules As ScreenChangeRulesViewModel
 
-		Public ReadOnly Property Workspaces As IObservableCollection(Of IScreen)
+		Public ReadOnly Property Workspaces As IObservableCollection(Of IAppScreen)
+
+		Public ReadOnly Property Screens As IObservableCollection(Of IAppScreen)
 
 		Public Property DisplayWorkspaceCode As Integer
 			Get
@@ -78,16 +94,34 @@ Namespace Start.WorkspaceShell.ViewModels
 			End Get
 			Set
 				If Equals( Value, _displayCode ) Then Return
+				If Value < 0 OrElse Value >= Screens.Count Then Return
 				_displayCode = value
-				NotifyOfPropertyChange( Function() DisplayCode )
-
-				If DisplayCode = 3
-					ParentWindow.TitleMode = ColorZoneMode.Accent
-				Else
-					ParentWindow.TitleMode = ColorZoneMode.PrimaryDark
-				End If
+				UpdateScreenAsync()
 			End Set
 		End Property
+
+		' Navigation
+		Private Sub UpdateScreen()
+			Dim screen = Screens( DisplayCode )
+
+			screen.Show()
+			NotifyOfPropertyChange( Function() DisplayCode )
+			ParentWindow.TitleMode = screen.ColorMode
+		End Sub
+
+		Private Async Sub UpdateScreenAsync()
+			Dim screen = Screens( DisplayCode )
+			Await screen.ShowAsync()
+			NotifyOfPropertyChange( Function() DisplayCode )
+			ParentWindow.TitleMode = screen.ColorMode
+		End Sub
+
+		Private Sub OnScreenExited( sender As Object,
+		                            e As EventArgs )
+			If Not Workspaces.Contains( CType(sender, IAppScreen) )
+				DisplayCode	= DisplayWorkspaceCode
+			End If
+		End Sub
 
 		Public Sub NavigateToScreenAddLease( roomId As String )
 			DisplayWorkspaceCode = 1

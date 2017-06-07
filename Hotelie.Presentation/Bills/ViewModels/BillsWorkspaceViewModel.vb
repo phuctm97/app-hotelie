@@ -1,13 +1,13 @@
-﻿Imports Caliburn.Micro
-Imports Hotelie.Application.Bills.Factories.CreateBill
+﻿Imports Hotelie.Application.Bills.Factories.CreateBill
 Imports Hotelie.Application.Leases.Queries.GetSimpleLeasesList
 Imports Hotelie.Application.Rooms.Queries.GetSimpleRoomsList
 Imports Hotelie.Application.Services.Infrastructure
+Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
 
 Namespace Bills.ViewModels
 	Public Class BillsWorkspaceViewModel
-		Inherits Screen
+		Inherits AppScreen
 		Implements INeedWindowModals
 
 		Private _displayCode As Integer
@@ -31,6 +31,8 @@ Namespace Bills.ViewModels
 		                getSimpleRoomsListQuery As IGetSimpleRoomsListQuery,
 		                getSimpleLeasesListQuery As IGetSimpleLeasesListQuery,
 		                createBillFactory As ICreateBillFactory )
+			MyBase.New( MaterialDesignThemes.Wpf.ColorZoneMode.PrimaryDark )
+
 			DisplayName = "Thanh toán"
 
 			ScreenBillsList = New ScreenBillsListVIewModel()
