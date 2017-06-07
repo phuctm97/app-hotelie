@@ -128,6 +128,10 @@
     <Compile Include="Rooms\Commands\RemoveRoom\IRemoveRoomCommand.vb" />
     <Compile Include="Rooms\Commands\UpdateRoom\IUpdateRoomCommand.vb" />
     <Compile Include="Rooms\Factories\CreateRoom\ICreateRoomFactory.vb" />
+    <Compile Include="Rooms\Models\RoomCategoryModel.vb" />
+    <Compile Include="Rooms\Models\RoomModel.vb" />
+    <Compile Include="Rooms\Queries\IGetAllRoomCategoriesQuery.vb" />
+    <Compile Include="Rooms\Queries\IGetAllRoomsQuery.vb" />
     <Compile Include="Rooms\Queries\GetRoomCategoriesList\IGetRoomCategoriesListQuery.vb" />
     <Compile Include="Rooms\Queries\GetRoomCategoriesList\RoomCategoriesListItemModel.vb" />
     <Compile Include="Rooms\Queries\GetRoomCategoryData\IGetRoomCategoryDataQuery.vb" />
@@ -139,6 +143,8 @@
     <Compile Include="Rooms\Queries\GetSimpleRoomsList\GetSimpleRoomListQuery.vb" />
     <Compile Include="Rooms\Queries\GetSimpleRoomsList\IGetSimpleRoomsListQuery.vb" />
     <Compile Include="Rooms\Queries\GetSimpleRoomsList\SimpleRoomsListItemModel.vb" />
+    <Compile Include="Rooms\Queries\IGetRoomCategoryQuery.vb" />
+    <Compile Include="Rooms\Queries\IGetRoomQuery.vb" />
     <Compile Include="Services\Authentication\Account.vb" />
     <Compile Include="Services\Authentication\Authentication.vb" />
     <Compile Include="Services\Authentication\IAuthentication.vb" />

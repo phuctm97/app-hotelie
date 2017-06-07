@@ -129,6 +129,7 @@
     <Compile Include="AppScreenHasSavingAndDeleting.vb" />
     <Compile Include="Bills\Converters\LeaseDetailsToCustomerNamesStringConverters.vb" />
     <Compile Include="Bills\Models\EditableBillDetailModel.vb" />
+    <Compile Include="Bills\Models\EditableBillModel.vb" />
     <Compile Include="Bills\ViewModels\BillsWorkspaceViewModel.vb" />
     <Compile Include="Bills\ViewModels\ScreenAddBillViewModel.vb" />
     <Compile Include="Bills\ViewModels\ScreenBillsListViewModel.vb" />
