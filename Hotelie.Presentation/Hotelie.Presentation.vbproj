@@ -195,6 +195,11 @@
     <Compile Include="Rooms\Converters\RoomStateToIconKindConverter.vb" />
     <Compile Include="Rooms\Converters\RoomStateToStringConverter.vb" />
     <Compile Include="Rooms\Converters\RoomStateToVisibiltyConverter.vb" />
+    <Compile Include="Rooms\Models\FakeRoomCategoryModel.vb" />
+    <Compile Include="Rooms\Models\FilterableRoomModel.vb" />
+    <Compile Include="Rooms\Models\FilterRoomModel.vb" />
+    <Compile Include="Rooms\Models\SortRoomModel.vb" />
+    <Compile Include="Rooms\ViewModels\EditableRoomModel.vb" />
     <Compile Include="Rooms\ViewModels\ScreenAddRoomViewModel.vb" />
     <Compile Include="Rooms\ViewModels\ScreenRoomDetailViewModel.vb" />
     <Compile Include="Rooms\ViewModels\ScreenRoomsListViewModel.vb" />

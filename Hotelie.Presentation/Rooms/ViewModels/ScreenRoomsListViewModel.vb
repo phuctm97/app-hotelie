@@ -16,11 +16,11 @@ Namespace Rooms.ViewModels
 		' Backing fields
 		Private _rooms As IObservableCollection(Of FilterableRoomModel)
 		Private _filterRoomModel As FilterRoomModel
+		Private _sortRoomModel As SortRoomModel
 
 		' Dependencies
 		Private ReadOnly _getAllRoomsQuery As IGetAllRoomsQuery
 		Private ReadOnly _getAllRoomCategoriesQuery As IGetAllRoomCategoriesQuery
-		Private _sortRoomModel As SortRoomModel
 
 		' Parent
 		Public Property Parent As Object Implements IChild.Parent
@@ -263,7 +263,11 @@ Namespace Rooms.ViewModels
 			Implements IRoomsListPresenter.OnRoomUpdated
 			' find room
 			Dim room = Rooms.FirstOrDefault( Function( r ) r.Model.Id = model.Id )
-			If room Is Nothing Then Throw New DuplicateWaitObjectException()
+			If room Is Nothing
+				ShowStaticBottomNotification(Start.MainWindow.Models.StaticNotificationType.Warning,
+																		 $"Không tìm thấy phòng {model.Name} trong danh sách phòng để cập nhật")
+				Return
+			End If
 
 			' update
 			room.Model = model

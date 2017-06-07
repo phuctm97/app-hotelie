@@ -39,7 +39,7 @@ Namespace Rooms.ViewModels
 		' Parent
 		Public Property Parent As Object Implements IChild.Parent
 
-		Private Property ParentShell As WorkspaceShellViewModel Implements IChild(Of WorkspaceShellViewModel).Parent
+		Public Property ParentShell As WorkspaceShellViewModel Implements IChild(Of WorkspaceShellViewModel).Parent
 			Get
 				Return CType(Parent, WorkspaceShellViewModel)
 			End Get
@@ -51,7 +51,7 @@ Namespace Rooms.ViewModels
 		' Initializations
 		Public Sub New( getAllRoomsQuery As IGetAllRoomsQuery,
 		                getAllRoomCategoriesQuery As IGetAllRoomCategoriesQuery,
-		                getRoomDataQuery As IGetRoomDataQuery,
+										getRoomQuery As IGetRoomQuery,
 		                createRoomFactory As ICreateRoomFactory,
 		                updateRoomCommand As IUpdateRoomCommand,
 		                removeRoomCommand As IRemoveRoomCommand,
@@ -62,8 +62,8 @@ Namespace Rooms.ViewModels
 			                                                getAllRoomsQuery,
 			                                                getAllRoomCategoriesQuery )
 			ScreenRoomDetail = New ScreenRoomDetailViewModel( Me,
-			                                                  getRoomDataQuery,
 			                                                  getAllRoomCategoriesQuery,
+																												getRoomQuery,
 			                                                  updateRoomCommand,
 			                                                  removeRoomCommand,
 			                                                  inventory )
@@ -71,7 +71,6 @@ Namespace Rooms.ViewModels
 			                                            getAllRoomCategoriesQuery,
 			                                            createRoomFactory,
 			                                            inventory )
-
 			DisplayName = "Danh sách phòng"
 
 			DisplayCode = - 1
@@ -89,13 +88,6 @@ Namespace Rooms.ViewModels
 			ScreenAddRoom.Init()
 			DisplayCode = 0
 		End Sub
-
-		Private Async Function InitAsync() As Task
-			Await ScreenRoomsList.InitAsync()
-			Await ScreenRoomDetail.InitAsync()
-			Await ScreenAddRoom.InitAsync()
-			DisplayCode = 0
-		End Function
 
 		' Navigations
 		Public Sub NavigateToScreenRoomsList()
