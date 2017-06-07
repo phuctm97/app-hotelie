@@ -1,4 +1,4 @@
-﻿Namespace Leases.Commands.UpdateLease
+﻿Namespace Leases.Commands
 	Public Interface IUpdateLeaseCommand
 		Function Execute( id As String,
 		                  roomId As String,

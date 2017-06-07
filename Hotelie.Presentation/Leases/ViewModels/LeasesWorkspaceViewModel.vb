@@ -1,4 +1,7 @@
-﻿Imports Hotelie.Application.Leases.Queries
+﻿Imports Hotelie.Application.Leases.Commands
+Imports Hotelie.Application.Leases.Factories
+Imports Hotelie.Application.Leases.Queries
+Imports Hotelie.Application.Rooms.Queries
 Imports Hotelie.Application.Services.Infrastructure
 Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
@@ -31,32 +34,23 @@ Namespace Leases.ViewModels
 
 		' Initializations
 		Public Sub New( getAllLeasesQuery As IGetAllLeasesQuery,
-		                getLeaseDataQuery As Hotelie.Application.Leases.Queries.GetLeaseData.IGetLeaseDataQuery,
-		                getSimpleRoomsListQuery As _
-			              Hotelie.Application.Rooms.Queries.GetSimpleRoomsList.IGetSimpleRoomsListQuery,
-		                getCustomerCategoriesListQuery As _
-			              Hotelie.Application.Leases.Queries.GetCustomerCategoriesList.IGetCustomerCategoriesListQuery,
-		                updateLeaseCommand As _
-			              Hotelie.Application.Leases.Commands.UpdateLease.IUpdateLeaseCommand,
-		                removeLeaseCommand As _
-			              Hotelie.Application.Leases.Commands.RemoveLease.IRemoveLeaseCommand,
-		                updateLeaseDetailCommand As _
-			              Hotelie.Application.Leases.Commands.UpdateLeaseDetail.IUpdateLeaseDetailCommand,
-		                removeLeaseDetailCommand As _
-			              Hotelie.Application.Leases.Commands.RemoveLeaseDetail.IRemoveLeaseDetailCommand,
-		                createLeaseDetailFactory As _
-			              Hotelie.Application.Leases.Factories.CreateLeaseDetail.ICreateLeaseDetailFactory,
-		                inventory As IInventory,
-		                createLeaseFactory As _
-			              Hotelie.Application.Leases.Factories.CreateLease.ICreateLeaseFactory )
+		                getLeaseQuery As IGetLeaseQuery,
+		                getAllRoomsQuery As IGetAllRoomsQuery,
+		                getAllCustomerCategoriesQuery As IGetAllCustomerCategoriesQuery,
+		                updateLeaseCommand As IUpdateLeaseCommand,
+		                removeLeaseCommand As IRemoveLeaseCommand,
+		                updateLeaseDetailCommand As IUpdateLeaseDetailCommand,
+		                removeLeaseDetailCommand As IRemoveLeaseDetailCommand,
+		                createLeaseDetailFactory As ICreateLeaseDetailFactory,
+		                inventory As IInventory )
 			MyBase.New( MaterialDesignThemes.Wpf.ColorZoneMode.PrimaryDark )
 
 			ScreenLeasesList = New ScreenLeasesListViewModel( getAllLeasesQuery )
 
 			ScreenLeaseDetail = New ScreenLeaseDetailViewModel( Me,
-			                                                    getLeaseDataQuery,
-			                                                    getSimpleRoomsListQuery,
-			                                                    getCustomerCategoriesListQuery,
+			                                                    getLeaseQuery,
+			                                                    getAllRoomsQuery,
+			                                                    getAllCustomerCategoriesQuery,
 			                                                    updateLeaseCommand,
 			                                                    removeLeaseCommand,
 			                                                    updateLeaseDetailCommand,
@@ -100,7 +94,7 @@ Namespace Leases.ViewModels
 		End Sub
 
 		Public Async Sub NavigateToScreenLeaseDetail( id As String )
-			If String.IsNullOrWhiteSpace(id) Then Return
+			If String.IsNullOrWhiteSpace( id ) Then Return
 
 			Await ScreenLeaseDetail.SetLeaseAsync( id )
 			DisplayCode = 1

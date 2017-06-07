@@ -1,4 +1,4 @@
-﻿Namespace Leases.Factories.CreateLease
+﻿Namespace Leases.Factories
 	Public Class CreateLeaseDetailModel
 		Public Property CustomerName As String
 

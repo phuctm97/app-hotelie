@@ -1,15 +1,12 @@
 ﻿Imports System.Collections.Specialized
+Imports System.ComponentModel
 Imports Caliburn.Micro
-Imports Hotelie.Application.Leases.Commands.RemoveLease
-Imports Hotelie.Application.Leases.Commands.RemoveLeaseDetail
-Imports Hotelie.Application.Leases.Commands.UpdateLease
-Imports Hotelie.Application.Leases.Commands.UpdateLeaseDetail
-Imports Hotelie.Application.Leases.Factories.CreateLeaseDetail
-Imports Hotelie.Application.Leases.Queries.GetCustomerCategoriesList
-Imports Hotelie.Application.Leases.Queries.GetLeaseData
-Imports Hotelie.Application.Leases.Queries.GetLeaseDetailData
-Imports Hotelie.Application.Rooms.Queries.GetRoomData
-Imports Hotelie.Application.Rooms.Queries.GetSimpleRoomsList
+Imports Hotelie.Application.Leases.Commands
+Imports Hotelie.Application.Leases.Factories
+Imports Hotelie.Application.Leases.Models
+Imports Hotelie.Application.Leases.Queries
+Imports Hotelie.Application.Rooms.Models
+Imports Hotelie.Application.Rooms.Queries
 Imports Hotelie.Application.Services.Infrastructure
 Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
@@ -25,28 +22,24 @@ Namespace Leases.ViewModels
 		Implements IRoomsListPresenter
 
 		' Dependencies
-		Private ReadOnly _getLeaseDataQuery As IGetLeaseDataQuery
-		Private ReadOnly _getSimpleRoomsListQuery As IGetSimpleRoomsListQuery
-		Private ReadOnly _getCustomerCategoriesListQuery As IGetCustomerCategoriesListQuery
+		Private ReadOnly _getLeaseQuery As IGetLeaseQuery
+		Private ReadOnly _getAllRoomsQuery As IGetAllRoomsQuery
+		Private ReadOnly _getAllCustomerCategoriesQuery As IGetAllRoomCategoriesQuery
 		Private ReadOnly _updateLeaseCommand As IUpdateLeaseCommand
-		Private ReadOnly _removeLeaseCommmand As IRemoveLeaseCommand
+		Private ReadOnly _removeLeaseCommand As IRemoveLeaseCommand
 		Private ReadOnly _updateLeaseDetailCommand As IUpdateLeaseDetailCommand
 		Private ReadOnly _removeLeaseDetailCommand As IRemoveLeaseDetailCommand
 		Private ReadOnly _createLeaseDetailFactory As ICreateLeaseDetailFactory
 		Private ReadOnly _inventory As IInventory
 
 		' Backing fields
-		Private _leaseId As String
-		Private _roomUnitPrice As Decimal
-		Private _checkinDate As Date
-		Private _room As SimpleRoomsListItemModel
-		Private _expectedCheckoutDate As Date
-
 		Private _originalroomUnitPrice As Decimal
 		Private _originalcheckinDate As Date
 		Private _originalroomId As String
 		Private _originalexpectedCheckoutDate As Date
-		Private _originalDetails As IObservableCollection(Of EditableLeaseDetailModel)
+		Private ReadOnly _originalDetails As List(Of ILeaseDetailModel)
+
+		Private _isEdited As Boolean
 		Private _maxNumberOfUsers As Integer
 
 		' Parent
@@ -62,101 +55,37 @@ Namespace Leases.ViewModels
 		End Property
 
 		' Binding models
-		Public Property LeaseId As String
-			Get
-				Return _leaseId
-			End Get
-			Set
-				If IsNothing( Value ) OrElse String.Equals( Value, _leaseId ) Then Return
-				_leaseId = value
-				NotifyOfPropertyChange( Function() LeaseId )
-			End Set
-		End Property
-
-		Public Property RoomUnitPrice As Decimal
-			Get
-				Return _roomUnitPrice
-			End Get
-			Set
-				If IsNothing( Value ) OrElse Equals( Value, _roomUnitPrice ) Then Return
-				_roomUnitPrice = value
-				NotifyOfPropertyChange( Function() RoomUnitPrice )
-			End Set
-		End Property
-
-		Public Property CheckinDate As Date
-			Get
-				Return _checkinDate
-			End Get
-			Set
-				If IsNothing( Value ) OrElse Equals( Value, _checkinDate ) Then Return
-				_checkinDate = value
-				NotifyOfPropertyChange( Function() CheckinDate )
-				NotifyOfPropertyChange( Function() NumberOfUsedDays )
-			End Set
-		End Property
-
-		Public ReadOnly Property NumberOfUsedDays As Integer
-			Get
-				Return (Today - CheckinDate).TotalDays
-			End Get
-		End Property
-
-		Public Property Room As SimpleRoomsListItemModel
-			Get
-				Return _room
-			End Get
-			Set
-				If IsNothing( Value ) OrElse Equals( Value, _room ) Then Return
-				_room = value
-				_roomUnitPrice = _room.UnitPrice
-				NotifyOfPropertyChange( Function() Room )
-				NotifyOfPropertyChange( Function() RoomUnitPrice )
-			End Set
-		End Property
-
-		Public Property ExpectedCheckoutDate As Date
-			Get
-				Return _expectedCheckoutDate
-			End Get
-			Set
-				If IsNothing( Value ) OrElse Equals( Value, _expectedCheckoutDate ) Then Return
-				_expectedCheckoutDate = value
-				NotifyOfPropertyChange( Function() ExpectedCheckoutDate )
-			End Set
-		End Property
-
-		Public ReadOnly Property Details As IObservableCollection(Of EditableLeaseDetailModel)
+		Public ReadOnly Property Lease As EditableLeaseModel
 
 		Public ReadOnly Property CanAddDetail As Boolean
 			Get
-				Return IsNothing( _details ) OrElse _details.Count < _maxNumberOfUsers
+				Return IsNothing( Lease ) OrElse Lease.Details.Count < _maxNumberOfUsers
 			End Get
 		End Property
 
 		Public ReadOnly Property CanDeleteDetail As Boolean
 			Get
-				Return IsNothing( _details ) OrElse _details.Count > 1
+				Return IsNothing( Lease ) OrElse Lease.Details.Count > 1
 			End Get
 		End Property
 
 		' Binding data
-		Public ReadOnly Property Rooms As IObservableCollection(Of SimpleRoomsListItemModel)
+		Public ReadOnly Property Rooms As IObservableCollection(Of IRoomModel)
 
-		Public Shared ReadOnly Property CustomerCategories As IObservableCollection(Of CustomerCategoriesListItemModel)
+		Public Shared ReadOnly Property CustomerCategories As IObservableCollection(Of ICustomerCategoryModel)
 
 		' Initialization
 
 		Shared Sub New()
-			CustomerCategories = New BindableCollection(Of CustomerCategoriesListItemModel)
+			CustomerCategories = New BindableCollection(Of ICustomerCategoryModel)
 		End Sub
 
 		Public Sub New( workspace As LeasesWorkspaceViewModel,
-		                getLeaseDataQuery As IGetLeaseDataQuery,
-		                getSimpleRoomsListQuery As IGetSimpleRoomsListQuery,
-		                getCustomerCategoriesListQuery As IGetCustomerCategoriesListQuery,
+		                getLeaseQuery As IGetLeaseQuery,
+		                getAllRoomsQuery As IGetAllRoomsQuery,
+		                getAllCustomerCategoriesQuery As IGetAllCustomerCategoriesQuery,
 		                updateLeaseCommand As IUpdateLeaseCommand,
-		                removeLeaseCommmand As IRemoveLeaseCommand,
+		                removeLeaseCommand As IRemoveLeaseCommand,
 		                updateLeaseDetailCommand As IUpdateLeaseDetailCommand,
 		                removeLeaseDetailCommand As IRemoveLeaseDetailCommand,
 		                createLeaseDetailFactory As ICreateLeaseDetailFactory,
@@ -164,97 +93,99 @@ Namespace Leases.ViewModels
 			MyBase.New( MaterialDesignThemes.Wpf.ColorZoneMode.PrimaryDark )
 
 			ParentWorkspace = workspace
-			_getLeaseDataQuery = getLeaseDataQuery
-			_getSimpleRoomsListQuery = getSimpleRoomsListQuery
-			_getCustomerCategoriesListQuery = getCustomerCategoriesListQuery
+			_getLeaseQuery = getLeaseQuery
+			_getAllRoomsQuery = getAllRoomsQuery
+			_getAllCustomerCategoriesQuery = getAllCustomerCategoriesQuery
 			_updateLeaseCommand = updateLeaseCommand
-			_removeLeaseCommmand = removeLeaseCommmand
+			_removeLeaseCommand = removeLeaseCommand
 			_updateLeaseDetailCommand = updateLeaseDetailCommand
 			_removeLeaseDetailCommand = removeLeaseDetailCommand
 			_createLeaseDetailFactory = createLeaseDetailFactory
 			_inventory = inventory
 			RegisterInventory()
 
-			Rooms = New BindableCollection(Of SimpleRoomsListItemModel)
-			Details = New BindableCollection(Of EditableLeaseDetailModel)
-			AddHandler Details.CollectionChanged, AddressOf OnDetailsUpdated
-		End Sub
+			Rooms = New BindableCollection(Of IRoomCategoryModel)
+			Lease = New EditableLeaseModel
+			AddHandler Lease.Details.CollectionChanged, AddressOf OnDetailsUpdated
 
-		Private Sub OnDetailsUpdated( sender As Object,
-		                              e As NotifyCollectionChangedEventArgs )
-			NotifyOfPropertyChange( Function() CanAddDetail )
-			NotifyOfPropertyChange( Function() CanDeleteDetail )
+			_originalDetails = New List(Of ILeaseDetailModel)
 		End Sub
 
 		Public Sub Init()
 			Rooms.Clear()
-			Rooms.AddRange( _getSimpleRoomsListQuery.Execute() )
+			Rooms.AddRange( _getAllRoomsQuery.Execute() )
 
 			CustomerCategories.Clear()
-			CustomerCategories.AddRange( _getCustomerCategoriesListQuery.Execute() )
+			CustomerCategories.AddRange( _getAllCustomerCategoriesQuery.Execute() )
 			InitValues()
 		End Sub
 
 		Public Async Function InitAsync() As Task
 			Rooms.Clear()
-			Rooms.AddRange( (Await _getSimpleRoomsListQuery.ExecuteAsync()) )
+			Rooms.AddRange( (Await _getAllRoomsQuery.ExecuteAsync()) )
 
 			CustomerCategories.Clear()
-			CustomerCategories.AddRange( Await _getCustomerCategoriesListQuery.ExecuteAsync() )
+			CustomerCategories.AddRange( Await _getAllCustomerCategoriesQuery.ExecuteAsync() )
 			InitValues()
 		End Function
 
 		Private Sub InitValues()
 			_maxNumberOfUsers = 4
-			LeaseId = String.Empty
-			Room = Rooms.FirstOrDefault()
-			RoomUnitPrice = 0
-			CheckinDate = Today
-			ExpectedCheckoutDate = Today
+			Lease.Id = String.Empty
+			Lease.Room = Rooms.FirstOrDefault()
+			Lease.RoomUnitPrice = 0
+			Lease.CheckinDate = Today
+			Lease.ExpectedCheckoutDate = Today
 
-			_originalcheckinDate = CheckinDate
-			_originalexpectedCheckoutDate = ExpectedCheckoutDate
-			_originalroomUnitPrice = RoomUnitPrice
-			_originalroomId = String.Empty
-			_originalDetails = New BindableCollection(Of EditableLeaseDetailModel)
+			_originalcheckinDate = Lease.CheckinDate
+			_originalexpectedCheckoutDate = Lease.ExpectedCheckoutDate
+			_originalroomUnitPrice = Lease.RoomUnitPrice
+			_originalroomId = Lease.Room.Id
+			_originalDetails.Clear()
+			_isEdited = False
 		End Sub
 
 		Private Sub ResetValues()
-			LeaseId = String.Empty
-			RoomUnitPrice = 0
-			Room = Rooms.FirstOrDefault()
-			CheckinDate = Today
-			ExpectedCheckoutDate = Today
-			Details.Clear()
+			Lease.Id = String.Empty
+			Lease.Room = Rooms.FirstOrDefault()
+			Lease.RoomUnitPrice = 0
+			Lease.CheckinDate = Today
+			Lease.ExpectedCheckoutDate = Today
 
-			_originalcheckinDate = CheckinDate
-			_originalexpectedCheckoutDate = ExpectedCheckoutDate
-			_originalroomUnitPrice = RoomUnitPrice
-			_originalroomId = Room.Id
+			_originalcheckinDate = Lease.CheckinDate
+			_originalexpectedCheckoutDate = Lease.ExpectedCheckoutDate
+			_originalroomUnitPrice = Lease.RoomUnitPrice
+			_originalroomId = Lease.Room.Id
 			_originalDetails.Clear()
+			_isEdited = False
 		End Sub
 
 		' Domain actions
+
 		Public Sub SetLease( id As String )
-			Dim model = _getLeaseDataQuery.Execute( id )
+			Dim model = _getLeaseQuery.Execute( id )
 			If IsNothing( model ) Then Return
 
 			' add selected room to list
 			Dim roomItem = Rooms.FirstOrDefault( Function( r ) r.Id = model.Room.Id )
-			If IsNothing( roomItem ) Then Throw New EntryPointNotFoundException()
+			If IsNothing( roomItem )
+				ShowStaticBottomNotification( StaticNotificationType.Warning,
+				                              $"Không tìm thấy phiếu thuê phòng {id}" )
+				Return
+			End If
 
-			LeaseId = id
-			Room = roomItem
-			RoomUnitPrice = model.RoomPrice
-			CheckinDate = model.CheckinDate
-			ExpectedCheckoutDate = model.ExpectedCheckoutDate
+			Lease.Id = id
+			Lease.Room = roomItem
+			Lease.RoomUnitPrice = model.RoomUnitPrice
+			Lease.CheckinDate = model.CheckinDate
+			Lease.ExpectedCheckoutDate = model.ExpectedCheckoutDate
 
-			_originalcheckinDate = CheckinDate
-			_originalexpectedCheckoutDate = ExpectedCheckoutDate
-			_originalroomUnitPrice = RoomUnitPrice
-			_originalroomId = Room.Id
+			_originalcheckinDate = Lease.CheckinDate
+			_originalexpectedCheckoutDate = Lease.ExpectedCheckoutDate
+			_originalroomUnitPrice = Lease.RoomUnitPrice
+			_originalroomId = Lease.Room.Id
 
-			Details.Clear()
+			Lease.Details.Clear()
 			_originalDetails.Clear()
 			For Each leaseDetailModel As LeaseDetailModel In model.Details
 				Dim editableModel = New EditableLeaseDetailModel()
@@ -264,11 +195,14 @@ Namespace Leases.ViewModels
 				editableModel.CustomerAddress = leaseDetailModel.CustomerAddress
 
 				Dim customerCategory = CustomerCategories.FirstOrDefault( Function( c ) c.Id = leaseDetailModel.CustomerCategory.Id )
-				If IsNothing( customerCategory ) Then Throw New EntryPointNotFoundException()
+				If IsNothing( customerCategory )
+					ShowStaticBottomNotification( StaticNotificationType.Warning,
+					                              "Không tìm thấy loại khách hàng tương ứng" )
+					Continue For
+				End If
 
 				editableModel.CustomerCategory = customerCategory
-				Details.Add( editableModel )
-				editableModel.IsEdited = False
+				Lease.Details.Add( editableModel )
 
 				' backup details for saving
 				Dim originalModel = New EditableLeaseDetailModel()
@@ -280,31 +214,36 @@ Namespace Leases.ViewModels
 				_originalDetails.Add( originalModel )
 			Next
 
+			_isEdited = False
 		End Sub
 
 		Public Async Function SetLeaseAsync( id As String ) As Task
 			ShowStaticWindowLoadingDialog()
-			Dim model = Await _getLeaseDataQuery.ExecuteAsync( id )
+			Dim model = Await _getLeaseQuery.ExecuteAsync( id )
 			CloseStaticWindowDialog()
 
 			If IsNothing( model ) Then Return
 
 			' add selected room to list
 			Dim roomItem = Rooms.FirstOrDefault( Function( r ) r.Id = model.Room.Id )
-			If IsNothing( roomItem ) Then Throw New EntryPointNotFoundException()
+			If IsNothing( roomItem )
+				ShowStaticBottomNotification( StaticNotificationType.Warning,
+				                              $"Không tìm thấy phiếu thuê phòng {id}" )
+				Return
+			End If
 
-			LeaseId = id
-			Room = roomItem
-			RoomUnitPrice = model.RoomPrice
-			CheckinDate = model.CheckinDate
-			ExpectedCheckoutDate = model.ExpectedCheckoutDate
+			Lease.Id = id
+			Lease.Room = roomItem
+			Lease.RoomUnitPrice = model.RoomUnitPrice
+			Lease.CheckinDate = model.CheckinDate
+			Lease.ExpectedCheckoutDate = model.ExpectedCheckoutDate
 
-			_originalcheckinDate = CheckinDate
-			_originalexpectedCheckoutDate = ExpectedCheckoutDate
-			_originalroomUnitPrice = RoomUnitPrice
-			_originalroomId = Room.Id
+			_originalcheckinDate = Lease.CheckinDate
+			_originalexpectedCheckoutDate = Lease.ExpectedCheckoutDate
+			_originalroomUnitPrice = Lease.RoomUnitPrice
+			_originalroomId = Lease.Room.Id
 
-			Details.Clear()
+			Lease.Details.Clear()
 			_originalDetails.Clear()
 			For Each leaseDetailModel As LeaseDetailModel In model.Details
 				Dim editableModel = New EditableLeaseDetailModel()
@@ -314,11 +253,14 @@ Namespace Leases.ViewModels
 				editableModel.CustomerAddress = leaseDetailModel.CustomerAddress
 
 				Dim customerCategory = CustomerCategories.FirstOrDefault( Function( c ) c.Id = leaseDetailModel.CustomerCategory.Id )
-				If IsNothing( customerCategory ) Then Throw New EntryPointNotFoundException()
+				If IsNothing( customerCategory )
+					ShowStaticBottomNotification( StaticNotificationType.Warning,
+					                              "Không tìm thấy loại khách hàng tương ứng" )
+					Continue For
+				End If
 
 				editableModel.CustomerCategory = customerCategory
-				Details.Add( editableModel )
-				editableModel.IsEdited = False
+				Lease.Details.Add( editableModel )
 
 				' backup details for saving
 				Dim originalModel = New EditableLeaseDetailModel()
@@ -329,27 +271,61 @@ Namespace Leases.ViewModels
 				originalModel.CustomerCategory = customerCategory
 				_originalDetails.Add( originalModel )
 			Next
+
+			_isEdited = False
 		End Function
 
 		Public Sub AddEmptyDetail()
 			If CanAddDetail Then _
-				Details.Add( New EditableLeaseDetailModel )
+				Lease.Details.Add( New EditableLeaseDetailModel )
+		End Sub
+
+		Private Sub OnDetailsUpdated( sender As Object,
+		                              e As NotifyCollectionChangedEventArgs )
+			_isEdited = True
+			NotifyOfPropertyChange( Function() CanAddDetail )
+			NotifyOfPropertyChange( Function() CanDeleteDetail )
+
+			' add handler
+			If e.NewItems IsNot Nothing
+				For Each newItem As Object In e.NewItems
+					Dim detail = CType(newItem, EditableLeaseDetailModel)
+					If IsNothing( detail ) Then Continue For
+
+					AddHandler detail.PropertyChanged, AddressOf OnSingleDetailChanged
+				Next
+			End If
+
+			' remove handler
+			If e.OldItems IsNot Nothing
+				For Each oldItem As Object In e.OldItems
+					Dim detail = CType(oldItem, EditableLeaseDetailModel)
+					If IsNothing( detail ) Then Continue For
+
+					RemoveHandler detail.PropertyChanged, AddressOf OnSingleDetailChanged
+				Next
+			End If
+		End Sub
+
+		Private Sub OnSingleDetailChanged( sender As Object,
+		                                   e As PropertyChangedEventArgs )
+			_isEdited = True
 		End Sub
 
 		' Exit
+
 		Public Overrides ReadOnly Property IsEdited As Boolean
 			Get
-				Return CheckForPendingChanges()
+				Return _isEdited OrElse CheckForPendingChanges()
 			End Get
 		End Property
 
 		Private Function CheckForPendingChanges() As Boolean
-			If Not Equals( _originalcheckinDate.Date, CheckinDate.Date ) Then Return True
-			If Not Equals( _originalexpectedCheckoutDate.Date, ExpectedCheckoutDate.Date ) Then Return True
-			If Not Equals( _originalroomUnitPrice, RoomUnitPrice ) Then Return True
-			If Not Equals( _originalroomId, Room.Id ) Then Return True
-			If Not Equals( _originalDetails.Count, Details.Count ) Then Return True
-			If Details.Any( Function( d ) d.IsEdited ) Then Return True
+			If Not Equals( _originalcheckinDate.Date, Lease.CheckinDate.Date ) Then Return True
+			If Not Equals( _originalexpectedCheckoutDate.Date, Lease.ExpectedCheckoutDate.Date ) Then Return True
+			If Not Equals( _originalroomUnitPrice, Lease.RoomUnitPrice ) Then Return True
+			If Not Equals( _originalroomId, Lease.Room.Id ) Then Return True
+			If Not Equals( _originalDetails.Count, Lease.Details.Count ) Then Return True
 			Return False
 		End Function
 
@@ -362,38 +338,38 @@ Namespace Leases.ViewModels
 
 		' Save
 		Public Overrides Function CanSave() As Task(Of Boolean)
-			If String.IsNullOrWhiteSpace( LeaseId ) Then Return Task.FromResult( False )
+			If IsNothing( Lease ) OrElse String.IsNullOrWhiteSpace( Lease.Id ) Then Return Task.FromResult( False )
 
-			If ExpectedCheckoutDate.Date < CheckinDate.Date
+			If Lease.ExpectedCheckoutDate.Date < Lease.CheckinDate.Date
 				ShowStaticBottomNotification( StaticNotificationType.Information,
 				                              "Ngày dự kiến trả phải sau ngày đăng ký thuê phòng" )
 				Return Task.FromResult( False )
 			End If
 
-			If IsNothing( Room ) OrElse String.IsNullOrWhiteSpace( Room.Id )
+			If IsNothing( Lease.Room ) OrElse String.IsNullOrWhiteSpace( Lease.Room.Id )
 				ShowStaticBottomNotification( StaticNotificationType.Information, "Vui lòng chọn phòng thuê" )
 				Return Task.FromResult( False )
 			End If
 
-			If (Not String.Equals( Room.Id, _originalroomId )) And Room.State = 1
+			If (Not String.Equals( Lease.Room.Id, _originalroomId )) And Lease.Room.State = 1
 				ShowStaticBottomNotification( StaticNotificationType.Information,
-				                              $"Phòng {Room.Name} đang thuê bởi khách hàng khác. Vui lòng chọn phòng khác" )
+				                              $"Phòng {Lease.Room.Name} đang thuê bởi khách hàng khác. Vui lòng chọn phòng khác" )
 				Return Task.FromResult( False )
 			End If
 
-			If Details.Count > _maxNumberOfUsers
+			If Lease.Details.Count > _maxNumberOfUsers
 				ShowStaticBottomNotification( StaticNotificationType.Information,
 				                              $"Vượt quá số khách quy định. Mỗi phòng chỉ có tối đa {_maxNumberOfUsers} người" )
 				Return Task.FromResult( False )
 			End If
 
-			If Details.Count <= 0
+			If Lease.Details.Count <= 0
 				ShowStaticBottomNotification( StaticNotificationType.Information,
 				                              $"Phải có ít nhất 1 khách thuê phòng" )
 				Return Task.FromResult( False )
 			End If
 
-			For Each detail As EditableLeaseDetailModel In Details
+			For Each detail As EditableLeaseDetailModel In Lease.Details
 				If String.IsNullOrWhiteSpace( detail.CustomerName )
 					ShowStaticBottomNotification( StaticNotificationType.Information, "Vui lòng nhập đầy đủ tên khách hàng" )
 					Return Task.FromResult( False )
@@ -415,7 +391,7 @@ Namespace Leases.ViewModels
 			' try update lease details
 			Dim hasError = False
 
-			For Each detail As EditableLeaseDetailModel In Details
+			For Each detail As EditableLeaseDetailModel In Lease.Details
 				If Not String.IsNullOrWhiteSpace( detail.Id )
 					' update lease detail
 					If Not Await UpdateLeaseDetailAsync( detail )
@@ -433,7 +409,7 @@ Namespace Leases.ViewModels
 
 			' remove lease detail
 			For Each originalDetail As EditableLeaseDetailModel In _originalDetails
-				If Not Details.Any( Function( d ) d.Id = originalDetail.Id )
+				If Not Lease.Details.Any( Function( d ) d.Id = originalDetail.Id )
 					If Not Await RemoveLeaseDetailAsync( originalDetail )
 						hasError = True
 						Exit For
@@ -447,7 +423,7 @@ Namespace Leases.ViewModels
 				Return
 			End If
 
-			Dim err = Await _updateLeaseCommand.ExecuteAsync( LeaseId, Room.Id, ExpectedCheckoutDate )
+			Dim err = Await _updateLeaseCommand.ExecuteAsync( Lease.Id, Lease.Room.Id, Lease.ExpectedCheckoutDate )
 
 			If String.IsNullOrEmpty( err )
 				Await OnSaveSuccessAsync()
@@ -474,7 +450,7 @@ Namespace Leases.ViewModels
 
 		Private Async Function CreateLeaseDetailAsync( detail As EditableLeaseDetailModel ) As Task(Of Boolean)
 			' create lease detail
-			Dim newId = Await _createLeaseDetailFactory.ExecuteAsync( LeaseId,
+			Dim newId = Await _createLeaseDetailFactory.ExecuteAsync( Lease.Id,
 			                                                          detail.CustomerName,
 			                                                          detail.CustomerLicenseId,
 			                                                          detail.CustomerAddress,
@@ -499,7 +475,7 @@ Namespace Leases.ViewModels
 		End Function
 
 		Private Async Function OnSaveSuccessAsync() As Task
-			Await _inventory.OnLeaseUpdatedAsync( LeaseId )
+			Await _inventory.OnLeaseUpdatedAsync( Lease.Id )
 			Await ActualExitAsync()
 		End Function
 
@@ -511,7 +487,7 @@ Namespace Leases.ViewModels
 		Public Overrides Async Function ActualDeleteAsync() As Task
 			' try update
 			ShowStaticWindowLoadingDialog()
-			Dim err = Await _removeLeaseCommmand.ExecuteAsync( LeaseId )
+			Dim err = Await _removeLeaseCommand.ExecuteAsync( Lease.Id )
 
 			If String.IsNullOrEmpty( err )
 				Await OnDeleteSuccessAsync()
@@ -523,7 +499,7 @@ Namespace Leases.ViewModels
 		End Function
 
 		Private Async Function OnDeleteSuccessAsync() As Task
-			Await _inventory.OnLeaseRemovedAsync( LeaseId )
+			Await _inventory.OnLeaseRemovedAsync( Lease.Id )
 			Await ActualExitAsync()
 		End Function
 
@@ -531,28 +507,32 @@ Namespace Leases.ViewModels
 			ShowStaticBottomNotification( StaticNotificationType.Error, err )
 		End Sub
 
+		Public Overrides Function CanDelete() As Task(Of Boolean)
+			If IsNothing( Lease ) OrElse String.IsNullOrWhiteSpace( Lease.Id ) Then Return Task.FromResult( False )
+
+			Return MyBase.CanDelete()
+		End Function
+
 		' Infrastructure
-		Public Sub OnRoomAdded( model As RoomModel ) Implements IRoomsListPresenter.OnRoomAdded
+		Public Sub OnRoomAdded( model As IRoomModel ) Implements IRoomsListPresenter.OnRoomAdded
 			If Rooms.Any( Function( r ) r.Id = model.Id )
-				Throw New DuplicateWaitObjectException()
+				ShowStaticBottomNotification( StaticNotificationType.Warning,
+				                              "Tìm thấy phòng trùng nhau trong danh sách" )
+				Return
 			End If
 
-			Rooms.Add( New SimpleRoomsListItemModel With {
-				         .Id=model.Id,
-				         .CategoryName=model.Category.Name,
-				         .Name=model.Name,
-				         .State=model.State,
-				         .UnitPrice=model.Category.UnitPrice} )
+			Rooms.Add( model )
 		End Sub
 
-		Public Sub OnRoomUpdated( model As RoomModel ) Implements IRoomsListPresenter.OnRoomUpdated
+		Public Sub OnRoomUpdated( model As IRoomModel ) Implements IRoomsListPresenter.OnRoomUpdated
 			Dim roomToUpdate = Rooms.FirstOrDefault( Function( r ) r.Id = model.Id )
-			If IsNothing( roomToUpdate ) Then Throw New EntryPointNotFoundException()
+			If IsNothing( roomToUpdate )
+				ShowStaticBottomNotification( StaticNotificationType.Warning,
+				                              "Không tìm thấy phòng trong danh sách để cập nhật" )
+				Return
+			End If
 
-			roomToUpdate.Name = model.Name
-			roomToUpdate.CategoryName = model.Category.Name
-			roomToUpdate.UnitPrice = model.Category.UnitPrice
-			roomToUpdate.State = model.State
+			Rooms(Rooms.IndexOf(roomToUpdate)) = model
 		End Sub
 
 		Public Sub OnRoomRemoved( id As String ) Implements IRoomsListPresenter.OnRoomRemoved
@@ -560,8 +540,8 @@ Namespace Leases.ViewModels
 			If IsNothing( roomToRemove ) Then Return
 
 			Rooms.Remove( roomToRemove )
-			If Equals( Room, roomToRemove )
-				Room = Rooms.FirstOrDefault()
+			If Equals( Lease.Room, roomToRemove )
+				Lease.Room = Rooms.FirstOrDefault()
 			End If
 		End Sub
 	End Class

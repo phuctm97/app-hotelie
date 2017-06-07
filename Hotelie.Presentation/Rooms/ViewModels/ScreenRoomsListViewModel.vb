@@ -157,11 +157,13 @@ Namespace Rooms.ViewModels
 		End Property
 
 		Public Sub ResetFilters()
+			RemoveHandler FilterRoomModel.PropertyChanged, AddressOf OnFilterRoomModelUpdated
 			FilterRoomModel.NamePrefix = String.Empty
 			FilterRoomModel.Category = Nothing
 			FilterRoomModel.State = Nothing
 			FilterRoomModel.MinUnitPrice = Nothing
 			FilterRoomModel.MaxUnitPrice = Nothing
+			AddHandler FilterRoomModel.PropertyChanged, AddressOf OnFilterRoomModelUpdated
 		End Sub
 
 		Public Sub FilterByRoomCategoryOf( roomModel As IRoomModel )

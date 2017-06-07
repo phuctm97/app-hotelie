@@ -1,4 +1,4 @@
-﻿Namespace Leases.Commands.RemoveLease
+﻿Namespace Leases.Commands
 	Public Interface IRemoveLeaseCommand
 		Function Execute( id As String ) As String
 

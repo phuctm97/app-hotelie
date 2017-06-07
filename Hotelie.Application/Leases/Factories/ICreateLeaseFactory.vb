@@ -1,4 +1,4 @@
-﻿Namespace Leases.Factories.CreateLease
+﻿Namespace Leases.Factories
 	Public Interface ICreateLeaseFactory
 		Function Execute( roomId As String,
 		                  checkinDate As Date,

@@ -1,4 +1,4 @@
-﻿Namespace Leases.Factories.CreateLeaseDetail
+﻿Namespace Leases.Factories
 	Public Interface ICreateLeaseDetailFactory
 		Function Execute( leaseId As String,
 		                  customerName As String,
