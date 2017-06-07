@@ -10,5 +10,7 @@ Namespace Services.Persistence
         Sub RemoveLeaseDetail(leaseDetail As LeaseDetail)
         Function GetCustomerCategories() As List(Of CustomerCategory)
         Function GetCustomerCategoriesAsync() As Task(Of List(Of CustomerCategory))
+        Sub AddCustomerCategory(category As CustomerCategory)
+        Sub RemoveCustomerCategory(category As CustomerCategory)
     End Interface
 End NameSpace

@@ -21,8 +21,12 @@ Namespace Leases.Commands.UpdateLease
             Implements IUpdateLeaseCommand.Execute
             Try
                 Dim lease = _leaseRepository.GetOne(id)
+                If IsNothing(lease) Then Return "Không tìm thấy phiếu thuê phòng"
+
                 lease.Room.State = 0
                 Dim room = _roomRepository.GetOne(roomId)
+                If IsNothing(room) Then Return "Không tìm thấy phòng"
+
                 Dim rules = _parameterRepository.GetRules()
 
                 lease.CustomerCoefficient = rules.CustomerCoefficient

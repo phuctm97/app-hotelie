@@ -15,6 +15,7 @@ Namespace Leases.Commands.RemoveLeaseDetail
         Public Function Execute(id As String) As String Implements IRemoveLeaseDetailCommand.Execute
             Try
                 Dim leaseDetail = _leaseRepository.GetLeaseDetail(id)
+                If  IsNothing(leaseDetail) Then Return "Không tìm thấy chi tiết hóa đơn"
                 _leaseRepository.RemoveLeaseDetail(leaseDetail)
                 _unitOfWork.Commit()
                 Return String.Empty
@@ -27,6 +28,7 @@ Namespace Leases.Commands.RemoveLeaseDetail
             Implements IRemoveLeaseDetailCommand.ExecuteAsync
             Try
                 Dim leaseDetail = Await _leaseRepository.GetLeaseDetailAsync(id)
+                If  IsNothing(leaseDetail) Then Return "Không tìm thấy chi tiết hóa đơn"
                 _leaseRepository.RemoveLeaseDetail(leaseDetail)
                 Await _unitOfWork.CommitAsync()
                 Return String.Empty

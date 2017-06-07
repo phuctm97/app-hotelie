@@ -14,6 +14,14 @@ Namespace Leases
             _databaseService = databaseService
         End Sub
 
+        Public Sub AddCustomerCategory(category As CustomerCategory) Implements ILeaseRepository.AddCustomerCategory
+            _databaseService.Context.CustomerCategories.Add(category)
+        End Sub
+
+        Public Sub RemoveCustomerCategory(category As CustomerCategory) Implements ILeaseRepository.RemoveCustomerCategory
+            _databaseService.Context.CustomerCategories.Remove(category)
+        End Sub
+
         Public Sub RemoveLeaseDetail(leaseDetail As LeaseDetail) Implements ILeaseRepository.RemoveLeaseDetail
             _databaseService.Context.LeaseDetails.Remove(leaseDetail)
         End Sub

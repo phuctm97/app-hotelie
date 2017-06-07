@@ -102,14 +102,20 @@
     <Compile Include="Bills\Queries\GetBillsList\BillsListItemModel.vb" />
     <Compile Include="Bills\Queries\GetBillsList\GetBillsListQuery.vb" />
     <Compile Include="Bills\Queries\GetBillsList\IGetBillsListQuery.vb" />
+    <Compile Include="Leases\Commands\RemoveCustomerCategory\IRemoveCustomerCategoryCommand.vb" />
+    <Compile Include="Leases\Commands\RemoveCustomerCategory\RemoveCustomerCategoryCommand.vb" />
     <Compile Include="Leases\Commands\RemoveLeaseDetail\IRemoveLeaseDetailCommand.vb" />
     <Compile Include="Leases\Commands\RemoveLeaseDetail\RemoveLeaseDetailCommand.vb" />
     <Compile Include="Leases\Commands\RemoveLease\IRemoveLeaseCommand.vb" />
     <Compile Include="Leases\Commands\RemoveLease\RemoveLeaseCommand.vb" />
+    <Compile Include="Leases\Commands\UpdateCustomerCategory\IUpdateCustomerCategoryCommand.vb" />
+    <Compile Include="Leases\Commands\UpdateCustomerCategory\UpdateCustomerCategoryCommand.vb" />
     <Compile Include="Leases\Commands\UpdateLeaseDetail\IUpdateLeaseDetailCommand.vb" />
     <Compile Include="Leases\Commands\UpdateLeaseDetail\UpdateLeaseDetailCommand.vb" />
     <Compile Include="Leases\Commands\UpdateLease\IUpdateLeaseCommand.vb" />
     <Compile Include="Leases\Commands\UpdateLease\UpdateLeaseCommand.vb" />
+    <Compile Include="Leases\Factories\CreateCustomerCategory\CreateCustomerCategory.vb" />
+    <Compile Include="Leases\Factories\CreateCustomerCategory\ICreateCustomerFactory.vb" />
     <Compile Include="Leases\Factories\CreateLeaseDetail\CreateLeaseDetailFactory.vb" />
     <Compile Include="Leases\Factories\CreateLeaseDetail\ICreateLeaseDetailFactory.vb" />
     <Compile Include="Leases\Factories\CreateLease\CreateLeaseDetailModel.vb" />
@@ -148,10 +154,16 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Rooms\Commands\RemoveRoomCategory\IRemoveRoomCategoryCommand.vb" />
+    <Compile Include="Rooms\Commands\RemoveRoomCategory\RemoveRoomCategoryCommand.vb" />
     <Compile Include="Rooms\Commands\RemoveRoom\IRemoveRoomCommand.vb" />
     <Compile Include="Rooms\Commands\RemoveRoom\RemoveRoomCommand.vb" />
+    <Compile Include="Rooms\Commands\UpdateRoomCategory\IUpdateRoomCategoryCommand.vb" />
+    <Compile Include="Rooms\Commands\UpdateRoomCategory\UpdateRoomCategoryCommand.vb" />
     <Compile Include="Rooms\Commands\UpdateRoom\IUpdateRoomCommand.vb" />
     <Compile Include="Rooms\Commands\UpdateRoom\UpdateRoomCommand.vb" />
+    <Compile Include="Rooms\Factories\CreateRoomCategory\CreateRoomCategoryFactory.vb" />
+    <Compile Include="Rooms\Factories\CreateRoomCategory\ICreateRoomCategoryFactory.vb" />
     <Compile Include="Rooms\Factories\CreateRoom\CreateRoomFactory.vb" />
     <Compile Include="Rooms\Factories\CreateRoom\ICreateRoomFactory.vb" />
     <Compile Include="Rooms\Queries\GetRoomCategoriesList\GetRoomCategoriesListQuery.vb" />

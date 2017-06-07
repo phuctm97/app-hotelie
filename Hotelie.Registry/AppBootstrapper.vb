@@ -1,4 +1,5 @@
 ﻿Imports Caliburn.Micro
+Imports Hotelie.Application.Bills.Factories
 Imports Hotelie.Application.Bills.Factories.CreateBill
 Imports Hotelie.Application.Leases.Commands.RemoveLease
 Imports Hotelie.Application.Leases.Commands.RemoveLeaseDetail
@@ -101,7 +102,7 @@ Public Class AppBootstrapper
 	    _container.RegisterType(Of IParameterRepository, ParameterRepository)(
 	        New ContainerControlledLifetimeManager() )
 		_container.RegisterType _
-			(Of IGetSimpleLeasesListQuery, Tests.Leases.Queries.GetSimpleLeasesList.GetSimpleLeasesListQuery)(
+			(Of IGetSimpleLeasesListQuery, GetSimpleLeasesListQuery)(
 				New ContainerControlledLifetimeManager() )
 		_container.RegisterType(Of ICreateBillFactory, Tests.Bills.Factories.CreateBill.CreateBillFactory)(
 			New ContainerControlledLifetimeManager() )
