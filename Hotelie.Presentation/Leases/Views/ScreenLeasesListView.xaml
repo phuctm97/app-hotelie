@@ -25,7 +25,6 @@
             <converters:LeaseIdStringDisplayConverter x:Key="LeaseIdStringDisplayConverter" />
             <converters:TotalExpenseDisplayConverter x:Key="TotalExpenseDisplayConverter" />
             <converters:NumberOfUsedDaysDisplayConverters x:Key="NumberOfUsedDaysDisplayConverters" />
-            <converters:NumberOfCustomersDisplayConverters x:Key="NumberOfCustomersDisplayConverters" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -145,7 +144,8 @@
                                                             Orientation="Horizontal">
                                                     <materialDesign:PackIcon Kind="AccountMultiple"
                                                                              Margin="0 0 8 0" />
-                                                    <TextBlock Text="{Binding Path=Details, Converter={StaticResource NumberOfCustomersDisplayConverters}}" FontWeight="Light" />
+                                                    <TextBlock Text="{Binding Path=Details.Count}" FontWeight="Light" />
+                                                    <TextBlock Text=" người" FontWeight="Light" />
                                                 </StackPanel>
 
                                                 <!--Checkin date-->

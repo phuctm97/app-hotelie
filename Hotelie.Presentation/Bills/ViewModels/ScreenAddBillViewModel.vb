@@ -99,6 +99,7 @@ Namespace Bills.ViewModels
 			_createBillFactory = createBillFactory
 
 			Details = New BindableCollection(Of EditableBillDetailModel)
+			AddHandler Details.CollectionChanged, AddressOf	OnDetailsUpdated
 		End Sub
 
 		Private Sub OnDetailsUpdated( sender As Object,
@@ -162,7 +163,6 @@ Namespace Bills.ViewModels
 			PayerAddress = String.Empty
 			CreateDate = Today
 			TotalExpense = 0
-			AddHandler Details.CollectionChanged, AddressOf	OnDetailsUpdated
 			Details.Clear()
 		End Sub
 
@@ -178,6 +178,10 @@ Namespace Bills.ViewModels
 		End Sub
 
 		Public Sub InsertLeaseId( id As String )
+		End Sub
+
+		Public Sub AddEmptyDetail()
+			Details.Add( New EditableBillDetailModel )
 		End Sub
 
 		' Exit
@@ -324,6 +328,30 @@ Namespace Bills.ViewModels
 				End If
 			Next
 			Details.RemoveRange( detailsToRemove )
+
+			' Remove duplicate detail
+			Dim uniqueLeaseIds = New List(Of String)
+			For Each detailModel As EditableBillDetailModel In Details
+				If IsNothing( detailModel ) OrElse IsNothing( detailModel.Lease ) Then Continue For
+				If Not uniqueLeaseIds.Contains( detailModel.Lease.Id )
+					uniqueLeaseIds.Add( detailModel.Lease.Id )
+				End If
+			Next
+
+			If uniqueLeaseIds.Count < Details.Count
+				ShowStaticBottomNotification( StaticNotificationType.Information,
+				                              "Đã xóa các hóa đơn trùng, vui lòng kiểm tra lại trước khi lưu" )
+				Details.Clear()
+				For Each leaseId As String In uniqueLeaseIds
+					Dim lease = Leases.FirstOrDefault( Function( l ) l.Id = leaseId )
+					If IsNothing( lease ) Then Continue For
+
+					Dim detail = New EditableBillDetailModel
+					detail.Lease = lease
+					Details.Add( detail )
+				Next
+				Return False
+			End If
 
 			Return True
 		End Function

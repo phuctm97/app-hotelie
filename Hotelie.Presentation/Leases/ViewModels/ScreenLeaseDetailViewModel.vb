@@ -1,4 +1,5 @@
-﻿Imports Caliburn.Micro
+﻿Imports System.Collections.Specialized
+Imports Caliburn.Micro
 Imports Hotelie.Application.Leases.Commands.RemoveLease
 Imports Hotelie.Application.Leases.Commands.RemoveLeaseDetail
 Imports Hotelie.Application.Leases.Commands.UpdateLease
@@ -38,7 +39,6 @@ Namespace Leases.ViewModels
 		Private _checkinDate As Date
 		Private _room As SimpleRoomsListItemModel
 		Private _expectedCheckoutDate As Date
-		Private _details As IObservableCollection(Of EditableLeaseDetailModel)
 
 		Private _originalroomUnitPrice As Decimal
 		Private _originalcheckinDate As Date
@@ -123,16 +123,7 @@ Namespace Leases.ViewModels
 			End Set
 		End Property
 
-		Public Property Details As IObservableCollection(Of EditableLeaseDetailModel)
-			Get
-				Return _details
-			End Get
-			Set
-				If IsNothing( Value ) Or Equals( Value, _details ) Then Return
-				_details = value
-				NotifyOfPropertyChange( Function() Details )
-			End Set
-		End Property
+		Public ReadOnly Property Details As IObservableCollection(Of EditableLeaseDetailModel)
 
 		Public ReadOnly Property CanAddDetail As Boolean
 			Get
@@ -179,6 +170,14 @@ Namespace Leases.ViewModels
 			RegisterInventory()
 
 			Rooms = New BindableCollection(Of SimpleRoomsListItemModel)
+			Details = New BindableCollection(Of EditableLeaseDetailModel)
+			AddHandler Details.CollectionChanged, AddressOf OnDetailsUpdated
+		End Sub
+
+		Private Sub OnDetailsUpdated( sender As Object,
+		                              e As NotifyCollectionChangedEventArgs )
+			NotifyOfPropertyChange( Function() CanAddDetail )
+			NotifyOfPropertyChange( Function() CanDeleteDetail )
 		End Sub
 
 		Public Sub Init()
@@ -206,7 +205,6 @@ Namespace Leases.ViewModels
 			RoomUnitPrice = 0
 			CheckinDate = Today
 			ExpectedCheckoutDate = Today
-			Details = New BindableCollection(Of EditableLeaseDetailModel)
 
 			_originalcheckinDate = CheckinDate
 			_originalexpectedCheckoutDate = ExpectedCheckoutDate
@@ -325,9 +323,9 @@ Namespace Leases.ViewModels
 			Next
 		End Function
 
-		Public Sub CheckNumberOfDetails()
-			NotifyOfPropertyChange( Function() CanAddDetail )
-			NotifyOfPropertyChange( Function() CanDeleteDetail )
+		Public Sub AddEmptyDetail()
+			If CanAddDetail Then _
+				Details.Add( New EditableLeaseDetailModel )
 		End Sub
 
 		' Exit
@@ -605,7 +603,7 @@ Namespace Leases.ViewModels
 				Return False
 			End If
 
-			If (Not String.Equals(Room.Id, _originalroomId)) And Room.State = 1
+			If (Not String.Equals( Room.Id, _originalroomId )) And Room.State = 1
 				ShowStaticBottomNotification( StaticNotificationType.Information,
 				                              $"Phòng {Room.Name} đang thuê bởi khách hàng khác. Vui lòng chọn phòng khác" )
 				Return False

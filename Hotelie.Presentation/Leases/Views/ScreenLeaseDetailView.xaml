@@ -178,9 +178,15 @@
 
                 <!--Details-->
                 <StackPanel Margin="16 24 16 0">
-                    <TextBlock Text="Danh sách khách hàng" IsEnabled="False"
-                               Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                               FontSize="15" Margin="0 0 0 4" />
+                    <StackPanel Orientation="Horizontal" Margin="0 0 0 4">
+                        <TextBlock Text="Danh sách khách hàng" IsEnabled="False"
+                                   Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                                   FontSize="15" VerticalAlignment="Center"/>
+                        <Button Style="{DynamicResource MaterialDesignFloatingActionButton}" Width="24" Height="24" Margin="8 0 0 0"
+                                cal:Message.Attach="AddEmptyDetail">
+                            <materialDesign:PackIcon Kind="Plus" />
+                        </Button>
+                    </StackPanel>
                     <DataGrid CanUserSortColumns="False"
                               CanUserAddRows="{Binding CanAddDetail}"
                               CanUserDeleteRows="{Binding CanDeleteDetail}"
@@ -189,12 +195,6 @@
                               materialDesign:DataGridAssist.ColumnHeaderPadding="8"
                               ItemsSource="{Binding Details}"
                               FontSize="15">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="SizeChanged">
-                                <cal:ActionMessage MethodName="CheckNumberOfDetails" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-
                         <DataGrid.Columns>
                             <DataGridTextColumn
                                 EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}"
@@ -226,7 +226,7 @@
                                     <TextBlock Text="Địa chỉ" FontSize="18" FontWeight="Bold" />
                                 </DataGridTextColumn.Header>
                             </DataGridTextColumn>
-                            <DataGridTemplateColumn >
+                            <DataGridTemplateColumn>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Command="Delete" Style="{DynamicResource MaterialDesignToolButton}">
