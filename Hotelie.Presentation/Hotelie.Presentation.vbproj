@@ -127,6 +127,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AppScreenHasSavingAndDeleting.vb" />
+    <Compile Include="Bills\Models\BillsListItemModel.vb" />
     <Compile Include="Bills\Models\EditableBillDetailModel.vb" />
     <Compile Include="Bills\ViewModels\BillsWorkspaceViewModel.vb" />
     <Compile Include="Bills\ViewModels\ScreenAddBillViewModel.vb" />
