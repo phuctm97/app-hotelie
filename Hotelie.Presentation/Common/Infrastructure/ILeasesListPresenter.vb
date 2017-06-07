@@ -1,10 +1,10 @@
-﻿Imports Hotelie.Application.Leases.Queries.GetLeaseData
+﻿Imports Hotelie.Application.Leases.Models
 
 Namespace Common.Infrastructure
 	Public Interface ILeasesListPresenter
-		Sub OnLeaseAdded( model As LeaseModel )
+		Sub OnLeaseAdded( model As ILeaseModel )
 
-		Sub OnLeaseUpdated( model As LeaseModel )
+		Sub OnLeaseUpdated( model As ILeaseModel )
 
 		Sub OnLeaseRemoved( id As String )
 	End Interface

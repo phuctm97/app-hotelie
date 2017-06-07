@@ -260,7 +260,7 @@ Namespace Rooms.ViewModels
 		End Function
 
 		' Infrastructure
-		Public Sub OnRoomUpdated( model As RoomModel ) Implements IRoomPresenter.OnRoomUpdated
+		Public Sub OnRoomUpdated( model As IRoomModel ) Implements IRoomPresenter.OnRoomUpdated
 			If String.IsNullOrEmpty( Room.Id ) Then Return
 			If String.IsNullOrEmpty( model.Id ) Then Return
 			If Not String.Equals( Room.Id, model.Id ) Then Return

@@ -23,7 +23,6 @@
 
             <commonConverters:DateTimeToShortDateStringConverter x:Key="DateTimeToShortDateStringConverter" />
             <converters:TotalExpenseDisplayConverter x:Key="TotalExpenseDisplayConverter" />
-            <converters:NumberOfUsedDaysDisplayConverters x:Key="NumberOfUsedDaysDisplayConverters" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -93,15 +92,15 @@
                                                         Text="#" />
                                                     <TextBlock
                                                         Style="{DynamicResource MaterialDesignHeadlineTextBlock}"
-                                                        Text="{Binding Id}" />
+                                                        Text="{Binding Id, Mode=OneWay}" />
                                                 </StackPanel>
 
                                                 <!--Sub content-->
                                                 <StackPanel Orientation="Horizontal">
-                                                    <!--Eslap date-->
+                                                    <!--Eslapsed date-->
                                                     <TextBlock
                                                         Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
-                                                        Text="{Binding CheckinDate, Converter={StaticResource NumberOfUsedDaysDisplayConverters}}"
+                                                        Text="{Binding NumberOfUsedDays, Mode=OneWay}"
                                                         Opacity="0.65" />
                                                     <TextBlock
                                                         Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
@@ -109,7 +108,7 @@
                                                     <!--Total expense-->
                                                     <TextBlock
                                                         Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
-                                                        Text="{Binding TotalExpense, Converter={StaticResource TotalExpenseDisplayConverter}}"
+                                                        Text="{Binding TotalExpense, Mode=OneWay, Converter={StaticResource TotalExpenseDisplayConverter}}"
                                                         Opacity="0.65" />
                                                 </StackPanel>
 
@@ -118,7 +117,7 @@
                                                         Foreground="{DynamicResource PrimaryHueMidBrush}"
                                                         HorizontalAlignment="Left" Height="Auto" Margin="-4 20 0 0"
                                                         Padding="8 4">
-                                                    <TextBlock Text="{Binding RoomName}" FontSize="24" />
+                                                    <TextBlock Text="{Binding Path=Room.Name, Mode=OneWay}" FontSize="24" />
                                                 </Button>
                                             </StackPanel>
 
@@ -139,7 +138,7 @@
                                                 <StackPanel Margin="0 0 4 4" Grid.Row="0" Grid.Column="0"
                                                             Orientation="Horizontal">
                                                     <materialDesign:PackIcon Kind="HomeVariant" Margin="0 0 8 0" />
-                                                    <TextBlock Margin="0 0 16 0" Text="{Binding RoomCategoryName}"
+                                                    <TextBlock Margin="0 0 16 0" Text="{Binding Path=Room.Category.Name, Mode=OneWay}"
                                                                FontWeight="Light" />
                                                 </StackPanel>
 
@@ -148,7 +147,7 @@
                                                             Orientation="Horizontal">
                                                     <materialDesign:PackIcon Kind="AccountMultiple"
                                                                              Margin="0 0 8 0" />
-                                                    <TextBlock Text="{Binding Path=Details.Count}" FontWeight="Light" />
+                                                    <TextBlock Text="{Binding Path=Details.Count, Mode=OneWay}" FontWeight="Light" />
                                                     <TextBlock Text=" người" FontWeight="Light" />
                                                 </StackPanel>
 
@@ -157,7 +156,7 @@
                                                             Orientation="Horizontal">
                                                     <materialDesign:PackIcon Kind="CalendarToday" Margin="0 0 8 0" />
                                                     <TextBlock Margin="0 0 16 0"
-                                                               Text="{Binding CheckinDate, Converter={StaticResource DateTimeToShortDateStringConverter}}"
+                                                               Text="{Binding CheckinDate, Mode=OneWay, Converter={StaticResource DateTimeToShortDateStringConverter}}"
                                                                FontWeight="Light" />
                                                 </StackPanel>
 
@@ -166,7 +165,7 @@
                                                             Orientation="Horizontal">
                                                     <materialDesign:PackIcon Kind="Calendar" Margin="0 0 8 0" />
                                                     <TextBlock
-                                                        Text="{Binding ExpectedCheckoutDate, Converter={StaticResource DateTimeToShortDateStringConverter}}"
+                                                        Text="{Binding ExpectedCheckoutDate, Mode=OneWay, Converter={StaticResource DateTimeToShortDateStringConverter}}"
                                                         FontWeight="Light" />
                                                 </StackPanel>
                                             </Grid>
@@ -193,7 +192,7 @@
                                                         <Setter.Value>
                                                             <ControlTemplate TargetType="ListBoxItem">
                                                                 <materialDesign:Chip FontSize="12"
-                                                                                     Content="{Binding CustomerName}">
+                                                                                     Content="{Binding Path=CustomerName}">
                                                                     <materialDesign:Chip.Icon>
                                                                         <materialDesign:PackIcon Height="16" Width="16"
                                                                                                  Kind="Account" />
@@ -216,8 +215,15 @@
                                                     HorizontalAlignment="Left"
                                                     Margin="8 4 4 8"
                                                     Style="{DynamicResource MaterialDesignFlatButton}"
-                                                    Content="CHI TIẾT"
-                                                    cal:Message.Attach="NavigateToScreenLeaseDetail($dataContext)" />
+                                                    Content="CHI TIẾT">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="Click">
+                                                        <cal:ActionMessage MethodName="NavigateToScreenLeaseDetail">
+                                                            <cal:Parameter Value="{Binding Id}" />
+                                                        </cal:ActionMessage>
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </Button>
                                             <Button DockPanel.Dock="Left"
                                                     HorizontalAlignment="Left"
                                                     Margin="15 4 4 8"

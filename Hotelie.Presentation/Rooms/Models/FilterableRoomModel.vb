@@ -8,7 +8,7 @@ Namespace Rooms.Models
 		Private _model As RoomModel
 		Private _isFilterMatch As Boolean
 
-		Public Property Model As RoomModel
+		Public Property Model As IRoomModel
 			Get
 				Return _model
 			End Get

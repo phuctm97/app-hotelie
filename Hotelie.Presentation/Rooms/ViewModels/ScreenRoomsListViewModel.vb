@@ -14,7 +14,6 @@ Namespace Rooms.ViewModels
 		           IChild(Of RoomsWorkspaceViewModel)
 
 		' Backing fields
-		Private _rooms As IObservableCollection(Of FilterableRoomModel)
 		Private _filterRoomModel As FilterRoomModel
 		Private _sortRoomModel As SortRoomModel
 
@@ -38,20 +37,11 @@ Namespace Rooms.ViewModels
 		End Property
 
 		' Binding models
-		Public Property Rooms As IObservableCollection(Of FilterableRoomModel)
-			Get
-				Return _rooms
-			End Get
-			Set
-				If Equals( Value, _rooms ) Then Return
-				_rooms = value
-				NotifyOfPropertyChange( Function() Rooms )
-			End Set
-		End Property
+		Public ReadOnly Property Rooms As IObservableCollection(Of FilterableRoomModel)
 
 		' Binding data
 		' ReSharper disable once UnassignedGetOnlyAutoProperty
-		Public ReadOnly Property Categories As IObservableCollection(Of RoomCategoryModel)
+		Public ReadOnly Property Categories As IObservableCollection(Of IRoomCategoryModel)
 
 		' ReSharper disable once UnassignedGetOnlyAutoProperty
 		Public ReadOnly Property States As IObservableCollection(Of Integer)
@@ -72,7 +62,7 @@ Namespace Rooms.ViewModels
 			RegisterInventory()
 
 			Rooms = New BindableCollection(Of FilterableRoomModel)
-			Categories = New BindableCollection(Of RoomCategoryModel)
+			Categories = New BindableCollection(Of IRoomCategoryModel)
 			States = New BindableCollection(Of Integer)
 			MinUnitPrices = New BindableCollection(Of Decimal)
 			MaxUnitPrices = New BindableCollection(Of Decimal)
@@ -174,14 +164,14 @@ Namespace Rooms.ViewModels
 			FilterRoomModel.MaxUnitPrice = Nothing
 		End Sub
 
-		Public Sub FilterByRoomCategoryOf( roomModel As RoomModel )
+		Public Sub FilterByRoomCategoryOf( roomModel As IRoomModel )
 			Dim category = Categories.FirstOrDefault( Function( c ) String.Equals( c.Id, roomModel.Category.Id ) )
 			If IsNothing( category ) Then Return
 
 			FilterRoomModel.Category = category
 		End Sub
 
-		Public Sub FilterByRoomStateOf( roomModel As RoomModel )
+		Public Sub FilterByRoomStateOf( roomModel As IRoomModel )
 			Dim state = States.FirstOrDefault( Function( s ) Equals( s, roomModel.State ) )
 			If IsNothing( state ) Then Return
 
@@ -216,32 +206,43 @@ Namespace Rooms.ViewModels
 		End Property
 
 		Public Sub SortRoomsList()
+			Dim orderedRooms As IObservableCollection(Of FilterableRoomModel ) = Nothing
+
 			Select Case SortRoomModel.SortingCode
 				Case 0
 					If SortRoomModel.IsDescendingSort
-						Rooms = New BindableCollection(Of RoomModel)( Rooms.OrderByDescending( Function( r ) r.Model.Name ) )
+						orderedRooms = New BindableCollection(Of FilterableRoomModel)( Rooms.OrderByDescending( Function( r ) r.Model.Name ) )
 					Else
-						Rooms = New BindableCollection(Of RoomModel)( Rooms.OrderBy( Function( r ) r.Model.Name ) )
+						orderedRooms = New BindableCollection(Of FilterableRoomModel)( Rooms.OrderBy( Function( r ) r.Model.Name ) )
 					End If
 				Case 1
 					If SortRoomModel.IsDescendingSort
-						Rooms = New BindableCollection(Of RoomModel)( Rooms.OrderByDescending( Function( r ) r.Model.Category.Name ) )
+						orderedRooms =
+							New BindableCollection(Of FilterableRoomModel)( Rooms.OrderByDescending( Function( r ) r.Model.Category.Name ) )
 					Else
-						Rooms = New BindableCollection(Of RoomModel)( Rooms.OrderBy( Function( r ) r.Model.Category.Name ) )
+						orderedRooms = New BindableCollection(Of FilterableRoomModel)( Rooms.OrderBy( Function( r ) r.Model.Category.Name ) )
 					End If
 				Case 2
 					If SortRoomModel.IsDescendingSort
-						Rooms = New BindableCollection(Of RoomModel)( Rooms.OrderByDescending( Function( r ) r.Model.Category.UnitPrice ) )
+						orderedRooms =
+							New BindableCollection(Of FilterableRoomModel)( Rooms.OrderByDescending( Function( r ) r.Model.Category.UnitPrice ) )
 					Else
-						Rooms = New BindableCollection(Of RoomModel)( Rooms.OrderBy( Function( r ) r.Model.Category.UnitPrice ) )
+						orderedRooms =
+							New BindableCollection(Of FilterableRoomModel)( Rooms.OrderBy( Function( r ) r.Model.Category.UnitPrice ) )
 					End If
 				Case 3
 					If SortRoomModel.IsDescendingSort
-						Rooms = New BindableCollection(Of RoomModel)( Rooms.OrderByDescending( Function( r ) r.Model.State ) )
+						orderedRooms =
+							New BindableCollection(Of FilterableRoomModel)( Rooms.OrderByDescending( Function( r ) r.Model.State ) )
 					Else
-						Rooms = New BindableCollection(Of RoomModel)( Rooms.OrderBy( Function( r ) r.Model.State ) )
+						orderedRooms = New BindableCollection(Of FilterableRoomModel)( Rooms.OrderBy( Function( r ) r.Model.State ) )
 					End If
 			End Select
+
+			If orderedRooms IsNot Nothing
+				Rooms.Clear()
+				Rooms.AddRange( orderedRooms )
+			End If
 		End Sub
 
 		Private Sub OnSortRoomModelUpdated( sender As Object,
@@ -251,21 +252,28 @@ Namespace Rooms.ViewModels
 
 		' Infrastructure
 
-		Public Sub OnRoomAdded( model As RoomModel ) _
+		Public Sub OnRoomAdded( model As IRoomModel ) _
 			Implements IRoomsListPresenter.OnRoomAdded
+			Dim room = Rooms.FirstOrDefault( Function( r ) r.Model.Id = model.Id )
+			If room IsNot Nothing
+				ShowStaticBottomNotification( Start.MainWindow.Models.StaticNotificationType.Warning,
+				                              "Tìm thấy phòng cùng id trong danh sách" )
+				Rooms.Remove( room )
+			End If
+
 			Rooms.Add( New FilterableRoomModel With {.Model=model, .IsFiltersMatch=False} )
 
 			RefreshRoomsListVisibility()
 			SortRoomsList()
 		End Sub
 
-		Public Sub OnRoomUpdated( model As RoomModel ) _
+		Public Sub OnRoomUpdated( model As IRoomModel ) _
 			Implements IRoomsListPresenter.OnRoomUpdated
 			' find room
 			Dim room = Rooms.FirstOrDefault( Function( r ) r.Model.Id = model.Id )
 			If room Is Nothing
-				ShowStaticBottomNotification(Start.MainWindow.Models.StaticNotificationType.Warning,
-																		 $"Không tìm thấy phòng {model.Name} trong danh sách phòng để cập nhật")
+				ShowStaticBottomNotification( Start.MainWindow.Models.StaticNotificationType.Warning,
+				                              $"Không tìm thấy phòng {model.Name} trong danh sách phòng để cập nhật" )
 				Return
 			End If
 

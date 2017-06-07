@@ -2,9 +2,9 @@
 
 Namespace Infrastructure
 	Public Interface IRoomsListPresenter
-		Sub OnRoomAdded( model As RoomModel )
+		Sub OnRoomAdded( model As IRoomModel )
 
-		Sub OnRoomUpdated( model As RoomModel )
+		Sub OnRoomUpdated( model As IRoomModel )
 
 		Sub OnRoomRemoved( id As String )
 	End Interface

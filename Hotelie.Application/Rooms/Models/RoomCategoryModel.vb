@@ -2,6 +2,8 @@
 
 Namespace Rooms.Models
 	Public Class RoomCategoryModel
+		Implements IRoomCategoryModel
+
 		Private ReadOnly _entity As RoomCategory
 
 		Sub New( entity As RoomCategory )
@@ -12,19 +14,19 @@ Namespace Rooms.Models
 			_entity = Nothing
 		End Sub
 
-		Public Overridable ReadOnly Property Id As String
+		Public ReadOnly Property Id As String Implements IRoomCategoryModel.Id
 			Get
 				Return _entity.Id
 			End Get
 		End Property
 
-		Public Overridable ReadOnly Property Name As String
+		Public ReadOnly Property Name As String Implements IRoomCategoryModel.Name
 			Get
 				Return _entity.Name
 			End Get
 		End Property
 
-		Public Overridable ReadOnly Property UnitPrice As Decimal
+		Public ReadOnly Property UnitPrice As Decimal Implements IRoomCategoryModel.UnitPrice
 			Get
 				Return _entity.Price
 			End Get

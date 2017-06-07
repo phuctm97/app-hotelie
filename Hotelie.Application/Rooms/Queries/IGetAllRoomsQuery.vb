@@ -2,8 +2,8 @@
 
 Namespace Rooms.Queries
 	Public Interface IGetAllRoomsQuery
-		Function Execute() As IEnumerable(Of RoomModel)
+		Function Execute() As IEnumerable(Of IRoomModel)
 
-		Function ExecuteAsync() As Task(Of IEnumerable(Of RoomModel))
+		Function ExecuteAsync() As Task(Of IEnumerable(Of IRoomModel))
 	End Interface
 End Namespace

@@ -105,8 +105,8 @@ Namespace Rooms.Models
 			NotifyOfPropertyChange( Function() MaxUnitPrice )
 		End Sub
 
-		Public Function IsMatch( roomModel As RoomModel,
-		                         allCategories As ICollection(Of RoomCategoryModel),
+		Public Function IsMatch( roomModel As IRoomModel,
+		                         allCategories As ICollection(Of IRoomCategoryModel),
 		                         allStates As ICollection(Of Integer) ) As Boolean
 			Dim matchNamePrefix As Boolean = String.IsNullOrWhiteSpace( NamePrefix ) OrElse
 			                                 (roomModel.Name.ToLower().Contains( NamePrefix ))

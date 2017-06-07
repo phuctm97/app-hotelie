@@ -1,11 +1,11 @@
 ﻿Imports Caliburn.Micro
-Imports Hotelie.Application.Leases.Queries.GetLeaseData
-Imports Hotelie.Application.Leases.Queries.GetLeaseDetailData
-Imports Hotelie.Application.Leases.Queries.GetLeasesList
-Imports Hotelie.Application.Rooms.Queries.GetRoomData
+Imports Hotelie.Application.Leases.Models
+Imports Hotelie.Application.Leases.Queries
+Imports Hotelie.Application.Rooms.Models
 Imports Hotelie.Presentation.Common.Controls
 Imports Hotelie.Presentation.Common.Infrastructure
 Imports Hotelie.Presentation.Infrastructure
+Imports Hotelie.Presentation.Rooms.Models
 
 Namespace Leases.ViewModels
 	Public Class ScreenLeasesListViewModel
@@ -14,108 +14,86 @@ Namespace Leases.ViewModels
 		Implements IRoomPresenter
 
 		' Dependencies
-		Private ReadOnly _getLeasesListQuery As IGetLeasesListQuery
+		Private ReadOnly _getAllLeasesQuery As IGetAllLeasesQuery
 
-		' Bind
-		Public ReadOnly Property Leases As IObservableCollection(Of LeasesListItemModel)
-
-		Public Sub New( getLeasesListQuery As IGetLeasesListQuery )
-			_getLeasesListQuery = getLeasesListQuery
+		Public Sub New( getAllLeasesQuery As IGetAllLeasesQuery )
+			_getAllLeasesQuery = getAllLeasesQuery
 			CType(Me, IRoomPresenter).RegisterInventory()
 			CType(Me, ILeasesListPresenter).RegisterInventory()
 
-			Leases = New BindableCollection(Of LeasesListItemModel)()
+			Leases = New BindableCollection(Of ILeaseModel)()
 		End Sub
 
 		Public Sub Init()
 			InitLeases()
 		End Sub
 
-		Public Async Function InitAsync() As Task
-			Await InitLeasesAsync()
-		End Function
-
 		Private Sub InitLeases()
 			Leases.Clear()
-			Leases.AddRange( _getLeasesListQuery.Execute() )
+			Leases.AddRange( _getAllLeasesQuery.Execute() )
 		End Sub
 
 		Private Async Function InitLeasesAsync() As Task
 			Leases.Clear()
-			Leases.AddRange( Await _getLeasesListQuery.ExecuteAsync() )
+			Leases.AddRange( Await _getAllLeasesQuery.ExecuteAsync() )
 		End Function
 
+		' Bind models
+
+		Public ReadOnly Property Leases As IObservableCollection(Of ILeaseModel)
+
 		' Infrastructure
-		Public Sub OnLeaseAdded( model As LeaseModel ) Implements ILeasesListPresenter.OnLeaseAdded
-			If Leases.Any( Function( l ) l.Id = model.Id )
-				Throw New DuplicateWaitObjectException()
+
+		Public Sub OnLeaseAdded( model As ILeaseModel ) Implements ILeasesListPresenter.OnLeaseAdded
+			Dim lease = Leases.FirstOrDefault( Function( l ) l.Id = model.Id )
+			If lease IsNot Nothing
+				ShowStaticTopNotification( Start.MainWindow.Models.StaticNotificationType.Warning,
+				                           "Tìm thấy phiếu thuê phòng cùng id trong danh sách" )
+				Leases.Remove( lease )
 			End If
 
 			' add new lease item
-			Dim leaseListItem = New LeasesListItemModel With {
-				    .Id = model.Id,
-				    .CheckinDate = model.CheckinDate,
-				    .ExpectedCheckoutDate = model.ExpectedCheckoutDate,
-				    .RoomName = model.Room.Name,
-				    .RoomCategoryName = model.Room.Category.Name,
-				    .TotalExpense = 0}
-
-			' add lease details
-			For Each detailModel As LeaseDetailModel In model.Details
-				leaseListItem.Details.Add( New LeasesListItemDetailModel With {
-					                         .CustomerName = detailModel.CustomerName} )
-			Next
-
-			Leases.Add( leaseListItem )
+			Leases.Add( lease )
 		End Sub
 
-		Public Sub OnLeaseUpdated( model As LeaseModel ) Implements ILeasesListPresenter.OnLeaseUpdated
+		Public Sub OnLeaseUpdated( model As ILeaseModel ) Implements ILeasesListPresenter.OnLeaseUpdated
 			Dim leaseToUpdate = Leases.FirstOrDefault( Function( l ) l.Id = model.Id )
-			If IsNothing( leaseToUpdate ) Then Throw New EntryPointNotFoundException()
+			If IsNothing( leaseToUpdate )
+				ShowStaticBottomNotification( Start.MainWindow.Models.StaticNotificationType.Warning,
+				                              "Không tìm thấy phiếu thuê phòng {model.Id} trong danh sách để cập nhật" )
+				Return
+			End If
 
 			' update lease item
-			leaseToUpdate.CheckinDate = model.CheckinDate
-			leaseToUpdate.ExpectedCheckoutDate = model.ExpectedCheckoutDate
-			leaseToUpdate.RoomName = model.Room.Name
-			leaseToUpdate.RoomCategoryName = model.Room.Category.Name
-			leaseToUpdate.TotalExpense = 0
-
-			' update and add lease details
-			For Each detailModel As LeaseDetailModel In model.Details
-				Dim item = leaseToUpdate.Details.FirstOrDefault( Function( i ) i.Id = detailModel.Id )
-				If IsNothing( item )
-					item = New LeasesListItemDetailModel With {.Id = detailModel.Id, .CustomerName = detailModel.CustomerName}
-					leaseToUpdate.Details.Add( item )
-				Else
-					item.CustomerName = detailModel.CustomerName
-				End If
-			Next
-
-			' delete old details
-			Dim itemDetailsToDelete = New List(Of LeasesListItemDetailModel)()
-			For Each itemDetail As LeasesListItemDetailModel In leaseToUpdate.Details
-				If Not model.Details.Any( Function( d ) d.Id = itemDetail.Id )
-					itemDetailsToDelete.Add( itemDetail )
-				End If
-			Next
-			For Each itemDetailToDelete As LeasesListItemDetailModel In itemDetailsToDelete
-				leaseToUpdate.Details.Remove( itemDetailToDelete )
-			Next
+			Leases( Leases.IndexOf( leaseToUpdate ) ) = model
 		End Sub
 
 		Public Sub OnLeaseRemoved( id As String ) Implements ILeasesListPresenter.OnLeaseRemoved
 			Dim leaseToRemove = Leases.FirstOrDefault( Function( l ) l.Id = id )
-			If IsNothing( leaseToRemove ) Then Throw New EntryPointNotFoundException()
+			If IsNothing( leaseToRemove )
+				ShowStaticBottomNotification( Start.MainWindow.Models.StaticNotificationType.Warning,
+				                              "Không tìm thấy phiếu thuê vừa xóa trong danh sách để cập nhật" )
+				Return
+			End If
 
 			Leases.Remove( leaseToRemove )
 		End Sub
 
-		Public Sub OnRoomUpdated( model As RoomModel ) Implements IRoomPresenter.OnRoomUpdated
-			Dim itemToUpdate = Leases.FirstOrDefault( Function( l ) l.RoomId = model.Id )
-			If IsNothing( itemToUpdate ) Then Return
+		Public Sub OnRoomUpdated( model As IRoomModel ) Implements IRoomPresenter.OnRoomUpdated
+			Dim leaseToUpdate = Leases.FirstOrDefault( Function( l ) l.Room.Id = model.Id )
+			If IsNothing( leaseToUpdate ) Then Return
 
-			itemToUpdate.RoomName = model.Name
-			itemToUpdate.RoomCategoryName = model.Category.Name
+			' if lease is updatable, update it room
+			Dim updatableLease = CType(leaseToUpdate, UpdatableLeaseModel)
+			If updatableLease IsNot Nothing
+				updatableLease.Room = model
+				Return
+			End If
+
+			' create new lease with new room model
+			updatableLease = New UpdatableLeaseModel( leaseToUpdate )
+			updatableLease.Room = model
+			Leases( Leases.IndexOf( leaseToUpdate ) ) = updatableLease
 		End Sub
 	End Class
 End Namespace

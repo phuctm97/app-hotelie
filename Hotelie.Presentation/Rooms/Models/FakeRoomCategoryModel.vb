@@ -2,24 +2,24 @@
 
 Namespace Rooms.Models
 	Public Class FakeRoomCategoryModel
-		Inherits RoomCategoryModel
+		Implements IRoomCategoryModel
 
 		Public Sub New()
 		End Sub
 
-		Public Overrides ReadOnly Property Id As String
+		Public ReadOnly Property Id As String Implements IRoomCategoryModel.Id
 			Get
 				Return String.Empty
 			End Get
 		End Property
 
-		Public Overrides ReadOnly Property Name As String
+		Public ReadOnly Property Name As String Implements IRoomCategoryModel.Name
 			Get
 				Return "Tất cả"
 			End Get
 		End Property
 
-		Public Overrides ReadOnly Property UnitPrice As Decimal
+		Public ReadOnly Property UnitPrice As Decimal Implements IRoomCategoryModel.UnitPrice
 			Get
 				Return - 1
 			End Get
