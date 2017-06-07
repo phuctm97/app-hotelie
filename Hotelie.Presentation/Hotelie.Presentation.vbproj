@@ -201,6 +201,10 @@
     <Compile Include="Rooms\Views\RoomsWorkspaceView.xaml.vb">
       <DependentUpon>RoomsWorkspaceView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Rules\Views\ScreenChangeRulesViewModel.vb" />
+    <Compile Include="Rules\Views\ScreenChangeRulesView.xaml.vb">
+      <DependentUpon>ScreenChangeRulesView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Start\AppBootstrapper.vb" />
     <Compile Include="Start\LoginShell\ViewModels\ScreenLoginViewModel.vb" />
     <Compile Include="Start\LoginShell\ViewModels\LoginShellCommandsBarViewModel.vb" />
@@ -351,6 +355,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Rules\Views\ScreenChangeRulesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Start\LoginShell\Views\ScreenLoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -398,6 +406,9 @@
     <Resource Include="Resources\Icons\icon.ico" />
     <Resource Include="Resources\Icons\icon.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Reports\" />
+    <Folder Include="Rules\ViewModel\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

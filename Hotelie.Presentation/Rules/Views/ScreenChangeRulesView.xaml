@@ -1,0 +1,221 @@
+﻿<UserControl x:Class="Rules.Views.ScreenChangeRulesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Hotelie.Presentation"
+             xmlns:commonConverters="clr-namespace:Hotelie.Presentation.Common.Converters"
+             xmlns:viewModels="clr-namespace:Hotelie.Presentation.Bills.ViewModels"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="700" d:DesignWidth="1024">
+    <!--Resources-->
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <commonConverters:DecimalToCurrencyStringConverter x:Key="DecimalToCurrencyStringConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <!--Content-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--Title bar-->
+        <materialDesign:ColorZone Grid.Row="0" Mode="Accent"
+                                  materialDesign:ShadowAssist.ShadowDepth="Depth2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="72" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!--Close button-->
+                <Button Grid.Row="0" Grid.Column="0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="16 24 0 0" Style="{DynamicResource MaterialDesignToolButton}"
+                        cal:Message.Attach="PreviewExitAsync">
+                    <materialDesign:PackIcon Width="24" Height="24"
+                                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                             Kind="Close" />
+                </Button>
+
+                <!--Content-->
+                <DockPanel Grid.Row="0" Grid.Column="1" Margin="0 24 0 8">
+                    <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               FontSize="36" FontWeight="Light"
+                               Text="THAY ĐỔI QUY ĐỊNH" />
+
+                    <!--Save button-->
+                    <Button DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
+                            Margin="8 0 16 0" Padding="8" Height="Auto"
+                            Style="{DynamicResource MaterialDesignToolButton}"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            FontSize="18"
+                            Content="LƯU"
+                            cal:Message.Attach="PreviewSaveAsync" />
+                </DockPanel>
+
+                <!--Content-->
+                <DockPanel Grid.Row="1" Grid.Column="1" Margin="0 0 0 20">
+                    <!--Username-->
+                    <StackPanel Margin="0 0 0 0" Orientation="Horizontal">
+                        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   FontSize="15"
+                                   Opacity="0.7"
+                                   Text="THỰC HIỆN" Margin="0 0 8 0" />
+                        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   FontSize="15"
+                                   Opacity="0.9"
+                                   Text="USERNAME" />
+                    </StackPanel>
+                </DockPanel>
+            </Grid>
+        </materialDesign:ColorZone>
+
+        <ScrollViewer Grid.Row="1" Margin="4 0 4 0" HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="16 24 16 0">
+                    <TextBlock Text="Mỗi phòng cho phép có tối đa" IsEnabled="False"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                               FontSize="20" Margin="0 0 0 4" />
+                    <TextBox Margin="8 0 8 4" HorizontalAlignment="Left"
+                             Text="25" FontWeight="Medium"
+                             FontSize="28" />
+                    <TextBlock Text="khách hàng." IsEnabled="False"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                               FontSize="20" Margin="0 0 0 4" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="16 24 16 0">
+                    <TextBlock Text="Khi có nhiều hơn" IsEnabled="False"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                               FontSize="20" Margin="0 0 0 4" />
+                    <TextBlock Text="2" IsEnabled="False" FontWeight="Medium"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                               FontSize="24" Margin="6 0 6 6" />
+                    <TextBlock Text="khách hàng trong phòng, phụ thu thêm" IsEnabled="False"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                               FontSize="20" Margin="0 0 0 4" />
+                    <TextBox Margin="8 0 8 4" HorizontalAlignment="Left"
+                             Text="25" FontWeight="Medium"
+                             FontSize="28" />
+                    <TextBlock Text="%." IsEnabled="False"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                               FontSize="20" Margin="0 0 0 4" />
+                </StackPanel>
+                <StackPanel Margin="16 24 16 0" Orientation="Horizontal">
+                    
+                    <StackPanel Margin="0 0 32 0">
+                        <StackPanel Orientation="Horizontal" Margin="0 0 0 4">
+                            <TextBlock Text="Danh sách loại phòng" IsEnabled="False"
+                                       Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                                       FontSize="20" VerticalAlignment="Center" />
+                            <Button Style="{DynamicResource MaterialDesignFloatingActionButton}" Width="32" Height="32"
+                                    Margin="8 0 0 0"
+                                    cal:Message.Attach="AddEmptyDetail">
+                                <materialDesign:PackIcon Kind="Plus" />
+                            </Button>
+                        </StackPanel>
+                        <DataGrid Width="450" HorizontalAlignment="Left"
+                                  CanUserSortColumns="True"
+                                  CanUserAddRows="True"
+                                  CanUserDeleteRows="True"
+                                  CanUserResizeColumns="True" AutoGenerateColumns="False"
+                                  materialDesign:DataGridAssist.CellPadding="13 8 8 8"
+                                  materialDesign:DataGridAssist.ColumnHeaderPadding="8"
+                                  ItemsSource="{Binding Details}"
+                                  FontSize="20">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn
+                                    EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}">
+                                    <DataGridTextColumn.Header>
+                                        <TextBlock Text="Loại phòng" FontSize="20" FontWeight="Bold" />
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn
+                                    EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}">
+                                    <DataGridTextColumn.Header>
+                                        <TextBlock Text="Đơn giá" FontSize="20" FontWeight="Bold" />
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+                                <DataGridTemplateColumn>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Command="Delete" Style="{DynamicResource MaterialDesignToolButton}">
+                                                <materialDesign:PackIcon Kind="Close" />
+                                            </Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0 0 0 4">
+                            <TextBlock Text="Danh sách loại khách" IsEnabled="False"
+                                       Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                                       FontSize="20" VerticalAlignment="Center" />
+                            <Button Style="{DynamicResource MaterialDesignFloatingActionButton}" Width="32" Height="32"
+                                    Margin="8 0 0 0"
+                                    cal:Message.Attach="AddEmptyDetail">
+                                <materialDesign:PackIcon Kind="Plus" />
+                            </Button>
+                        </StackPanel>
+                        <DataGrid Width="450" HorizontalAlignment="Left"
+                                  CanUserSortColumns="True"
+                                  CanUserAddRows="True"
+                                  CanUserDeleteRows="True"
+                                  CanUserResizeColumns="True" AutoGenerateColumns="False"
+                                  materialDesign:DataGridAssist.CellPadding="13 8 8 8"
+                                  materialDesign:DataGridAssist.ColumnHeaderPadding="8"
+                                  ItemsSource="{Binding Details}"
+                                  FontSize="20">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn
+                                    EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}">
+                                    <DataGridTextColumn.Header>
+                                        <TextBlock Text="Loại khách" FontSize="20" FontWeight="Bold" />
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn
+                                    EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}">
+                                    <DataGridTextColumn.Header>
+                                        <TextBlock Text="Hệ số" FontSize="20" FontWeight="Bold" />
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+                                <DataGridTemplateColumn>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Command="Delete" Style="{DynamicResource MaterialDesignToolButton}">
+                                                <materialDesign:PackIcon Kind="Close" />
+                                            </Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

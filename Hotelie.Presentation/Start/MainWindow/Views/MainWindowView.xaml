@@ -62,7 +62,7 @@
                                           Grid.Row="0"
                                           Height="76"
                                           materialDesign:ShadowAssist.ShadowDepth="Depth2"
-                                          Mode="PrimaryDark"
+                                          Mode="{Binding TitleMode}"
                                           MouseLeftButtonDown="OnTitleBarLeftMouseDown"
                                           MouseDoubleClick="OnTitleBarMouseDoubleClick">
                     <DockPanel>

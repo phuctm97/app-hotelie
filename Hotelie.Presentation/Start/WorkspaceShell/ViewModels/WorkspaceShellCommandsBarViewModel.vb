@@ -25,5 +25,9 @@ Namespace Start.WorkspaceShell.ViewModels
 			IoC.Get(Of IMainWindow).SwitchShell("login-shell")
 		End Sub
 
+		Public Sub PreviewNavigateToScreenChangeRules()
+			ParentShell.NavigateToScreenChangeRules()
+		End Sub
+
 	End Class
 End Namespace
