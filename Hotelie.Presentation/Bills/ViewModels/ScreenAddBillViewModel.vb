@@ -290,7 +290,7 @@ Namespace Bills.ViewModels
 			End If
 		End Sub
 
-		Private Async Function OnSaveSuccessAsync( newId As String ) As Task
+		Private Function OnSaveSuccessAsync( newId As String ) As Task
 			[Exit]()
 		End Function
 

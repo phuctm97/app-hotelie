@@ -16,7 +16,7 @@ Namespace Leases.ViewModels
 		' Dependencies
 		Private ReadOnly _getLeasesListQuery As IGetLeasesListQuery
 
-		' Data
+		' Bind
 		Public ReadOnly Property Leases As IObservableCollection(Of LeasesListItemModel)
 
 		Public Sub New( getLeasesListQuery As IGetLeasesListQuery )
