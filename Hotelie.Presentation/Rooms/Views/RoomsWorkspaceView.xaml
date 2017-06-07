@@ -13,10 +13,10 @@
 
         <materialDesign:TransitionerSlide>
             <materialDesign:TransitionerSlide.BackwardWipe>
-                <materialDesign:CircleWipe />
+                <materialDesign:SlideOutWipe />
             </materialDesign:TransitionerSlide.BackwardWipe>
             <materialDesign:TransitionerSlide.ForwardWipe>
-                <materialDesign:CircleWipe />
+                <materialDesign:SlideOutWipe />
             </materialDesign:TransitionerSlide.ForwardWipe>
 
             <ContentControl cal:View.Model="{Binding ScreenRoomsList}" />
@@ -24,20 +24,20 @@
 
         <materialDesign:TransitionerSlide>
             <materialDesign:TransitionerSlide.BackwardWipe>
-                <materialDesign:CircleWipe />
+                <materialDesign:SlideOutWipe />
             </materialDesign:TransitionerSlide.BackwardWipe>
             <materialDesign:TransitionerSlide.ForwardWipe>
-                <materialDesign:CircleWipe />
+                <materialDesign:SlideOutWipe />
             </materialDesign:TransitionerSlide.ForwardWipe>
             <ContentControl cal:View.Model="{Binding ScreenRoomDetail}" />
         </materialDesign:TransitionerSlide>
 
         <materialDesign:TransitionerSlide>
             <materialDesign:TransitionerSlide.BackwardWipe>
-                <materialDesign:CircleWipe />
+                <materialDesign:SlideOutWipe />
             </materialDesign:TransitionerSlide.BackwardWipe>
             <materialDesign:TransitionerSlide.ForwardWipe>
-                <materialDesign:CircleWipe />
+                <materialDesign:SlideOutWipe />
             </materialDesign:TransitionerSlide.ForwardWipe>
             <ContentControl cal:View.Model="{Binding ScreenAddRoom}" />
         </materialDesign:TransitionerSlide>

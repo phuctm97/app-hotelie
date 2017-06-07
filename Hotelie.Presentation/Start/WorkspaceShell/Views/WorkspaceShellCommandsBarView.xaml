@@ -26,9 +26,8 @@
 
             <!--Tab selects-->
             <ListBox DockPanel.Dock="Right" HorizontalAlignment="Right"
-                     Background="{DynamicResource PrimaryHueDarkBrush}"
-                     ItemsSource="{Binding Path=Parent.Items}"
-                     SelectedItem="{Binding Path=Parent.ActiveItem, Mode=TwoWay}">
+                     ItemsSource="{Binding Path=Parent.Workspaces}"
+                     SelectedIndex="{Binding Path=Parent.DisplayWorkspaceCode, Mode=TwoWay}">
 
                 <!--items container-->
                 <ListBox.ItemsPanel>
@@ -40,7 +39,6 @@
                 <!--item style-->
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
-                        <Setter Property="Background" Value="{DynamicResource PrimaryHueDarkBrush}" />
                         <Setter Property="BorderThickness" Value="0" />
                         <Setter Property="FontSize" Value="13" />
                         <Setter Property="FontWeight" Value="Bold" />
@@ -140,7 +138,7 @@
                     </Button>
 
                     <!--Settings-->
-                    <Button>
+                    <Button cal:Message.Attach="NavigateToScreenChangeRules">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Settings"
                                                      VerticalAlignment="Center"
@@ -151,7 +149,7 @@
                     </Button>
 
                     <!--Log out-->
-                    <Button cal:Message.Attach="PreviewLogout">
+                    <Button cal:Message.Attach="Logout">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Logout"
                                                      VerticalAlignment="Center"

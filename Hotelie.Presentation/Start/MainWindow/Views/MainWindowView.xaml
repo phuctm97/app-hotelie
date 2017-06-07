@@ -8,6 +8,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Icon="/Resources/Icons/icon.ico"
         Title="{Binding DisplayName}"
         MinHeight="700" Height="{Binding Width}"
         MinWidth="1024" Width="{Binding Height}"
@@ -62,7 +63,7 @@
                                           Grid.Row="0"
                                           Height="76"
                                           materialDesign:ShadowAssist.ShadowDepth="Depth2"
-                                          Mode="PrimaryDark"
+                                          Mode="{Binding TitleMode}"
                                           MouseLeftButtonDown="OnTitleBarLeftMouseDown"
                                           MouseDoubleClick="OnTitleBarMouseDoubleClick">
                     <DockPanel>

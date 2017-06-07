@@ -5,10 +5,12 @@ Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
 Imports Hotelie.Presentation.Leases.ViewModels
 Imports Hotelie.Presentation.Rooms.ViewModels
+Imports Hotelie.Presentation.Rules.ViewModels
+Imports MaterialDesignThemes.Wpf
 
 Namespace Start.WorkspaceShell.ViewModels
 	Public Class WorkspaceShellViewModel
-		Inherits Conductor(Of IScreen).Collection.OneActive
+		Inherits Screen
 		Implements IShell
 		Implements INeedWindowModals
 
@@ -16,6 +18,8 @@ Namespace Start.WorkspaceShell.ViewModels
 		Private ReadOnly _authentication As IAuthentication
 
 		Private _activeWorkspace As IScreen
+		Private _displayWorkspaceCode As Integer
+		Private _displayCode As Integer
 
 		' Parent window
 		Public Property ParentWindow As IMainWindow Implements IChild(Of IMainWindow).Parent
@@ -27,53 +31,121 @@ Namespace Start.WorkspaceShell.ViewModels
 			End Set
 		End Property
 
-		' Workspaces
-		Public Property ActiveWorkspace As IScreen
-			Get
-				Return _activeWorkspace
-			End Get
-			Set
-				If Equals( Value, _activeWorkspace ) Then Return
-				_activeWorkspace = value
-				NotifyOfPropertyChange( Function() ActiveWorkspace )
-			End Set
-		End Property
-
-		Protected Overrides Sub ChangeActiveItem( newItem As IScreen,
-		                                          closePrevious As Boolean )
-			MyBase.ChangeActiveItem( newItem, closePrevious )
-
-			ActiveWorkspace = ActiveItem
-		End Sub
-
 		' Initialization
 		Public Sub New( authentication As IAuthentication )
 			_authentication = authentication
 
-			CommandsBar = New WorkspaceShellCommandsBarViewModel( Me )
-
 			DisplayName = "Bàn làm việc"
 
-			' Add all screens
-			Items.Add( IoC.Get(Of RoomsWorkspaceViewModel)() )
-			Items.Add( IoC.Get(Of LeasesWorkspaceViewModel)() )
-			Items.Add( IoC.Get(Of BillsWorkspaceViewModel)() )
+			' load command bar
+			CommandsBar = New WorkspaceShellCommandsBarViewModel( Me )
+
+			' load workspace
+			WorkspaceRooms = IoC.Get(Of RoomsWorkspaceViewModel)
+			WorkspaceLeases = IoC.Get(Of LeasesWorkspaceViewModel)
+			WorkspaceBills = IoC.Get(Of BillsWorkspaceViewModel)
+			Workspaces = New BindableCollection(Of IAppScreen) From {WorkspaceRooms, WorkspaceLeases, WorkspaceBills}
+
+			' load other screens
+			ScreenChangeRules = IoC.Get(Of ScreenChangeRulesViewModel)
+			Screens = New BindableCollection(Of IAppScreen) From {
+				WorkspaceRooms, WorkspaceLeases, WorkspaceBills,
+				ScreenChangeRules}
+
+			' subcribe exited event
+			For Each screen As IAppScreen In Screens
+				AddHandler screen.OnExited, AddressOf OnScreenExited
+			Next
+
+			' initial screen
+			DisplayWorkspaceCode = 0
 		End Sub
 
-		Protected Overrides Sub OnViewReady( view As Object )
-			MyBase.OnViewReady( view )
-
-			ActivateItem( Items.FirstOrDefault() )
-		End Sub
-
-		' Display properties
+		' Display
 		Public ReadOnly Property CommandsBar As IWindowCommandsBar Implements IShell.CommandsBar
 
-		Public Sub NavigateToScreenAddLease( roomId As String )
-			Dim workspace = CType(Items( 1 ), LeasesWorkspaceViewModel)
-			ActivateItem( workspace )
+		Public ReadOnly Property WorkspaceRooms As RoomsWorkspaceViewModel
 
-			workspace.NavigateToScreenAddLease( roomId )
+		Public ReadOnly Property WorkspaceLeases As LeasesWorkspaceViewModel
+
+		Public ReadOnly Property WorkspaceBills As BillsWorkspaceViewModel
+
+		Public ReadOnly Property Workspaces As IObservableCollection(Of IAppScreen)
+
+		Public ReadOnly Property ScreenChangeRules As ScreenChangeRulesViewModel
+
+		Public ReadOnly Property Screens As IObservableCollection(Of IAppScreen)
+
+		Public Property DisplayWorkspaceCode As Integer
+			Get
+				Return _displayWorkspaceCode
+			End Get
+			Set
+				If Equals( Value, _displayWorkspaceCode ) Then Return
+				_displayWorkspaceCode = value
+				DisplayCode = DisplayWorkspaceCode
+				NotifyOfPropertyChange( Function() DisplayWorkspaceCode )
+			End Set
+		End Property
+
+		Public Property DisplayCode As Integer
+			Get
+				Return _displayCode
+			End Get
+			Set
+				If Equals( Value, _displayCode ) Then Return
+				If Value < 0 OrElse Value >= Screens.Count Then Return
+				UpdateScreenAsync( value )
+			End Set
+		End Property
+
+		' Navigation
+		Private Async Sub UpdateScreen( code As Integer )
+			Dim oldScreen = Screens( _displayCode )
+			' check can hide old screen
+			If Not Await oldScreen.CanHide()
+				Return
+			End If
+
+			' change active screen
+			_displayCode = code
+			Dim screen = Screens( _displayCode )
+
+			screen.Show()
+			NotifyOfPropertyChange( Function() DisplayCode )
+			ParentWindow.TitleMode = screen.ColorMode
+		End Sub
+
+		Private Async Sub UpdateScreenAsync( code As Integer )
+			Dim oldScreen = Screens( _displayCode )
+			' check can hide old screen
+			If Not Await oldScreen.CanHide()
+				Return
+			End If
+
+			' change active screen
+			_displayCode = code
+			Dim screen = Screens( _displayCode )
+
+			Await screen.ShowAsync()
+			NotifyOfPropertyChange( Function() DisplayCode )
+			ParentWindow.TitleMode = screen.ColorMode
+		End Sub
+
+		Private Sub OnScreenExited( sender As Object,
+		                            e As EventArgs )
+			If Not Workspaces.Contains( CType(sender, IAppScreen) )
+				DisplayCode = DisplayWorkspaceCode
+			End If
+		End Sub
+
+		Public Sub NavigateToScreenAddLease( roomId As String )
+			DisplayWorkspaceCode = 1
+			WorkspaceLeases.NavigateToScreenAddLease( roomId )
+		End Sub
+
+		Public Sub NavigateToScreenChangeRules()
+			DisplayCode = 3
 		End Sub
 
 		' Closing
@@ -90,6 +162,8 @@ Namespace Start.WorkspaceShell.ViewModels
 		End Sub
 
 		Protected Overrides Sub OnDeactivate( close As Boolean )
+			ParentWindow.TitleMode = ColorZoneMode.PrimaryDark
+
 			MyBase.OnDeactivate( close )
 
 			If close

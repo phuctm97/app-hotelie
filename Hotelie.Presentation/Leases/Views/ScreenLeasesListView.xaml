@@ -22,10 +22,8 @@
             </ResourceDictionary.MergedDictionaries>
 
             <commonConverters:DateTimeToShortDateStringConverter x:Key="DateTimeToShortDateStringConverter" />
-            <converters:LeaseIdStringDisplayConverter x:Key="LeaseIdStringDisplayConverter" />
             <converters:TotalExpenseDisplayConverter x:Key="TotalExpenseDisplayConverter" />
             <converters:NumberOfUsedDaysDisplayConverters x:Key="NumberOfUsedDaysDisplayConverters" />
-            <converters:NumberOfCustomersDisplayConverters x:Key="NumberOfCustomersDisplayConverters" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -89,9 +87,14 @@
                                             <StackPanel Grid.Row="0"
                                                         Margin="16 24 16 0">
                                                 <!--Id-->
-                                                <TextBlock Style="{DynamicResource MaterialDesignHeadlineTextBlock}"
-                                                           Text="{Binding Id, Converter={StaticResource LeaseIdStringDisplayConverter}}"
-                                                           Margin="0 0 8 0" />
+                                                <StackPanel Orientation="Horizontal" Margin="0 0 8 0">
+                                                    <TextBlock
+                                                        Style="{DynamicResource MaterialDesignHeadlineTextBlock}"
+                                                        Text="#" />
+                                                    <TextBlock
+                                                        Style="{DynamicResource MaterialDesignHeadlineTextBlock}"
+                                                        Text="{Binding Id}" />
+                                                </StackPanel>
 
                                                 <!--Sub content-->
                                                 <StackPanel Orientation="Horizontal">
@@ -145,7 +148,8 @@
                                                             Orientation="Horizontal">
                                                     <materialDesign:PackIcon Kind="AccountMultiple"
                                                                              Margin="0 0 8 0" />
-                                                    <TextBlock Text="{Binding Path=Details, Converter={StaticResource NumberOfCustomersDisplayConverters}}" FontWeight="Light" />
+                                                    <TextBlock Text="{Binding Path=Details.Count}" FontWeight="Light" />
+                                                    <TextBlock Text=" người" FontWeight="Light" />
                                                 </StackPanel>
 
                                                 <!--Checkin date-->
@@ -212,8 +216,8 @@
                                                     HorizontalAlignment="Left"
                                                     Margin="8 4 4 8"
                                                     Style="{DynamicResource MaterialDesignFlatButton}"
-                                                    Content="CHI TIẾT" 
-                                                    cal:Message.Attach="NavigateToScreenLeaseDetailAsync($dataContext)"/>
+                                                    Content="CHI TIẾT"
+                                                    cal:Message.Attach="NavigateToScreenLeaseDetail($dataContext)" />
                                             <Button DockPanel.Dock="Left"
                                                     HorizontalAlignment="Left"
                                                     Margin="15 4 4 8"
@@ -239,7 +243,7 @@
         <!--Add button-->
         <Button Grid.Row="2" Style="{DynamicResource MaterialDesignFloatingActionAccentButton}"
                 HorizontalAlignment="Right"
-                ToolTip="Thêm phòng"
+                ToolTip="Lập phiếu thuê phòng mới"
                 Margin="0 -119 32 0"
                 cal:Message.Attach="NavigateToScreenAddLease">
             <materialDesign:PackIcon Width="24" Height="24"

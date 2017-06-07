@@ -20,7 +20,13 @@ Namespace Common.Converters
 		                             targetType As Type,
 		                             parameter As Object,
 		                             culture As CultureInfo ) As Object Implements IValueConverter.ConvertBack
-			Throw New NotImplementedException()
+			Dim s = CType(value, String)
+			If String.IsNullOrWhiteSpace( s ) Then Return 0
+
+			Dim x As Decimal = 0
+			Decimal.TryParse( s, x )
+
+			Return x
 		End Function
 	End Class
 End Namespace

@@ -17,7 +17,6 @@
         <ResourceDictionary>
             <commonConverters:DecimalToCurrencyStringConverter x:Key="DecimalToCurrencyStringConverter" />
             <commonConverters:DateTimeToShortDateStringConverter x:Key="DateTimeToShortDateStringConverter" />
-            <converters:LeaseIdStringDisplayConverter x:Key="LeaseIdStringDisplayConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -46,14 +45,14 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Margin="16 24 0 0" Style="{DynamicResource MaterialDesignToolButton}"
-                        cal:Message.Attach="PreviewExitAsync">
+                        cal:Message.Attach="ExitAsync">
                     <materialDesign:PackIcon Width="24" Height="24"
                                              Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                                              Kind="KeyboardBackspace" />
                 </Button>
 
                 <!--Content-->
-                <DockPanel Grid.Row="0" Grid.Column="1" Margin="0 24 0 0">
+                <DockPanel Grid.Row="0" Grid.Column="1" Margin="0 24 0 8">
                     <!--Room name-->
                     <Button HorizontalAlignment="Left" VerticalAlignment="Center"
                             Content="{Binding Path=Room.Name}" />
@@ -61,7 +60,7 @@
                     <!--Lease Id-->
                     <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left"
                                VerticalAlignment="Center"
-                               Margin="16 0 0 4"
+                               Margin="16 0 0 0"
                                FontSize="36" FontWeight="Light"
                                Text="PHIẾU THUÊ PHÒNG MỚI" />
 
@@ -72,7 +71,7 @@
                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                             FontSize="18"
                             Content="LƯU"
-                            cal:Message.Attach="PreviewSaveAsync" />
+                            cal:Message.Attach="SaveAsync" />
                 </DockPanel>
 
                 <!--Content-->
@@ -154,9 +153,15 @@
 
                 <!--Details-->
                 <StackPanel Margin="16 24 16 0">
-                    <TextBlock Text="Danh sách khách hàng" IsEnabled="False"
-                               Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                               FontSize="15" Margin="0 0 0 4" />
+                    <StackPanel Orientation="Horizontal" Margin="0 0 0 4">
+                        <TextBlock Text="Danh sách khách hàng" IsEnabled="False"
+                                   Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                                   FontSize="15" VerticalAlignment="Center"/>
+                        <Button Style="{DynamicResource MaterialDesignFloatingActionButton}" Width="24" Height="24" Margin="8 0 0 0"
+                                cal:Message.Attach="AddEmptyDetail">
+                            <materialDesign:PackIcon Kind="Plus" />
+                        </Button>
+                    </StackPanel>
                     <DataGrid CanUserSortColumns="False"
                               CanUserAddRows="{Binding CanAddDetail}"
                               CanUserDeleteRows="{Binding CanDeleteDetail}"
@@ -165,23 +170,17 @@
                               materialDesign:DataGridAssist.ColumnHeaderPadding="8"
                               ItemsSource="{Binding Details}"
                               FontSize="15">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="SizeChanged">
-                                <cal:ActionMessage MethodName="CheckNumberOfDetails" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-
                         <DataGrid.Columns>
                             <DataGridTextColumn
                                 EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}"
-                                Binding="{Binding CustomerLicenseId}">
+                                Binding="{Binding CustomerLicenseId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <DataGridTextColumn.Header>
                                     <TextBlock Text="Số giấy tờ" FontSize="18" FontWeight="Bold" />
                                 </DataGridTextColumn.Header>
                             </DataGridTextColumn>
                             <DataGridTextColumn
                                 EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}"
-                                Binding="{Binding CustomerName}">
+                                Binding="{Binding CustomerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <DataGridTextColumn.Header>
                                     <TextBlock Text="Tên khách hàng" FontSize="18" FontWeight="Bold" />
                                 </DataGridTextColumn.Header>
@@ -190,14 +189,14 @@
                                 ItemsSource="{Binding Source={x:Static viewModels:ScreenLeaseDetailViewModel.CustomerCategories}}"
                                 DisplayMemberPath="Name"
                                 SelectedValuePath="Id"
-                                SelectedItemBinding="{Binding CustomerCategory}">
+                                SelectedItemBinding="{Binding CustomerCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <materialDesign:MaterialDataGridComboBoxColumn.Header>
                                     <TextBlock Text="Loại khách" FontSize="18" FontWeight="Bold" />
                                 </materialDesign:MaterialDataGridComboBoxColumn.Header>
                             </materialDesign:MaterialDataGridComboBoxColumn>
                             <DataGridTextColumn
                                 EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}"
-                                Binding="{Binding CustomerAddress}">
+                                Binding="{Binding CustomerAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <DataGridTextColumn.Header>
                                     <TextBlock Text="Địa chỉ" FontSize="18" FontWeight="Bold" />
                                 </DataGridTextColumn.Header>

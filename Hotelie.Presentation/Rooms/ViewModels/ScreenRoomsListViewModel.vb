@@ -14,6 +14,7 @@ Namespace Rooms.ViewModels
 		           INeedWindowModals,
 		           IChild(Of RoomsWorkspaceViewModel)
 
+		' Backing fields
 		Private _rooms As IObservableCollection(Of RoomsListItemModel)
 		Private _filterRoomNamePrefix As String
 		Private _filterRoomCategory As RoomCategoriesListItemModel
@@ -29,6 +30,7 @@ Namespace Rooms.ViewModels
 		Private ReadOnly _removeRoomCommand As IRemoveRoomCommand
 		Private ReadOnly _inventory As IInventory
 
+		' Parent
 		Public Property Parent As Object Implements IChild.Parent
 
 		Public Property ParentWorkspace As RoomsWorkspaceViewModel Implements IChild(Of RoomsWorkspaceViewModel).Parent
@@ -40,7 +42,7 @@ Namespace Rooms.ViewModels
 			End Set
 		End Property
 
-		' Data
+		' Binding data
 		Public Property Rooms As IObservableCollection(Of RoomsListItemModel)
 			Get
 				Return _rooms
@@ -186,7 +188,7 @@ Namespace Rooms.ViewModels
 			IsDescendingSort = False
 		End Sub
 
-		' Filter values
+		' Binding filter values
 		Public Property FilterRoomNamePrefix As String
 			Get
 				Return _filterRoomNamePrefix
@@ -265,7 +267,7 @@ Namespace Rooms.ViewModels
 			End Set
 		End Property
 
-		' Sort values
+		' Binding sort values
 		Public Property SortingCode As Integer
 			Get
 				Return _sortingCode
@@ -290,7 +292,7 @@ Namespace Rooms.ViewModels
 			End Set
 		End Property
 
-		' Filter 
+		' Filter actions
 		Public Sub ResetFilters()
 			_filterRoomNamePrefix = String.Empty
 			NotifyOfPropertyChange( Function() FilterRoomNamePrefix )
@@ -366,7 +368,7 @@ Namespace Rooms.ViewModels
 			Next
 		End Sub
 
-		' Sort
+		' Sort actions
 		Public Sub SortRoomsList()
 			Select Case SortingCode
 				Case 0

@@ -10,9 +10,9 @@ Namespace Common.Converters
 		                         culture As CultureInfo ) As Object Implements IValueConverter.Convert
 			Dim d = CType(value, DateTime)
 
-			If d.Date = Date.Now.Date Then Return "Hôm nay"
-			If CType((d - Date.Now).TotalDays, Integer) = 1 Then Return "Ngày mai"
-			If CType((d - Date.Now).TotalDays, Integer) = 2 Then Return "Ngày mốt"
+			If d.Date = Today.Date Then Return "Hôm nay"
+			If CType((d - Today).TotalDays, Integer) = 1 Then Return "Ngày mai"
+			If CType((d - Today).TotalDays, Integer) = 2 Then Return "Ngày mốt"
 			Return d.ToShortDateString()
 		End Function
 

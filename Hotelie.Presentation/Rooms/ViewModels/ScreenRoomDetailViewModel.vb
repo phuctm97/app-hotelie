@@ -4,13 +4,14 @@ Imports Hotelie.Application.Rooms.Commands.UpdateRoom
 Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
 Imports Hotelie.Application.Rooms.Queries.GetRoomData
 Imports Hotelie.Application.Services.Infrastructure
+Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
 Imports Hotelie.Presentation.Infrastructure
 Imports Hotelie.Presentation.Start.MainWindow.Models
 
 Namespace Rooms.ViewModels
 	Public Class ScreenRoomDetailViewModel
-		Inherits PropertyChangedBase
+		Inherits AppScreenHasSavingAndDeleting
 		Implements IChild(Of RoomsWorkspaceViewModel),
 		           INeedWindowModals,
 		           IRoomPresenter
@@ -45,6 +46,7 @@ Namespace Rooms.ViewModels
 		                updateRoomCommand As IUpdateRoomCommand,
 		                removeRoomCommand As IRemoveRoomCommand,
 		                inventory As IInventory )
+			MyBase.New( MaterialDesignThemes.Wpf.ColorZoneMode.PrimaryDark )
 
 			ParentWorkspace = workspace
 			_getRoomCategoriesListQuery = getRoomCategoriesListQuery
@@ -89,7 +91,7 @@ Namespace Rooms.ViewModels
 			_originalRoomNote = _roomNote
 		End Sub
 
-		' Data
+		' Binding model
 		Public Property RoomName As String
 			Get
 				Return _roomName
@@ -134,6 +136,7 @@ Namespace Rooms.ViewModels
 			End Set
 		End Property
 
+		' Binding data
 		' ReSharper disable once CollectionNeverUpdated.Global
 		' ReSharper disable once UnassignedGetOnlyAutoProperty
 		Public ReadOnly Property RoomCategories As IObservableCollection(Of RoomCategoriesListItemModel)
@@ -190,40 +193,11 @@ Namespace Rooms.ViewModels
 			_originalRoomNote = _roomNote
 		End Sub
 
-		Public Async Sub PreviewExit()
-			If CheckForPendingChanges()
-				Dim result = Await ConfirmExit()
-
-				If Equals( result, 1 )
-					PreviewSave()
-					Return
-				ElseIf Equals( result, 2 )
-					Return
-				End If
-			End If
-
-			[Exit]()
-		End Sub
-
-		Public Async Sub PreviewExitAsync()
-			If CheckForPendingChanges()
-				Dim result = Await ConfirmExit()
-
-				If Equals( result, 1 )
-					PreviewSaveAsync()
-					Return
-				ElseIf Equals( result, 2 )
-					Return
-				End If
-			End If
-
-			[Exit]()
-		End Sub
-
-		Private Sub [Exit]()
-			ParentWorkspace.NavigateToScreenRoomsList()
-			ResetValues()
-		End Sub
+		Public Overrides ReadOnly Property IsEdited As Boolean
+			Get
+				Return CheckForPendingChanges()
+			End Get
+		End Property
 
 		Private Function CheckForPendingChanges() As Boolean
 			Return (Not String.IsNullOrEmpty( _roomId )) And
@@ -232,52 +206,25 @@ Namespace Rooms.ViewModels
 			        (Not String.Equals( _roomNote, _originalRoomNote )))
 		End Function
 
-		Private Async Function ConfirmExit() As Task(Of Integer)
-			' show dialog
-			Dim dialog = New ThreeButtonDialog( "Thoát mà không lưu các thay đổi?",
-			                                    "THOÁT",
-			                                    "LƯU & THOÁT",
-			                                    "HỦY",
-			                                    False,
-			                                    True,
-			                                    False )
-			Dim result = Await ShowDynamicWindowDialog( dialog )
+		Public Overrides Function ActualExitAsync() As Task
+			ResetValues()
 
-			If String.Equals( result, "THOÁT" ) Then Return 0
-			If String.Equals( result, "HỦY" ) Then Return 2
-			Return 1
+			ParentWorkspace.NavigateToScreenRoomsList()
+			Return MyBase.ActualExitAsync()
 		End Function
 
 		' Save
-		Public Sub PreviewSave()
-			If ValidateData()
-				Save()
+		Public Overrides Function CanSave() As Task(Of Boolean)
+			If String.IsNullOrWhiteSpace( RoomName )
+				ShowStaticBottomNotification( StaticNotificationType.Information,
+				                              "Vui lòng nhập tên phòng!" )
+				Return Task.FromResult( False )
 			End If
-		End Sub
 
-		Public Sub PreviewSaveAsync()
-			If ValidateData()
-				SaveAsync()
-			End If
-		End Sub
+			Return Task.FromResult( True )
+		End Function
 
-		Private Sub Save()
-			' try update
-			Dim err = _updateRoomCommand.Execute( _roomId, _roomName, _roomCategory.Id, _roomNote, _roomState )
-
-			If String.IsNullOrEmpty( err )
-				OnSaveSuccess()
-			Else
-				OnSaveFail( err )
-			End If
-		End Sub
-
-		Private Sub OnSaveSuccess()
-			_inventory.OnRoomUpdated( _roomId )
-			[Exit]()
-		End Sub
-
-		Private Async Sub SaveAsync()
+		Public Overrides Async Function ActualSaveAsync() As Task
 			' try update
 			ShowStaticWindowLoadingDialog()
 
@@ -290,78 +237,29 @@ Namespace Rooms.ViewModels
 			End If
 
 			CloseStaticWindowDialog()
-		End Sub
+		End Function
 
 		Private Async Function OnSaveSuccessAsync() As Task
 			Await _inventory.OnRoomUpdatedAsync( _roomId )
-			[Exit]()
+			Await ActualExitAsync()
 		End Function
 
 		Private Sub OnSaveFail( err As String )
 			ShowStaticBottomNotification( StaticNotificationType.Error, err )
 		End Sub
 
-		Private Function ValidateData() As Boolean
-			If String.IsNullOrWhiteSpace( RoomName )
-				ShowStaticBottomNotification( StaticNotificationType.Information,
-				                              "Vui lòng nhập tên phòng!" )
+		' Delete
+		Public Overrides Async Function CanDelete() As Task(Of Boolean)
+			If RoomState = 1
+				ShowStaticBottomNotification( StaticNotificationType.Information, "Không thể xóa một phòng đang được thuê" )
 				Return False
 			End If
 
-			Return True
+			Return Await MyBase.CanDelete()
 		End Function
 
-		' Delete
-		Public Async Sub PreviewDelete()
-			If Not ValidateDeleting() Then Return
-			Dim result = Await ConfirmDelete()
-
-			If Equals( result, 0 )
-				Delete()
-			End If
-		End Sub
-
-		Public Async Sub PreviewDeleteAsync()
-			If Not ValidateDeleting() Then Return
-			Dim result = Await ConfirmDelete()
-
-			If Equals( result, 0 )
-				DeleteAsync()
-			End If
-		End Sub
-
-		Private Async Function ConfirmDelete() As Task(Of Integer)
-			' show dialog
-			Dim dialog = New TwoButtonDialog( "Xóa phòng. Tiếp tục?",
-			                                  "XÓA",
-			                                  "HỦY",
-			                                  True,
-			                                  False )
-			Dim result = Await ShowDynamicWindowDialog( dialog )
-
-			If String.Equals( result, "XÓA" ) Then Return 0
-			Return 1
-		End Function
-
-		Private Sub Delete()
-			' try update
-			Dim err = _removeRoomCommand.Execute( _roomId )
-
-			If String.IsNullOrEmpty( err )
-				OnDeleteSuccess()
-			Else
-				OnDeleteFail( err )
-			End If
-		End Sub
-
-		Private Sub OnDeleteSuccess()
-			_inventory.OnRoomRemoved( _roomId )
-			[Exit]()
-		End Sub
-
-		Private Async Sub DeleteAsync()
-			If Not ValidateDeleting() Then Return
-			' try update
+		Public Overrides Async Function ActualDeleteAsync() As Task
+			' try delete
 			ShowStaticWindowLoadingDialog()
 			Dim err = Await _removeRoomCommand.ExecuteAsync( _roomId )
 
@@ -372,27 +270,18 @@ Namespace Rooms.ViewModels
 			End If
 
 			CloseStaticWindowDialog()
-		End Sub
+		End Function
 
 		Private Async Function OnDeleteSuccessAsync() As Task
 			Await _inventory.OnRoomRemovedAsync( _roomId )
-			[Exit]()
+			Await ActualExitAsync()
 		End Function
 
 		Private Sub OnDeleteFail( err As String )
 			ShowStaticBottomNotification( StaticNotificationType.Error, err )
 		End Sub
 
-		Private Function ValidateDeleting() As Boolean
-			If RoomState = 1
-				ShowStaticBottomNotification( StaticNotificationType.Information, "Không thể xóa một phòng đang được thuê" )
-				Return False
-			End If
-			Return True
-		End Function
-
 		' Infrastructure
-
 		Public Sub OnRoomUpdated( model As RoomModel ) Implements IRoomPresenter.OnRoomUpdated
 			If String.IsNullOrEmpty( _roomId ) Then Return
 			If String.IsNullOrEmpty( model.Id ) Then Return

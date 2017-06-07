@@ -126,10 +126,23 @@
       <DependentUpon>Application.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AppScreenHasSavingAndDeleting.vb" />
+    <Compile Include="Bills\Models\BillsListItemModel.vb" />
+    <Compile Include="Bills\Models\EditableBillDetailModel.vb" />
     <Compile Include="Bills\ViewModels\BillsWorkspaceViewModel.vb" />
+    <Compile Include="Bills\ViewModels\ScreenAddBillViewModel.vb" />
+    <Compile Include="Bills\ViewModels\ScreenBillsListViewModel.vb" />
     <Compile Include="Bills\Views\BillsWorkspaceView.xaml.vb">
       <DependentUpon>BillsWorkspaceView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Bills\Views\ScreenAddBillView.xaml.vb">
+      <DependentUpon>ScreenAddBillView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Bills\Views\ScreenBillsListView.xaml.vb">
+      <DependentUpon>ScreenBillsListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\AppScreen.vb" />
+    <Compile Include="Common\AppScreenHasSaving.vb" />
     <Compile Include="Common\Controls\LoadingDialog.xaml.vb">
       <DependentUpon>LoadingDialog.xaml</DependentUpon>
     </Compile>
@@ -141,9 +154,14 @@
     </Compile>
     <Compile Include="Common\Controls\WindowExtensions.vb" />
     <Compile Include="Common\Converters\BooleanToVisibilityConverter.vb" />
+    <Compile Include="Common\Converters\DateTimeToShortDateStringConverter2.vb" />
     <Compile Include="Common\Converters\DateTimeToShortDateStringConverter.vb" />
     <Compile Include="Common\Converters\DecimalToCurrencyStringConverter.vb" />
+    <Compile Include="Common\Converters\DecimalToStringConverter.vb" />
+    <Compile Include="Common\Converters\DoubleToStringConverter.vb" />
     <Compile Include="Common\Converters\StringToUpperConverter.vb" />
+    <Compile Include="Common\IAppScreen.vb" />
+    <Compile Include="Common\IAppScreenHasSaving.vb" />
     <Compile Include="Common\IMainWindow.vb" />
     <Compile Include="Common\Infrastructure\ILeasesListPresenter.vb" />
     <Compile Include="Common\Infrastructure\Inventory.vb" />
@@ -151,8 +169,7 @@
     <Compile Include="Common\Infrastructure\IRoomPresenter.vb" />
     <Compile Include="Common\IShell.vb" />
     <Compile Include="Common\IWindowCommandsBar.vb" />
-    <Compile Include="Leases\Converters\LeaseIdStringDisplayConverter.vb" />
-    <Compile Include="Leases\Converters\NumberOfCustomersDisplayConverters.vb" />
+    <Compile Include="Common\IAppScreenHasDeleting.vb" />
     <Compile Include="Leases\Converters\NumberOfUsedDaysDisplayConverters.vb" />
     <Compile Include="Leases\Converters\TotalExpenseDisplayConverter.vb" />
     <Compile Include="Leases\Models\EditableLeaseDetailModel.vb" />
@@ -192,6 +209,13 @@
     </Compile>
     <Compile Include="Rooms\Views\RoomsWorkspaceView.xaml.vb">
       <DependentUpon>RoomsWorkspaceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Rules\Models\CustomerCategoryModel.vb" />
+    <Compile Include="Rules\Models\RoomCategoryModel.vb" />
+    <Compile Include="Rules\Models\RuleModel.vb" />
+    <Compile Include="Rules\ViewModel\ScreenChangeRulesViewModel.vb" />
+    <Compile Include="Rules\Views\ScreenChangeRulesView.xaml.vb">
+      <DependentUpon>ScreenChangeRulesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Start\AppBootstrapper.vb" />
     <Compile Include="Start\LoginShell\ViewModels\ScreenLoginViewModel.vb" />
@@ -291,6 +315,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Bills\Views\ScreenAddBillView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Bills\Views\ScreenBillsListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Common\Controls\LoadingDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -332,6 +364,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Rooms\Views\RoomsWorkspaceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Rules\Views\ScreenChangeRulesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -382,6 +418,8 @@
     <Resource Include="Resources\Icons\icon.ico" />
     <Resource Include="Resources\Icons\icon.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Reports\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

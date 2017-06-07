@@ -8,7 +8,7 @@ Imports Hotelie.Presentation.Start.MainWindow.Models
 
 Namespace Rooms.ViewModels
 	Public Class ScreenAddRoomViewModel
-		Inherits PropertyChangedBase
+		Inherits AppScreenHasSaving
 		Implements IChild(Of RoomsWorkspaceViewModel),
 		           INeedWindowModals
 
@@ -32,6 +32,8 @@ Namespace Rooms.ViewModels
 		         getRoomCategoriesList As IGetRoomCategoriesListQuery,
 		         createRoomFactory As ICreateRoomFactory,
 		         inventory As IInventory )
+			MyBase.New( MaterialDesignThemes.Wpf.ColorZoneMode.PrimaryDark )
+
 			ParentWorkspace = workspace
 			_getRoomCategoriesList = getRoomCategoriesList
 			_createRoomFactory = createRoomFactory
@@ -66,7 +68,7 @@ Namespace Rooms.ViewModels
 			RoomNote = String.Empty
 		End Sub
 
-		' Data
+		' Binding model
 		Public Property RoomName As String
 			Get
 				Return _roomName
@@ -106,6 +108,7 @@ Namespace Rooms.ViewModels
 			End Get
 		End Property
 
+		' Binding data
 		' ReSharper disable once CollectionNeverUpdated.Global
 		' ReSharper disable once UnassignedGetOnlyAutoProperty
 		Public ReadOnly Property RoomCategories As IObservableCollection(Of RoomCategoriesListItemModel)
@@ -117,77 +120,37 @@ Namespace Rooms.ViewModels
 			RoomNote = String.Empty
 		End Sub
 
-		Public Async Sub PreviewExit()
-			If CheckForPendingChanges()
-				Dim result = Await ConfirmExit()
-
-				If Equals( result, 1 )
-					PreviewSave()
-					Return
-				ElseIf Equals( result, 2 )
-					Return
-				End If
-			End If
-
-			[Exit]()
-		End Sub
-
-		Private Sub [Exit]()
-			ResetValues()
-			ParentWorkspace.NavigateToScreenRoomsList()
-		End Sub
+		Public Overrides ReadOnly Property IsEdited As Boolean
+			Get
+				Return CheckForPendingChanges()
+			End Get
+		End Property
 
 		Private Function CheckForPendingChanges()
 			Return (Not String.IsNullOrWhiteSpace( RoomName )) Or
 			       (Not String.IsNullOrWhiteSpace( RoomNote ))
 		End Function
 
-		Private Async Function ConfirmExit() As Task(Of Integer)
-			' show dialog
-			Dim dialog = New ThreeButtonDialog( "Thoát mà không lưu các thay đổi?",
-			                                    "THOÁT",
-			                                    "LƯU & THOÁT",
-			                                    "HỦY",
-			                                    False,
-			                                    True,
-			                                    False )
-			Dim result = Await ShowDynamicWindowDialog( dialog )
+		Public Overrides Function ActualExitAsync() As Task
+			ResetValues()
 
-			If String.Equals( result, "THOÁT" ) Then Return 0
-			If String.Equals( result, "HỦY" ) Then Return 2
-			Return 1
+			ParentWorkspace.NavigateToScreenRoomsList()
+			Return MyBase.ActualExitAsync()
 		End Function
 
 		' Save
-		Public Sub PreviewSave()
-			If Not ValidateData() Then Return
-			Save()
-		End Sub
-
-		Public Sub PreviewSaveAsync()
-			If Not ValidateData() Then Return
-			SaveAsync()
-		End Sub
-
-		Private Sub Save()
-			' try create
-			Dim newRoomId = _createRoomFactory.Execute( RoomName, RoomCategory.Id, RoomNote )
-
-			If String.IsNullOrEmpty( newRoomId )
-				OnSaveFail()
-			Else
-				OnSaveSuccess( newRoomId )
+		Public Overrides Function CanSave() As Task(Of Boolean)
+			If String.IsNullOrWhiteSpace( RoomName )
+				IoC.Get(Of IMainWindow).ShowStaticBottomNotification( StaticNotificationType.Information,
+				                                                      "Vui lòng nhập tên phòng!" )
+				Return Task.FromResult( False )
 			End If
-		End Sub
 
-		Private Sub OnSaveSuccess( newRoomId As String )
-			_inventory.OnRoomAdded( newRoomId )
-			[Exit]()
-		End Sub
+			Return Task.FromResult( True )
+		End Function
 
-		Private Async Sub SaveAsync()
+		Public Overrides Async Function ActualSaveAsync() As Task
 			' try create
-
 			ShowStaticWindowLoadingDialog()
 			Dim newRoomId = Await _createRoomFactory.ExecuteAsync( RoomName, RoomCategory.Id, RoomNote )
 
@@ -198,25 +161,15 @@ Namespace Rooms.ViewModels
 			End If
 
 			CloseStaticWindowDialog()
-		End Sub
+		End Function
 
 		Private Async Function OnSaveSuccessAsync( newRoomId ) As Task
 			Await _inventory.OnRoomAddedAsync( newRoomId )
-			[Exit]()
+			Await ActualExitAsync()
 		End Function
 
 		Private Sub OnSaveFail()
 			ShowStaticBottomNotification( StaticNotificationType.Error, "Sự cố ngoài ý muốn. Tạo phòng thất bại!" )
 		End Sub
-
-		Private Function ValidateData() As Boolean
-			If String.IsNullOrWhiteSpace( RoomName )
-				IoC.Get(Of IMainWindow).ShowStaticBottomNotification( StaticNotificationType.Information,
-				                                                      "Vui lòng nhập tên phòng!" )
-				Return False
-			End If
-
-			Return True
-		End Function
 	End Class
 End Namespace

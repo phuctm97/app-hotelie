@@ -23,25 +23,17 @@ Namespace Start.LoginShell.ViewModels
 			InitialPassword = My.Settings.SavedPassword
 		End Sub
 
-		Public Sub PreviewLogin( username As String,
+		Public Sub Login( username As String,
 		                         password As String,
 		                         rememberAccount As Boolean )
 			If Not ValidateAccount( username, password ) Then Return
 
-			Login( username, password, rememberAccount )
+			ActualLoginAsync( username, password, rememberAccount )
 		End Sub
 
-		Public Sub PreviewLoginAsync( username As String,
-		                              password As String,
-		                              rememberAccount As Boolean )
-			If Not ValidateAccount( username, password ) Then Return
-
-			LoginAsync( username, password, rememberAccount )
-		End Sub
-
-		Private Sub Login( username As String,
-		                   password As String,
-		                   rememberAccount As Boolean )
+		Private Sub ActualLogin( username As String,
+		                         password As String,
+		                         rememberAccount As Boolean )
 			Dim err As String
 			Try
 				' try login
@@ -65,9 +57,9 @@ Namespace Start.LoginShell.ViewModels
 			End If
 		End Sub
 
-		Private Async Sub LoginAsync( username As String,
-		                              password As String,
-		                              rememberAccount As Boolean )
+		Private Async Sub ActualLoginAsync( username As String,
+		                                    password As String,
+		                                    rememberAccount As Boolean )
 			Dim err As String
 			Try
 				' try login

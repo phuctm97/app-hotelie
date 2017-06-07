@@ -1,0 +1,224 @@
+﻿<UserControl x:Class="Bills.Views.ScreenAddBillView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Hotelie.Presentation"
+             xmlns:commonConverters="clr-namespace:Hotelie.Presentation.Common.Converters"
+             xmlns:viewModels="clr-namespace:Hotelie.Presentation.Bills.ViewModels"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="700" d:DesignWidth="1024">
+    <!--Resources-->
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <commonConverters:DecimalToCurrencyStringConverter x:Key="DecimalToCurrencyStringConverter" />
+            <commonConverters:DateTimeToShortDateStringConverter2 x:Key="DateTimeToShortDateStringConverter2" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <!--Content-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--Title bar-->
+        <materialDesign:ColorZone Grid.Row="0" Mode="PrimaryDark"
+                                  materialDesign:ShadowAssist.ShadowDepth="Depth2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="72" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!--Back button-->
+                <Button Grid.Row="0" Grid.Column="0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="16 24 0 0" Style="{DynamicResource MaterialDesignToolButton}"
+                        cal:Message.Attach="PreviewExitAsync">
+                    <materialDesign:PackIcon Width="24" Height="24"
+                                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                             Kind="KeyboardBackspace" />
+                </Button>
+
+                <!--Content-->
+                <DockPanel Grid.Row="0" Grid.Column="1" Margin="0 24 0 8">
+                    <!--Room name-->
+                    <Button HorizontalAlignment="Left" VerticalAlignment="Center"
+                            Content="{Binding TotalExpense, Converter={StaticResource DecimalToCurrencyStringConverter}}" />
+
+                    <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Margin="16 0 0 0"
+                               FontSize="36" FontWeight="Light"
+                               Text="HÓA ĐƠN THANH TOÁN" />
+
+                    <!--Save button-->
+                    <Button DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
+                            Margin="8 0 16 0" Padding="8" Height="Auto"
+                            Style="{DynamicResource MaterialDesignToolButton}"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            FontSize="18"
+                            Content="LƯU"
+                            cal:Message.Attach="PreviewSaveAsync" />
+                </DockPanel>
+
+                <!--Content-->
+                <DockPanel Grid.Row="1" Grid.Column="1" Margin="0 0 0 20">
+
+                    <!--Begin day-->
+                    <StackPanel Margin="0 0 0 0" Orientation="Horizontal">
+                        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   FontSize="15"
+                                   Opacity="0.7"
+                                   Text="NGÀY LẬP" Margin="0 0 8 0" />
+                        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   FontSize="15"
+                                   Opacity="0.9"
+                                   Text="{Binding CreateDate, Converter={StaticResource DateTimeToShortDateStringConverter2}}" />
+                    </StackPanel>
+
+                    <!--Total expense-->
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   FontSize="15"
+                                   Opacity="0.7"
+                                   Text="TỔNG THÀNH TIỀN" Margin="16 0 8 0" />
+                        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   FontSize="15"
+                                   Opacity="0.9"
+                                   Text="{Binding TotalExpense, Converter={StaticResource DecimalToCurrencyStringConverter}}" />
+                    </StackPanel>
+
+                </DockPanel>
+            </Grid>
+        </materialDesign:ColorZone>
+
+        <ScrollViewer Grid.Row="1" Margin="4 0 4 0" HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!--Payer-->
+                <StackPanel Margin="16 24 16 0">
+                    <TextBlock Text="Đơn vị thanh toán" IsEnabled="False"
+                               Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                               FontSize="15" Margin="0 0 0 4" />
+                    <TextBox materialDesign:HintAssist.Hint="Nguyễn Văn A, Công ty TNHH ..."
+                             Text="{Binding PayerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             FontSize="35" />
+                </StackPanel>
+
+                <!--Address-->
+                <StackPanel Margin="16 24 16 0">
+                    <TextBlock Text="Địa chỉ" IsEnabled="False"
+                               Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                               FontSize="15" Margin="0 0 0 4" />
+                    <TextBox materialDesign:HintAssist.Hint="Số XXX, phường X, quận X, ..."
+                             TextWrapping="Wrap"
+                             AcceptsReturn="True"
+                             VerticalScrollBarVisibility="Auto"
+                             FontSize="15"
+                             Padding="0 0 4 0"
+                             Height="Auto"
+                             Text="{Binding PayerAddress, Mode=TwoWay}" />
+                </StackPanel>
+
+                <!--Details-->
+                <StackPanel Margin="16 24 16 0">
+                    <StackPanel Orientation="Horizontal" Margin="0 0 0 4">
+                        <TextBlock Text="Danh sách khách hàng" IsEnabled="False"
+                                   Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                                   FontSize="15" VerticalAlignment="Center"/>
+                        <Button Style="{DynamicResource MaterialDesignFloatingActionButton}" Width="24" Height="24" Margin="8 0 0 0"
+                                cal:Message.Attach="AddEmptyDetail">
+                            <materialDesign:PackIcon Kind="Plus" />
+                        </Button>
+                    </StackPanel>
+                    <DataGrid CanUserSortColumns="False"
+                              CanUserAddRows="True"
+                              CanUserDeleteRows="True"
+                              CanUserResizeColumns="True" AutoGenerateColumns="False"
+                              materialDesign:DataGridAssist.CellPadding="13 8 8 8"
+                              materialDesign:DataGridAssist.ColumnHeaderPadding="8"
+                              ItemsSource="{Binding Details}"
+                              FontSize="15">
+                        <DataGrid.Columns>
+                            <materialDesign:MaterialDataGridComboBoxColumn
+                                ItemsSource="{Binding Source={x:Static viewModels:ScreenAddBillViewModel.Leases}}"
+                                DisplayMemberPath="IdEx"
+                                SelectedItemBinding="{Binding Lease, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <materialDesign:MaterialDataGridComboBoxColumn.Header>
+                                    <TextBlock Text="Phiếu thuê" FontSize="18" FontWeight="Bold" />
+                                </materialDesign:MaterialDataGridComboBoxColumn.Header>
+                            </materialDesign:MaterialDataGridComboBoxColumn>
+                            <materialDesign:MaterialDataGridComboBoxColumn
+                                ItemsSource="{Binding Source={x:Static viewModels:ScreenAddBillViewModel.Rooms}}"
+                                DisplayMemberPath="Name"
+                                SelectedItemBinding="{Binding Room, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <materialDesign:MaterialDataGridComboBoxColumn.Header>
+                                    <TextBlock Text="Phòng" FontSize="18" FontWeight="Bold" />
+                                </materialDesign:MaterialDataGridComboBoxColumn.Header>
+                            </materialDesign:MaterialDataGridComboBoxColumn>
+                            <DataGridTextColumn IsReadOnly="True"
+                                                EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}"
+                                                Binding="{Binding NumberOfUsedDays, Mode=OneWay}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Số ngày sử dụng" FontSize="18" FontWeight="Bold" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn IsReadOnly="True"
+                                                EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}"
+                                                Binding="{Binding UnitPrice, Mode=OneWay, Converter={StaticResource DecimalToCurrencyStringConverter}}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Đơn giá" FontSize="18" FontWeight="Bold" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn IsReadOnly="True"
+                                                EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}"
+                                                Binding="{Binding ExtraCharge, Mode=OneWay, Converter={StaticResource DecimalToCurrencyStringConverter}}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Phụ thu" FontSize="18" FontWeight="Bold" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn IsReadOnly="True"
+                                                EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}"
+                                                Binding="{Binding TotalExpense, Mode=OneWay, Converter={StaticResource DecimalToCurrencyStringConverter}}">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Tổng thành tiền" FontSize="18" FontWeight="Bold" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Command="Delete" Style="{DynamicResource MaterialDesignToolButton}">
+                                            <materialDesign:PackIcon Kind="Close" />
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+
+                <!--Total expense-->
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="16 24 16 0">
+                    <TextBlock HorizontalAlignment="Right" Text="Tổng thành tiền:" 
+                               Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                               FontSize="32" Margin="0 0 0 4" FontWeight="Light"/>
+                    <TextBlock HorizontalAlignment="Right" Text="{Binding TotalExpense, Converter={StaticResource DecimalToCurrencyStringConverter}}" 
+                               Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                               FontSize="32" Margin="8 0 0 4" FontWeight="Bold"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+
+    </Grid>
+</UserControl>

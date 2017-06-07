@@ -1,10 +1,13 @@
 ﻿Imports Caliburn.Micro
+Imports MaterialDesignThemes.Wpf
 
 Namespace Common
 	Public Interface IMainWindow
 		Inherits IHaveDisplayName
 
 		Property Title As String
+
+		Property TitleMode As ColorZoneMode
 
 		Property Width As Double
 

@@ -1,6 +1,7 @@
 ﻿Imports Caliburn.Micro
 Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Start.MainWindow.Models
+Imports MaterialDesignThemes.Wpf
 
 Namespace Start.MainWindow.ViewModels
 	Public Class MainWindowViewModel
@@ -8,6 +9,7 @@ Namespace Start.MainWindow.ViewModels
 		Implements IMainWindow
 
 		Private _title As String
+		Private _titleMode As ColorZoneMode
 		Private _width As Double
 		Private _height As Double
 		Private _windowState As WindowState
@@ -18,6 +20,8 @@ Namespace Start.MainWindow.ViewModels
 			DisplayName = "Hotelie"
 
 			Title = "Hotelie"
+
+			TitleMode = ColorZoneMode.PrimaryDark
 
 			Width = 1024
 
@@ -37,6 +41,7 @@ Namespace Start.MainWindow.ViewModels
 		End Sub
 
 		' Window properties
+
 		Public Property Title As String Implements IMainWindow.Title
 			Get
 				Return _title
@@ -46,6 +51,17 @@ Namespace Start.MainWindow.ViewModels
 
 				_title = value
 				NotifyOfPropertyChange( Function() Title )
+			End Set
+		End Property
+
+		Public Property TitleMode As ColorZoneMode Implements IMainWindow.TitleMode
+			Get
+				Return _titleMode
+			End Get
+			Set
+				If IsNothing( Value ) OrElse Equals( Value, _titleMode ) Then Return
+				_titleMode = value
+				NotifyOfPropertyChange( Function() TitleMode )
 			End Set
 		End Property
 

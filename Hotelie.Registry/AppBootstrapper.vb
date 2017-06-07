@@ -1,4 +1,5 @@
 ﻿Imports Caliburn.Micro
+Imports Hotelie.Application.Bills.Factories.CreateBill
 Imports Hotelie.Application.Leases.Commands.RemoveLease
 Imports Hotelie.Application.Leases.Commands.RemoveLeaseDetail
 Imports Hotelie.Application.Leases.Commands.UpdateLease
@@ -8,6 +9,7 @@ Imports Hotelie.Application.Leases.Factories.CreateLeaseDetail
 Imports Hotelie.Application.Leases.Queries.GetCustomerCategoriesList
 Imports Hotelie.Application.Leases.Queries.GetLeaseData
 Imports Hotelie.Application.Leases.Queries.GetLeasesList
+Imports Hotelie.Application.Leases.Queries.GetSimpleLeasesList
 Imports Hotelie.Application.Rooms.Commands.RemoveRoom
 Imports Hotelie.Application.Rooms.Commands.UpdateRoom
 Imports Hotelie.Application.Rooms.Factories.CreateRoom
@@ -98,6 +100,11 @@ Public Class AppBootstrapper
 	        New ContainerControlledLifetimeManager() )
 	    _container.RegisterType(Of IParameterRepository, ParameterRepository)(
 	        New ContainerControlledLifetimeManager() )
+		_container.RegisterType _
+			(Of IGetSimpleLeasesListQuery, Tests.Leases.Queries.GetSimpleLeasesList.GetSimpleLeasesListQuery)(
+				New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of ICreateBillFactory, Tests.Bills.Factories.CreateBill.CreateBillFactory)(
+			New ContainerControlledLifetimeManager() )
 	End Sub
 
 	Protected Overrides Function GetInstance( service As Type,

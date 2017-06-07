@@ -42,7 +42,7 @@
                 <Button Grid.Column="0" HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Margin="16 0 0 0" Style="{DynamicResource MaterialDesignToolButton}"
-                        cal:Message.Attach="PreviewExitAsync">
+                        cal:Message.Attach="ExitAsync">
                     <materialDesign:PackIcon Width="24" Height="24"
                                              Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                                              Kind="KeyboardBackspace" />
@@ -87,7 +87,7 @@
                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                             FontSize="18"
                             Content="XÓA"
-                            cal:Message.Attach="PreviewDeleteAsync" />
+                            cal:Message.Attach="DeleteAsync" />
 
                     <!--Save button-->
                     <Button DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
@@ -96,7 +96,7 @@
                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                             FontSize="18"
                             Content="LƯU"
-                            cal:Message.Attach="PreviewSaveAsync" />
+                            cal:Message.Attach="SaveAsync" />
                 </DockPanel>
             </Grid>
 

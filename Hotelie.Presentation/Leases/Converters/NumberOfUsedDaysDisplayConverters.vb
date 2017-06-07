@@ -11,7 +11,7 @@ Namespace Leases.Converters
 			If IsNothing( value ) Then Return "Mới vào phòng"
 			Dim beginDate = CType(value, Date)
 
-			Dim duration As Integer = (Date.Now - beginDate).TotalDays
+			Dim duration As Integer = (Today - beginDate).TotalDays
 			If duration = 0 Then Return "Mới vào phòng"
 			Return $"Đã ở {duration} ngày"
 		End Function
