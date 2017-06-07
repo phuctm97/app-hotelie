@@ -90,6 +90,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bills\Factories\CreateBill\ICreateBillFactory.vb" />
+    <Compile Include="Bills\Models\BillDetailModel.vb" />
+    <Compile Include="Bills\Models\BillModel.vb" />
     <Compile Include="Leases\Commands\RemoveLeaseDetail\IRemoveLeaseDetailCommand.vb" />
     <Compile Include="Leases\Commands\RemoveLease\IRemoveLeaseCommand.vb" />
     <Compile Include="Leases\Commands\UpdateLeaseDetail\IUpdateLeaseDetailCommand.vb" />

@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Hotelie.Presentation"
              xmlns:commonConverters="clr-namespace:Hotelie.Presentation.Common.Converters"
-             xmlns:converters="clr-namespace:Hotelie.Presentation.Rooms.Converters"
+             xmlns:converters="clr-namespace:Hotelie.Presentation.Bills.Converters"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -18,9 +18,8 @@
                 <ResourceDictionary
                     Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <commonConverters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <commonConverters:DecimalToCurrencyStringConverter x:Key="DecimalToCurrencyStringConverter" />
+            <converters:LeaseDetailsToCustomerNamesStringConverters x:Key="LeaseDetailsToCustomerNamesStringConverters" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -32,7 +31,7 @@
         </Grid.RowDefinitions>
 
         <!--Bills list-->
-        <ListBox Grid.Row="1">
+        <ListBox Grid.Row="1" ItemsSource="{Binding Bills}">
 
             <!--panel style-->
             <ListBox.ItemsPanel>
@@ -58,21 +57,27 @@
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Grid.Column="0" HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
-                                                           Text="#H1000000" FontSize="24" FontWeight="Medium" />
+                                                           Text="{Binding Id, Mode=OneWay}" FontSize="24"
+                                                           FontWeight="Medium" />
+                                                <!--create date-->
                                                 <StackPanel Grid.Column="1">
                                                     <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top"
-                                                               Text="THANH TOÁN:" FontSize="14" FontWeight="Light" />
+                                                               Text="NGÀY LẬP HÓA ĐƠN:" FontSize="14"
+                                                               FontWeight="Light" />
                                                     <TextBlock Margin="0 4 0 0" HorizontalAlignment="Left"
                                                                VerticalAlignment="Bottom"
-                                                               Text="Nguyễn Bảo Khương" FontSize="18"
+                                                               Text="{Binding CreateDate, Mode=OneWay}" FontSize="18"
                                                                FontWeight="Regular" />
                                                 </StackPanel>
+
+                                                <!--total expense-->
                                                 <StackPanel Grid.Column="2">
                                                     <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top"
                                                                Text="THÀNH TIỀN:" FontSize="14" FontWeight="Light" />
                                                     <TextBlock Margin="0 4 0 0" HorizontalAlignment="Left"
                                                                VerticalAlignment="Bottom"
-                                                               Text="500,000 đ" FontSize="18" FontWeight="Regular" />
+                                                               Text="{Binding TotalExpense, Mode=OneWay, Converter={StaticResource DecimalToCurrencyStringConverter}}"
+                                                               FontSize="18" FontWeight="Regular" />
                                                 </StackPanel>
                                             </Grid>
                                         </Expander.Header>
@@ -81,7 +86,10 @@
                                             <TextBlock Margin="13 0 0 4" Text="Chi tiết hóa đơn" IsEnabled="False"
                                                        Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                                        FontSize="15" VerticalAlignment="Center" />
-                                            <DataGrid Background="White"
+
+                                            <!--details-->
+                                            <DataGrid ItemsSource="{Binding Details}"
+                                                      Background="White"
                                                       CanUserSortColumns="True"
                                                       CanUserAddRows="False"
                                                       CanUserDeleteRows="False"
@@ -91,11 +99,24 @@
                                                       materialDesign:DataGridAssist.ColumnHeaderPadding="8"
                                                       FontSize="15">
                                                 <DataGrid.Columns>
-                                                    <DataGridTextColumn Header="Phiếu thuê" />
-                                                    <DataGridTextColumn Header="Phòng" />
-                                                    <DataGridTextColumn Header="Đơn giá" />
-                                                    <DataGridTextColumn Header="Thời gian" />
-                                                    <DataGridTextColumn Header="Khách hàng" />
+                                                    <DataGridTextColumn IsReadOnly="True"
+                                                                        Binding="{Binding Path=Lease.Id, Mode=OneWay}"
+                                                                        Header="Phiếu thuê" />
+                                                    <DataGridTextColumn IsReadOnly="True"
+                                                                        Binding="{Binding Path=Lease.Room.Name, Mode=OneWay}"
+                                                                        Header="Phòng" />
+                                                    <DataGridTextColumn IsReadOnly="True"
+                                                                        Binding="{Binding Path=Lease.RoomPrice, Mode=OneWay}"
+                                                                        Header="Đơn giá" />
+                                                    <DataGridTextColumn IsReadOnly="True"
+                                                                        Binding="{Binding Path=Lease.CheckinDate, Mode=OneWay}"
+                                                                        Header="Từ" />
+                                                    <DataGridTextColumn IsReadOnly="True"
+                                                                        Binding="{Binding Path=Lease.CheckoutDate, Mode=OneWay}"
+                                                                        Header="Đến" />
+                                                    <DataGridTextColumn IsReadOnly="True"
+                                                                        Binding="{Binding Path=Lease.Details, Converter={StaticResource LeaseDetailsToCustomerNamesStringConverters}, Mode=OneWay}"
+                                                                        Header="Khách hàng" />
                                                 </DataGrid.Columns>
                                             </DataGrid>
 
