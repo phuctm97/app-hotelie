@@ -13,6 +13,12 @@ Namespace Leases.Queries.GetLeasesList
 		Private _details As IObservableCollection(Of LeasesListItemDetailModel)
 		Private _roomId As String
 
+		Public ReadOnly Property IdEx As String
+			Get
+				Return $"#{Id}"
+			End Get
+		End Property
+
 		Public Property Id As String
 			Get
 				Return _id
@@ -21,6 +27,7 @@ Namespace Leases.Queries.GetLeasesList
 				If IsNothing( Value ) OrElse String.Equals( Value, _id ) Then Return
 				_id = value
 				NotifyOfPropertyChange( Function() Id )
+				NotifyOfPropertyChange( Function() IdEx )
 			End Set
 		End Property
 

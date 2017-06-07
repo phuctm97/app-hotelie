@@ -17,7 +17,6 @@
         <ResourceDictionary>
             <commonConverters:DecimalToCurrencyStringConverter x:Key="DecimalToCurrencyStringConverter" />
             <commonConverters:DateTimeToShortDateStringConverter x:Key="DateTimeToShortDateStringConverter" />
-            <converters:LeaseIdStringDisplayConverter x:Key="LeaseIdStringDisplayConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -63,7 +62,12 @@
                                VerticalAlignment="Center"
                                Margin="16 0 0 4"
                                FontSize="60" FontWeight="Light"
-                               Text="{Binding LeaseId, Converter={StaticResource LeaseIdStringDisplayConverter}}" />
+                               Text="#" />
+                    <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Margin="0 0 0 4"
+                               FontSize="60" FontWeight="Light"
+                               Text="{Binding LeaseId}" />
 
                     <!--Delete button-->
                     <Button DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"

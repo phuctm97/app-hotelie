@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Hotelie.Presentation"
              xmlns:commonConverters="clr-namespace:Hotelie.Presentation.Common.Converters"
-             xmlns:leaseConverters="clr-namespace:Hotelie.Presentation.Leases.Converters"
              xmlns:viewModels="clr-namespace:Hotelie.Presentation.Bills.ViewModels"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:cal="http://www.caliburnproject.org"
@@ -17,7 +16,6 @@
         <ResourceDictionary>
             <commonConverters:DecimalToCurrencyStringConverter x:Key="DecimalToCurrencyStringConverter" />
             <commonConverters:DateTimeToShortDateStringConverter2 x:Key="DateTimeToShortDateStringConverter2" />
-            <leaseConverters:LeaseIdStringDisplayConverter x:Key="LeaseIdStringDisplayConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -210,6 +208,15 @@
                     </DataGrid>
                 </StackPanel>
 
+                <!--Total expense-->
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="16 24 16 0">
+                    <TextBlock HorizontalAlignment="Right" Text="Tổng thành tiền:" 
+                               Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                               FontSize="32" Margin="0 0 0 4" FontWeight="Light"/>
+                    <TextBlock HorizontalAlignment="Right" Text="{Binding TotalExpense, Converter={StaticResource DecimalToCurrencyStringConverter}}" 
+                               Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                               FontSize="32" Margin="8 0 0 4" FontWeight="Bold"/>
+                </StackPanel>
             </StackPanel>
         </ScrollViewer>
 

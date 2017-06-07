@@ -22,7 +22,6 @@
             </ResourceDictionary.MergedDictionaries>
 
             <commonConverters:DateTimeToShortDateStringConverter x:Key="DateTimeToShortDateStringConverter" />
-            <converters:LeaseIdStringDisplayConverter x:Key="LeaseIdStringDisplayConverter" />
             <converters:TotalExpenseDisplayConverter x:Key="TotalExpenseDisplayConverter" />
             <converters:NumberOfUsedDaysDisplayConverters x:Key="NumberOfUsedDaysDisplayConverters" />
         </ResourceDictionary>
@@ -88,9 +87,14 @@
                                             <StackPanel Grid.Row="0"
                                                         Margin="16 24 16 0">
                                                 <!--Id-->
-                                                <TextBlock Style="{DynamicResource MaterialDesignHeadlineTextBlock}"
-                                                           Text="{Binding Id, Converter={StaticResource LeaseIdStringDisplayConverter}}"
-                                                           Margin="0 0 8 0" />
+                                                <StackPanel Orientation="Horizontal" Margin="0 0 8 0">
+                                                    <TextBlock
+                                                        Style="{DynamicResource MaterialDesignHeadlineTextBlock}"
+                                                        Text="#" />
+                                                    <TextBlock
+                                                        Style="{DynamicResource MaterialDesignHeadlineTextBlock}"
+                                                        Text="{Binding Id}" />
+                                                </StackPanel>
 
                                                 <!--Sub content-->
                                                 <StackPanel Orientation="Horizontal">
@@ -212,8 +216,8 @@
                                                     HorizontalAlignment="Left"
                                                     Margin="8 4 4 8"
                                                     Style="{DynamicResource MaterialDesignFlatButton}"
-                                                    Content="CHI TIẾT" 
-                                                    cal:Message.Attach="NavigateToScreenLeaseDetailAsync($dataContext)"/>
+                                                    Content="CHI TIẾT"
+                                                    cal:Message.Attach="NavigateToScreenLeaseDetailAsync($dataContext)" />
                                             <Button DockPanel.Dock="Left"
                                                     HorizontalAlignment="Left"
                                                     Margin="15 4 4 8"
