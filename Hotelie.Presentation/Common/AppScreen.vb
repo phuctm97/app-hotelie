@@ -35,7 +35,11 @@ Namespace Common
 		End Sub
 
 		Public Overridable Function ShowAsync() As Task Implements IAppScreen.ShowAsync
-			Return Task.Delay( 0 )
+			Return Task.FromResult( True )
+		End Function
+
+		Public Function CanHide() As Task(Of Boolean) Implements IAppScreen.CanHide
+			Return Task.FromResult( True )
 		End Function
 
 		Public Overridable Sub [Exit]() Implements IAppScreen.[Exit]

@@ -58,7 +58,7 @@
 
             <!--Password-->
             <TextBlock x:Name="PasswordStorage" Visibility="Collapsed"
-                       Text="{Binding InitialPassword, Mode=OneWay}" Loaded="OnPasswordStorageLoaded"/>
+                       Text="{Binding InitialPassword, Mode=OneWay}" Loaded="OnPasswordStorageLoaded" />
             <PasswordBox x:Name="PasswordTextBox" Margin="40 0 40 32"
                          materialDesign:HintAssist.FloatingOffset="0, -24"
                          Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
@@ -76,7 +76,7 @@
 
             <!--Submit-->
             <DockPanel Margin="40 0 40 32">
-                
+
                 <!--Button login-->
                 <Button DockPanel.Dock="Left" HorizontalAlignment="Left"
                         Style="{DynamicResource MaterialDesignRaisedAccentButton}"
@@ -85,7 +85,7 @@
                         Content="Đăng nhập">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
-                            <cal:ActionMessage MethodName="PreviewLoginAsync">
+                            <cal:ActionMessage MethodName="Login">
                                 <cal:Parameter Value="{Binding ElementName=AccountTextBox, Path=Text}" />
                                 <cal:Parameter Value="{Binding ElementName=PasswordStorage, Path=Text}" />
                                 <cal:Parameter Value="{Binding ElementName=RememberCheckBox, Path=IsChecked}" />

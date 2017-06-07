@@ -110,7 +110,6 @@ Namespace Start.MainWindow.ViewModels
 		Public ReadOnly Property StaticShellDialog As StaticDialogModel
 
 		' Shell
-
 		Public ReadOnly Property Shell As IShell Implements IMainWindow.Shell
 			Get
 				Return ActiveItem

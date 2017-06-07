@@ -4,13 +4,14 @@ Imports Hotelie.Application.Rooms.Commands.UpdateRoom
 Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
 Imports Hotelie.Application.Rooms.Queries.GetRoomData
 Imports Hotelie.Application.Services.Infrastructure
+Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
 Imports Hotelie.Presentation.Infrastructure
 Imports Hotelie.Presentation.Start.MainWindow.Models
 
 Namespace Rooms.ViewModels
 	Public Class ScreenRoomDetailViewModel
-		Inherits PropertyChangedBase
+		Inherits AppScreenHasSaving
 		Implements IChild(Of RoomsWorkspaceViewModel),
 		           INeedWindowModals,
 		           IRoomPresenter
@@ -89,7 +90,7 @@ Namespace Rooms.ViewModels
 			_originalRoomNote = _roomNote
 		End Sub
 
-		' Data
+		' Binding model
 		Public Property RoomName As String
 			Get
 				Return _roomName
@@ -134,6 +135,7 @@ Namespace Rooms.ViewModels
 			End Set
 		End Property
 
+		' Binding data
 		' ReSharper disable once CollectionNeverUpdated.Global
 		' ReSharper disable once UnassignedGetOnlyAutoProperty
 		Public ReadOnly Property RoomCategories As IObservableCollection(Of RoomCategoriesListItemModel)

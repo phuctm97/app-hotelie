@@ -13,9 +13,10 @@ Namespace Common
 
 		Function ShowAsync() As Task
 
+		Function CanHide() As Task(Of Boolean)
+
 		Sub [Exit]()
 
 		Function ExitAsync() As Task
-
 	End Interface
 End Namespace

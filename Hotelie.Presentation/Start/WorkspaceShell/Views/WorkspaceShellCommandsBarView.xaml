@@ -138,7 +138,7 @@
                     </Button>
 
                     <!--Settings-->
-                    <Button cal:Message.Attach="PreviewNavigateToScreenChangeRules">
+                    <Button cal:Message.Attach="NavigateToScreenChangeRules">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Settings"
                                                      VerticalAlignment="Center"
@@ -149,7 +149,7 @@
                     </Button>
 
                     <!--Log out-->
-                    <Button cal:Message.Attach="PreviewLogout">
+                    <Button cal:Message.Attach="Logout">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Logout"
                                                      VerticalAlignment="Center"

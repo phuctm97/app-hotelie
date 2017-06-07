@@ -1,5 +1,4 @@
 ﻿Imports Caliburn.Micro
-Imports Hotelie.Application.Services.Authentication
 Imports Hotelie.Presentation.Common
 
 Namespace Start.WorkspaceShell.ViewModels
@@ -21,13 +20,12 @@ Namespace Start.WorkspaceShell.ViewModels
 			ParentShell = shell
 		End Sub
 
-		Public Sub PreviewLogout()
-			IoC.Get(Of IMainWindow).SwitchShell("login-shell")
+		Public Sub Logout()
+			IoC.Get(Of IMainWindow).SwitchShell( "login-shell" )
 		End Sub
 
-		Public Sub PreviewNavigateToScreenChangeRules()
+		Public Sub NavigateToScreenChangeRules()
 			ParentShell.NavigateToScreenChangeRules()
 		End Sub
-
 	End Class
 End Namespace

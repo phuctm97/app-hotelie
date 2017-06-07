@@ -70,9 +70,9 @@ Namespace Start.WorkspaceShell.ViewModels
 
 		Public ReadOnly Property WorkspaceBills As BillsWorkspaceViewModel
 
-		Public ReadOnly Property ScreenChangeRules As ScreenChangeRulesViewModel
-
 		Public ReadOnly Property Workspaces As IObservableCollection(Of IAppScreen)
+
+		Public ReadOnly Property ScreenChangeRules As ScreenChangeRulesViewModel
 
 		Public ReadOnly Property Screens As IObservableCollection(Of IAppScreen)
 
@@ -95,22 +95,38 @@ Namespace Start.WorkspaceShell.ViewModels
 			Set
 				If Equals( Value, _displayCode ) Then Return
 				If Value < 0 OrElse Value >= Screens.Count Then Return
-				_displayCode = value
-				UpdateScreenAsync()
+				UpdateScreenAsync( value )
 			End Set
 		End Property
 
 		' Navigation
-		Private Sub UpdateScreen()
-			Dim screen = Screens( DisplayCode )
+		Private Async Sub UpdateScreen( code As Integer )
+			Dim oldScreen = Screens( _displayCode )
+			' check can hide old screen
+			If Not Await oldScreen.CanHide()
+				Return
+			End If
+
+			' change active screen
+			_displayCode = code
+			Dim screen = Screens( _displayCode )
 
 			screen.Show()
 			NotifyOfPropertyChange( Function() DisplayCode )
 			ParentWindow.TitleMode = screen.ColorMode
 		End Sub
 
-		Private Async Sub UpdateScreenAsync()
-			Dim screen = Screens( DisplayCode )
+		Private Async Sub UpdateScreenAsync( code As Integer )
+			Dim oldScreen = Screens( _displayCode )
+			' check can hide old screen
+			If Not Await oldScreen.CanHide()
+				Return
+			End If
+
+			' change active screen
+			_displayCode = code
+			Dim screen = Screens( _displayCode )
+
 			Await screen.ShowAsync()
 			NotifyOfPropertyChange( Function() DisplayCode )
 			ParentWindow.TitleMode = screen.ColorMode
@@ -119,7 +135,7 @@ Namespace Start.WorkspaceShell.ViewModels
 		Private Sub OnScreenExited( sender As Object,
 		                            e As EventArgs )
 			If Not Workspaces.Contains( CType(sender, IAppScreen) )
-				DisplayCode	= DisplayWorkspaceCode
+				DisplayCode = DisplayWorkspaceCode
 			End If
 		End Sub
 

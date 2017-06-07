@@ -92,8 +92,8 @@ Namespace Common
 			Return True
 		End Function
 
-		Public Function SaveAsync() As Task(Of Object) Implements IAppScreenHasSaving.SaveAsync
-			Return Nothing
+		Public Async Function SaveAsync() As Task(Of Object) Implements IAppScreenHasSaving.SaveAsync
+			Return  Await Task.FromResult( True )
 		End Function
 	End Class
 End Namespace
