@@ -1,6 +1,6 @@
 ﻿Imports Hotelie.Application.Services.Persistence
 
-Namespace Bills.Commands.RemoveBill
+Namespace Bills.Commands
     Public Class RemoveBillCommand
         Implements IRemoveBillCommand
 

@@ -1,5 +1,5 @@
 ﻿Imports Caliburn.Micro
-Imports Hotelie.Application.Bills.Commands.RemoveBill
+Imports Hotelie.Application.Bills.Commands
 Imports Hotelie.Application.Bills.Factories
 Imports Hotelie.Application.Bills.Queries
 Imports Hotelie.Application.Leases.Commands
@@ -39,80 +39,83 @@ Public Class AppBootstrapper
 		_container.RegisterType(Of IWindowManager, WindowManager)( New ContainerControlledLifetimeManager() )
 		_container.RegisterType(Of IEventAggregator, EventAggregator)( New ContainerControlledLifetimeManager() )
 
+		' Services
+		_container.RegisterType(Of IDatabaseService, DatabaseService)(
+			New ContainerControlledLifetimeManager() )
 		_container.RegisterType(Of IAuthentication, Authentication)(
 			New ContainerControlledLifetimeManager() )
-
-        _container.RegisterType(Of IDatabaseService, DatabaseService)(
+		_container.RegisterType(Of IUnitOfWork, UnitOfWork)(
 			New ContainerControlledLifetimeManager() )
 
-	    _container.RegisterType(Of IUnitOfWork, UnitOfWork)(
-	        New ContainerControlledLifetimeManager() )
+		' Repositories
+		_container.RegisterType(Of IUserRepository, UserRepository)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IRoomRepository, RoomRepository)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of ILeaseRepository, LeaseRepository)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IBillRepository, BillRepository)(
+			New ContainerControlledLifetimeManager )
+		_container.RegisterType(Of IParameterRepository, ParameterRepository)(
+			New ContainerControlledLifetimeManager() )
 
-	    _container.RegisterType(Of IUserRepository, UserRepository)(
-	        New ContainerControlledLifetimeManager() )
-	    _container.RegisterType(Of IRoomRepository, RoomRepository)(
-	        New ContainerControlledLifetimeManager() )
-	    _container.RegisterType(Of ILeaseRepository, LeaseRepository)(
-	        New ContainerControlledLifetimeManager() )
-	    _container.RegisterType(Of IBillRepository, BillRepository)(
-            New ContainerControlledLifetimeManager)
-	    _container.RegisterType(Of IParameterRepository, ParameterRepository)(
-	        New ContainerControlledLifetimeManager() )
+		' Queries
+		_container.RegisterType(Of IGetAllRoomsQuery, GetAllRoomsQuery)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IGetRoomQuery, GetRooomQuery)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IGetAllRoomCategoriesQuery, GetAllRoomCategoriesQuery)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IGetRoomCategoryQuery, GetRoomCategoryQuery)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IGetAllLeasesQuery, GetAllLeasesQuery)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IGetLeaseQuery, GetLeaseQuery)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IGetAllCustomerCategoriesQuery, GetAllCustomerCategoriesQuery)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IGetAllBillsQuery, GetAllBillsQuery)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IGetBillQuery, GetBillQuery)(
+			New ContainerControlledLifetimeManager() )
 
-        _container.RegisterType(Of IGetAllRoomsQuery, GetAllRoomsQuery)(
-            New ContainerControlledLifetimeManager())
-        _container.RegisterType(Of IGetRoomQuery, GetRooomQuery)(
-            New ContainerControlledLifetimeManager())
-        _container.RegisterType(Of IGetAllRoomCategoriesQuery, GetAllRoomCategoriesQuery)(
-            New ContainerControlledLifetimeManager())
-        _container.RegisterType(Of IGetRoomCategoryQuery, GetRoomCategoryQuery)(
-            New ContainerControlledLifetimeManager())
-        _container.RegisterType(Of IGetAllLeasesQuery, GetAllLeasesQuery)(
-            New ContainerControlledLifetimeManager())
-        _container.RegisterType(Of IGetLeaseQuery, GetLeaseQuery)(
-            New ContainerControlledLifetimeManager())
-        _container.RegisterType(Of IGetAllCustomerCategoriesQuery, GetAllCustomerCategoriesQuery)(
-            New ContainerControlledLifetimeManager())
-        _container.RegisterType(Of IGetAllBillsQuery, GetAllBillsQuery)(
-            New ContainerControlledLifetimeManager())
-        _container.RegisterType(Of IGetBillQuery, GetBillQuery)(
-            New ContainerControlledLifetimeManager())
+		' Commands
+		_container.RegisterType(Of IRemoveRoomCategoryCommand, RemoveRoomCategoryCommand)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IRemoveRoomCommand, RemoveRoomCommand)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IUpdateRoomCategoryCommand, UpdateRoomCategoryCommand)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IUpdateRoomCommand, UpdateRoomCommand)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IRemoveCustomerCategoryCommand, RemoveCustomerCategoryCommand)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IRemoveLeaseCommand, RemoveLeaseCommand)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IRemoveLeaseDetailCommand, RemoveLeaseDetailCommand)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IUpdateCustomerCategoryCommand, UpdateCustomerCategoryCommand)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IUpdateLeaseCommand, UpdateLeaseCommand)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IUpdateLeaseDetailCommand, UpdateLeaseDetailCommand)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IRemoveBillCommand, RemoveBillCommand)(
+			New ContainerControlledLifetimeManager() )
 
-        _container.RegisterType(Of IRemoveRoomCategoryCommand, RemoveRoomCategoryCommand)(
-            New ContainerControlledLifetimeManager())
-        _container.RegisterType(Of IRemoveRoomCommand, RemoveRoomCommand)(
-            New ContainerControlledLifetimeManager())
-        _container.RegisterType(Of IUpdateRoomCategoryCommand, UpdateRoomCategoryCommand)(
-            New ContainerControlledLifetimeManager())
-        _container.RegisterType(Of IUpdateRoomCommand, UpdateRoomCommand)(
-            New ContainerControlledLifetimeManager())
-        _container.RegisterType(Of IRemoveCustomerCategoryCommand, RemoveCustomerCategoryCommand)(
-            New ContainerControlledLifetimeManager())
-        _container.RegisterType(Of IRemoveLeaseCommand, RemoveLeaseCommand)(
-            New ContainerControlledLifetimeManager())
-        _container.RegisterType(Of IRemoveLeaseDetailCommand, RemoveLeaseDetailCommand)(
-            New ContainerControlledLifetimeManager())
-        _container.RegisterType(Of IUpdateCustomerCategoryCommand, UpdateCustomerCategoryCommand)(
-            New ContainerControlledLifetimeManager())
-        _container.RegisterType(Of IUpdateLeaseCommand, UpdateLeaseCommand)(
-            New ContainerControlledLifetimeManager())
-        _container.RegisterType(Of IUpdateLeaseDetailCommand, UpdateLeaseDetailCommand)(
-            New ContainerControlledLifetimeManager())
-        _container.RegisterType(Of IRemoveBillCommand, RemoveBillCommand)(
-            New ContainerControlledLifetimeManager())
-
-        _container.RegisterType(Of ICreateRoomCategoryCommand, CreateRoomCategoryCommand)(
-            New ContainerControlledLifetimeManager())
-        _container.RegisterType(Of ICreateRoomFactory, CreateRoomFactory)(
-            New ContainerControlledLifetimeManager())
-        _container.RegisterType(Of ICreateCustomerCategoryFactory, CreateCustomerCategoryFactory)(
-            New ContainerControlledLifetimeManager())
-        _container.RegisterType(Of ICreateLeaseDetailFactory, CreateLeaseDetailFactory)(
-            New ContainerControlledLifetimeManager())
-        _container.RegisterType(Of ICreateLeaseFactory, CreateLeaseFactory)(
-            New ContainerControlledLifetimeManager())
-        _container.RegisterType(Of ICreateBillFactory, CreateBillFactory)(
-            New ContainerControlledLifetimeManager())
+		' Factories
+		_container.RegisterType(Of ICreateRoomCategoryCommand, CreateRoomCategoryCommand)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of ICreateRoomFactory, CreateRoomFactory)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of ICreateCustomerCategoryFactory, CreateCustomerCategoryFactory)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of ICreateLeaseDetailFactory, CreateLeaseDetailFactory)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of ICreateLeaseFactory, CreateLeaseFactory)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of ICreateBillFactory, CreateBillFactory)(
+			New ContainerControlledLifetimeManager() )
 	End Sub
 
 	Protected Overrides Function GetInstance( service As Type,

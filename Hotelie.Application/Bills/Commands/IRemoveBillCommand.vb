@@ -1,4 +1,4 @@
-﻿Namespace Bills.Commands.RemoveBill
+﻿Namespace Bills.Commands
     Public Interface IRemoveBillCommand
         Function Execute(id As String) As String
         Function ExecuteAsync(id As String) As Task(Of String)
