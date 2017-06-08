@@ -42,6 +42,7 @@ Namespace Leases.ViewModels
 		                updateLeaseDetailCommand As IUpdateLeaseDetailCommand,
 		                removeLeaseDetailCommand As IRemoveLeaseDetailCommand,
 		                createLeaseDetailFactory As ICreateLeaseDetailFactory,
+										createLeaseFactory As ICreateLeaseFactory,
 		                inventory As IInventory )
 			MyBase.New( MaterialDesignThemes.Wpf.ColorZoneMode.PrimaryDark )
 
@@ -58,8 +59,8 @@ Namespace Leases.ViewModels
 			                                                    createLeaseDetailFactory,
 			                                                    inventory )
 			ScreenAddLease = New ScreenAddLeaseViewModel( Me,
-			                                              getSimpleRoomsListQuery,
-			                                              getCustomerCategoriesListQuery,
+			                                              getAllRoomsQuery,
+			                                              getAllCustomerCategoriesQuery,
 			                                              createLeaseFactory,
 			                                              inventory )
 
