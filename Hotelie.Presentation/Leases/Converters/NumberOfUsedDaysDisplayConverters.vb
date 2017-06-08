@@ -8,12 +8,11 @@ Namespace Leases.Converters
 		                         targetType As Type,
 		                         parameter As Object,
 		                         culture As CultureInfo ) As Object Implements IValueConverter.Convert
-			If IsNothing( value ) Then Return "Mới vào phòng"
-			Dim beginDate = CType(value, Date)
+			If IsNothing( value ) Then Return "Mới vào phòng."
+			Dim n = CType(value, Integer)
 
-			Dim duration As Integer = (Today - beginDate).TotalDays
-			If duration = 0 Then Return "Mới vào phòng"
-			Return $"Đã ở {duration} ngày"
+			If n = 0 Then Return "Mới vào phòng."
+			Return $"Đã ở {n} ngày."
 		End Function
 
 		Public Function ConvertBack( value As Object,

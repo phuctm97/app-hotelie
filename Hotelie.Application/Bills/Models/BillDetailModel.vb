@@ -21,12 +21,6 @@ Namespace Bills.Models
 
 		Public ReadOnly Property Lease As ILeaseModel Implements IBillDetailModel.Lease
 
-		Public ReadOnly Property CheckinDate As Date Implements IBillDetailModel.CheckinDate
-			Get
-				Return _entity.CheckinDate
-			End Get
-		End Property
-
 		Public ReadOnly Property NumberOfDays As Integer Implements IBillDetailModel.NumberOfDays
 			Get
 				Return _entity.NumberOfDays
@@ -35,7 +29,7 @@ Namespace Bills.Models
 
 		Public ReadOnly Property CheckoutDate As Date Implements IBillDetailModel.CheckoutDate
 			Get
-				Return CheckinDate.Add( TimeSpan.FromDays( NumberOfDays ) )
+				Return Lease.CheckinDate.Add( TimeSpan.FromDays( NumberOfDays ) )
 			End Get
 		End Property
 

@@ -1,5 +1,7 @@
 ﻿Namespace Bills.Models
 	Public Interface IBillModel
+		ReadOnly Property IdEx As String
+
 		ReadOnly Property Id As String
 
 		ReadOnly Property CreateDate As Date

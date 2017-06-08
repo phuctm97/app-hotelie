@@ -6,8 +6,6 @@ Namespace Bills.Models
 
 		ReadOnly Property Lease As ILeaseModel
 
-		ReadOnly Property CheckinDate As Date
-
 		ReadOnly Property NumberOfDays As Integer
 
 		ReadOnly Property CheckoutDate As Date

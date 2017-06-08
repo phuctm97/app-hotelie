@@ -19,6 +19,7 @@
                     Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <commonConverters:DecimalToCurrencyStringConverter x:Key="DecimalToCurrencyStringConverter" />
+            <commonConverters:DateTimeToShortDateStringConverter2 x:Key="DateTimeToShortDateStringConverter2" />
             <converters:LeaseDetailsToCustomerNamesStringConverters x:Key="LeaseDetailsToCustomerNamesStringConverters" />
         </ResourceDictionary>
     </UserControl.Resources>
@@ -57,8 +58,9 @@
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Grid.Column="0" HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
-                                                           Text="{Binding Id, Mode=OneWay}" FontSize="24"
+                                                           Text="{Binding IdEx, Mode=OneWay}" FontSize="24"
                                                            FontWeight="Medium" />
+                                                
                                                 <!--create date-->
                                                 <StackPanel Grid.Column="1">
                                                     <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top"
@@ -66,7 +68,7 @@
                                                                FontWeight="Light" />
                                                     <TextBlock Margin="0 4 0 0" HorizontalAlignment="Left"
                                                                VerticalAlignment="Bottom"
-                                                               Text="{Binding CreateDate, Mode=OneWay}" FontSize="18"
+                                                               Text="{Binding CreateDate, Mode=OneWay, Converter={StaticResource DateTimeToShortDateStringConverter2}}" FontSize="18"
                                                                FontWeight="Regular" />
                                                 </StackPanel>
 
@@ -99,20 +101,20 @@
                                                       materialDesign:DataGridAssist.ColumnHeaderPadding="8"
                                                       FontSize="15">
                                                 <DataGrid.Columns>
-                                                    <DataGridTextColumn IsReadOnly="True"
-                                                                        Binding="{Binding Path=Lease.Id, Mode=OneWay}"
+                                                    <DataGridTextColumn IsReadOnly="True" FontWeight="Medium"
+                                                                        Binding="{Binding Path=Lease.IdEx, Mode=OneWay}"
                                                                         Header="Phiếu thuê" />
-                                                    <DataGridTextColumn IsReadOnly="True"
+                                                    <DataGridTextColumn IsReadOnly="True" FontWeight="Medium"
                                                                         Binding="{Binding Path=Lease.Room.Name, Mode=OneWay}"
                                                                         Header="Phòng" />
                                                     <DataGridTextColumn IsReadOnly="True"
-                                                                        Binding="{Binding Path=Lease.RoomUnitPrice, Mode=OneWay}"
+                                                                        Binding="{Binding Path=Lease.RoomUnitPrice, Mode=OneWay, Converter={StaticResource DecimalToCurrencyStringConverter}}"
                                                                         Header="Đơn giá" />
                                                     <DataGridTextColumn IsReadOnly="True"
-                                                                        Binding="{Binding Path=Lease.CheckinDate, Mode=OneWay}"
+                                                                        Binding="{Binding Path=Lease.CheckinDate, Mode=OneWay, Converter={StaticResource DateTimeToShortDateStringConverter2}}"
                                                                         Header="Từ" />
                                                     <DataGridTextColumn IsReadOnly="True"
-                                                                        Binding="{Binding Path=Lease.CheckoutDate, Mode=OneWay}"
+                                                                        Binding="{Binding Path=CheckoutDate, Mode=OneWay, Converter={StaticResource DateTimeToShortDateStringConverter2}}"
                                                                         Header="Đến" />
                                                     <DataGridTextColumn IsReadOnly="True"
                                                                         Binding="{Binding Path=Lease.Details, Converter={StaticResource LeaseDetailsToCustomerNamesStringConverters}, Mode=OneWay}"

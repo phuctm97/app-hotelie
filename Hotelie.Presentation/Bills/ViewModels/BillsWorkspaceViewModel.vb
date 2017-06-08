@@ -48,7 +48,7 @@ Namespace Bills.ViewModels
             InitializeComponents()
         End Sub
 
-        Private Async Sub InitializeComponents()
+        Private Sub InitializeComponents()
             Init()
         End Sub
 

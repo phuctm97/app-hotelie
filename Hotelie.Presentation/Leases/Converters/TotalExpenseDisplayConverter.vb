@@ -5,10 +5,10 @@ Namespace Leases.Converters
 		Implements IValueConverter
 
 		Public Function Convert(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.Convert
-			If IsNothing(value) Then Return "Tổng chi phí: 0đ"
+			If IsNothing(value) Then Return "Tổng chi phí: 0đ."
 
 			Dim total = CType(value, Decimal)
-			Return $"Tổng chi phí: {total:N0}đ"
+			Return $"Tổng chi phí: {total:N0}đ."
 		End Function
 
 		Public Function ConvertBack(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.ConvertBack

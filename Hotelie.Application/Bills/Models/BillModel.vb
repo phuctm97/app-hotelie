@@ -15,6 +15,12 @@ Namespace Bills.Models
 			Next
 		End Sub
 
+		Public ReadOnly Property IdEx As String Implements IBillModel.IdEx
+			Get
+				Return $"#{Id}"
+			End Get
+		End Property
+
 		Public ReadOnly Property Id As String Implements IBillModel.Id
 			Get
 				Return _entity.Id
