@@ -129,6 +129,7 @@
     <Compile Include="AppScreenHasSavingAndDeleting.vb" />
     <Compile Include="Bills\Converters\LeaseDetailsToCustomerNamesStringConverters.vb" />
     <Compile Include="Bills\Models\EditableBillDetailModel.vb" />
+    <Compile Include="Bills\Models\EditableBillModel.vb" />
     <Compile Include="Bills\ViewModels\BillsWorkspaceViewModel.vb" />
     <Compile Include="Bills\ViewModels\ScreenAddBillViewModel.vb" />
     <Compile Include="Bills\ViewModels\ScreenBillsListViewModel.vb" />
@@ -159,6 +160,7 @@
     <Compile Include="Common\Converters\DecimalToCurrencyStringConverter.vb" />
     <Compile Include="Common\Converters\DecimalToStringConverter.vb" />
     <Compile Include="Common\Converters\DoubleToStringConverter.vb" />
+    <Compile Include="Common\Converters\IntegerToStringConverter.vb" />
     <Compile Include="Common\Converters\StringToUpperConverter.vb" />
     <Compile Include="Common\IAppScreen.vb" />
     <Compile Include="Common\IAppScreenHasSaving.vb" />
@@ -173,6 +175,8 @@
     <Compile Include="Leases\Converters\NumberOfUsedDaysDisplayConverters.vb" />
     <Compile Include="Leases\Converters\TotalExpenseDisplayConverter.vb" />
     <Compile Include="Leases\Models\EditableLeaseDetailModel.vb" />
+    <Compile Include="Leases\Models\EditableLeaseModel.vb" />
+    <Compile Include="Leases\Models\UpdatableLeaseModel.vb" />
     <Compile Include="Leases\ViewModels\LeasesWorkspaceViewModel.vb" />
     <Compile Include="Leases\ViewModels\ScreenAddLeaseViewModel.vb" />
     <Compile Include="Leases\ViewModels\ScreenLeaseDetailViewModel.vb" />
@@ -194,6 +198,11 @@
     <Compile Include="Rooms\Converters\RoomStateToIconKindConverter.vb" />
     <Compile Include="Rooms\Converters\RoomStateToStringConverter.vb" />
     <Compile Include="Rooms\Converters\RoomStateToVisibiltyConverter.vb" />
+    <Compile Include="Rooms\Models\FakeRoomCategoryModel.vb" />
+    <Compile Include="Rooms\Models\FilterableRoomModel.vb" />
+    <Compile Include="Rooms\Models\FilterRoomModel.vb" />
+    <Compile Include="Rooms\Models\SortRoomModel.vb" />
+    <Compile Include="Rooms\Models\EditableRoomModel.vb" />
     <Compile Include="Rooms\ViewModels\ScreenAddRoomViewModel.vb" />
     <Compile Include="Rooms\ViewModels\ScreenRoomDetailViewModel.vb" />
     <Compile Include="Rooms\ViewModels\ScreenRoomsListViewModel.vb" />
@@ -210,9 +219,9 @@
     <Compile Include="Rooms\Views\RoomsWorkspaceView.xaml.vb">
       <DependentUpon>RoomsWorkspaceView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Rules\Models\CustomerCategoryModel.vb" />
-    <Compile Include="Rules\Models\RoomCategoryModel.vb" />
-    <Compile Include="Rules\Models\RuleModel.vb" />
+    <Compile Include="Rules\Models\EditableCustomerCategoryModel.vb" />
+    <Compile Include="Rules\Models\EditableRoomCategoryModel.vb" />
+    <Compile Include="Rules\Models\EditableRuleModel.vb" />
     <Compile Include="Rules\ViewModel\ScreenChangeRulesViewModel.vb" />
     <Compile Include="Rules\Views\ScreenChangeRulesView.xaml.vb">
       <DependentUpon>ScreenChangeRulesView.xaml</DependentUpon>

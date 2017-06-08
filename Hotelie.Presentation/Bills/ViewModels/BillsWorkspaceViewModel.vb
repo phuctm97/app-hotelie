@@ -1,6 +1,7 @@
 ﻿Imports Hotelie.Application.Bills.Factories.CreateBill
-Imports Hotelie.Application.Leases.Queries.GetSimpleLeasesList
-Imports Hotelie.Application.Rooms.Queries.GetSimpleRoomsList
+Imports Hotelie.Application.Bills.Queries
+Imports Hotelie.Application.Leases.Queries
+Imports Hotelie.Application.Rooms.Queries
 Imports Hotelie.Application.Services.Infrastructure
 Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
@@ -27,43 +28,53 @@ Namespace Bills.ViewModels
 			End Set
 		End Property
 
-		Public Sub New( inventory As IInventory,
-		                getSimpleRoomsListQuery As IGetSimpleRoomsListQuery,
-		                getSimpleLeasesListQuery As IGetSimpleLeasesListQuery,
-		                createBillFactory As ICreateBillFactory )
+		Public Sub New( getAllBillsQuery As IGetAllBillsQuery,
+		                getAllRoomsQuery As IGetAllRoomsQuery,
+		                getAllLeasesQuery As IGetAllLeasesQuery,
+		                createBillFactory As ICreateBillFactory,
+		                inventory As IInventory )
 			MyBase.New( MaterialDesignThemes.Wpf.ColorZoneMode.PrimaryDark )
 
 			DisplayName = "Thanh toán"
 
-			ScreenBillsList = New ScreenBillsListVIewModel()
+			ScreenBillsList = New ScreenBillsListVIewModel( Me,
+			                                                getAllBillsQuery )
 
 			ScreenAddBill = New ScreenAddBillViewModel( Me,
-			                                            inventory,
-			                                            getSimpleRoomsListQuery,
-			                                            getSimpleLeasesListQuery,
+			                                            getAllRoomsQuery,
+			                                            getAllLeasesQuery,
 			                                            createBillFactory )
 			InitializeComponents()
 		End Sub
 
 		Private Async Sub InitializeComponents()
-			ShowStaticWindowLoadingDialog()
-			Await InitAsync()
-			Await Task.Delay( 100 ) 'allow binding
-			CloseStaticWindowDialog()
+			Init()
 		End Sub
 
 		Private Sub Init()
+			ScreenBillsList.Init()
 			ScreenAddBill.Init()
 			DisplayCode = 0
 		End Sub
 
 		Private Async Function InitAsync() As Task
 			Await ScreenAddBill.InitAsync()
+			Await ScreenBillsList.InitAsync()
 			DisplayCode = 0
 		End Function
 
 		Public Sub NavigateToScreenAddBill()
 			DisplayCode = 1
+		End Sub
+
+		Public Sub NavigateToScreenAddBillWithRoom( id As String )
+			DisplayCode = 1
+			ScreenAddBill.InsertRoomId( id )
+		End Sub
+
+		Public Sub NavigateToScreenAddBillWithLease( id As String )
+			DisplayCode = 1
+			ScreenAddBill.InsertLeaseId( id )
 		End Sub
 
 		Public Sub NavigateToScreenBillsList()

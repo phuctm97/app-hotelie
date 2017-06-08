@@ -55,7 +55,7 @@
                 <DockPanel Grid.Row="0" Grid.Column="1" Margin="0 24 0 0">
                     <!--Room name-->
                     <Button HorizontalAlignment="Left" VerticalAlignment="Center"
-                            Content="{Binding Path=Room.Name}" />
+                            Content="{Binding Path=Lease.Room.Name, Mode=OneWay}" />
 
                     <!--Lease Id-->
                     <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left"
@@ -67,7 +67,7 @@
                                VerticalAlignment="Center"
                                Margin="0 0 0 4"
                                FontSize="60" FontWeight="Light"
-                               Text="{Binding LeaseId}" />
+                               Text="{Binding Path=Lease.Id, Mode=OneWay}" />
 
                     <!--Delete button-->
                     <Button DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
@@ -88,7 +88,7 @@
                             cal:Message.Attach="SaveAsync" />
                 </DockPanel>
 
-                <!--Content-->
+                <!--Main content-->
                 <DockPanel Grid.Row="1" Grid.Column="1" Margin="0 0 0 20">
 
                     <!--Room price-->
@@ -100,7 +100,7 @@
                         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
                                    FontSize="15"
                                    Opacity="0.9"
-                                   Text="{Binding RoomUnitPrice, Converter={StaticResource DecimalToCurrencyStringConverter}}" />
+                                   Text="{Binding Path=Lease.RoomUnitPrice, Mode=OneWay, Converter={StaticResource DecimalToCurrencyStringConverter}}" />
                     </StackPanel>
 
                     <!--Begin day-->
@@ -112,7 +112,7 @@
                         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
                                    FontSize="15"
                                    Opacity="0.9"
-                                   Text="{Binding CheckinDate, Converter={StaticResource DateTimeToShortDateStringConverter}}" />
+                                   Text="{Binding Path=Lease.CheckinDate, Mode=OneWay, Converter={StaticResource DateTimeToShortDateStringConverter}}" />
                     </StackPanel>
 
                     <!--Number of used days-->
@@ -124,7 +124,7 @@
                         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
                                    FontSize="15"
                                    Opacity="0.9"
-                                   Text="{Binding NumberOfUsedDays}" />
+                                   Text="{Binding Path=Lease.NumberOfUsedDays, Mode=OneWay}" />
                         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
                                    FontSize="15"
                                    Opacity="0.9"
@@ -146,7 +146,7 @@
                               FontSize="35"
                               ItemsSource="{Binding Rooms}"
                               DisplayMemberPath="Name"
-                              SelectedItem="{Binding Room, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                              SelectedItem="{Binding Path=Lease.Room, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
 
                 <!--Expected checkout day and room category-->
@@ -157,7 +157,7 @@
                                    Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                    FontSize="15" Margin="0 0 0 4" />
                         <DatePicker FontSize="15" Width="130" HorizontalAlignment="Left"
-                                    SelectedDate="{Binding ExpectedCheckoutDate, Mode=TwoWay}"
+                                    SelectedDate="{Binding Path=Lease.ExpectedCheckoutDate, Mode=TwoWay}"
                                     materialDesign:HintAssist.Hint="Ngày dự kiến trả" FirstDayOfWeek="Monday" />
                     </StackPanel>
 
@@ -197,7 +197,7 @@
                               CanUserResizeColumns="True" AutoGenerateColumns="False"
                               materialDesign:DataGridAssist.CellPadding="13 8 8 8"
                               materialDesign:DataGridAssist.ColumnHeaderPadding="8"
-                              ItemsSource="{Binding Details}"
+                              ItemsSource="{Binding Path=Lease.Details}"
                               FontSize="15">
                         <DataGrid.Columns>
                             <DataGridTextColumn

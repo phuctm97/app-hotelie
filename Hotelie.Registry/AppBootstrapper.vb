@@ -11,13 +11,9 @@ Imports Hotelie.Application.Leases.Queries.GetCustomerCategoriesList
 Imports Hotelie.Application.Leases.Queries.GetLeaseData
 Imports Hotelie.Application.Leases.Queries.GetLeasesList
 Imports Hotelie.Application.Leases.Queries.GetSimpleLeasesList
-Imports Hotelie.Application.Rooms.Commands.RemoveRoom
-Imports Hotelie.Application.Rooms.Commands.UpdateRoom
-Imports Hotelie.Application.Rooms.Factories.CreateRoom
-Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
-Imports Hotelie.Application.Rooms.Queries.GetRoomData
-Imports Hotelie.Application.Rooms.Queries.GetRoomsList
-Imports Hotelie.Application.Rooms.Queries.GetSimpleRoomsList
+Imports Hotelie.Application.Rooms.Commands
+Imports Hotelie.Application.Rooms.Factories
+Imports Hotelie.Application.Rooms.Queries
 Imports Hotelie.Application.Services.Authentication
 Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Persistence.Common

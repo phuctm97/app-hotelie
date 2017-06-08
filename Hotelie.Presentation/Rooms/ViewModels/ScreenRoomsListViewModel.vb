@@ -1,11 +1,10 @@
-﻿Imports Caliburn.Micro
-Imports Hotelie.Application.Rooms.Commands.RemoveRoom
-Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
-Imports Hotelie.Application.Rooms.Queries.GetRoomData
-Imports Hotelie.Application.Rooms.Queries.GetRoomsList
-Imports Hotelie.Application.Services.Infrastructure
+﻿Imports System.ComponentModel
+Imports Caliburn.Micro
+Imports Hotelie.Application.Rooms.Models
+Imports Hotelie.Application.Rooms.Queries
 Imports Hotelie.Presentation.Common.Controls
 Imports Hotelie.Presentation.Infrastructure
+Imports Hotelie.Presentation.Rooms.Models
 
 Namespace Rooms.ViewModels
 	Public Class ScreenRoomsListViewModel
@@ -15,20 +14,12 @@ Namespace Rooms.ViewModels
 		           IChild(Of RoomsWorkspaceViewModel)
 
 		' Backing fields
-		Private _rooms As IObservableCollection(Of RoomsListItemModel)
-		Private _filterRoomNamePrefix As String
-		Private _filterRoomCategory As RoomCategoriesListItemModel
-		Private _filterRoomState As Integer?
-		Private _filterRoomMinPrice As Decimal?
-		Private _filterRoomMaxPrice As Decimal?
-		Private _sortingCode As Integer
-		Private _isDescendingSort As Boolean
+		Private _filterRoomModel As FilterRoomModel
+		Private _sortRoomModel As SortRoomModel
 
 		' Dependencies
-		Private ReadOnly _getRoomListsQuery As IGetRoomsListQuery
-		Private ReadOnly _getRoomCategoriesListQuery As IGetRoomCategoriesListQuery
-		Private ReadOnly _removeRoomCommand As IRemoveRoomCommand
-		Private ReadOnly _inventory As IInventory
+		Private ReadOnly _getAllRoomsQuery As IGetAllRoomsQuery
+		Private ReadOnly _getAllRoomCategoriesQuery As IGetAllRoomCategoriesQuery
 
 		' Parent
 		Public Property Parent As Object Implements IChild.Parent
@@ -38,52 +29,49 @@ Namespace Rooms.ViewModels
 				Return CType(Parent, RoomsWorkspaceViewModel)
 			End Get
 			Set
+				If IsNothing( Value ) OrElse Equals( Value, Parent ) Then Return
 				Parent = value
+				NotifyOfPropertyChange( Function() Parent )
+				NotifyOfPropertyChange( Function() ParentWorkspace )
 			End Set
 		End Property
+
+		' Binding models
+		Public ReadOnly Property Rooms As IObservableCollection(Of FilterableRoomModel)
 
 		' Binding data
-		Public Property Rooms As IObservableCollection(Of RoomsListItemModel)
-			Get
-				Return _rooms
-			End Get
-			Set
-				If Equals( Value, _rooms ) Then Return
-				_rooms = value
-				NotifyOfPropertyChange( Function() Rooms )
-			End Set
-		End Property
+		' ReSharper disable once UnassignedGetOnlyAutoProperty
+		Public ReadOnly Property Categories As IObservableCollection(Of IRoomCategoryModel)
 
 		' ReSharper disable once UnassignedGetOnlyAutoProperty
-		Public ReadOnly Property RoomCategories As IObservableCollection(Of RoomCategoriesListItemModel)
+		Public ReadOnly Property States As IObservableCollection(Of Integer)
 
 		' ReSharper disable once UnassignedGetOnlyAutoProperty
-		Public ReadOnly Property RoomStates As IObservableCollection(Of Integer)
+		Public ReadOnly Property MinUnitPrices As IObservableCollection(Of Decimal)
 
 		' ReSharper disable once UnassignedGetOnlyAutoProperty
-		Public ReadOnly Property RoomMinPrices As IObservableCollection(Of Decimal)
-
-		' ReSharper disable once UnassignedGetOnlyAutoProperty
-		Public ReadOnly Property RoomMaxPrices As IObservableCollection(Of Decimal)
+		Public ReadOnly Property MaxUnitPrices As IObservableCollection(Of Decimal)
 
 		' Initialization
 		Public Sub New( workspace As RoomsWorkspaceViewModel,
-										getRoomListsQuery As IGetRoomsListQuery,
-		                getRoomCategoriesListQuery As IGetRoomCategoriesListQuery,
-		                removeRoomCommand As IRemoveRoomCommand,
-		                inventory As IInventory )
+		                getAllRoomsQuery As IGetAllRoomsQuery,
+		                getAllRoomCategoriesQuery As IGetAllRoomCategoriesQuery )
 			ParentWorkspace = workspace
-			_getRoomListsQuery = getRoomListsQuery
-			_getRoomCategoriesListQuery = getRoomCategoriesListQuery
-			_removeRoomCommand = removeRoomCommand
-			_inventory = inventory
+			_getAllRoomsQuery = getAllRoomsQuery
+			_getAllRoomCategoriesQuery = getAllRoomCategoriesQuery
 			RegisterInventory()
 
-			Rooms = New BindableCollection(Of RoomsListItemModel)
-			RoomCategories = New BindableCollection(Of RoomCategoriesListItemModel)
-			RoomStates = New BindableCollection(Of Integer)
-			RoomMinPrices = New BindableCollection(Of Decimal)
-			RoomMaxPrices = New BindableCollection(Of Decimal)
+			Rooms = New BindableCollection(Of FilterableRoomModel)
+			Categories = New BindableCollection(Of IRoomCategoryModel)
+			States = New BindableCollection(Of Integer)
+			MinUnitPrices = New BindableCollection(Of Decimal)
+			MaxUnitPrices = New BindableCollection(Of Decimal)
+
+			FilterRoomModel = New FilterRoomModel()
+			AddHandler FilterRoomModel.PropertyChanged, AddressOf OnFilterRoomModelUpdated
+
+			SortRoomModel = New SortRoomModel()
+			AddHandler SortRoomModel.PropertyChanged, AddressOf OnSortRoomModelUpdated
 		End Sub
 
 		Public Sub Init()
@@ -93,65 +81,45 @@ Namespace Rooms.ViewModels
 
 			InitRoomStates()
 
-			InitRoomPrices()
-
-			InitFilteringValues()
-
-			InitSortingValues()
+			InitRoomUnitPrices()
 
 			RefreshRoomsListVisibility()
 		End Sub
 
-		Public Async Function InitAsync() As Task
-			Await InitRoomsAsync()
-
-			Await InitRoomCategoriesAsync()
-
-			InitRoomStates()
-
-			InitRoomPrices()
-
-			InitFilteringValues()
-
-			InitSortingValues()
-
-			RefreshRoomsListVisibility()
-		End Function
-
 		Private Sub InitRooms()
 			Rooms.Clear()
-			Rooms.AddRange( _getRoomListsQuery.Execute() )
+			Rooms.AddRange( _getAllRoomsQuery.Execute().Select( Function( r ) New FilterableRoomModel With
+				                                                  {.Model=r, .IsFiltersMatch=False} ) )
 		End Sub
 
 		Private Async Function InitRoomsAsync() As Task
 			Rooms.Clear()
-			Rooms.AddRange( Await _getRoomListsQuery.ExecuteAsync() )
+			Rooms.AddRange( (Await _getAllRoomsQuery.ExecuteAsync()).Select( Function( r ) New FilterableRoomModel With
+				                                                               {.Model=r, .IsFiltersMatch=False} ) )
 		End Function
 
 		Private Sub InitRoomCategories()
-			RoomCategories.Clear()
-			RoomCategories.AddRange( _getRoomCategoriesListQuery.Execute() )
-			RoomCategories.Add( New RoomCategoriesListItemModel With {.Name = "Tất cả", .UnitPrice = - 1} ) 'filter all
+			Categories.Clear()
+			Categories.AddRange( _getAllRoomCategoriesQuery.Execute() )
+			Categories.Add( New FakeRoomCategoryModel() ) 'filter all
 		End Sub
 
 		Private Async Function InitRoomCategoriesAsync() As Task
-			RoomCategories.Clear()
-			RoomCategories.AddRange( Await _getRoomCategoriesListQuery.ExecuteAsync() )
-			RoomCategories.Add( New RoomCategoriesListItemModel With {.Name = "Tất cả", .UnitPrice = - 1} ) 'filter all
+			Categories.Clear()
+			Categories.AddRange( Await _getAllRoomCategoriesQuery.ExecuteAsync() )
+			Categories.Add( New FakeRoomCategoryModel() ) 'filter all
 		End Function
 
-		Private Sub InitRoomPrices()
+		Private Sub InitRoomUnitPrices()
 			Dim minPrices = New List(Of Decimal)
 			Dim maxPrices = New List(Of Decimal)
 
-			For i = 0 To RoomCategories.Count - 2
-				Dim price = RoomCategories( i ).UnitPrice
+			For i = 0 To Categories.Count - 2
+				Dim price = Categories( i ).UnitPrice
 
-				If Not minPrices.Contains( price ) Then _
-					minPrices.Add( price )
+				If Not minPrices.Contains( price ) Then minPrices.Add( price )
 
-				If Not maxPrices.Contains( price ) Then _
-					maxPrices.Add( price )
+				If Not maxPrices.Contains( price ) Then maxPrices.Add( price )
 			Next
 
 			minPrices.Sort( Function( a,
@@ -162,280 +130,157 @@ Namespace Rooms.ViewModels
 				              b ) a > b )
 			maxPrices.Add( - 1 )
 
-			RoomMinPrices.Clear()
-			RoomMinPrices.AddRange( minPrices )
+			MinUnitPrices.Clear()
+			MinUnitPrices.AddRange( minPrices )
 
-			RoomMaxPrices.Clear()
-			RoomMaxPrices.AddRange( maxPrices )
+			MaxUnitPrices.Clear()
+			MaxUnitPrices.AddRange( maxPrices )
 		End Sub
 
 		Private Sub InitRoomStates()
-			RoomStates.Clear()
-			RoomStates.AddRange( {0, 1} )
-			RoomStates.Add( 2 ) 'filter all
+			States.Clear()
+			States.AddRange( {0, 1} )
+			States.Add( 2 ) 'filter all
 		End Sub
 
-		Private Sub InitFilteringValues()
-			_filterRoomNamePrefix = String.Empty
-			_filterRoomCategory = Nothing
-			_filterRoomState = Nothing
-			_filterRoomMinPrice = Nothing
-			_filterRoomMaxPrice = Nothing
-		End Sub
+		' Filtering
 
-		Private Sub InitSortingValues()
-			SortingCode = - 1
-			IsDescendingSort = False
-		End Sub
-
-		' Binding filter values
-		Public Property FilterRoomNamePrefix As String
+		Public Property FilterRoomModel As FilterRoomModel
 			Get
-				Return _filterRoomNamePrefix
+				Return _filterRoomModel
 			End Get
 			Set
-				If IsNothing( Value ) OrElse String.Equals( Value, _filterRoomNamePrefix ) Then Return
-				_filterRoomNamePrefix = value
-				NotifyOfPropertyChange( Function() FilterRoomNamePrefix )
-				RefreshRoomsListVisibility()
+				If IsNothing( Value ) OrElse Equals( Value, _filterRoomModel ) Then Return
+				_filterRoomModel = value
+				NotifyOfPropertyChange( Function() FilterRoomModel )
 			End Set
 		End Property
 
-		Public Property FilterRoomCategory As RoomCategoriesListItemModel
-			Get
-				Return _filterRoomCategory
-			End Get
-			Set
-				If Equals( Value, _filterRoomCategory ) Then Return
-				_filterRoomCategory = value
-				NotifyOfPropertyChange( Function() FilterRoomCategory )
-				RefreshRoomsListVisibility()
-			End Set
-		End Property
-
-		Public Property FilterRoomState As Integer?
-			Get
-				Return _filterRoomState
-			End Get
-			Set
-				If Equals( Value, _filterRoomState ) Then Return
-				_filterRoomState = value
-				NotifyOfPropertyChange( Function() FilterRoomState )
-				RefreshRoomsListVisibility()
-			End Set
-		End Property
-
-		Public Property FilterRoomMinPrice As Decimal?
-			Get
-				Return _filterRoomMinPrice
-			End Get
-			Set
-				If Equals( Value, _filterRoomMinPrice ) Then Return
-				_filterRoomMinPrice = value
-				NotifyOfPropertyChange( Function() FilterRoomMinPrice )
-
-				If FilterRoomMinPrice IsNot Nothing And
-				   FilterRoomMaxPrice IsNot Nothing And
-				   FilterRoomMinPrice >= 0 And
-				   FilterRoomMaxPrice >= 0 And
-				   FilterRoomMinPrice > FilterRoomMaxPrice
-					FilterRoomMaxPrice = FilterRoomMinPrice
-				Else
-					RefreshRoomsListVisibility()
-				End If
-			End Set
-		End Property
-
-		Public Property FilterRoomMaxPrice As Decimal?
-			Get
-				Return _filterRoomMaxPrice
-			End Get
-			Set
-				If Equals( Value, _filterRoomMaxPrice ) Then Return
-				_filterRoomMaxPrice = value
-				NotifyOfPropertyChange( Function() FilterRoomMaxPrice )
-
-				If FilterRoomMaxPrice IsNot Nothing And
-				   FilterRoomMinPrice IsNot Nothing And
-				   FilterRoomMaxPrice >= 0 And
-				   FilterRoomMinPrice >= 0 And
-				   FilterRoomMaxPrice < FilterRoomMinPrice
-					FilterRoomMinPrice = FilterRoomMaxPrice
-				Else
-					RefreshRoomsListVisibility()
-				End If
-			End Set
-		End Property
-
-		' Binding sort values
-		Public Property SortingCode As Integer
-			Get
-				Return _sortingCode
-			End Get
-			Set
-				If Equals( Value, _sortingCode ) Then Return
-				_sortingCode = value
-				NotifyOfPropertyChange( Function() SortingCode )
-				SortRoomsList()
-			End Set
-		End Property
-
-		Public Property IsDescendingSort As Boolean
-			Get
-				Return _isDescendingSort
-			End Get
-			Set
-				If Equals( Value, _isDescendingSort ) Then Return
-				_isDescendingSort = value
-				NotifyOfPropertyChange( Function() IsDescendingSort )
-				SortRoomsList()
-			End Set
-		End Property
-
-		' Filter actions
 		Public Sub ResetFilters()
-			_filterRoomNamePrefix = String.Empty
-			NotifyOfPropertyChange( Function() FilterRoomNamePrefix )
-
-			_filterRoomCategory = Nothing
-			NotifyOfPropertyChange( Function() FilterRoomCategory )
-
-			_filterRoomState = Nothing
-			NotifyOfPropertyChange( Function() FilterRoomState )
-
-			_filterRoomMinPrice = Nothing
-			NotifyOfPropertyChange( Function() FilterRoomMinPrice )
-
-			_filterRoomMaxPrice = Nothing
-			NotifyOfPropertyChange( Function() FilterRoomMaxPrice )
-
-			RefreshRoomsListVisibility()
+			RemoveHandler FilterRoomModel.PropertyChanged, AddressOf OnFilterRoomModelUpdated
+			FilterRoomModel.NamePrefix = String.Empty
+			FilterRoomModel.Category = Nothing
+			FilterRoomModel.State = Nothing
+			FilterRoomModel.MinUnitPrice = Nothing
+			FilterRoomModel.MaxUnitPrice = Nothing
+			AddHandler FilterRoomModel.PropertyChanged, AddressOf OnFilterRoomModelUpdated
 		End Sub
 
-		Public Sub FilterByRoomCategoryOf( roomsListItem As RoomsListItemModel )
-			Dim category = RoomCategories.FirstOrDefault( Function( c ) String.Equals( c.Id, roomsListItem.CategoryId ) )
+		Public Sub FilterByRoomCategoryOf( roomModel As IRoomModel )
+			Dim category = Categories.FirstOrDefault( Function( c ) String.Equals( c.Id, roomModel.Category.Id ) )
 			If IsNothing( category ) Then Return
 
-			FilterRoomCategory = category
+			FilterRoomModel.Category = category
 		End Sub
 
-		Public Sub FilterByRoomStateOf( roomsListItem As RoomsListItemModel )
-			Dim state = RoomStates.FirstOrDefault( Function( s ) Equals( s, roomsListItem.State ) )
+		Public Sub FilterByRoomStateOf( roomModel As IRoomModel )
+			Dim state = States.FirstOrDefault( Function( s ) Equals( s, roomModel.State ) )
 			If IsNothing( state ) Then Return
 
-			FilterRoomState = state
+			FilterRoomModel.State = state
 		End Sub
 
 		Public Sub RefreshRoomsListVisibility()
-			Dim matchNamePrefix As Boolean
-			Dim matchCategory As Boolean
-			Dim matchState As Boolean
-			Dim matchMinPrice As Boolean
-			Dim matchMaxPrice As Boolean
-
-			For Each room As RoomsListItemModel In Rooms
-				matchNamePrefix = String.IsNullOrWhiteSpace( FilterRoomNamePrefix ) OrElse
-				                  (room.Name.ToLower().Contains( FilterRoomNamePrefix ))
-
-				matchCategory = IsNothing( FilterRoomCategory ) OrElse
-				                (String.IsNullOrWhiteSpace( FilterRoomCategory.Id ) OrElse
-				                 (Equals( RoomCategories.Count, 0 ) OrElse
-				                  (Equals( FilterRoomCategory, RoomCategories.Last() ) OrElse
-				                   (String.Equals( room.CategoryId, FilterRoomCategory.Id )))))
-
-				matchState = IsNothing( FilterRoomState ) OrElse
-				             (Equals( RoomStates.Count, 0 ) OrElse
-				              (Equals( FilterRoomState, RoomStates.Last() ) OrElse
-				               (Equals( room.State, FilterRoomState ))))
-
-				matchMinPrice = IsNothing( FilterRoomMinPrice ) OrElse
-				                (FilterRoomMinPrice < 0 OrElse
-				                 (FilterRoomMinPrice <= room.UnitPrice))
-
-				matchMaxPrice = IsNothing( FilterRoomMaxPrice ) OrElse
-				                (FilterRoomMaxPrice < 0 OrElse
-				                 (FilterRoomMaxPrice >= room.UnitPrice))
-
-				If matchNamePrefix And
-				   matchCategory And
-				   matchState And
-				   matchMinPrice And
-				   matchMaxPrice
-					room.IsFiltersMatched = True
-				Else
-					room.IsFiltersMatched = False
-				End If
+			For Each filterableRoomModel As FilterableRoomModel In Rooms
+				If IsNothing( FilterRoomModel ) Then filterableRoomModel.IsFiltersMatch = True
+				filterableRoomModel.IsFiltersMatch = FilterRoomModel.IsMatch( filterableRoomModel.Model,
+				                                                              Categories,
+				                                                              States )
 			Next
 		End Sub
 
-		' Sort actions
-		Public Sub SortRoomsList()
-			Select Case SortingCode
-				Case 0
-					If IsDescendingSort
-						Rooms = New BindableCollection(Of RoomsListItemModel)( Rooms.OrderByDescending( Function( p ) p.Name ) )
-					Else
-						Rooms = New BindableCollection(Of RoomsListItemModel)( Rooms.OrderBy( Function( p ) p.Name ) )
-					End If
-				Case 1
-					If IsDescendingSort
-						Rooms = New BindableCollection(Of RoomsListItemModel)( Rooms.OrderByDescending( Function( p ) p.CategoryName ) )
-					Else
-						Rooms = New BindableCollection(Of RoomsListItemModel)( Rooms.OrderBy( Function( p ) p.CategoryName ) )
-					End If
-				Case 2
-					If IsDescendingSort
-						Rooms = New BindableCollection(Of RoomsListItemModel)( Rooms.OrderByDescending( Function( p ) p.UnitPrice ) )
-					Else
-						Rooms = New BindableCollection(Of RoomsListItemModel)( Rooms.OrderBy( Function( p ) p.UnitPrice ) )
-					End If
-				Case 3
-					If IsDescendingSort
-						Rooms = New BindableCollection(Of RoomsListItemModel)( Rooms.OrderByDescending( Function( p ) p.State ) )
-					Else
-						Rooms = New BindableCollection(Of RoomsListItemModel)( Rooms.OrderBy( Function( p ) p.State ) )
-					End If
-			End Select
+		Private Sub OnFilterRoomModelUpdated( sender As Object,
+		                                      e As PropertyChangedEventArgs )
+			RefreshRoomsListVisibility()
 		End Sub
 
-		Public Sub PreviewHireAsync( roomModel As RoomsListItemModel )
+		' Sorting
+
+		Public Property SortRoomModel As SortRoomModel
+			Get
+				Return _sortRoomModel
+			End Get
+			Set
+				If IsNothing( Value ) OrElse Equals( Value, _sortRoomModel ) Then Return
+				_sortRoomModel = value
+				NotifyOfPropertyChange( Function() SortRoomModel )
+			End Set
+		End Property
+
+		Public Sub SortRoomsList()
+			Dim orderedRooms As IObservableCollection(Of FilterableRoomModel ) = Nothing
+
+			Select Case SortRoomModel.SortingCode
+				Case 0
+					If SortRoomModel.IsDescendingSort
+						orderedRooms = New BindableCollection(Of FilterableRoomModel)( Rooms.OrderByDescending( Function( r ) r.Model.Name ) )
+					Else
+						orderedRooms = New BindableCollection(Of FilterableRoomModel)( Rooms.OrderBy( Function( r ) r.Model.Name ) )
+					End If
+				Case 1
+					If SortRoomModel.IsDescendingSort
+						orderedRooms =
+							New BindableCollection(Of FilterableRoomModel)( Rooms.OrderByDescending( Function( r ) r.Model.Category.Name ) )
+					Else
+						orderedRooms = New BindableCollection(Of FilterableRoomModel)( Rooms.OrderBy( Function( r ) r.Model.Category.Name ) )
+					End If
+				Case 2
+					If SortRoomModel.IsDescendingSort
+						orderedRooms =
+							New BindableCollection(Of FilterableRoomModel)( Rooms.OrderByDescending( Function( r ) r.Model.Category.UnitPrice ) )
+					Else
+						orderedRooms =
+							New BindableCollection(Of FilterableRoomModel)( Rooms.OrderBy( Function( r ) r.Model.Category.UnitPrice ) )
+					End If
+				Case 3
+					If SortRoomModel.IsDescendingSort
+						orderedRooms =
+							New BindableCollection(Of FilterableRoomModel)( Rooms.OrderByDescending( Function( r ) r.Model.State ) )
+					Else
+						orderedRooms = New BindableCollection(Of FilterableRoomModel)( Rooms.OrderBy( Function( r ) r.Model.State ) )
+					End If
+			End Select
+
+			If orderedRooms IsNot Nothing
+				Rooms.Clear()
+				Rooms.AddRange( orderedRooms )
+			End If
+		End Sub
+
+		Private Sub OnSortRoomModelUpdated( sender As Object,
+		                                    e As PropertyChangedEventArgs )
+			SortRoomsList()
 		End Sub
 
 		' Infrastructure
-		Public Sub OnRoomAdded( model As RoomModel ) Implements IRoomsListPresenter.OnRoomAdded
-			' find category
-			Dim category = RoomCategories.FirstOrDefault( Function( c ) c.Id = model.Category.Id )
-			If category Is Nothing Then Throw New EntryPointNotFoundException()
 
-			Rooms.Add( New RoomsListItemModel With {.Id=model.Id, 
-				         .Name=model.Name, 
-				         .CategoryId=category.Id,
-				         .CategoryName=category.Name, 
-				         .CategoryDisplayColor=category.DisplayColor, 
-				         .UnitPrice=category.UnitPrice, 
-				         .State=0, 
-				         .IsFiltersMatched=False} )
+		Public Sub OnRoomAdded( model As IRoomModel ) _
+			Implements IRoomsListPresenter.OnRoomAdded
+			Dim room = Rooms.FirstOrDefault( Function( r ) r.Model.Id = model.Id )
+			If room IsNot Nothing
+				ShowStaticBottomNotification( Start.MainWindow.Models.StaticNotificationType.Warning,
+				                              "Tìm thấy phòng cùng id trong danh sách" )
+				Rooms.Remove( room )
+			End If
+
+			Rooms.Add( New FilterableRoomModel With {.Model=model, .IsFiltersMatch=False} )
 
 			RefreshRoomsListVisibility()
 			SortRoomsList()
 		End Sub
 
-		Public Sub OnRoomUpdated( model As RoomModel ) Implements IRoomsListPresenter.OnRoomUpdated
+		Public Sub OnRoomUpdated( model As IRoomModel ) _
+			Implements IRoomsListPresenter.OnRoomUpdated
 			' find room
-			Dim room = Rooms.FirstOrDefault( Function( r ) r.Id = model.Id )
-			If room Is Nothing Then Throw New DuplicateWaitObjectException()
-
-			' find category
-			Dim category = RoomCategories.FirstOrDefault( Function( c ) c.Id = model.Category.Id )
-			If category Is Nothing Then Throw New EntryPointNotFoundException()
+			Dim room = Rooms.FirstOrDefault( Function( r ) r.Model.Id = model.Id )
+			If room Is Nothing
+				ShowStaticBottomNotification( Start.MainWindow.Models.StaticNotificationType.Warning,
+				                              $"Không tìm thấy phòng {model.Name} trong danh sách phòng để cập nhật" )
+				Return
+			End If
 
 			' update
-			room.Name = model.Name
-			room.CategoryId = category.id
-			room.CategoryName = category.Name
-			room.CategoryDisplayColor = category.DisplayColor
-			room.UnitPrice = category.UnitPrice
-			room.State = model.State
+			room.Model = model
 
 			RefreshRoomsListVisibility()
 			SortRoomsList()
@@ -443,7 +288,7 @@ Namespace Rooms.ViewModels
 
 		Public Sub OnRoomRemoved( id As String ) Implements IRoomsListPresenter.OnRoomRemoved
 			' find room
-			Dim room = Rooms.FirstOrDefault( Function( r ) r.Id = id )
+			Dim room = Rooms.FirstOrDefault( Function( r ) r.Model.Id = id )
 			If room Is Nothing Then Return
 
 			Rooms.Remove( room )

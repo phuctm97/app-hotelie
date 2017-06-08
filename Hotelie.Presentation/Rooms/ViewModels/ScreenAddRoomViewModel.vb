@@ -1,9 +1,11 @@
 ﻿Imports Caliburn.Micro
-Imports Hotelie.Application.Rooms.Factories.CreateRoom
-Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
+Imports Hotelie.Application.Rooms.Models
+Imports Hotelie.Application.Rooms.Factories
+Imports Hotelie.Application.Rooms.Queries
 Imports Hotelie.Application.Services.Infrastructure
 Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
+Imports Hotelie.Presentation.Rooms.Models
 Imports Hotelie.Presentation.Start.MainWindow.Models
 
 Namespace Rooms.ViewModels
@@ -13,14 +15,9 @@ Namespace Rooms.ViewModels
 		           INeedWindowModals
 
 		' Dependencies
-		Private ReadOnly _getRoomCategoriesList As IGetRoomCategoriesListQuery
+		Private ReadOnly _getAllRoomCategoriesQuery As IGetAllRoomCategoriesQuery
 		Private ReadOnly _createRoomFactory As ICreateRoomFactory
 		Private ReadOnly _inventory As IInventory
-
-		' Backing fields
-		Private _roomName As String
-		Private _roomCategory As RoomCategoriesListItemModel
-		Private _roomNote As String
 
 		' Parent
 		Public Property Parent As Object Implements IChild.Parent
@@ -29,17 +26,18 @@ Namespace Rooms.ViewModels
 
 		' Initialization
 		Sub New( workspace As RoomsWorkspaceViewModel,
-		         getRoomCategoriesList As IGetRoomCategoriesListQuery,
+		         getAllRoomCategoriesQuery As IGetAllRoomCategoriesQuery,
 		         createRoomFactory As ICreateRoomFactory,
 		         inventory As IInventory )
 			MyBase.New( MaterialDesignThemes.Wpf.ColorZoneMode.PrimaryDark )
 
 			ParentWorkspace = workspace
-			_getRoomCategoriesList = getRoomCategoriesList
+			_getAllRoomCategoriesQuery = getAllRoomCategoriesQuery
 			_createRoomFactory = createRoomFactory
 			_inventory = inventory
 
-			RoomCategories = New BindableCollection(Of RoomCategoriesListItemModel)
+			Categories = New BindableCollection(Of RoomCategoryModel)
+			Room = New EditableRoomModel()
 		End Sub
 
 		Public Sub Init()
@@ -53,71 +51,38 @@ Namespace Rooms.ViewModels
 		End Function
 
 		Private Sub InitRoomCategories()
-			RoomCategories.Clear()
-			RoomCategories.AddRange( _getRoomCategoriesList.Execute() )
+			Categories.Clear()
+			Categories.AddRange( _getAllRoomCategoriesQuery.Execute() )
 		End Sub
 
 		Private Async Function InitRoomCategoriesAsync() As Task
-			RoomCategories.Clear()
-			RoomCategories.AddRange( Await _getRoomCategoriesList.ExecuteAsync() )
+			Categories.Clear()
+			Categories.AddRange( Await _getAllRoomCategoriesQuery.ExecuteAsync() )
 		End Function
 
 		Private Sub InitValues()
-			RoomName = String.Empty
-			RoomCategory = RoomCategories.FirstOrDefault()
-			RoomNote = String.Empty
+			Room.Id = String.Empty
+			Room.Name = String.Empty
+			Room.Category = Categories.FirstOrDefault()
+			Room.Note = String.Empty
+			Room.State = 0
 		End Sub
 
 		' Binding model
-		Public Property RoomName As String
-			Get
-				Return _roomName
-			End Get
-			Set
-				If IsNothing( Value ) OrElse String.Equals( Value, _roomName ) Then Return
-				_roomName = value
-				NotifyOfPropertyChange( Function() RoomName )
-			End Set
-		End Property
-
-		Public Property RoomCategory As RoomCategoriesListItemModel
-			Get
-				Return _roomCategory
-			End Get
-			Set
-				If IsNothing( Value ) OrElse Equals( Value, _roomCategory ) Then Return
-				_roomCategory = value
-				NotifyOfPropertyChange( Function() RoomCategory )
-			End Set
-		End Property
-
-		Public Property RoomNote As String
-			Get
-				Return _roomNote
-			End Get
-			Set
-				If IsNothing( Value ) OrElse String.Equals( Value, _roomNote ) Then Return
-				_roomNote = value
-				NotifyOfPropertyChange( Function() RoomNote )
-			End Set
-		End Property
-
-		Public ReadOnly Property RoomState As Integer
-			Get
-				Return 0
-			End Get
-		End Property
+		Public ReadOnly Property Room As EditableRoomModel
 
 		' Binding data
 		' ReSharper disable once CollectionNeverUpdated.Global
 		' ReSharper disable once UnassignedGetOnlyAutoProperty
-		Public ReadOnly Property RoomCategories As IObservableCollection(Of RoomCategoriesListItemModel)
+		Public ReadOnly Property Categories As IObservableCollection(Of RoomCategoryModel)
 
 		' Exit
 		Private Sub ResetValues()
-			RoomName = String.Empty
-			RoomCategory = RoomCategories.FirstOrDefault()
-			RoomNote = String.Empty
+			Room.Id = String.Empty
+			Room.Name = String.Empty
+			Room.Category = Categories.FirstOrDefault()
+			Room.Note = String.Empty
+			Room.State = 0
 		End Sub
 
 		Public Overrides ReadOnly Property IsEdited As Boolean
@@ -127,8 +92,8 @@ Namespace Rooms.ViewModels
 		End Property
 
 		Private Function CheckForPendingChanges()
-			Return (Not String.IsNullOrWhiteSpace( RoomName )) Or
-			       (Not String.IsNullOrWhiteSpace( RoomNote ))
+			Return (Not String.IsNullOrWhiteSpace( Room.Name )) Or
+			       (Not String.IsNullOrWhiteSpace( Room.Note ))
 		End Function
 
 		Public Overrides Function ActualExitAsync() As Task
@@ -140,9 +105,9 @@ Namespace Rooms.ViewModels
 
 		' Save
 		Public Overrides Function CanSave() As Task(Of Boolean)
-			If String.IsNullOrWhiteSpace( RoomName )
+			If String.IsNullOrWhiteSpace( Room.Name )
 				IoC.Get(Of IMainWindow).ShowStaticBottomNotification( StaticNotificationType.Information,
-				                                                      "Vui lòng nhập tên phòng!" )
+				                                                      "Vui lòng nhập tên phòng" )
 				Return Task.FromResult( False )
 			End If
 
@@ -152,7 +117,7 @@ Namespace Rooms.ViewModels
 		Public Overrides Async Function ActualSaveAsync() As Task
 			' try create
 			ShowStaticWindowLoadingDialog()
-			Dim newRoomId = Await _createRoomFactory.ExecuteAsync( RoomName, RoomCategory.Id, RoomNote )
+			Dim newRoomId = Await _createRoomFactory.ExecuteAsync( Room.Name, Room.Category.Id, Room.Note )
 
 			If String.IsNullOrEmpty( newRoomId )
 				OnSaveFail()
@@ -169,7 +134,7 @@ Namespace Rooms.ViewModels
 		End Function
 
 		Private Sub OnSaveFail()
-			ShowStaticBottomNotification( StaticNotificationType.Error, "Sự cố ngoài ý muốn. Tạo phòng thất bại!" )
+			ShowStaticBottomNotification( StaticNotificationType.Error, "Sự cố ngoài ý muốn. Tạo phòng thất bại." )
 		End Sub
 	End Class
 End Namespace

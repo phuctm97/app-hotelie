@@ -2,9 +2,8 @@
 Imports Hotelie.Application.Rooms.Commands.RemoveRoom
 Imports Hotelie.Application.Rooms.Commands.UpdateRoom
 Imports Hotelie.Application.Rooms.Factories.CreateRoom
-Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
+Imports Hotelie.Application.Rooms.Queries
 Imports Hotelie.Application.Rooms.Queries.GetRoomData
-Imports Hotelie.Application.Rooms.Queries.GetRoomsList
 Imports Hotelie.Application.Services.Infrastructure
 Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
@@ -40,7 +39,7 @@ Namespace Rooms.ViewModels
 		' Parent
 		Public Property Parent As Object Implements IChild.Parent
 
-		Private Property ParentShell As WorkspaceShellViewModel Implements IChild(Of WorkspaceShellViewModel).Parent
+		Public Property ParentShell As WorkspaceShellViewModel Implements IChild(Of WorkspaceShellViewModel).Parent
 			Get
 				Return CType(Parent, WorkspaceShellViewModel)
 			End Get
@@ -50,9 +49,9 @@ Namespace Rooms.ViewModels
 		End Property
 
 		' Initializations
-		Public Sub New( getRoomsListQuery As IGetRoomsListQuery,
-		                getRoomCategoriesListQuery As IGetRoomCategoriesListQuery,
-		                getRoomDataQuery As IGetRoomDataQuery,
+		Public Sub New( getAllRoomsQuery As IGetAllRoomsQuery,
+		                getAllRoomCategoriesQuery As IGetAllRoomCategoriesQuery,
+										getRoomQuery As IGetRoomQuery,
 		                createRoomFactory As ICreateRoomFactory,
 		                updateRoomCommand As IUpdateRoomCommand,
 		                removeRoomCommand As IRemoveRoomCommand,
@@ -60,21 +59,18 @@ Namespace Rooms.ViewModels
 			MyBase.New( MaterialDesignThemes.Wpf.ColorZoneMode.PrimaryDark )
 
 			ScreenRoomsList = New ScreenRoomsListViewModel( Me,
-			                                                getRoomsListQuery,
-			                                                getRoomCategoriesListQuery,
-			                                                removeRoomCommand,
-			                                                inventory )
+			                                                getAllRoomsQuery,
+			                                                getAllRoomCategoriesQuery )
 			ScreenRoomDetail = New ScreenRoomDetailViewModel( Me,
-			                                                  getRoomDataQuery,
-			                                                  getRoomCategoriesListQuery,
+			                                                  getAllRoomCategoriesQuery,
+																												getRoomQuery,
 			                                                  updateRoomCommand,
 			                                                  removeRoomCommand,
 			                                                  inventory )
 			ScreenAddRoom = New ScreenAddRoomViewModel( Me,
-			                                            getRoomCategoriesListQuery,
+			                                            getAllRoomCategoriesQuery,
 			                                            createRoomFactory,
 			                                            inventory )
-
 			DisplayName = "Danh sách phòng"
 
 			DisplayCode = - 1
@@ -93,31 +89,15 @@ Namespace Rooms.ViewModels
 			DisplayCode = 0
 		End Sub
 
-		Private Async Function InitAsync() As Task
-			Await ScreenRoomsList.InitAsync()
-			Await ScreenRoomDetail.InitAsync()
-			Await ScreenAddRoom.InitAsync()
-			DisplayCode = 0
-		End Function
-
 		' Navigations
 		Public Sub NavigateToScreenRoomsList()
 			DisplayCode = 0
 		End Sub
 
-		Public Sub NavigateToScreenRoomDetail( roomsListItem As _
-			                                     Hotelie.Application.Rooms.Queries.GetRoomsList.RoomsListItemModel )
-			If IsNothing( roomsListItem ) Then Return
+		Public Async Sub NavigateToScreenRoomDetail( roomId As String )
+			If String.IsNullOrEmpty( roomId ) Then Return
 
-			ScreenRoomDetail.SetRoom( roomsListItem.Id )
-			DisplayCode = 1
-		End Sub
-
-		Public Async Sub NavigateToScreenRoomDetailAsync( roomsListItem As _
-			                                                Hotelie.Application.Rooms.Queries.GetRoomsList.RoomsListItemModel )
-			If IsNothing( roomsListItem ) Then Return
-
-			Await ScreenRoomDetail.SetRoomAsync( roomsListItem.Id )
+			Await ScreenRoomDetail.SetRoomAsync( roomId )
 			DisplayCode = 1
 		End Sub
 

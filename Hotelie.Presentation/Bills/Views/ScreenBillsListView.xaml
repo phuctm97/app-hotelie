@@ -106,7 +106,7 @@
                                                                         Binding="{Binding Path=Lease.Room.Name, Mode=OneWay}"
                                                                         Header="Phòng" />
                                                     <DataGridTextColumn IsReadOnly="True"
-                                                                        Binding="{Binding Path=Lease.RoomPrice, Mode=OneWay}"
+                                                                        Binding="{Binding Path=Lease.RoomUnitPrice, Mode=OneWay}"
                                                                         Header="Đơn giá" />
                                                     <DataGridTextColumn IsReadOnly="True"
                                                                         Binding="{Binding Path=Lease.CheckinDate, Mode=OneWay}"
