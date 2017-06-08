@@ -126,7 +126,15 @@ Namespace Common.Infrastructure
 				Await Task.Delay( 25 )
 			Next
 
-			Await OnRoomUpdatedAsync( model.Room.Id )
+			For Each presenter As IRoomPresenter In _roomPresenters
+				presenter.OnRoomUpdated( model.Room )
+				Await Task.Delay( 25 )
+			Next
+
+			For Each presenter As IRoomsListPresenter In _roomsListPresenters
+				presenter.OnRoomUpdated( model.Room )
+				Await Task.Delay( 25 )
+			Next
 		End Function
 
 		Public Sub OnLeaseRemoved( id As String ) Implements IInventory.OnLeaseRemoved
