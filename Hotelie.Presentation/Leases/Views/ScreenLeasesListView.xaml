@@ -22,6 +22,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <commonConverters:DateTimeToShortDateStringConverter x:Key="DateTimeToShortDateStringConverter" />
+            <commonConverters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <converters:TotalExpenseDisplayConverter x:Key="TotalExpenseDisplayConverter" />
             <converters:NumberOfUsedDaysDisplayConverters x:Key="NumberOfUsedDaysDisplayConverters" />
         </ResourceDictionary>
@@ -33,6 +34,28 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="1" />
         </Grid.RowDefinitions>
+
+        <!--Toolbar-->
+        <DockPanel Grid.Row="0" Margin="24 24 24 8">
+            <!--Clear button-->
+            <Button DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
+                    Margin="0" Padding="0"
+                    Style="{DynamicResource MaterialDesignToolButton}"
+                    ToolTip="Nhấp để xóa tất cả điều kiện lọc">
+                <materialDesign:PackIcon Width="20" Height="20" Kind="Magnify" />
+            </Button>
+
+            <!--Text-->
+            <TextBox DockPanel.Dock="Left"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Center"
+                     Margin="16 0 16 0"
+                     Width="300"
+                     FontSize="15"
+                     materialDesign:HintAssist.Hint="#L0000001, A101, Nguyễn Văn A,...."
+                     Text="{Binding Path=FilterModel.AnyText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </DockPanel>
+
 
         <!--Rooms list-->
         <ListBox Grid.Row="1" ItemsSource="{Binding Leases}">
@@ -48,6 +71,7 @@
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
                     <Setter Property="Margin" Value="10" />
+                    <Setter Property="Visibility" Value="{Binding IsFiltersMatch, Converter={StaticResource BooleanToVisibilityConverter}}" />
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="ListBoxItem">

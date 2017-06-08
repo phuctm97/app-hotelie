@@ -178,6 +178,7 @@
     <Compile Include="Leases\Converters\TotalExpenseDisplayConverter.vb" />
     <Compile Include="Leases\Models\EditableLeaseDetailModel.vb" />
     <Compile Include="Leases\Models\EditableLeaseModel.vb" />
+    <Compile Include="Leases\Models\FilterLeaseModel.vb" />
     <Compile Include="Leases\Models\UpdatableLeaseModel.vb" />
     <Compile Include="Leases\ViewModels\LeasesWorkspaceViewModel.vb" />
     <Compile Include="Leases\ViewModels\ScreenAddLeaseViewModel.vb" />
