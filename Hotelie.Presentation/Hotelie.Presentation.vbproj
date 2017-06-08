@@ -166,6 +166,7 @@
     <Compile Include="Common\IAppScreenHasSaving.vb" />
     <Compile Include="Common\IMainWindow.vb" />
     <Compile Include="Common\Infrastructure\IBillsListPresenter.vb" />
+    <Compile Include="Common\Infrastructure\ILeasePresenter.vb" />
     <Compile Include="Common\Infrastructure\ILeasesListPresenter.vb" />
     <Compile Include="Common\Infrastructure\Inventory.vb" />
     <Compile Include="Common\Infrastructure\IRoomsListPresenter.vb" />

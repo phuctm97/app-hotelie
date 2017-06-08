@@ -10,6 +10,7 @@ Imports Hotelie.Application.Services.Infrastructure
 Imports Hotelie.Presentation.Bills.Models
 Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
+Imports Hotelie.Presentation.Common.Infrastructure
 Imports Hotelie.Presentation.Start.MainWindow.Models
 Imports MaterialDesignThemes.Wpf
 
@@ -19,6 +20,8 @@ Namespace Bills.ViewModels
 		Inherits AppScreenHasSaving
 		Implements IChild(Of BillsWorkspaceViewModel)
 		Implements INeedWindowModals
+		Implements IRoomsListPresenter
+		Implements ILeasesListPresenter
 
 		' Dependencies
 		Private ReadOnly _getAllRoomsQuery As IGetAllRoomsQuery
@@ -49,6 +52,8 @@ Namespace Bills.ViewModels
 			_getAllLeasesQuery = getAllLeasesQuery
 			_createBillFactory = createBillFactory
 			_inventory = inventory
+			TryCast(Me, IRoomsListPresenter).RegisterInventory()
+			TryCast(Me, ILeasesListPresenter).RegisterInventory()
 
 			Bill = New EditableBillModel
 			AddHandler Bill.Details.CollectionChanged, AddressOf	OnDetailsUpdated
@@ -101,7 +106,7 @@ Namespace Bills.ViewModels
 		Public Sub InsertRoomId( id As String )
 			Dim room = Rooms.FirstOrDefault( Function( r ) r.Id = id )
 			If IsNothing( room ) Then Return
-			If Bill.Details.Any( Function( d ) d.Room.Id = room.Id ) Then Return
+			If Bill.Details.Any( Function( d ) d.Room?.Id = room.Id ) Then Return
 
 			Dim detail = New EditableBillDetailModel
 			detail.Room = room
@@ -112,7 +117,7 @@ Namespace Bills.ViewModels
 		Public Sub InsertLeaseId( id As String )
 			Dim lease = Leases.FirstOrDefault( Function( l ) l.Id = id )
 			If IsNothing( lease ) Then Return
-			If Bill.Details.Any( Function( d ) d.Lease.Id = lease.Id ) Then Return
+			If Bill.Details.Any( Function( d ) d.Lease?.Id = lease.Id ) Then Return
 
 			Dim detail = New EditableBillDetailModel
 			detail.Lease = lease
@@ -286,11 +291,147 @@ Namespace Bills.ViewModels
 
 		Private Async Function OnSaveSuccessAsync( newId As String ) As Task
 			Await _inventory.OnBillAddedAsync( newId )
+
+			If Bill.Details IsNot Nothing
+				For Each detail As EditableBillDetailModel In Bill.Details
+					If IsNothing( detail ) Then Continue For
+					If detail.Lease IsNot Nothing AndAlso Not String.IsNullOrEmpty( detail.Lease.Id )
+						Await _inventory.OnLeaseUpdatedAsync( detail.Lease.Id )
+					End If
+					If detail.Room IsNot Nothing AndAlso Not String.IsNullOrEmpty( detail.Room.Id )
+						Await _inventory.OnRoomUpdatedAsync( detail.Room.Id )
+					End If
+				Next
+			End If
+
 			Await ActualExitAsync()
 		End Function
 
 		Private Sub OnSaveFail()
 			ShowStaticBottomNotification( StaticNotificationType.Error, "Gặp sự cố trong lúc lập hóa đơn" )
+		End Sub
+
+		' Infrastructure
+		Public Sub OnLeaseAdded( model As ILeaseModel ) Implements ILeasesListPresenter.OnLeaseAdded
+			If IsNothing( model ) OrElse String.IsNullOrEmpty( model.Id ) Then Return
+			If model.IsPaid Then Return
+
+			Dim lease = Leases.FirstOrDefault( Function( l ) l.Id = model.Id )
+			If lease IsNot Nothing
+				ShowStaticBottomNotification( Start.MainWindow.Models.StaticNotificationType.Warning,
+				                              $"Tìm thấy phiếu thuê phòng cùng mã {model.IdEx} trong danh sách" )
+				Leases( Leases.IndexOf( lease ) ) = model
+				if Bill.Details IsNot Nothing
+					For Each detail As EditableBillDetailModel In Bill.Details
+						If detail.Lease?.Id = model.Id Then detail.Lease = model
+					Next
+				End If
+			Else
+				Leases.Add( model )
+			End If
+		End Sub
+
+		Public Sub OnLeaseUpdated( model As ILeaseModel ) Implements ILeasesListPresenter.OnLeaseUpdated
+			If IsNothing( model ) OrElse String.IsNullOrEmpty( model.Id ) Then Return
+
+			If Not model.IsPaid
+				Dim leaseToUpdate = Leases.FirstOrDefault( Function( l ) l.Id = model.Id )
+				If IsNothing( leaseToUpdate )
+					ShowStaticBottomNotification( StaticNotificationType.Warning,
+					                              $"Không tìm thấy phiếu thuê {model.IdEx} trong danh sách để cập nhật" )
+					Leases.Add( model )
+				Else
+					Leases( Leases.IndexOf( leaseToUpdate ) ) = model
+					if Bill.Details IsNot Nothing
+						For Each detail As EditableBillDetailModel In Bill.Details
+							If detail.Lease?.Id = model.Id Then detail.Lease = model
+						Next
+					End If
+				End If
+
+			Else
+				Dim leaseToRemove = Leases.FirstOrDefault( Function( l ) l.Id = model.Id )
+				If IsNothing( leaseToRemove ) Then Return
+
+				Leases.Remove( leaseToRemove )
+				if Bill.Details IsNot Nothing
+					For Each detail As EditableBillDetailModel In Bill.Details
+						If detail.Lease?.Id = leaseToRemove.Id Then detail.Lease = Leases.FirstOrDefault()
+					Next
+				End If
+			End If
+		End Sub
+
+		Public Sub OnLeaseRemoved( id As String ) Implements ILeasesListPresenter.OnLeaseRemoved
+			Dim leaseToRemove = Leases.FirstOrDefault( Function( l ) l.Id = id )
+			If IsNothing( leaseToRemove ) Then Return
+
+			Leases.Remove( leaseToRemove )
+			if Bill.Details IsNot Nothing
+				For Each detail As EditableBillDetailModel In Bill.Details
+					If detail.Lease?.Id = leaseToRemove.Id Then detail.Lease = Leases.FirstOrDefault()
+				Next
+			End If
+		End Sub
+
+		Public Sub OnRoomAdded( model As IRoomModel ) Implements IRoomsListPresenter.OnRoomAdded
+			If IsNothing( model ) OrElse String.IsNullOrEmpty( model.Id ) Then Return
+			If model.State = 0 Then Return
+
+			Dim room = Rooms.FirstOrDefault( Function( r ) r.Id = model.Id )
+			If room IsNot Nothing
+				ShowStaticBottomNotification( Start.MainWindow.Models.StaticNotificationType.Warning,
+				                              "Tìm thấy phòng cùng id trong danh sách" )
+				Rooms( Rooms.IndexOf( room ) ) = model
+				if Bill.Details IsNot Nothing
+					For Each detail As EditableBillDetailModel In Bill.Details
+						If detail.Room?.Id = model.Id Then detail.Room = model
+					Next
+				End If
+			Else
+				Rooms.Add( model )
+			End If
+		End Sub
+
+		Public Sub OnRoomUpdated( model As IRoomModel ) Implements IRoomsListPresenter.OnRoomUpdated
+			If IsNothing( model ) OrElse String.IsNullOrEmpty( model.Id ) Then Return
+
+			If model.State = 1
+				Dim roomToUpdate = Rooms.FirstOrDefault( Function( r ) r.Id = model.Id )
+				If IsNothing( roomToUpdate )
+					Rooms.Add( model )
+				Else
+					Rooms( Rooms.IndexOf( roomToUpdate ) ) = model
+					if Bill.Details IsNot Nothing
+						For Each detail As EditableBillDetailModel In Bill.Details
+							If detail.Room?.Id = model.Id Then detail.Room = model
+						Next
+					End If
+				End If
+
+			Else
+				Dim roomToRemove = Rooms.FirstOrDefault( Function( r ) r.Id = model.Id )
+				If IsNothing( roomToRemove ) Then Return
+
+				Rooms.Remove( roomToRemove )
+				if Bill.Details IsNot Nothing
+					For Each detail As EditableBillDetailModel In Bill.Details
+						If detail.Room?.Id = roomToRemove.Id Then detail.Room = Rooms.FirstOrDefault()
+					Next
+				End If
+			End If
+		End Sub
+
+		Public Sub OnRoomRemoved( id As String ) Implements IRoomsListPresenter.OnRoomRemoved
+			Dim roomToRemove = Rooms.FirstOrDefault( Function( r ) r.Id = id )
+			If IsNothing( roomToRemove ) Then Return
+
+			Rooms.Remove( roomToRemove )
+			if Bill.Details IsNot Nothing
+				For Each detail As EditableBillDetailModel In Bill.Details
+					If detail.Room?.Id = roomToRemove.Id Then detail.Room = Rooms.FirstOrDefault()
+				Next
+			End If
 		End Sub
 	End Class
 End Namespace

@@ -41,15 +41,18 @@ Namespace Bills.ViewModels
 				              Take( MaxDisplayCapacity ) )
 		End Function
 
+		' Infrastructure
 		Public Sub OnBillAdded( model As IBillModel ) Implements IBillsListPresenter.OnBillAdded
-			Dim bill = Bills.FirstOrDefault( Function( r ) r.Id = model.Id )
-			If bill IsNot Nothing
-				ShowStaticBottomNotification( Start.MainWindow.Models.StaticNotificationType.Warning,
-				                              "Tìm thấy hóa đơn cùng id trong danh sách" )
-				Bills.Remove( bill )
-			End If
+			If IsNothing( model ) OrElse String.IsNullOrEmpty( model.Id ) Then Return
 
-			Bills.Add( model )
+			Dim bill = Bills.FirstOrDefault( Function( b ) b.Id = model.Id )
+			If bill IsNot Nothing
+				ShowStaticTopNotification( Start.MainWindow.Models.StaticNotificationType.Warning,
+				                           $"Tìm thấy hóa đơn cùng mã {model.IdEx} trong danh sách" )
+				Bills( Bills.IndexOf( bill ) ) = model
+			Else
+				Bills.Add( model )
+			End If
 		End Sub
 
 		Public Sub OnBillRemoved( id As String ) Implements IBillsListPresenter.OnBillRemoved

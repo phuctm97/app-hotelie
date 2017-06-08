@@ -1,7 +1,6 @@
 ﻿
 Imports System.Runtime.CompilerServices
 Imports Caliburn.Micro
-Imports Hotelie.Application.Bills.Models
 Imports Hotelie.Application.Bills.Queries
 Imports Hotelie.Application.Leases.Queries
 Imports Hotelie.Application.Rooms.Queries
@@ -13,6 +12,7 @@ Namespace Common.Infrastructure
 		RoomsListPresenter
 		RoomPresenter
 		LeasesListPresenter
+		LeasePresenter
 		BillsListPresenter
 	End Enum
 
@@ -31,6 +31,8 @@ Namespace Common.Infrastructure
 
 		Private ReadOnly _leasesListPresenters As List(Of ILeasesListPresenter)
 
+		Private ReadOnly _leasePresenters As List(Of ILeasePresenter)
+
 		Private ReadOnly _billsListPresenters As List(Of IBillsListPresenter)
 
 		Public Sub New( getRoomQuery As IGetRoomQuery,
@@ -42,6 +44,7 @@ Namespace Common.Infrastructure
 			_roomsListPresenters = New List(Of IRoomsListPresenter)()
 			_roomPresenters = New List(Of IRoomPresenter)()
 			_leasesListPresenters = New List(Of ILeasesListPresenter)()
+			_leasePresenters = new List(Of ILeasePresenter)()
 			_billsListPresenters = new List(Of IBillsListPresenter)()
 		End Sub
 
@@ -54,6 +57,8 @@ Namespace Common.Infrastructure
 					_roomPresenters.Add( childInventory )
 				Case ChildInventoryType.LeasesListPresenter
 					_leasesListPresenters.Add( childInventory )
+				Case ChildInventoryType.LeasePresenter
+					_leasePresenters.Add( childInventory )
 				Case ChildInventoryType.BillsListPresenter
 					_billsListPresenters.Add( childInventory )
 			End Select
@@ -82,7 +87,6 @@ Namespace Common.Infrastructure
 
 			For Each presenter As IRoomsListPresenter In _roomsListPresenters
 				presenter.OnRoomAdded( model )
-				Await Task.Delay( 25 )
 			Next
 		End Function
 
@@ -113,12 +117,10 @@ Namespace Common.Infrastructure
 
 			For Each roomCollectionPresenter As IRoomsListPresenter In _roomsListPresenters
 				roomCollectionPresenter.OnRoomUpdated( model )
-				Await Task.Delay( 25 )
 			Next
 
 			For Each roomPresenter As IRoomPresenter In _roomPresenters
 				roomPresenter.OnRoomUpdated( model )
-				Await Task.Delay( 25 )
 			Next
 		End Function
 
@@ -128,11 +130,11 @@ Namespace Common.Infrastructure
 			Next
 		End Sub
 
-		Public Async Function OnRoomRemovedAsync( id As String ) As Task Implements IInventory.OnRoomRemovedAsync
+		Public Function OnRoomRemovedAsync( id As String ) As Task Implements IInventory.OnRoomRemovedAsync
 			For Each roomCollectionPresenter As IRoomsListPresenter In _roomsListPresenters
 				roomCollectionPresenter.OnRoomRemoved( id )
-				Await Task.Delay( 25 )
 			Next
+			Return Task.FromResult( True )
 		End Function
 
 		Public Sub OnLeaseAdded( id As String ) Implements IInventory.OnLeaseAdded
@@ -146,14 +148,6 @@ Namespace Common.Infrastructure
 			For Each presenter As ILeasesListPresenter In _leasesListPresenters
 				presenter.OnLeaseAdded( model )
 			Next
-
-			For Each presenter As IRoomPresenter In _roomPresenters
-				presenter.OnRoomUpdated( model.Room )
-			Next
-
-			For Each presenter As IRoomsListPresenter In _roomsListPresenters
-				presenter.OnRoomUpdated( model.Room )
-			Next
 		End Sub
 
 		Public Async Function OnLeaseAddedAsync( id As String ) As Task Implements IInventory.OnLeaseAddedAsync
@@ -166,17 +160,6 @@ Namespace Common.Infrastructure
 
 			For Each presenter As ILeasesListPresenter In _leasesListPresenters
 				presenter.OnLeaseAdded( model )
-				Await Task.Delay( 25 )
-			Next
-
-			For Each presenter As IRoomPresenter In _roomPresenters
-				presenter.OnRoomUpdated( model.Room )
-				Await Task.Delay( 25 )
-			Next
-
-			For Each presenter As IRoomsListPresenter In _roomsListPresenters
-				presenter.OnRoomUpdated( model.Room )
-				Await Task.Delay( 25 )
 			Next
 		End Function
 
@@ -186,11 +169,11 @@ Namespace Common.Infrastructure
 			Next
 		End Sub
 
-		Public Async Function OnLeaseRemovedAsync( id As String ) As Task Implements IInventory.OnLeaseRemovedAsync
+		Public Function OnLeaseRemovedAsync( id As String ) As Task Implements IInventory.OnLeaseRemovedAsync
 			For Each presenter As ILeasesListPresenter In _leasesListPresenters
 				presenter.OnLeaseRemoved( id )
-				Await Task.Delay( 25 )
 			Next
+			Return Task.FromResult( True )
 		End Function
 
 		Public Sub OnLeaseUpdated( id As String ) Implements IInventory.OnLeaseUpdated
@@ -205,12 +188,8 @@ Namespace Common.Infrastructure
 				presenter.OnLeaseUpdated( model )
 			Next
 
-			For Each presenter As IRoomPresenter In _roomPresenters
-				presenter.OnRoomUpdated( model.Room )
-			Next
-
-			For Each presenter As IRoomsListPresenter In _roomsListPresenters
-				presenter.OnRoomUpdated( model.Room )
+			For Each presenter As ILeasePresenter In _leasePresenters
+				presenter.OnLeaseUpdated( model )
 			Next
 		End Sub
 
@@ -224,17 +203,10 @@ Namespace Common.Infrastructure
 
 			For Each presenter As ILeasesListPresenter In _leasesListPresenters
 				presenter.OnLeaseUpdated( model )
-				Await Task.Delay( 25 )
 			Next
 
-			For Each presenter As IRoomPresenter In _roomPresenters
-				presenter.OnRoomUpdated( model.Room )
-				Await Task.Delay( 25 )
-			Next
-
-			For Each presenter As IRoomsListPresenter In _roomsListPresenters
-				presenter.OnRoomUpdated( model.Room )
-				Await Task.Delay( 25 )
+			For Each presenter As ILeasePresenter In _leasePresenters
+				presenter.OnLeaseUpdated( model )
 			Next
 		End Function
 
@@ -249,24 +221,6 @@ Namespace Common.Infrastructure
 			For Each presenter As IBillsListPresenter In _billsListPresenters
 				presenter.OnBillAdded( model )
 			Next
-
-			For Each presenter As ILeasesListPresenter In _leasesListPresenters
-				For Each detail As IBillDetailModel In model.Details
-					presenter.OnLeaseUpdated( detail.Lease )
-				Next
-			Next
-
-			For Each presenter As IRoomPresenter In _roomPresenters
-				For Each detail As IBillDetailModel In model.Details
-					presenter.OnRoomUpdated( detail.Lease.Room )
-				Next
-			Next
-
-			For Each presenter As IRoomsListPresenter In _roomsListPresenters
-				For Each detail As IBillDetailModel In model.Details
-					presenter.OnRoomUpdated( detail.Lease.Room )
-				Next
-			Next
 		End Sub
 
 		Public Async Function OnBillAddedAsync( id As String ) As Task Implements IInventory.OnBillAddedAsync
@@ -279,28 +233,6 @@ Namespace Common.Infrastructure
 
 			For Each presenter As IBillsListPresenter In _billsListPresenters
 				presenter.OnBillAdded( model )
-				Await Task.Delay( 25 )
-			Next
-
-			For Each presenter As ILeasesListPresenter In _leasesListPresenters
-				For Each detail As IBillDetailModel In model.Details
-					presenter.OnLeaseUpdated( detail.Lease )
-					Await Task.Delay( 25 )
-				Next
-			Next
-
-			For Each presenter As IRoomPresenter In _roomPresenters
-				For Each detail As IBillDetailModel In model.Details
-					presenter.OnRoomUpdated( detail.Lease.Room )
-					Await Task.Delay( 25 )
-				Next
-			Next
-
-			For Each presenter As IRoomsListPresenter In _roomsListPresenters
-				For Each detail As IBillDetailModel In model.Details
-					presenter.OnRoomUpdated( detail.Lease.Room )
-					Await Task.Delay( 25 )
-				Next
 			Next
 		End Function
 
@@ -310,11 +242,12 @@ Namespace Common.Infrastructure
 			Next
 		End Sub
 
-		Public Async Function OnBillRemovedAsync( id As String ) As Task Implements IInventory.OnBillRemovedAsync
+		Public Function OnBillRemovedAsync( id As String ) As Task Implements IInventory.OnBillRemovedAsync
 			For Each presenter As IBillsListPresenter In _billsListPresenters
 				presenter.OnBillRemoved( id )
-				Await Task.Delay( 25 )
 			Next
+
+			Return Task.FromResult( True )
 		End Function
 	End Class
 
@@ -332,6 +265,11 @@ Namespace Common.Infrastructure
 		< Extension >
 		Public Sub RegisterInventory( leasesListPresenter As ILeasesListPresenter )
 			IoC.Get(Of IInventory).Track( leasesListPresenter, ChildInventoryType.LeasesListPresenter )
+		End Sub
+
+		< Extension >
+		Public Sub RegisterInventory( leasePresenter As ILeasePresenter )
+			IoC.Get(Of IInventory).Track( leasePresenter, ChildInventoryType.LeasePresenter )
 		End Sub
 
 		< Extension >

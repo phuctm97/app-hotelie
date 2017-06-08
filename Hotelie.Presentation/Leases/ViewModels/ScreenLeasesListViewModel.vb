@@ -71,60 +71,58 @@ Namespace Leases.ViewModels
 		' Infrastructure
 
 		Public Sub OnLeaseAdded( model As ILeaseModel ) Implements ILeasesListPresenter.OnLeaseAdded
+			If IsNothing( model ) OrElse String.IsNullOrEmpty( model.Id ) Then Return
 			If model.IsPaid Then Return
 
 			Dim lease = Leases.FirstOrDefault( Function( l ) l.Id = model.Id )
 			If lease IsNot Nothing
 				ShowStaticTopNotification( Start.MainWindow.Models.StaticNotificationType.Warning,
-				                           "Tìm thấy phiếu thuê phòng cùng id trong danh sách" )
-				Leases.Remove( lease )
+				                           $"Tìm thấy phiếu thuê phòng cùng mã {model.IdEx} trong danh sách" )
+				Leases( Leases.IndexOf( lease ) ) = model
+			Else
+				Leases.Add( model )
 			End If
-
-			' add new lease item
-			Leases.Add( model )
 		End Sub
 
 		Public Sub OnLeaseUpdated( model As ILeaseModel ) Implements ILeasesListPresenter.OnLeaseUpdated
-			Dim leaseToUpdate = Leases.FirstOrDefault( Function( l ) l.Id = model.Id )
-			If IsNothing( leaseToUpdate )
-				ShowStaticBottomNotification( Start.MainWindow.Models.StaticNotificationType.Warning,
-				                              "Không tìm thấy phiếu thuê phòng {model.Id} trong danh sách để cập nhật" )
-				Return
-			End If
+			If IsNothing( model ) OrElse String.IsNullOrEmpty( model.Id ) Then Return
 
 			If model.IsPaid
-				Leases.Remove( leaseToUpdate )
+				Dim leaseToRemove = Leases.FirstOrDefault( Function( l ) l.Id = model.Id )
+				If leaseToRemove IsNot Nothing
+					Leases.Remove( leaseToRemove )
+				End If
+
 			Else
-				Leases( Leases.IndexOf( leaseToUpdate ) ) = model
+				Dim leaseToUpdate = Leases.FirstOrDefault( Function( l ) l.Id = model.Id )
+				If leaseToUpdate IsNot Nothing
+					Leases( Leases.IndexOf( leaseToUpdate ) ) = model
+				Else
+					Leases.Add( model )
+				End If
 			End If
 		End Sub
 
 		Public Sub OnLeaseRemoved( id As String ) Implements ILeasesListPresenter.OnLeaseRemoved
 			Dim leaseToRemove = Leases.FirstOrDefault( Function( l ) l.Id = id )
-			If IsNothing( leaseToRemove )
-				ShowStaticBottomNotification( Start.MainWindow.Models.StaticNotificationType.Warning,
-				                              "Không tìm thấy phiếu thuê vừa xóa trong danh sách để cập nhật" )
-				Return
-			End If
+			If IsNothing( leaseToRemove ) Then Return
 
 			Leases.Remove( leaseToRemove )
 		End Sub
 
 		Public Sub OnRoomUpdated( model As IRoomModel ) Implements IRoomPresenter.OnRoomUpdated
-			Dim leaseToUpdate = Leases.FirstOrDefault( Function( l ) l.Room.Id = model.Id )
+			If IsNothing( model ) OrElse String.IsNullOrEmpty( model.Id ) Then Return
+
+			Dim leaseToUpdate = Leases.FirstOrDefault( Function( l ) l.Room?.Id = model.Id )
 			If IsNothing( leaseToUpdate ) Then Return
 
 			' if lease is updatable, update it room
 			Dim updatableLease = TryCast(leaseToUpdate, UpdatableLeaseModel)
 			If (updatableLease IsNot Nothing)
 				updatableLease.Room = model
-				Return
+			Else
+				Leases( Leases.IndexOf( leaseToUpdate ) ) = new UpdatableLeaseModel( leaseToUpdate ) With {.Room=model}
 			End If
-
-			' create new lease with new room model
-			Dim newLease = New UpdatableLeaseModel( leaseToUpdate )
-			newLease.Room = model
-			Leases( Leases.IndexOf( leaseToUpdate ) ) = newLease
 		End Sub
 	End Class
 End Namespace

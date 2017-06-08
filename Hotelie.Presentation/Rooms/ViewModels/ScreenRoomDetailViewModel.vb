@@ -239,7 +239,7 @@ Namespace Rooms.ViewModels
 
 		' Business Actions
 		Public Sub DoRoomAction()
-			If IsNothing(Room) Then Return
+			If IsNothing( Room ) Then Return
 
 			Select Case Room.State
 				Case 0
@@ -251,14 +251,14 @@ Namespace Rooms.ViewModels
 
 		' Infrastructure
 		Public Sub OnRoomUpdated( model As IRoomModel ) Implements IRoomPresenter.OnRoomUpdated
-			If String.IsNullOrEmpty( Room.Id ) Then Return
-			If String.IsNullOrEmpty( model.Id ) Then Return
+			If IsNothing( Room ) OrElse String.IsNullOrEmpty( Room.Id ) Then Return
+			If IsNothing( model ) OrElse String.IsNullOrEmpty( model.Id ) Then Return
 			If Not String.Equals( Room.Id, model.Id ) Then Return
 
 			Dim category = Categories.FirstOrDefault( Function( c ) c.Id = model.Category.Id )
 			If IsNothing( category )
 				ShowStaticBottomNotification( StaticNotificationType.Warning,
-				                              "Không tìm thấy loại phòng {} trong danh sách loại phòng có thể chọn để cập nhật" )
+				                              $"Không tìm thấy loại phòng {model.Category.Name} trong danh sách loại phòng để cập nhật" )
 				Return
 			End If
 
@@ -267,6 +267,5 @@ Namespace Rooms.ViewModels
 			Room.Note = model.Note
 			Room.State = model.State
 		End Sub
-
 	End Class
 End Namespace
