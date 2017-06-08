@@ -31,7 +31,9 @@ Namespace Leases.Models
 			Set
 				If IsNothing( Value ) OrElse Equals( Value, _room ) Then Return
 				_room = value
+				_roomUnitPrice = _room.Category.UnitPrice
 				NotifyOfPropertyChange( Function() Room )
+				NotifyOfPropertyChange( Function() RoomUnitPrice )
 			End Set
 		End Property
 
