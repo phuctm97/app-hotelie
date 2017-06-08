@@ -22,6 +22,12 @@ Namespace Leases.Models
 			End Get
 		End Property
 
+		Public ReadOnly Property IdEx As String Implements ILeaseModel.IdEx
+			Get
+				Return $"#{Id}"
+			End Get
+		End Property
+
 		Public ReadOnly Property Room As Rooms.Models.IRoomModel Implements ILeaseModel.Room
 
 		Public ReadOnly Property CheckinDate As Date Implements ILeaseModel.CheckinDate
@@ -32,7 +38,7 @@ Namespace Leases.Models
 
 		Public ReadOnly Property NumberOfUsedDays As Integer Implements ILeaseModel.NumberOfUsedDays
 			Get
-				Return Today.Subtract(CheckinDate).TotalDays
+				Return Today.Subtract( CheckinDate ).TotalDays
 			End Get
 		End Property
 
@@ -48,7 +54,7 @@ Namespace Leases.Models
 			End Get
 		End Property
 
-		Public ReadOnly ReadOnly Property ExtraCoefficient As Double Implements ILeaseModel.ExtraCoefficient
+		Public ReadOnly Property ExtraCoefficient As Double Implements ILeaseModel.ExtraCoefficient
 			Get
 				Return _entity.ExtraCoefficient
 			End Get

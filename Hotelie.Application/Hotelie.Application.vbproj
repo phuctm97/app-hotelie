@@ -92,6 +92,10 @@
     <Compile Include="Bills\Factories\CreateBill\ICreateBillFactory.vb" />
     <Compile Include="Bills\Models\BillDetailModel.vb" />
     <Compile Include="Bills\Models\BillModel.vb" />
+    <Compile Include="Bills\Models\IBillDetailModel.vb" />
+    <Compile Include="Bills\Models\IBillModel.vb" />
+    <Compile Include="Bills\Queries\IGetAllBillsQuery.vb" />
+    <Compile Include="Bills\Queries\IGetBillQuery.vb" />
     <Compile Include="Leases\Commands\IRemoveLeaseDetailCommand.vb" />
     <Compile Include="Leases\Commands\IRemoveLeaseCommand.vb" />
     <Compile Include="Leases\Commands\IUpdateLeaseDetailCommand.vb" />
@@ -105,6 +109,7 @@
     <Compile Include="Leases\Models\CustomerCategoryModel.vb" />
     <Compile Include="Leases\Models\LeaseModel.vb" />
     <Compile Include="Leases\Models\LeaseDetailModel.vb" />
+    <Compile Include="Leases\Queries\IGetAllCustomerCategoriesQuery.vb" />
     <Compile Include="Leases\Queries\IGetAllLeasesQuery.vb" />
     <Compile Include="Leases\Queries\IGetLeaseQuery.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />

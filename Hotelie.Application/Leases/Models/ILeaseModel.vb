@@ -1,5 +1,7 @@
 ﻿Namespace Leases.Models
 	Public Interface ILeaseModel
+		ReadOnly Property IdEx As String
+
 		ReadOnly Property Id As String
 
 		ReadOnly Property Room As Rooms.Models.IRoomModel
