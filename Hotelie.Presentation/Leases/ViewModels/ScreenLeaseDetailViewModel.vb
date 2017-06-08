@@ -49,7 +49,7 @@ Namespace Leases.ViewModels
 
 		Public Property ParentWorkspace As LeasesWorkspaceViewModel Implements IChild(Of LeasesWorkspaceViewModel).Parent
 			Get
-				Return CType(Parent, LeasesWorkspaceViewModel)
+				Return TryCast(Parent, LeasesWorkspaceViewModel)
 			End Get
 			Set
 				Parent = value
@@ -296,7 +296,7 @@ Namespace Leases.ViewModels
 			' add handler
 			If e.NewItems IsNot Nothing
 				For Each newItem As Object In e.NewItems
-					Dim detail = CType(newItem, EditableLeaseDetailModel)
+					Dim detail = TryCast(newItem, EditableLeaseDetailModel)
 					If IsNothing( detail ) Then Continue For
 
 					AddHandler detail.PropertyChanged, AddressOf OnSingleDetailChanged
@@ -306,7 +306,7 @@ Namespace Leases.ViewModels
 			' remove handler
 			If e.OldItems IsNot Nothing
 				For Each oldItem As Object In e.OldItems
-					Dim detail = CType(oldItem, EditableLeaseDetailModel)
+					Dim detail = TryCast(oldItem, EditableLeaseDetailModel)
 					If IsNothing( detail ) Then Continue For
 
 					RemoveHandler detail.PropertyChanged, AddressOf OnSingleDetailChanged

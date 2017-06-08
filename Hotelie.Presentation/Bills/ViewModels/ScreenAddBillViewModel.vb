@@ -122,7 +122,7 @@ Namespace Bills.ViewModels
 		                              e As NotifyCollectionChangedEventArgs )
 			If e.NewItems IsNot Nothing
 				For Each obj As Object In e.NewItems
-					Dim detail = CType(obj, EditableBillDetailModel)
+					Dim detail = TryCast(obj, EditableBillDetailModel)
 					If IsNothing( detail ) Then Continue For
 
 					AddHandler detail.PropertyChanged, AddressOf OnSingleDetailUpdated
@@ -131,7 +131,7 @@ Namespace Bills.ViewModels
 
 			If e.OldItems IsNot Nothing
 				For Each obj As Object In e.OldItems
-					Dim detail = CType(obj, EditableBillDetailModel)
+					Dim detail = TryCast(obj, EditableBillDetailModel)
 					If IsNothing( detail ) Then Continue For
 
 					RemoveHandler detail.PropertyChanged, AddressOf OnSingleDetailUpdated

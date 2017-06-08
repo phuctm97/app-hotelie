@@ -19,7 +19,7 @@ Namespace Start.LoginShell.ViewModels
 		' Parent window
 		Public Property ParentWindow As IMainWindow Implements IChild(Of IMainWindow).Parent
 			Get
-				Return CType(Parent, IMainWindow)
+				Return TryCast(Parent, IMainWindow)
 			End Get
 			Set
 				Parent = Value

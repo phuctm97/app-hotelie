@@ -17,8 +17,8 @@ Namespace Leases.ViewModels
 
 		Public Sub New( getAllLeasesQuery As IGetAllLeasesQuery )
 			_getAllLeasesQuery = getAllLeasesQuery
-			CType(Me, IRoomPresenter).RegisterInventory()
-			CType(Me, ILeasesListPresenter).RegisterInventory()
+			TryCast(Me, IRoomPresenter).RegisterInventory()
+			TryCast(Me, ILeasesListPresenter).RegisterInventory()
 
 			Leases = New BindableCollection(Of ILeaseModel)()
 		End Sub

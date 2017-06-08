@@ -37,7 +37,7 @@ Namespace Leases.ViewModels
 
 		Public Property ParentWorkspace As LeasesWorkspaceViewModel Implements IChild(Of LeasesWorkspaceViewModel).Parent
 			Get
-				Return CType(Parent, LeasesWorkspaceViewModel)
+				Return TryCast(Parent, LeasesWorkspaceViewModel)
 			End Get
 			Set
 				If IsNothing( Value ) OrElse Equals( Value, Parent ) Then Return

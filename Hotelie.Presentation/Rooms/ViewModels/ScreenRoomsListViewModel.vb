@@ -26,7 +26,7 @@ Namespace Rooms.ViewModels
 
 		Public Property ParentWorkspace As RoomsWorkspaceViewModel Implements IChild(Of RoomsWorkspaceViewModel).Parent
 			Get
-				Return CType(Parent, RoomsWorkspaceViewModel)
+				Return TryCast(Parent, RoomsWorkspaceViewModel)
 			End Get
 			Set
 				If IsNothing( Value ) OrElse Equals( Value, Parent ) Then Return

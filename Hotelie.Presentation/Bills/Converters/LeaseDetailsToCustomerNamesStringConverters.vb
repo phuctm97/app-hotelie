@@ -10,7 +10,7 @@ Namespace Bills.Converters
 		                         targetType As Type,
 		                         parameter As Object,
 		                         culture As CultureInfo ) As Object Implements IValueConverter.Convert
-			Dim details = CType(value, ICollection(Of ILeaseDetailModel))
+			Dim details = TryCast(value, ICollection(Of ILeaseDetailModel))
 			If IsNothing(details) Then Return String.Empty
 
 			Return String.Join( ", ", details.Select( Function( d ) d.CustomerName ) )

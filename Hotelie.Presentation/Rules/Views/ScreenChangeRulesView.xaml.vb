@@ -9,7 +9,7 @@ Namespace Rules.Views
 
 		Private Sub OnIntegerTextBoxLostFocus( sender As Object,
 		                                       e As RoutedEventArgs )
-			Dim textBox = CType(sender, TextBox)
+			Dim textBox = TryCast(sender, TextBox)
 			If String.IsNullOrWhiteSpace( textBox.Text ) Then _
 				textBox.Text = "1"
 		End Sub

@@ -40,7 +40,7 @@ Namespace Rooms.ViewModels
 
         Public Property ParentShell As WorkspaceShellViewModel Implements IChild(Of WorkspaceShellViewModel).Parent
             Get
-                Return CType(Parent, WorkspaceShellViewModel)
+                Return TryCast(Parent, WorkspaceShellViewModel)
             End Get
             Set
                 Parent = Value
