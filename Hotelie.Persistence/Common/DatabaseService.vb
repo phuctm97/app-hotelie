@@ -13,7 +13,7 @@ Namespace Common
             End Get
         End Property
 
-        Public Function SetDatabaseConnection(serverName As String, databaseName As String) As String _
+        Public Function SetDatabaseConnection(serverName As String, databaseName As String) As Boolean _
             Implements IDatabaseService.SetDatabaseConnection
             _context?.Dispose()
             Dim connectionString =
@@ -34,9 +34,9 @@ Namespace Common
                 Dim customerCategories = _context.CustomerCategories.ToList()
                 Dim rooms = _context.Rooms.ToList()
             Catch
-                Return "Lỗi kết nối"
+                Return False
             End Try
-            Return String.Empty
+            Return True
         End Function
 
         Public Function CheckDatabaseConnection(serverName As String, databaseName As String) As Integer _
