@@ -23,12 +23,24 @@ Namespace Leases.Models
 		End Sub
 
 		Public Function IsMatch( lease As ILeaseModel ) As Boolean
-			If String.IsNullOrWhiteSpace( AnyText ) Then Return True
-			If lease.Id.Contains( AnyText ) Then Return True
-			If lease.Room.Name.Contains( AnyText ) Then Return True
+			Dim text = AnyText.ToLower()
+
+			If String.IsNullOrWhiteSpace( text ) Then Return True
+			If lease.Id.ToLower().Contains( text ) Then Return True
+			If lease.Room.Name.ToLower().Contains( text ) Then Return True
+
+			Dim expense As Decimal = - 1
+			If Decimal.TryParse( text, expense )
+				Return lease.ToString >= expense
+			End If
+
+			Dim checkinDate As Date = Today
+			If Date.TryParse( text, checkinDate )
+				Return lease.CheckinDate > checkinDate
+			End If
 
 			For Each detail As ILeaseDetailModel In lease.Details
-				If detail.CustomerName.Contains( AnyText ) Then Return True
+				If detail.CustomerName.ToLower().Contains( text ) Then Return True
 			Next
 
 			Return False

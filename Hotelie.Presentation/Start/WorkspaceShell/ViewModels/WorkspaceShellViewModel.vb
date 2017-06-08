@@ -161,7 +161,7 @@ Namespace Start.WorkspaceShell.ViewModels
 		End Sub
 
 		Public Sub NavigateToScreenChangeRules()
-			DisplayCode = 3
+			DisplayCode = 4
 		End Sub
 
 		' Closing
