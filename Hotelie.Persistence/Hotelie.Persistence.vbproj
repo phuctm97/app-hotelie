@@ -86,26 +86,10 @@
     <Compile Include="Leases\LeaseConfiguration.vb" />
     <Compile Include="Leases\LeaseDetailConfiguration.vb" />
     <Compile Include="Leases\LeaseRepository.vb" />
-    <Compile Include="Migrations\201706070551237_FixLease.Designer.vb">
-      <DependentUpon>201706070551237_FixLease.vb</DependentUpon>
+    <Compile Include="Migrations\201706080726357_INITIAL.Designer.vb">
+      <DependentUpon>201706080726357_INITIAL.vb</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201706070551237_FixLease.vb" />
-    <Compile Include="Migrations\201706070558386_FixLease_room.Designer.vb">
-      <DependentUpon>201706070558386_FixLease_room.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706070558386_FixLease_room.vb" />
-    <Compile Include="Migrations\201706070612129_TestLease.Designer.vb">
-      <DependentUpon>201706070612129_TestLease.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706070612129_TestLease.vb" />
-    <Compile Include="Migrations\201706071346000_FixBillDetail.Designer.vb">
-      <DependentUpon>201706071346000_FixBillDetail.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706071346000_FixBillDetail.vb" />
-    <Compile Include="Migrations\201706071350579_DbUpdate_User_Bill.Designer.vb">
-      <DependentUpon>201706071350579_DbUpdate_User_Bill.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706071350579_DbUpdate_User_Bill.vb" />
+    <Compile Include="Migrations\201706080726357_INITIAL.vb" />
     <Compile Include="Migrations\Configuration.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -133,20 +117,8 @@
     <Compile Include="Users\UserRepository.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201706070551237_FixLease.resx">
-      <DependentUpon>201706070551237_FixLease.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706070558386_FixLease_room.resx">
-      <DependentUpon>201706070558386_FixLease_room.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706070612129_TestLease.resx">
-      <DependentUpon>201706070612129_TestLease.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706071346000_FixBillDetail.resx">
-      <DependentUpon>201706071346000_FixBillDetail.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706071350579_DbUpdate_User_Bill.resx">
-      <DependentUpon>201706071350579_DbUpdate_User_Bill.vb</DependentUpon>
+    <EmbeddedResource Include="Migrations\201706080726357_INITIAL.resx">
+      <DependentUpon>201706080726357_INITIAL.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
