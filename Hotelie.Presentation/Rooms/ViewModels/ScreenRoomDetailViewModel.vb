@@ -5,7 +5,7 @@ Imports Hotelie.Application.Rooms.Queries
 Imports Hotelie.Application.Services.Infrastructure
 Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
-Imports Hotelie.Presentation.Infrastructure
+Imports Hotelie.Presentation.Common.Infrastructure
 Imports Hotelie.Presentation.Rooms.Models
 Imports Hotelie.Presentation.Start.MainWindow.Models
 

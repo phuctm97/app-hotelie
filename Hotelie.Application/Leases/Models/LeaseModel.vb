@@ -10,7 +10,7 @@ Namespace Leases.Models
 			_entity = entity
 			Room = new Rooms.Models.RoomModel( _entity.Room )
 
-			Details = New List(Of LeaseDetailModel)()
+			Details = New List(Of ILeaseDetailModel)
 			For Each leaseDetail As LeaseDetail In _entity.LeaseDetails
 				Details.Add( New LeaseDetailModel( leaseDetail ) )
 			Next

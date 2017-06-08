@@ -2,7 +2,7 @@
 Imports Hotelie.Application.Leases.Models
 Imports Hotelie.Application.Rooms.Models
 
-Namespace Rooms.Models
+Namespace Leases.Models
 	Public Class UpdatableLeaseModel
 		Inherits PropertyChangedBase
 		Implements ILeaseModel
@@ -74,5 +74,11 @@ Namespace Rooms.Models
 				Return _baseModel.NumberOfUsedDays
 			End Get
 		End Property
-	End Class
+
+        Public ReadOnly Property IdEx As String Implements ILeaseModel.IdEx
+            Get
+                Return $"#{Id}"
+            End Get
+        End Property
+    End Class
 End Namespace

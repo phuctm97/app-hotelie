@@ -1,5 +1,4 @@
-﻿Imports Hotelie.Application.Rooms.Queries.GetRoomCategoriesList
-Imports Hotelie.Application.Services.Persistence
+﻿Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Domain.Rooms
 Imports Hotelie.Persistence.Common
 Imports Hotelie.Persistence.Rooms
@@ -15,7 +14,7 @@ Namespace Query
         <TestInitialize>
         Public Sub TestInitialize()
             _databaseService = New DatabaseService()
-            _databaseService.SetDatabaseConnection($"KHUONG-ASUS\SQLEXPRESS",$"HotelieDatabase")
+            _databaseService.SetDatabaseConnection($"KHUONG-ASUS\SQLEXPRESS", $"HotelieDatabase")
             _roomRepository = New RoomRepository(_databaseService)
             _getRoomCategoriesListQuery = New GetRoomCategoriesListQuery(_roomRepository)
         End Sub
@@ -59,7 +58,7 @@ Namespace Query
             For Each room As RoomCategory In _roomCategoriesList
                 Dim q = False
                 For Each rc As RoomCategoriesListItemModel In roomCategories
-                    If (room.Id= rc.Id And room.Price = rc.UnitPrice) Then 
+                    If (room.Id = rc.Id And room.Price = rc.UnitPrice) Then
                         q = True
                         Exit For
                     End If

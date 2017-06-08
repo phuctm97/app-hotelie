@@ -4,7 +4,6 @@ Imports Hotelie.Application.Leases.Queries
 Imports Hotelie.Application.Rooms.Models
 Imports Hotelie.Presentation.Common.Controls
 Imports Hotelie.Presentation.Common.Infrastructure
-Imports Hotelie.Presentation.Infrastructure
 Imports Hotelie.Presentation.Rooms.Models
 
 Namespace Leases.ViewModels

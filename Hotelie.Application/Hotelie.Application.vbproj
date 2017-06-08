@@ -89,11 +89,16 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bills\Factories\CreateBill\ICreateBillFactory.vb" />
+    <Compile Include="Bills\Commands\RemoveBill\IRemoveBillCommand.vb" />
+    <Compile Include="Bills\Commands\RemoveBill\RemoveBillCommand.vb" />
+    <Compile Include="Bills\Factories\CreateBillFactory.vb" />
+    <Compile Include="Bills\Factories\ICreateBillFactory.vb" />
     <Compile Include="Bills\Models\BillDetailModel.vb" />
     <Compile Include="Bills\Models\BillModel.vb" />
     <Compile Include="Bills\Models\IBillDetailModel.vb" />
     <Compile Include="Bills\Models\IBillModel.vb" />
+    <Compile Include="Bills\Queries\GetAllBillsQuery.vb" />
+    <Compile Include="Bills\Queries\GetBillQuery.vb" />
     <Compile Include="Bills\Queries\IGetAllBillsQuery.vb" />
     <Compile Include="Bills\Queries\IGetBillQuery.vb" />
     <Compile Include="Leases\Commands\IRemoveCustomerCategoryCommand.vb" />
@@ -102,6 +107,15 @@
     <Compile Include="Leases\Commands\IUpdateCustomerCategoryCommand.vb" />
     <Compile Include="Leases\Commands\IUpdateLeaseDetailCommand.vb" />
     <Compile Include="Leases\Commands\IUpdateLeaseCommand.vb" />
+    <Compile Include="Leases\Commands\RemoveCustomerCategoryCommand.vb" />
+    <Compile Include="Leases\Commands\RemoveLeaseDetailCommand.vb" />
+    <Compile Include="Leases\Commands\RemoveLeaseCommand.vb" />
+    <Compile Include="Leases\Commands\UpdateCustomerCategoryCommand.vb" />
+    <Compile Include="Leases\Commands\UpdateLeaseDetailCommand.vb" />
+    <Compile Include="Leases\Commands\UpdateLeaseCommand.vb" />
+    <Compile Include="Leases\Factories\CreateCustomerCategory.vb" />
+    <Compile Include="Leases\Factories\CreateLeaseDetailFactory.vb" />
+    <Compile Include="Leases\Factories\CreateLeaseFactory.vb" />
     <Compile Include="Leases\Factories\ICreateCustomerCategoryFactory.vb" />
     <Compile Include="Leases\Factories\ICreateLeaseDetailFactory.vb" />
     <Compile Include="Leases\Factories\CreateLeaseDetailModel.vb" />
@@ -112,6 +126,9 @@
     <Compile Include="Leases\Models\CustomerCategoryModel.vb" />
     <Compile Include="Leases\Models\LeaseModel.vb" />
     <Compile Include="Leases\Models\LeaseDetailModel.vb" />
+    <Compile Include="Leases\Queries\GetAllCustomerCategoriesQuery.vb" />
+    <Compile Include="Leases\Queries\GetAllLeasesQuery.vb" />
+    <Compile Include="Leases\Queries\GetLeaseQuery.vb" />
     <Compile Include="Leases\Queries\IGetAllCustomerCategoriesQuery.vb" />
     <Compile Include="Leases\Queries\IGetAllLeasesQuery.vb" />
     <Compile Include="Leases\Queries\IGetLeaseQuery.vb" />
@@ -130,20 +147,36 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Rooms\Commands\RemoveRoom\IRemoveRoomCommand.vb" />
-    <Compile Include="Rooms\Commands\UpdateRoom\IUpdateRoomCommand.vb" />
-    <Compile Include="Rooms\Factories\CreateRoom\ICreateRoomFactory.vb" />
-    <Compile Include="Rooms\Queries\GetRoomCategoriesList\IGetRoomCategoriesListQuery.vb" />
-    <Compile Include="Rooms\Queries\GetRoomCategoriesList\RoomCategoriesListItemModel.vb" />
-    <Compile Include="Rooms\Queries\GetRoomCategoryData\IGetRoomCategoryDataQuery.vb" />
-    <Compile Include="Rooms\Queries\GetRoomData\IGetRoomDataQuery.vb" />
-    <Compile Include="Rooms\Queries\GetRoomCategoryData\RoomCategoryModel.vb" />
-    <Compile Include="Rooms\Queries\GetRoomsList\IGetRoomsListQuery.vb" />
-    <Compile Include="Rooms\Queries\GetRoomsList\RoomsListItemModel.vb" />
-    <Compile Include="Rooms\Queries\GetRoomData\RoomModel.vb" />
-    <Compile Include="Rooms\Queries\GetSimpleRoomsList\GetSimpleRoomListQuery.vb" />
-    <Compile Include="Rooms\Queries\GetSimpleRoomsList\IGetSimpleRoomsListQuery.vb" />
-    <Compile Include="Rooms\Queries\GetSimpleRoomsList\SimpleRoomsListItemModel.vb" />
+    <Compile Include="Parameters\Commands\IUpdateParametersCommand.vb" />
+    <Compile Include="Parameters\Commands\UpdateParametersCommand.vb" />
+    <Compile Include="Parameters\Models\IParameterModel.vb" />
+    <Compile Include="Parameters\Models\ParameterModel.vb" />
+    <Compile Include="Parameters\Queries\GetParametersQuery.vb" />
+    <Compile Include="Parameters\Queries\IGetParametersQuery.vb" />
+    <Compile Include="Rooms\Commands\IRemoveRoomCategoryCommand.vb" />
+    <Compile Include="Rooms\Commands\IRemoveRoomCommand.vb" />
+    <Compile Include="Rooms\Commands\IUpdateRoomCategoryCommand.vb" />
+    <Compile Include="Rooms\Commands\IUpdateRoomCommand.vb" />
+    <Compile Include="Rooms\Commands\RemoveRoomCategoryCommand.vb" />
+    <Compile Include="Rooms\Commands\RemoveRoomCommand.vb" />
+    <Compile Include="Rooms\Commands\UpdateRoomCategoryCommand.vb" />
+    <Compile Include="Rooms\Commands\UpdateRoomCommand.vb" />
+    <Compile Include="Rooms\Factories\CreateRoomCategoryCommand.vb" />
+    <Compile Include="Rooms\Factories\CreateRoomFactory.vb" />
+    <Compile Include="Rooms\Factories\ICreateRoomCategoryCommand.vb" />
+    <Compile Include="Rooms\Factories\ICreateRoomFactory.vb" />
+    <Compile Include="Rooms\Models\IRoomCategoryModel.vb" />
+    <Compile Include="Rooms\Models\IRoomModel.vb" />
+    <Compile Include="Rooms\Models\RoomCategoryModel.vb" />
+    <Compile Include="Rooms\Models\RoomModel.vb" />
+    <Compile Include="Rooms\Queries\GetAllRoomCategoriesQuery.vb" />
+    <Compile Include="Rooms\Queries\GetAllRoomsQuery.vb" />
+    <Compile Include="Rooms\Queries\GetRoomCategoryQuery.vb" />
+    <Compile Include="Rooms\Queries\GetRooomQuery.vb" />
+    <Compile Include="Rooms\Queries\IGetAllRoomCategoriesQuery.vb" />
+    <Compile Include="Rooms\Queries\IGetAllRoomsQuery.vb" />
+    <Compile Include="Rooms\Queries\IGetRoomCategoryQuery.vb" />
+    <Compile Include="Rooms\Queries\IGetRoomQuery.vb" />
     <Compile Include="Services\Authentication\Account.vb" />
     <Compile Include="Services\Authentication\Authentication.vb" />
     <Compile Include="Services\Authentication\IAuthentication.vb" />

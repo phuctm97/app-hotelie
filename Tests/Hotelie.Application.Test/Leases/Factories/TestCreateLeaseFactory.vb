@@ -1,11 +1,7 @@
-﻿Imports System.Globalization
-Imports Hotelie.Application.Leases.Factories
-Imports Hotelie.Application.Leases.Factories.CreateLease
-Imports Hotelie.Application.Leases.Factories.CreateLeaseDetail
-Imports Hotelie.Application.Leases.Queries
-Imports Hotelie.Application.Leases.Queries.GetLeasesList
+﻿Imports Hotelie.Application.Leases.Factories
 Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Domain.Leases
+Imports Hotelie.Domain.Parameters
 Imports Hotelie.Domain.Rooms
 Imports Hotelie.Persistence.Common
 Imports Hotelie.Persistence.Leases
@@ -32,8 +28,9 @@ Namespace Leases.Factories
             _roomRepository = New RoomRepository(_databaseService)
             _unitOfWork = New UnitOfWork(_databaseService)
             _parameterRepository = New ParameterRepository(_databaseService)
-            _createLeaseFactory = New CreateLeaseFactory(_leaseRepository,_roomRepository,_parameterRepository,_unitOfWork)
-            _createLeaseDetailFactory = New CreateLeaseDetailFactory(_leaseRepository,_unitOfWork)
+            _createLeaseFactory = New CreateLeaseFactory(_leaseRepository, _roomRepository, _parameterRepository,
+                                                         _unitOfWork)
+            _createLeaseDetailFactory = New CreateLeaseDetailFactory(_leaseRepository, _unitOfWork)
         End Sub
 
         <TestCleanup>
@@ -45,7 +42,9 @@ Namespace Leases.Factories
             DisposeLeases()
 
             Dim roomCategory = New RoomCategory() With {.Id = "00001", .Name = "Annonymous", .Price = 200000}
-            _databaseService.Context.Parameters.Add(New Domain.Parameters.Parameter() With {.Id="00001",.MaximumCustomer=4,.CustomerCoefficient=0.5,.ExtraCoefficient=0.25})
+            _databaseService.Context.Parameters.Add(New Parameter() _
+                                                       With {.Id="00001",.MaximumCustomer=4,.CustomerCoefficient=0.5,
+                                                       .ExtraCoefficient=0.25})
             _roomRepository.AddRoomCategory(roomCategory)
             _databaseService.Context.SaveChanges()
 
@@ -78,23 +77,32 @@ Namespace Leases.Factories
             LeasesInitialize()
 
             ' input
-            Dim cusCate= New CustomerCategory() With {.Id = "CUS01", .Name = "Khach", .Coefficient =1}
+            Dim cusCate = New CustomerCategory() With {.Id = "CUS01", .Name = "Khach", .Coefficient =1}
             _databaseService.Context.CustomerCategories.Add(cusCate)
-            _databaseService.Context.SaveChanges() 
+            _databaseService.Context.SaveChanges()
 
-            Dim leaseDetail1 = New CreateLeaseDetailModel() With{.CustomerName="Cus 1", .CustomerAddress="adr 1",.CustomerCategoryId=cusCate.Id,.CustomerLicenseId="lsc id"}
-            Dim leaseDetail2 = New CreateLeaseDetailModel() With{.CustomerName="Cus 2", .CustomerAddress="adr 21",.CustomerCategoryId=cusCate.Id,.CustomerLicenseId="lsc id"}
-            Dim leaseDetail3 = New CreateLeaseDetailModel() With{.CustomerName="Cus 31", .CustomerAddress="adr 421",.CustomerCategoryId=cusCate.Id,.CustomerLicenseId="lsc id"}
+            Dim leaseDetail1 = New CreateLeaseDetailModel() _
+                    With{.CustomerName="Cus 1", .CustomerAddress="adr 1",.CustomerCategoryId=cusCate.Id,
+                    .CustomerLicenseId="lsc id"}
+            Dim leaseDetail2 = New CreateLeaseDetailModel() _
+                    With{.CustomerName="Cus 2", .CustomerAddress="adr 21",.CustomerCategoryId=cusCate.Id,
+                    .CustomerLicenseId="lsc id"}
+            Dim leaseDetail3 = New CreateLeaseDetailModel() _
+                    With{.CustomerName="Cus 31", .CustomerAddress="adr 421",.CustomerCategoryId=cusCate.Id,
+                    .CustomerLicenseId="lsc id"}
             Dim details = New List(Of CreateLeaseDetailModel)
             details.Add(leaseDetail1)
             details.Add(leaseDetail2)
             details.Add(leaseDetail3)
 
             ' act
-            Dim lease1 = _createLeaseFactory.Execute(_roomsList(0).Id,DateTime.Now(),DateTime.Now(),details)
-            
-            Dim leaseDetail4 = New CreateLeaseDetailModel() With{.CustomerName="Cus 4 1", .CustomerAddress="adr 31",.CustomerCategoryId=cusCate.Id,.CustomerLicenseId="lsc id"}
-            Dim k = _createLeaseDetailFactory.Execute(lease1,"NewCustomerFromFactory","12345678","Addressssssss","CUS01")
+            Dim lease1 = _createLeaseFactory.Execute(_roomsList(0).Id, DateTime.Now(), DateTime.Now(), details)
+
+            Dim leaseDetail4 = New CreateLeaseDetailModel() _
+                    With{.CustomerName="Cus 4 1", .CustomerAddress="adr 31",.CustomerCategoryId=cusCate.Id,
+                    .CustomerLicenseId="lsc id"}
+            Dim k = _createLeaseDetailFactory.Execute(lease1, "NewCustomerFromFactory", "12345678", "Addressssssss",
+                                                      "CUS01")
 
             ' assert
             Assert.IsNotNull(lease1)

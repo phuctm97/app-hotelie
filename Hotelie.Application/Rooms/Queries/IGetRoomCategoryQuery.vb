@@ -2,8 +2,8 @@
 
 Namespace Rooms.Queries
 	Public Interface IGetRoomCategoryQuery
-		Function Execute() As IRoomCategoryModel
+		Function Execute(id As String) As IRoomCategoryModel
 
-		Function ExecuteAsync() As Task(Of IRoomCategoryModel)
+		Function ExecuteAsync(id As String) As Task(Of IRoomCategoryModel)
 	End Interface
 End Namespace

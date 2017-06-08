@@ -1,6 +1,6 @@
 ﻿Imports Hotelie.Application.Rooms.Models
 
-Namespace Infrastructure
+Namespace Common.Infrastructure
 	Public Interface IRoomsListPresenter
 		Sub OnRoomAdded( model As IRoomModel )
 

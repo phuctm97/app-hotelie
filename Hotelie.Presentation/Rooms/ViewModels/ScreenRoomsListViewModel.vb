@@ -3,7 +3,7 @@ Imports Caliburn.Micro
 Imports Hotelie.Application.Rooms.Models
 Imports Hotelie.Application.Rooms.Queries
 Imports Hotelie.Presentation.Common.Controls
-Imports Hotelie.Presentation.Infrastructure
+Imports Hotelie.Presentation.Common.Infrastructure
 Imports Hotelie.Presentation.Rooms.Models
 
 Namespace Rooms.ViewModels

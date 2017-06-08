@@ -222,7 +222,7 @@
     <Compile Include="Rules\Models\EditableCustomerCategoryModel.vb" />
     <Compile Include="Rules\Models\EditableRoomCategoryModel.vb" />
     <Compile Include="Rules\Models\EditableRuleModel.vb" />
-    <Compile Include="Rules\ViewModel\ScreenChangeRulesViewModel.vb" />
+    <Compile Include="Rules\ViewModels\ScreenChangeRulesViewModel.vb" />
     <Compile Include="Rules\Views\ScreenChangeRulesView.xaml.vb">
       <DependentUpon>ScreenChangeRulesView.xaml</DependentUpon>
     </Compile>
