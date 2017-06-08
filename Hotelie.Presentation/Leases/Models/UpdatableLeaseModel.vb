@@ -75,10 +75,22 @@ Namespace Leases.Models
 			End Get
 		End Property
 
-        Public ReadOnly Property IdEx As String Implements ILeaseModel.IdEx
-            Get
-                Return $"#{Id}"
-            End Get
-        End Property
-    End Class
+		Public ReadOnly Property IdEx As String Implements ILeaseModel.IdEx
+			Get
+				Return $"#{Id}"
+			End Get
+		End Property
+
+		Public ReadOnly Property ExtraCharge As Decimal Implements ILeaseModel.ExtraCharge
+			Get
+				Return _baseModel.ExtraCharge
+			End Get
+		End Property
+
+		Public ReadOnly Property TotalExpense As Decimal Implements ILeaseModel.TotalExpense
+			Get
+				Return _baseModel.TotalExpense
+			End Get
+		End Property
+	End Class
 End Namespace

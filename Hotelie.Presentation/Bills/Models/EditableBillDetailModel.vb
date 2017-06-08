@@ -92,7 +92,7 @@ Namespace Bills.Models
 		End Sub
 
 		Private Sub UpdateDataBaseOnLease()
-			If IsNothing( Lease ) OrElse IsNothing( Room ) Then Return
+			If IsNothing( Lease ) OrElse IsNothing( Lease.Room ) Then Return
 
 			Dim roomToUpdate = ScreenAddBillViewModel.Rooms.FirstOrDefault( Function( r ) r.Id = Lease.Room.Id )
 			If IsNothing( roomToUpdate )
@@ -105,21 +105,26 @@ Namespace Bills.Models
 			NotifyOfPropertyChange( Function() Room )
 
 			NumberOfDays = Lease.NumberOfUsedDays
-			ExtraCharge = 1000000
+			ExtraCharge = Lease.ExtraCharge
+			TotalExpense = Lease.TotalExpense
 		End Sub
 
 		Private Sub UpdateDataBaseOnRoom()
+			If IsNothing( Room ) Then Return
+
 			Dim leaseToUpdate = ScreenAddBillViewModel.Leases.FirstOrDefault( Function( l ) l.Room.Id = Room.Id )
 			If IsNothing( leaseToUpdate )
 				_room = Nothing
 				NotifyOfPropertyChange( Function() Room )
+				Return
 			End If
 
 			_lease = leaseToUpdate
-			NotifyOfPropertyChange(Function() Lease)
+			NotifyOfPropertyChange( Function() Lease )
 
 			NumberOfDays = Lease.NumberOfUsedDays
-			ExtraCharge = 1000000
+			ExtraCharge = Lease.ExtraCharge
+			TotalExpense = Lease.TotalExpense
 		End Sub
 	End Class
 End Namespace

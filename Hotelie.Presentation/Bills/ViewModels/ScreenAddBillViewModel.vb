@@ -60,7 +60,7 @@ Namespace Bills.ViewModels
 
 		Public Sub Init()
 			Rooms.Clear()
-			Rooms.AddRange( _getAllRoomsQuery.Execute().Where( Function( r ) r.State = 0 ) )
+			Rooms.AddRange( _getAllRoomsQuery.Execute().Where( Function( r ) r.State = 1 ) )
 
 			Leases.Clear()
 			Leases.AddRange( _getAllLeasesQuery.Execute() )
