@@ -17,6 +17,7 @@
         <ResourceDictionary>
             <commonConverters:DecimalToCurrencyStringConverter x:Key="DecimalToCurrencyStringConverter" />
             <commonConverters:DateTimeToShortDateStringConverter x:Key="DateTimeToShortDateStringConverter" />
+            <commonConverters:DateTimeToShortDateStringConverter2 x:Key="DateTimeToShortDateStringConverter2" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -57,7 +58,7 @@
                     <Button HorizontalAlignment="Left" VerticalAlignment="Center"
                             Content="{Binding Path=Lease.Room.Name, Mode=OneWay}" />
 
-                    <!--Lease Id-->
+                    <!--Title-->
                     <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left"
                                VerticalAlignment="Center"
                                Margin="16 0 0 0"
@@ -86,7 +87,7 @@
                         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
                                    FontSize="15"
                                    Opacity="0.9"
-                                   Text="{Binding Path=Lease.Room.UnitPrice, Mode=OneWay, Converter={StaticResource DecimalToCurrencyStringConverter}}" />
+                                   Text="{Binding Path=Lease.RoomUnitPrice, Mode=OneWay, Converter={StaticResource DecimalToCurrencyStringConverter}}" />
                     </StackPanel>
 
                     <!--Begin day-->
@@ -98,7 +99,7 @@
                         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
                                    FontSize="15"
                                    Opacity="0.9"
-                                   Text="{Binding CheckinDate, Mode=OneWay, Converter={StaticResource DateTimeToShortDateStringConverter}}" />
+                                   Text="{Binding Path=Lease.CheckinDate, Mode=OneWay, Converter={StaticResource DateTimeToShortDateStringConverter2}}" />
                     </StackPanel>
 
                 </DockPanel>
@@ -138,7 +139,7 @@
                                    Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                    FontSize="15" Margin="0 0 0 4" />
                         <materialDesign:Chip
-                            Content="{Binding Path=Lease.Room.CategoryName, UpdateSourceTrigger=LostFocus}"
+                            Content="{Binding Path=Lease.Room.Category.Name, UpdateSourceTrigger=LostFocus}"
                             FontSize="15"
                             IconForeground="White">
                             <materialDesign:Chip.Icon>

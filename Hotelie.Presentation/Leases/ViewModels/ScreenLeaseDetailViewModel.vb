@@ -5,6 +5,7 @@ Imports Hotelie.Application.Leases.Commands
 Imports Hotelie.Application.Leases.Factories
 Imports Hotelie.Application.Leases.Models
 Imports Hotelie.Application.Leases.Queries
+Imports Hotelie.Application.Parameters.Queries
 Imports Hotelie.Application.Rooms.Models
 Imports Hotelie.Application.Rooms.Queries
 Imports Hotelie.Application.Services.Infrastructure
@@ -25,6 +26,7 @@ Namespace Leases.ViewModels
 		Private ReadOnly _getLeaseQuery As IGetLeaseQuery
 		Private ReadOnly _getAllRoomsQuery As IGetAllRoomsQuery
 		Private ReadOnly _getAllCustomerCategoriesQuery As IGetAllCustomerCategoriesQuery
+		Private ReadOnly _getParametersQuery As IGetParametersQuery
 		Private ReadOnly _updateLeaseCommand As IUpdateLeaseCommand
 		Private ReadOnly _removeLeaseCommand As IRemoveLeaseCommand
 		Private ReadOnly _updateLeaseDetailCommand As IUpdateLeaseDetailCommand
@@ -40,7 +42,7 @@ Namespace Leases.ViewModels
 		Private ReadOnly _originalDetails As List(Of EditableLeaseDetailModel)
 
 		Private _isEdited As Boolean
-		Private _maxNumberOfUsers As Integer
+		Private _roomCapacity As Integer
 
 		' Parent
 		Public Property Parent As Object Implements IChild.Parent
@@ -59,7 +61,7 @@ Namespace Leases.ViewModels
 
 		Public ReadOnly Property CanAddDetail As Boolean
 			Get
-				Return IsNothing( Lease ) OrElse Lease.Details.Count < _maxNumberOfUsers
+				Return IsNothing( Lease ) OrElse Lease.Details.Count < _roomCapacity
 			End Get
 		End Property
 
@@ -84,6 +86,7 @@ Namespace Leases.ViewModels
 		                getLeaseQuery As IGetLeaseQuery,
 		                getAllRoomsQuery As IGetAllRoomsQuery,
 		                getAllCustomerCategoriesQuery As IGetAllCustomerCategoriesQuery,
+		                getParametersQuery As IGetParametersQuery,
 		                updateLeaseCommand As IUpdateLeaseCommand,
 		                removeLeaseCommand As IRemoveLeaseCommand,
 		                updateLeaseDetailCommand As IUpdateLeaseDetailCommand,
@@ -96,6 +99,7 @@ Namespace Leases.ViewModels
 			_getLeaseQuery = getLeaseQuery
 			_getAllRoomsQuery = getAllRoomsQuery
 			_getAllCustomerCategoriesQuery = getAllCustomerCategoriesQuery
+			_getParametersQuery = getParametersQuery
 			_updateLeaseCommand = updateLeaseCommand
 			_removeLeaseCommand = removeLeaseCommand
 			_updateLeaseDetailCommand = updateLeaseDetailCommand
@@ -117,6 +121,8 @@ Namespace Leases.ViewModels
 
 			CustomerCategories.Clear()
 			CustomerCategories.AddRange( _getAllCustomerCategoriesQuery.Execute() )
+
+			_roomCapacity = _getParametersQuery.Execute().RoomCapacity
 			InitValues()
 		End Sub
 
@@ -126,11 +132,12 @@ Namespace Leases.ViewModels
 
 			CustomerCategories.Clear()
 			CustomerCategories.AddRange( Await _getAllCustomerCategoriesQuery.ExecuteAsync() )
+
+			_roomCapacity = (Await _getParametersQuery.ExecuteAsync()).RoomCapacity
 			InitValues()
 		End Function
 
 		Private Sub InitValues()
-			_maxNumberOfUsers = 4
 			Lease.Id = String.Empty
 			Lease.Room = Rooms.FirstOrDefault()
 			Lease.RoomUnitPrice = 0
@@ -313,7 +320,6 @@ Namespace Leases.ViewModels
 		End Sub
 
 		Public Sub PreviewOrder()
-
 		End Sub
 
 		' Exit
@@ -361,9 +367,9 @@ Namespace Leases.ViewModels
 				Return Task.FromResult( False )
 			End If
 
-			If Lease.Details.Count > _maxNumberOfUsers
+			If Lease.Details.Count > _roomCapacity
 				ShowStaticBottomNotification( StaticNotificationType.Information,
-				                              $"Vượt quá số khách quy định. Mỗi phòng chỉ có tối đa {_maxNumberOfUsers} người" )
+				                              $"Vượt quá số khách quy định. Mỗi phòng chỉ có tối đa {_roomCapacity} người" )
 				Return Task.FromResult( False )
 			End If
 
@@ -536,7 +542,7 @@ Namespace Leases.ViewModels
 				Return
 			End If
 
-			Rooms(Rooms.IndexOf(roomToUpdate)) = model
+			Rooms( Rooms.IndexOf( roomToUpdate ) ) = model
 		End Sub
 
 		Public Sub OnRoomRemoved( id As String ) Implements IRoomsListPresenter.OnRoomRemoved

@@ -1,6 +1,7 @@
 ﻿Imports Hotelie.Application.Leases.Commands
 Imports Hotelie.Application.Leases.Factories
 Imports Hotelie.Application.Leases.Queries
+Imports Hotelie.Application.Parameters.Queries
 Imports Hotelie.Application.Rooms.Queries
 Imports Hotelie.Application.Services.Infrastructure
 Imports Hotelie.Presentation.Common
@@ -37,12 +38,13 @@ Namespace Leases.ViewModels
 		                getLeaseQuery As IGetLeaseQuery,
 		                getAllRoomsQuery As IGetAllRoomsQuery,
 		                getAllCustomerCategoriesQuery As IGetAllCustomerCategoriesQuery,
+										getParametersQuery As IGetParametersQuery,
 		                updateLeaseCommand As IUpdateLeaseCommand,
-		                removeLeaseCommand As IRemoveLeaseCommand,
 		                updateLeaseDetailCommand As IUpdateLeaseDetailCommand,
+		                removeLeaseCommand As IRemoveLeaseCommand,
 		                removeLeaseDetailCommand As IRemoveLeaseDetailCommand,
 		                createLeaseDetailFactory As ICreateLeaseDetailFactory,
-										createLeaseFactory As ICreateLeaseFactory,
+		                createLeaseFactory As ICreateLeaseFactory,
 		                inventory As IInventory )
 			MyBase.New( MaterialDesignThemes.Wpf.ColorZoneMode.PrimaryDark )
 
@@ -52,6 +54,7 @@ Namespace Leases.ViewModels
 			                                                    getLeaseQuery,
 			                                                    getAllRoomsQuery,
 			                                                    getAllCustomerCategoriesQuery,
+																													getParametersQuery,
 			                                                    updateLeaseCommand,
 			                                                    removeLeaseCommand,
 			                                                    updateLeaseDetailCommand,
@@ -61,6 +64,7 @@ Namespace Leases.ViewModels
 			ScreenAddLease = New ScreenAddLeaseViewModel( Me,
 			                                              getAllRoomsQuery,
 			                                              getAllCustomerCategoriesQuery,
+																										getParametersQuery,
 			                                              createLeaseFactory,
 			                                              inventory )
 

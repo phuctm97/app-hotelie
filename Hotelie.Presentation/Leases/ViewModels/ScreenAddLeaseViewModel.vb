@@ -3,6 +3,7 @@ Imports Caliburn.Micro
 Imports Hotelie.Application.Leases.Factories
 Imports Hotelie.Application.Leases.Models
 Imports Hotelie.Application.Leases.Queries
+Imports Hotelie.Application.Parameters.Queries
 Imports Hotelie.Application.Rooms.Models
 Imports Hotelie.Application.Rooms.Queries
 Imports Hotelie.Application.Services.Infrastructure
@@ -22,13 +23,14 @@ Namespace Leases.ViewModels
 		' Dependencies
 		Private ReadOnly _getAllRoomsQuery As IGetAllRoomsQuery
 		Private ReadOnly _getAllCustomerCategoriesQuery As IGetAllCustomerCategoriesQuery
+		Private ReadOnly _getParametersQuery As IGetParametersQuery
 		Private ReadOnly _createLeaseFactory As ICreateLeaseFactory
 		Private ReadOnly _inventory As IInventory
 
 		' Backing fields
 		Private _room As IRoomModel
 		Private _expectedCheckoutDate As Date
-		Private _maxNumberOfUsers As Integer
+		Private _roomCapacity As Integer
 
 		' Parent
 		Public Property Parent As Object Implements IChild.Parent
@@ -50,7 +52,7 @@ Namespace Leases.ViewModels
 
 		Public ReadOnly Property CanAddDetail As Boolean
 			Get
-				Return IsNothing( Lease ) OrElse Lease.Details.Count < _maxNumberOfUsers
+				Return IsNothing( Lease ) OrElse Lease.Details.Count < _roomCapacity
 			End Get
 		End Property
 
@@ -73,6 +75,7 @@ Namespace Leases.ViewModels
 		Public Sub New( workspace As LeasesWorkspaceViewModel,
 		                getAllRoomsQuery As IGetAllRoomsQuery,
 		                getAllCustomerCategoriesQuery As IGetAllCustomerCategoriesQuery,
+		                getParametersQuery As IGetParametersQuery,
 		                createLeaseFactory As ICreateLeaseFactory,
 		                inventory As IInventory )
 			MyBase.New( MaterialDesignThemes.Wpf.ColorZoneMode.PrimaryDark )
@@ -80,6 +83,7 @@ Namespace Leases.ViewModels
 			ParentWorkspace = workspace
 			_getAllRoomsQuery = getAllRoomsQuery
 			_getAllCustomerCategoriesQuery = getAllCustomerCategoriesQuery
+			_getParametersQuery = getParametersQuery
 			_createLeaseFactory = createLeaseFactory
 			_inventory = inventory
 			RegisterInventory()
@@ -95,6 +99,8 @@ Namespace Leases.ViewModels
 
 			CustomerCategories.Clear()
 			CustomerCategories.AddRange( _getAllCustomerCategoriesQuery.Execute() )
+
+			_roomCapacity = _getParametersQuery.Execute().RoomCapacity
 			InitValues()
 		End Sub
 
@@ -104,11 +110,12 @@ Namespace Leases.ViewModels
 
 			CustomerCategories.Clear()
 			CustomerCategories.AddRange( Await _getAllCustomerCategoriesQuery.ExecuteAsync() )
+
+			_roomCapacity = (Await _getParametersQuery.ExecuteAsync()).RoomCapacity
 			InitValues()
 		End Function
 
 		Private Sub InitValues()
-			_maxNumberOfUsers = 4
 			Lease.Id = String.Empty
 			Lease.Room = Rooms.FirstOrDefault()
 			Lease.CheckinDate = Today
@@ -185,9 +192,9 @@ Namespace Leases.ViewModels
 				Return False
 			End If
 
-			If Lease.Details.Count > _maxNumberOfUsers
+			If Lease.Details.Count > _roomCapacity
 				ShowStaticBottomNotification( StaticNotificationType.Information,
-				                              $"Vượt quá số khách quy định. Mỗi phòng chỉ có tối đa {_maxNumberOfUsers} người" )
+				                              $"Vượt quá số khách quy định. Mỗi phòng chỉ có tối đa {_roomCapacity} người" )
 				Return False
 			End If
 
