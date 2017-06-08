@@ -10,11 +10,23 @@ Namespace Leases.Models
 		Private ReadOnly _baseModel As ILeaseModel
 
 		Private _backingRoomModel As IRoomModel
+		Private _isFiltersMatch As Boolean
 
 		Sub New( baseModel As ILeaseModel )
 			_baseModel = baseModel
 			_backingRoomModel = _baseModel.Room
 		End Sub
+
+		Public Property IsFiltersMatch As Boolean
+			Get
+				Return _isFiltersMatch
+			End Get
+			Set
+				If Equals( Value, _isFiltersMatch ) Then Return
+				_isFiltersMatch = value
+				NotifyOfPropertyChange( Function() IsFiltersMatch )
+			End Set
+		End Property
 
 		Public ReadOnly Property CheckinDate As DateTime Implements ILeaseModel.CheckinDate
 			Get

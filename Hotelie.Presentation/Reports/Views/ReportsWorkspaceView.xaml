@@ -180,7 +180,7 @@
                                     Binding="{Binding Name, Mode=OneTime}"
                                     EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}">
                                     <DataGridTextColumn.Header>
-                                        <TextBlock Text="Loại phòng" FontSize="20" FontWeight="Bold" />
+                                        <TextBlock Text="Phòng" FontSize="20" FontWeight="Bold" />
                                     </DataGridTextColumn.Header>
                                 </DataGridTextColumn>
 
