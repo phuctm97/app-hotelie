@@ -167,7 +167,7 @@
                                    Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                    FontSize="15" Margin="0 0 0 4" />
                         <materialDesign:Chip
-                            Content="{Binding Path=Room.CategoryName}"
+                            Content="{Binding Path=Lease.Room.Category.Name}"
                             FontSize="15"
                             IconForeground="White">
                             <materialDesign:Chip.Icon>

@@ -37,7 +37,7 @@ Namespace Leases.ViewModels
 		Private _originalcheckinDate As Date
 		Private _originalroomId As String
 		Private _originalexpectedCheckoutDate As Date
-		Private ReadOnly _originalDetails As List(Of ILeaseDetailModel)
+		Private ReadOnly _originalDetails As List(Of EditableLeaseDetailModel)
 
 		Private _isEdited As Boolean
 		Private _maxNumberOfUsers As Integer
@@ -108,7 +108,7 @@ Namespace Leases.ViewModels
 			Lease = New EditableLeaseModel
 			AddHandler Lease.Details.CollectionChanged, AddressOf OnDetailsUpdated
 
-			_originalDetails = New List(Of ILeaseDetailModel)
+			_originalDetails = New List(Of EditableLeaseDetailModel)
 		End Sub
 
 		Public Sub Init()
