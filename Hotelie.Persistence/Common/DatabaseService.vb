@@ -1,5 +1,7 @@
 ﻿Imports System.Data.Entity
 Imports Hotelie.Application.Services.Persistence
+Imports Hotelie.Domain.Leases
+Imports Hotelie.Domain.Rooms
 
 Namespace Common
     Public Class DatabaseService
@@ -23,6 +25,7 @@ Namespace Common
             _context = New DatabaseContext(connectionString)
             Try
                 Dim leases = _context.Leases.ToList()
+                Dim rooms = _context.Rooms.ToList()
                 Dim leaseDetails = _context.LeaseDetails.ToList()
                 Dim bills = _context.Bills.ToList()
                 Dim billDetails = _context.BillDetails.ToList()
@@ -32,7 +35,16 @@ Namespace Common
                 Dim userCategories = _context.UserCategories.ToList()
                 Dim users = _context.Users.ToList()
                 Dim customerCategories = _context.CustomerCategories.ToList()
-                Dim rooms = _context.Rooms.ToList()
+
+                For Each room As Room In rooms
+                    room.State = 0
+                Next
+
+                For Each lease As Lease In leases
+                    If (lease.Paid = 0) Then lease.Room.State = 1
+                Next
+
+                _context.SaveChanges()
             Catch
                 Return False
             End Try

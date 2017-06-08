@@ -2,7 +2,6 @@
 Imports System.Data.Entity
 Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Domain.Bills
-Imports Hotelie.Domain.Leases
 
 Namespace Bills.Factories
     Public Class CreateBillFactory
@@ -13,7 +12,8 @@ Namespace Bills.Factories
         Private ReadOnly _userRepository As IUserRepository
         Private ReadOnly _leaseRepository As ILeaseRepository
 
-        Sub New(billRepository As IBillRepository, unitOfWork As IUnitOfWork, userRepository As IUserRepository, leaseRepository As ILeaseRepository)
+        Sub New(billRepository As IBillRepository, unitOfWork As IUnitOfWork, userRepository As IUserRepository,
+                leaseRepository As ILeaseRepository)
             _billRepository = billRepository
             _unitOfWork = unitOfWork
             _userRepository = userRepository
@@ -150,11 +150,16 @@ Namespace Bills.Factories
                 newBill.Details = New List(Of BillDetail)
 
                 ' get user who make this bill
+                Dim user = Await _userRepository.GetOneAsync("admin")
                 Try
-                    Dim user = Await _userRepository.GetOneAsync(userId)
-                    newBill.User = user
+                    Dim userTest = Await _userRepository.GetOneAsync(userId)
+                    If userTest IsNot Nothing Then
+                        user = userTest
+                    End If
                 Catch
+
                 End Try
+                newBill.User = user
 
                 ' get new bill detail list of  id
                 Dim defaultDetailId = 1
@@ -189,12 +194,16 @@ Namespace Bills.Factories
                     Dim lease = Await _leaseRepository.GetOneAsync(leaseString)
                     Dim billDetail = New BillDetail() _
                             With {.Id = idList(j),.CheckinDate=lease.CheckinDate,.Lease = lease}
-                    Dim numberOfDays = DateTime.Now().Subtract(lease.CheckinDate).TotalDays()
-                    Dim extraPrice = lease.RoomPrice*lease.ExtraCoefficient*numberOfDays
-                    Dim expense = lease.RoomPrice*(1 + lease.CustomerCoefficient)*numberOfDays
-                    billDetail.NumberOfDays = numberOfDays
-                    billDetail.ExtraCharge = extraPrice
-                    billDetail.TotalExpense = extraPrice + expense
+                    billDetail.NumberOfDays = CType(Today.Subtract(billDetail.Lease.CheckinDate).TotalDays, Integer) + 1
+
+                    If billDetail.Lease.LeaseDetails.Count > 2 Then
+                        billDetail.ExtraCharge = 0
+                    Else
+                        billDetail.ExtraCharge = billDetail.NumberOfDays*billDetail.Lease.ExtraCoefficient*
+                                                 billDetail.Lease.RoomPrice
+                    End If
+                    billDetail.TotalExpense = billDetail.ExtraCharge + (1 + billDetail.Lease.CustomerCoefficient)*billDetail.Lease.RoomPrice
+
                     newBill.Details.Add(billDetail)
                     lease.Room.State = 0
                     lease.Paid = 1
@@ -202,9 +211,9 @@ Namespace Bills.Factories
 
                 _billRepository.Add(newBill)
                 Await _unitOfWork.CommitAsync()
-                Return String.Empty
+                Return newId
             Catch
-                Return "Không thể thêm hóa đơn thanh toán"
+                Return String.Empty
             End Try
         End Function
     End Class
