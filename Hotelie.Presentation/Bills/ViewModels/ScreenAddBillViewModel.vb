@@ -6,6 +6,7 @@ Imports Hotelie.Application.Leases.Models
 Imports Hotelie.Application.Leases.Queries
 Imports Hotelie.Application.Rooms.Models
 Imports Hotelie.Application.Rooms.Queries
+Imports Hotelie.Application.Services.Infrastructure
 Imports Hotelie.Presentation.Bills.Models
 Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
@@ -23,6 +24,7 @@ Namespace Bills.ViewModels
 		Private ReadOnly _getAllRoomsQuery As IGetAllRoomsQuery
 		Private ReadOnly _getAllLeasesQuery As IGetAllLeasesQuery
 		Private ReadOnly _createBillFactory As ICreateBillFactory
+		Private ReadOnly _inventory As IInventory
 
 		' Parent
 		Public Property Parent As Object Implements IChild.Parent
@@ -38,13 +40,15 @@ Namespace Bills.ViewModels
 		Public Sub New( workspace As BillsWorkspaceViewModel,
 		                getAllRoomsQuery As IGetAllRoomsQuery,
 		                getAllLeasesQuery As IGetAllLeasesQuery,
-		                createBillFactory As ICreateBillFactory )
+		                createBillFactory As ICreateBillFactory,
+		                inventory As IInventory )
 			MyBase.New( ColorZoneMode.PrimaryDark )
 
 			ParentWorkspace = workspace
-			_createBillFactory = createBillFactory
 			_getAllRoomsQuery = getAllRoomsQuery
 			_getAllLeasesQuery = getAllLeasesQuery
+			_createBillFactory = createBillFactory
+			_inventory = inventory
 
 			Bill = New EditableBillModel
 			AddHandler Bill.Details.CollectionChanged, AddressOf	OnDetailsUpdated
@@ -261,6 +265,7 @@ Namespace Bills.ViewModels
 		End Function
 
 		Private Async Function OnSaveSuccessAsync( newId As String ) As Task
+			Await _inventory.OnBillAddedAsync( newId )
 			Await ActualExitAsync()
 		End Function
 

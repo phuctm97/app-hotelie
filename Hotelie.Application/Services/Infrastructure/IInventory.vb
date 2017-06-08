@@ -26,5 +26,13 @@
 		Sub OnLeaseUpdated( id As String )
 
 		Function OnLeaseUpdatedAsync( id As String ) As Task
+
+		Sub OnBillAdded( id As String )
+
+		Function OnBillAddedAsync( id As String ) As Task
+
+		Sub OnBillRemoved( id As String )
+
+		Function OnBillRemovedAsync( id As String ) As Task
 	End Interface
 End Namespace

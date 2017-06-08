@@ -16,7 +16,7 @@ Namespace Bills.Models
 
 		Public Property Id As String
 			Get
-				Return $"{_id}"
+				Return _id
 			End Get
 			Set
 				If IsNothing( Value ) OrElse Equals( Value, _id ) Then Return
