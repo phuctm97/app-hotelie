@@ -90,11 +90,11 @@ Namespace Start.LoginShell.ViewModels
 			                                                                  My.Settings.ConnectionCatalog )
 			CloseStaticWindowDialog()
 
-			If result
+			If result = 2
 				' reload database service
-				Dim canCreate = _databaseService.SetDatabaseConnection( My.Settings.ConnectionDataSource,
-				                                                        My.Settings.ConnectionCatalog )
-				If canCreate
+				Dim canSet = _databaseService.SetDatabaseConnection( My.Settings.ConnectionDataSource,
+				                                                     My.Settings.ConnectionCatalog )
+				If canSet
 					' show login screen
 					DisplayCode = 0
 				Else

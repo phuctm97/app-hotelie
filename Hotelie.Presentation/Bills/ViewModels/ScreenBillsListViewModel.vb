@@ -19,7 +19,7 @@ Namespace Bills.ViewModels
 		                getAllBillsQuery As IGetAllBillsQuery )
 			_getAllBillsQuery = getAllBillsQuery
 
-			Bills = New BindableCollection(Of BillModel)
+			Bills = New BindableCollection(Of IBillModel)
 		End Sub
 
 		Public Sub Init()

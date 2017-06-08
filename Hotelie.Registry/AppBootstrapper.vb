@@ -5,6 +5,8 @@ Imports Hotelie.Application.Bills.Queries
 Imports Hotelie.Application.Leases.Commands
 Imports Hotelie.Application.Leases.Factories
 Imports Hotelie.Application.Leases.Queries
+Imports Hotelie.Application.Parameters.Commands
+Imports Hotelie.Application.Parameters.Queries
 Imports Hotelie.Application.Rooms.Commands
 Imports Hotelie.Application.Rooms.Factories
 Imports Hotelie.Application.Rooms.Queries
@@ -78,6 +80,8 @@ Public Class AppBootstrapper
 			New ContainerControlledLifetimeManager() )
 		_container.RegisterType(Of IGetBillQuery, GetBillQuery)(
 			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IGetParametersQuery, GetParametersQuery)(
+			New ContainerControlledLifetimeManager() )
 
 		' Commands
 		_container.RegisterType(Of IRemoveRoomCategoryCommand, RemoveRoomCategoryCommand)(
@@ -101,6 +105,8 @@ Public Class AppBootstrapper
 		_container.RegisterType(Of IUpdateLeaseDetailCommand, UpdateLeaseDetailCommand)(
 			New ContainerControlledLifetimeManager() )
 		_container.RegisterType(Of IRemoveBillCommand, RemoveBillCommand)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IUpdateParametersCommand, UpdateParametersCommand)(
 			New ContainerControlledLifetimeManager() )
 
 		' Factories

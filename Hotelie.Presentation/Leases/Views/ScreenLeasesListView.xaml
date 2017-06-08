@@ -100,16 +100,26 @@
                                                     <!--Eslapsed date-->
                                                     <TextBlock
                                                         Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
-                                                        Text="{Binding NumberOfUsedDays, Mode=OneWay}"
+                                                        Text="Đã ở" Margin="0 0 4 0"
                                                         Opacity="0.65" />
                                                     <TextBlock
                                                         Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
-                                                        Text=". " Opacity="0.65" />
+                                                        Text="{Binding NumberOfUsedDays, Mode=OneWay}" Margin="0 0 4 0"
+                                                        Opacity="0.65" />
+                                                    <TextBlock
+                                                        Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
+                                                        Text="ngày." Margin="0 0 4 0" Opacity="0.65" />
                                                     <!--Total expense-->
+                                                    <TextBlock
+                                                        Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
+                                                        Text="Tổng chi phí" Margin="0 0 4 0" Opacity="0.65" />
                                                     <TextBlock
                                                         Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
                                                         Text="{Binding TotalExpense, Mode=OneWay, Converter={StaticResource TotalExpenseDisplayConverter}}"
                                                         Opacity="0.65" />
+                                                    <TextBlock
+                                                        Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
+                                                        Text="." Opacity="0.65" />
                                                 </StackPanel>
 
                                                 <!--Room name-->

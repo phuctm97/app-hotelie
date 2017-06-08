@@ -239,12 +239,12 @@ Namespace Rooms.ViewModels
 
 		' Add lease
 		Public Sub AddLease()
-			If CanAddLease()
-				ParentWorkspace.ParentShell.NavigateToScreenAddLease( Room.Id )
+			If CheckCanAddLease()
+				ParentWorkspace.ParentShell.NavigateToScreenAddLease(Room.Id)
 			End If
 		End Sub
 
-		Public Function CanAddLease() As Boolean
+		Public Function CheckCanAddLease() As Boolean
 			If String.IsNullOrWhiteSpace( Room.Id )
 				ShowStaticBottomNotification( StaticNotificationType.Error,
 				                              "Phòng không tồn tại" )

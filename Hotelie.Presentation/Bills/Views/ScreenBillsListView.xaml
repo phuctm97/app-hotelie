@@ -131,10 +131,6 @@
                     </Setter>
                 </Style>
             </ListBox.ItemContainerStyle>
-
-            <ListBoxItem />
-            <ListBoxItem />
-            <ListBoxItem />
         </ListBox>
 
         <!--Add button-->

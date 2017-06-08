@@ -164,7 +164,7 @@
                 <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
                     <Setter Property="Margin" Value="10" />
                     <Setter Property="Visibility"
-                            Value="{Binding IsFiltersMatched, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                            Value="{Binding IsFiltersMatch, Converter={StaticResource BooleanToVisibilityConverter}}" />
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="ListBoxItem">
@@ -209,17 +209,23 @@
                                         <StackPanel Grid.Row="0" Grid.Column="2"
                                                     Width="100" Margin="0 16 0 0">
                                             <!--Room category-->
-                                            <Button Margin="0 0 8 8" Padding="3" BorderThickness="0"
-                                                    cal:Message.Attach="FilterByRoomCategoryOf($dataContext)">
+                                            <Button Margin="0 0 8 8" Padding="3" BorderThickness="0">
                                                 <Viewbox StretchDirection="DownOnly" Stretch="Uniform">
                                                     <TextBlock Text="{Binding Path=Model.Category.Name, Mode=OneWay}"
                                                                FontSize="14"
                                                                Foreground="White" />
                                                 </Viewbox>
+
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="Click">
+                                                        <cal:ActionMessage MethodName="FilterByRoomCategoryOf">
+                                                            <cal:Parameter Value="{Binding Model}" />
+                                                        </cal:ActionMessage>
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
                                             </Button>
                                             <!--Room state-->
-                                            <Button Margin="0 0 8 0" Padding="3" BorderThickness="0"
-                                                    cal:Message.Attach="FilterByRoomStateOf($dataContext)">
+                                            <Button Margin="0 0 8 0" Padding="3" BorderThickness="0" >
                                                 <Button.Background>
                                                     <SolidColorBrush
                                                         Color="{Binding Path=Model.State, Mode=OneWay, Converter={StaticResource RoomStateToBackColorConverter}}" />
@@ -229,6 +235,14 @@
                                                         Text="{Binding Path=Model.State, Mode=OneWay, Converter={StaticResource RoomStateToStringConverter}}"
                                                         FontSize="14" />
                                                 </Viewbox>
+
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="Click">
+                                                        <cal:ActionMessage MethodName="FilterByRoomStateOf">
+                                                            <cal:Parameter Value="{Binding Model}" />
+                                                        </cal:ActionMessage>
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
                                             </Button>
                                         </StackPanel>
 

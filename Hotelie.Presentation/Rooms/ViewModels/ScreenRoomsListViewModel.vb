@@ -71,6 +71,7 @@ Namespace Rooms.ViewModels
 			AddHandler FilterRoomModel.PropertyChanged, AddressOf OnFilterRoomModelUpdated
 
 			SortRoomModel = New SortRoomModel()
+			SortRoomModel.SortingCode = -1
 			AddHandler SortRoomModel.PropertyChanged, AddressOf OnSortRoomModelUpdated
 		End Sub
 
@@ -164,6 +165,7 @@ Namespace Rooms.ViewModels
 			FilterRoomModel.MinUnitPrice = Nothing
 			FilterRoomModel.MaxUnitPrice = Nothing
 			AddHandler FilterRoomModel.PropertyChanged, AddressOf OnFilterRoomModelUpdated
+			RefreshRoomsListVisibility()
 		End Sub
 
 		Public Sub FilterByRoomCategoryOf( roomModel As IRoomModel )

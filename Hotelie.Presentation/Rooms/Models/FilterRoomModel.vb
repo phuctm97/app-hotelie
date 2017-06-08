@@ -6,7 +6,7 @@ Namespace Rooms.Models
 		Inherits PropertyChangedBase
 
 		Private _namePrefix As String
-		Private _category As RoomCategoryModel
+		Private _category As IRoomCategoryModel
 		Private _state As Integer?
 		Private _minUnitPrice As Decimal?
 		Private _maxUnitPrice As Decimal?
@@ -22,7 +22,7 @@ Namespace Rooms.Models
 			End Set
 		End Property
 
-		Public Property Category As RoomCategoryModel
+		Public Property Category As IRoomCategoryModel
 			Get
 				Return _category
 			End Get

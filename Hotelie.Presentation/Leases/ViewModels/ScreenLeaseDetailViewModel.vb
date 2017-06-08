@@ -24,7 +24,7 @@ Namespace Leases.ViewModels
 		' Dependencies
 		Private ReadOnly _getLeaseQuery As IGetLeaseQuery
 		Private ReadOnly _getAllRoomsQuery As IGetAllRoomsQuery
-		Private ReadOnly _getAllCustomerCategoriesQuery As IGetAllRoomCategoriesQuery
+		Private ReadOnly _getAllCustomerCategoriesQuery As IGetAllCustomerCategoriesQuery
 		Private ReadOnly _updateLeaseCommand As IUpdateLeaseCommand
 		Private ReadOnly _removeLeaseCommand As IRemoveLeaseCommand
 		Private ReadOnly _updateLeaseDetailCommand As IUpdateLeaseDetailCommand
@@ -104,7 +104,7 @@ Namespace Leases.ViewModels
 			_inventory = inventory
 			RegisterInventory()
 
-			Rooms = New BindableCollection(Of IRoomCategoryModel)
+			Rooms = New BindableCollection(Of IRoomModel)
 			Lease = New EditableLeaseModel
 			AddHandler Lease.Details.CollectionChanged, AddressOf OnDetailsUpdated
 

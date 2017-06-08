@@ -62,7 +62,7 @@ Namespace Common
             Dim serverAdmin
             Try
                 serverAdmin = dbContext.Users.FirstOrDefault(Function(p)p.Id = "admin")
-                If IsNothing(serverAdmin) Then
+                If serverAdmin IsNot Nothing Then
                     dbContext.Dispose()
                     Return 1
                 End If
@@ -96,7 +96,7 @@ Namespace Common
             Dim serverAdmin
             Try
                 serverAdmin = Await dbContext.Users.FirstOrDefaultAsync(Function(p)p.Id = "admin")
-                If IsNothing(serverAdmin) Then
+                If serverAdmin IsNot Nothing Then
                     dbContext.Dispose()
                     Return 2
                 End If
