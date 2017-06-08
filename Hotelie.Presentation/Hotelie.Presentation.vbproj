@@ -165,6 +165,8 @@
     <Compile Include="Common\IAppScreen.vb" />
     <Compile Include="Common\IAppScreenHasSaving.vb" />
     <Compile Include="Common\IMainWindow.vb" />
+    <Compile Include="Common\Infrastructure\IBillsListPresenter.vb" />
+    <Compile Include="Common\Infrastructure\ILeasePresenter.vb" />
     <Compile Include="Common\Infrastructure\ILeasesListPresenter.vb" />
     <Compile Include="Common\Infrastructure\Inventory.vb" />
     <Compile Include="Common\Infrastructure\IRoomsListPresenter.vb" />
@@ -194,6 +196,7 @@
       <DependentUpon>ScreenLeasesListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Rooms\Converters\RoomNameWhenEmptyConverter.vb" />
+    <Compile Include="Rooms\Converters\RoomStateToActionNameConverter.vb" />
     <Compile Include="Rooms\Converters\RoomStateToBackColorConverter.vb" />
     <Compile Include="Rooms\Converters\RoomStateToIconKindConverter.vb" />
     <Compile Include="Rooms\Converters\RoomStateToStringConverter.vb" />

@@ -22,6 +22,8 @@
 
 		ReadOnly Property TotalExpense As Decimal
 
+		ReadOnly Property IsPaid As Boolean
+
 		ReadOnly Property Details As List(Of ILeaseDetailModel)
 	End Interface
 End Namespace

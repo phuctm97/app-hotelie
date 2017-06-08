@@ -20,6 +20,7 @@ Namespace Leases.ViewModels
 		Inherits AppScreenHasSavingAndDeleting
 		Implements IChild(Of LeasesWorkspaceViewModel)
 		Implements INeedWindowModals
+		Implements ILeasePresenter
 		Implements IRoomsListPresenter
 
 		' Dependencies
@@ -106,7 +107,8 @@ Namespace Leases.ViewModels
 			_removeLeaseDetailCommand = removeLeaseDetailCommand
 			_createLeaseDetailFactory = createLeaseDetailFactory
 			_inventory = inventory
-			RegisterInventory()
+			TryCast(Me, IRoomsListPresenter).RegisterInventory()
+			TryCast(Me, ILeasePresenter).RegisterInventory()
 
 			Rooms = New BindableCollection(Of IRoomModel)
 			Lease = New EditableLeaseModel
@@ -485,7 +487,9 @@ Namespace Leases.ViewModels
 		End Function
 
 		Private Async Function OnSaveSuccessAsync() As Task
+			Dim roomId = Lease.Room.Id
 			Await _inventory.OnLeaseUpdatedAsync( Lease.Id )
+			Await _inventory.OnRoomUpdatedAsync( roomId )
 			Await ActualExitAsync()
 		End Function
 
@@ -510,6 +514,7 @@ Namespace Leases.ViewModels
 
 		Private Async Function OnDeleteSuccessAsync() As Task
 			Await _inventory.OnLeaseRemovedAsync( Lease.Id )
+			Await _inventory.OnRoomUpdatedAsync( Lease.Room.Id )
 			Await ActualExitAsync()
 		End Function
 
@@ -525,24 +530,27 @@ Namespace Leases.ViewModels
 
 		' Infrastructure
 		Public Sub OnRoomAdded( model As IRoomModel ) Implements IRoomsListPresenter.OnRoomAdded
-			If Rooms.Any( Function( r ) r.Id = model.Id )
-				ShowStaticBottomNotification( StaticNotificationType.Warning,
-				                              "Tìm thấy phòng trùng nhau trong danh sách" )
-				Return
-			End If
+			If IsNothing( model ) OrElse String.IsNullOrEmpty( model.Id ) Then Return
 
-			Rooms.Add( model )
+			Dim room = Rooms.FirstOrDefault( Function( r ) r.Id = model.Id )
+			If room IsNot Nothing
+				Rooms( Rooms.IndexOf( room ) ) = model
+				If Lease.Room?.Id = model.Id Then Lease.Room = model
+			Else
+				Rooms.Add( model )
+			End If
 		End Sub
 
 		Public Sub OnRoomUpdated( model As IRoomModel ) Implements IRoomsListPresenter.OnRoomUpdated
+			If IsNothing( model ) OrElse String.IsNullOrEmpty( model.Id ) Then Return
+
 			Dim roomToUpdate = Rooms.FirstOrDefault( Function( r ) r.Id = model.Id )
 			If IsNothing( roomToUpdate )
-				ShowStaticBottomNotification( StaticNotificationType.Warning,
-				                              "Không tìm thấy phòng trong danh sách để cập nhật" )
-				Return
+				Rooms.Add( model )
+			Else
+				Rooms( Rooms.IndexOf( roomToUpdate ) ) = model
+				If Lease.Room?.Id = model.Id Then Lease.Room = model
 			End If
-
-			Rooms( Rooms.IndexOf( roomToUpdate ) ) = model
 		End Sub
 
 		Public Sub OnRoomRemoved( id As String ) Implements IRoomsListPresenter.OnRoomRemoved
@@ -550,8 +558,16 @@ Namespace Leases.ViewModels
 			If IsNothing( roomToRemove ) Then Return
 
 			Rooms.Remove( roomToRemove )
-			If Equals( Lease.Room, roomToRemove )
-				Lease.Room = Rooms.FirstOrDefault()
+			If Lease.Room?.Id = roomToRemove.Id Then Lease.Room = Rooms.FirstOrDefault()
+		End Sub
+
+		Public Sub OnLeaseUpdated( model As ILeaseModel ) Implements ILeasePresenter.OnLeaseUpdated
+			If IsNothing( model ) OrElse String.IsNullOrEmpty( model.Id ) Then Return
+			If IsNothing( Lease ) OrElse String.IsNullOrEmpty( Lease.Id ) Then Return
+			If Not String.Equals( Lease.Id, model.Id ) Then Return
+
+			If model.IsPaid
+				ActualExitAsync()
 			End If
 		End Sub
 	End Class

@@ -92,5 +92,11 @@ Namespace Leases.Models
 				Return _baseModel.TotalExpense
 			End Get
 		End Property
+
+		Public ReadOnly Property IsPaid As Boolean Implements ILeaseModel.IsPaid
+			Get
+				Return _baseModel.IsPaid
+			End Get
+		End Property
 	End Class
 End Namespace

@@ -26,7 +26,7 @@ Namespace Bills.Models
 				Return _customerName
 			End Get
 			Set
-				If IsNothing( Value ) OrElse Equals( Value, CustomerName ) Then Return
+				If IsNothing( Value ) OrElse Equals( Value, _customerName ) Then Return
 				_customerName = value
 				NotifyOfPropertyChange( Function() CustomerName )
 			End Set
@@ -37,7 +37,7 @@ Namespace Bills.Models
 				Return _customerAddress
 			End Get
 			Set
-				If IsNothing( Value ) OrElse Equals( Value, CustomerName ) Then Return
+				If IsNothing( Value ) OrElse Equals( Value, _customerAddress ) Then Return
 				_customerAddress = value
 				NotifyOfPropertyChange( Function() CustomerAddress )
 			End Set
@@ -48,7 +48,7 @@ Namespace Bills.Models
 				Return _totalExpense
 			End Get
 			Set
-				If IsNothing( Value ) OrElse Equals( Value, TotalExpense ) Then Return
+				If IsNothing( Value ) OrElse Equals( Value, _totalExpense ) Then Return
 				_totalExpense = value
 				NotifyOfPropertyChange( Function() TotalExpense )
 			End Set

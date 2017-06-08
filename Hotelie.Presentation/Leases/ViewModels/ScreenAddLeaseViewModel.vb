@@ -246,7 +246,9 @@ Namespace Leases.ViewModels
 		End Function
 
 		Private Async Function OnSaveSuccessAsync( newId As String ) As Task
+			Dim roomId = Lease.Room.Id
 			Await _inventory.OnLeaseAddedAsync( newId )
+			Await _inventory.OnRoomUpdatedAsync( roomId )
 			Await ActualExitAsync()
 		End Function
 
@@ -256,32 +258,35 @@ Namespace Leases.ViewModels
 
 		' Infrastructure
 		Public Sub OnRoomAdded( model As IRoomModel ) Implements IRoomsListPresenter.OnRoomAdded
-			If model.State <> 0 Then Return
+			If IsNothing( model ) OrElse String.IsNullOrEmpty( model.Id ) Then Return
+			If model.State = 1 Then Return
 
-			If Rooms.Any( Function( r ) r.Id = model.Id )
-				ShowStaticBottomNotification( StaticNotificationType.Warning,
-				                              "Tìm thấy phòng trùng với phòng cần thêm" )
-				Return
+			Dim room = Rooms.FirstOrDefault( Function( r ) r.Id = model.Id )
+			If room IsNot Nothing
+				Rooms( Rooms.IndexOf( room ) ) = model
+				If Lease.Room?.Id = model.Id Then Lease.Room = model
+			Else
+				Rooms.Add( model )
 			End If
-
-			Rooms.Add( model )
 		End Sub
 
 		Public Sub OnRoomUpdated( model As IRoomModel ) Implements IRoomsListPresenter.OnRoomUpdated
-			Dim roomToUpdate = Rooms.FirstOrDefault( Function( r ) r.Id = model.Id )
-			If IsNothing( roomToUpdate )
-				If model.State = 0
+			If IsNothing( model ) OrElse String.IsNullOrEmpty( model.Id ) Then Return
+			If model.State = 0
+				Dim roomToUpdate = Rooms.FirstOrDefault( Function( r ) r.Id = model.Id )
+				If IsNothing( roomToUpdate )
 					Rooms.Add( model )
-				End If
-			Else
-				If model.State <> 0
-					Rooms.Remove( roomToUpdate )
-					If Equals( Lease.Room, roomToUpdate )
-						Lease.Room = Rooms.FirstOrDefault()
-					End If
 				Else
-					Lease.Room = model
+					Rooms( Rooms.IndexOf( roomToUpdate ) ) = model
+					If Lease.Room?.Id = model.Id Then Lease.Room = model
 				End If
+
+			Else
+				Dim roomToRemove = Rooms.FirstOrDefault( Function( r ) r.Id = model.Id )
+				If IsNothing( roomToRemove ) Then Return
+
+				Rooms.Remove( roomToRemove )
+				If Lease.Room?.Id = roomToRemove.Id Then Lease.Room = Rooms.FirstOrDefault()
 			End If
 		End Sub
 
@@ -290,9 +295,7 @@ Namespace Leases.ViewModels
 			If IsNothing( roomToRemove ) Then Return
 
 			Rooms.Remove( roomToRemove )
-			If Equals( Lease.Room, roomToRemove )
-				Lease.Room = Rooms.FirstOrDefault()
-			End If
+			If Lease.Room?.Id = roomToRemove.Id Then Lease.Room = Rooms.FirstOrDefault()
 		End Sub
 	End Class
 End Namespace

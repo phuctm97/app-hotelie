@@ -75,7 +75,6 @@ Namespace Rooms.ViewModels
 			Room.Note = String.Empty
 			Room.Category = Categories.FirstOrDefault()
 			Room.State = 0
-			NotifyOfPropertyChange(Function() ActionName)
 
 			_originalRoomName = Room.Name
 			_originalRoomCategoryId = Room.Category.Id
@@ -85,16 +84,6 @@ Namespace Rooms.ViewModels
 		' Binding model
 		Public ReadOnly Property Room As EditableRoomModel
 
-		Public ReadOnly Property ActionName As String
-			Get
-				If IsNothing( Room ) Then Return String.Empty
-				If Room.State = 0 
-					Return "THUÊ"
-				Else
-					Return "THANH TOÁN"
-				End If
-			End Get
-		End Property
 		' Binding data
 		' ReSharper disable once CollectionNeverUpdated.Global
 		' ReSharper disable once UnassignedGetOnlyAutoProperty
@@ -114,7 +103,6 @@ Namespace Rooms.ViewModels
 			Room.Name = model.Name
 			Room.Category = category
 			Room.State = model.State
-			NotifyOfPropertyChange( Function() ActionName )
 			Room.Note = model.Note
 
 			' Backup old values
@@ -140,7 +128,6 @@ Namespace Rooms.ViewModels
 			Room.Name = model.Name
 			Room.Category = category
 			Room.State = model.State
-			NotifyOfPropertyChange( Function() ActionName )
 			Room.Note = model.Note
 
 			' Backup old values
@@ -156,7 +143,6 @@ Namespace Rooms.ViewModels
 			Room.Category = Categories.FirstOrDefault()
 			Room.Note = String.Empty
 			Room.State = 0
-			NotifyOfPropertyChange( Function() ActionName )
 
 			_originalRoomName = Room.Name
 			_originalRoomCategoryId = Room.Category.Id
@@ -251,38 +237,28 @@ Namespace Rooms.ViewModels
 			ShowStaticBottomNotification( StaticNotificationType.Error, err )
 		End Sub
 
-		' Add lease
-		Public Sub AddLease()
-			If CheckCanAddLease()
-				ParentWorkspace.ParentShell.NavigateToScreenAddLease( Room.Id )
-			End If
+		' Business Actions
+		Public Sub DoRoomAction()
+			If IsNothing( Room ) Then Return
+
+			Select Case Room.State
+				Case 0
+					ParentWorkspace.ParentShell.NavigateToScreenAddLease( Room.Id )
+				Case 1
+					ParentWorkspace.ParentShell.NavigateToScreenAddBillWithRoom( Room.Id )
+			End Select
 		End Sub
-
-		Public Function CheckCanAddLease() As Boolean
-			If String.IsNullOrWhiteSpace( Room.Id )
-				ShowStaticBottomNotification( StaticNotificationType.Error,
-				                              "Phòng không tồn tại" )
-				Return False
-			End If
-
-			If Room.State <> 0
-				ShowStaticBottomNotification( StaticNotificationType.Error,
-				                              "Không thể thuê. Phòng đã được thuê trước đó" )
-				Return False
-			End If
-			Return True
-		End Function
 
 		' Infrastructure
 		Public Sub OnRoomUpdated( model As IRoomModel ) Implements IRoomPresenter.OnRoomUpdated
-			If String.IsNullOrEmpty( Room.Id ) Then Return
-			If String.IsNullOrEmpty( model.Id ) Then Return
+			If IsNothing( Room ) OrElse String.IsNullOrEmpty( Room.Id ) Then Return
+			If IsNothing( model ) OrElse String.IsNullOrEmpty( model.Id ) Then Return
 			If Not String.Equals( Room.Id, model.Id ) Then Return
 
 			Dim category = Categories.FirstOrDefault( Function( c ) c.Id = model.Category.Id )
 			If IsNothing( category )
 				ShowStaticBottomNotification( StaticNotificationType.Warning,
-				                              "Không tìm thấy loại phòng {} trong danh sách loại phòng có thể chọn để cập nhật" )
+				                              $"Không tìm thấy loại phòng {model.Category.Name} trong danh sách loại phòng để cập nhật" )
 				Return
 			End If
 
@@ -290,11 +266,6 @@ Namespace Rooms.ViewModels
 			Room.Category = category
 			Room.Note = model.Note
 			Room.State = model.State
-			NotifyOfPropertyChange( Function() ActionName )
-		End Sub
-
-		Public Sub DoActionAsync()
-
 		End Sub
 	End Class
 End Namespace

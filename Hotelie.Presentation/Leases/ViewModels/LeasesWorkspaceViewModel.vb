@@ -1,4 +1,5 @@
-﻿Imports Hotelie.Application.Leases.Commands
+﻿Imports Caliburn.Micro
+Imports Hotelie.Application.Leases.Commands
 Imports Hotelie.Application.Leases.Factories
 Imports Hotelie.Application.Leases.Queries
 Imports Hotelie.Application.Parameters.Queries
@@ -6,10 +7,12 @@ Imports Hotelie.Application.Rooms.Queries
 Imports Hotelie.Application.Services.Infrastructure
 Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
+Imports Hotelie.Presentation.Start.WorkspaceShell.ViewModels
 
 Namespace Leases.ViewModels
 	Public Class LeasesWorkspaceViewModel
 		Inherits AppScreen
+		Implements IChild(Of WorkspaceShellViewModel)
 		Implements INeedWindowModals
 
 		' Backing fields
@@ -33,12 +36,24 @@ Namespace Leases.ViewModels
 			End Set
 		End Property
 
+		' Parent
+		Public Property Parent As Object Implements IChild.Parent
+
+		Public Property ParentShell As WorkspaceShellViewModel Implements IChild(Of WorkspaceShellViewModel).Parent
+			get
+				Return TryCast(Parent, WorkspaceShellViewModel)
+			End Get
+			Set
+				Parent = value
+			End Set
+		End Property
+
 		' Initializations
 		Public Sub New( getAllLeasesQuery As IGetAllLeasesQuery,
 		                getLeaseQuery As IGetLeaseQuery,
 		                getAllRoomsQuery As IGetAllRoomsQuery,
 		                getAllCustomerCategoriesQuery As IGetAllCustomerCategoriesQuery,
-										getParametersQuery As IGetParametersQuery,
+		                getParametersQuery As IGetParametersQuery,
 		                updateLeaseCommand As IUpdateLeaseCommand,
 		                updateLeaseDetailCommand As IUpdateLeaseDetailCommand,
 		                removeLeaseCommand As IRemoveLeaseCommand,
@@ -47,14 +62,14 @@ Namespace Leases.ViewModels
 		                createLeaseFactory As ICreateLeaseFactory,
 		                inventory As IInventory )
 			MyBase.New( MaterialDesignThemes.Wpf.ColorZoneMode.PrimaryDark )
-
-			ScreenLeasesList = New ScreenLeasesListViewModel( getAllLeasesQuery )
+			ScreenLeasesList = New ScreenLeasesListViewModel( Me,
+			                                                  getAllLeasesQuery )
 
 			ScreenLeaseDetail = New ScreenLeaseDetailViewModel( Me,
 			                                                    getLeaseQuery,
 			                                                    getAllRoomsQuery,
 			                                                    getAllCustomerCategoriesQuery,
-																													getParametersQuery,
+			                                                    getParametersQuery,
 			                                                    updateLeaseCommand,
 			                                                    removeLeaseCommand,
 			                                                    updateLeaseDetailCommand,
@@ -64,7 +79,7 @@ Namespace Leases.ViewModels
 			ScreenAddLease = New ScreenAddLeaseViewModel( Me,
 			                                              getAllRoomsQuery,
 			                                              getAllCustomerCategoriesQuery,
-																										getParametersQuery,
+			                                              getParametersQuery,
 			                                              createLeaseFactory,
 			                                              inventory )
 

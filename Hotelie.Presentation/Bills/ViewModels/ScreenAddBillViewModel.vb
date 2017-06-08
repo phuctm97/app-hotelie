@@ -6,9 +6,11 @@ Imports Hotelie.Application.Leases.Models
 Imports Hotelie.Application.Leases.Queries
 Imports Hotelie.Application.Rooms.Models
 Imports Hotelie.Application.Rooms.Queries
+Imports Hotelie.Application.Services.Infrastructure
 Imports Hotelie.Presentation.Bills.Models
 Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
+Imports Hotelie.Presentation.Common.Infrastructure
 Imports Hotelie.Presentation.Start.MainWindow.Models
 Imports MaterialDesignThemes.Wpf
 
@@ -18,11 +20,14 @@ Namespace Bills.ViewModels
 		Inherits AppScreenHasSaving
 		Implements IChild(Of BillsWorkspaceViewModel)
 		Implements INeedWindowModals
+		Implements IRoomsListPresenter
+		Implements ILeasesListPresenter
 
 		' Dependencies
 		Private ReadOnly _getAllRoomsQuery As IGetAllRoomsQuery
 		Private ReadOnly _getAllLeasesQuery As IGetAllLeasesQuery
 		Private ReadOnly _createBillFactory As ICreateBillFactory
+		Private ReadOnly _inventory As IInventory
 
 		' Parent
 		Public Property Parent As Object Implements IChild.Parent
@@ -38,13 +43,17 @@ Namespace Bills.ViewModels
 		Public Sub New( workspace As BillsWorkspaceViewModel,
 		                getAllRoomsQuery As IGetAllRoomsQuery,
 		                getAllLeasesQuery As IGetAllLeasesQuery,
-		                createBillFactory As ICreateBillFactory )
+		                createBillFactory As ICreateBillFactory,
+		                inventory As IInventory )
 			MyBase.New( ColorZoneMode.PrimaryDark )
 
 			ParentWorkspace = workspace
-			_createBillFactory = createBillFactory
 			_getAllRoomsQuery = getAllRoomsQuery
 			_getAllLeasesQuery = getAllLeasesQuery
+			_createBillFactory = createBillFactory
+			_inventory = inventory
+			TryCast(Me, IRoomsListPresenter).RegisterInventory()
+			TryCast(Me, ILeasesListPresenter).RegisterInventory()
 
 			Bill = New EditableBillModel
 			AddHandler Bill.Details.CollectionChanged, AddressOf	OnDetailsUpdated
@@ -63,7 +72,7 @@ Namespace Bills.ViewModels
 			Rooms.AddRange( _getAllRoomsQuery.Execute().Where( Function( r ) r.State = 1 ) )
 
 			Leases.Clear()
-			Leases.AddRange( _getAllLeasesQuery.Execute() )
+			Leases.AddRange( _getAllLeasesQuery.Execute().Where( Function( l ) Not l.IsPaid ) )
 			InitValues()
 		End Sub
 
@@ -72,7 +81,7 @@ Namespace Bills.ViewModels
 			Rooms.AddRange( (Await _getAllRoomsQuery.ExecuteAsync()).Where( Function( r ) r.State = 1 ) )
 
 			Leases.Clear()
-			Leases.AddRange( Await _getAllLeasesQuery.ExecuteAsync() )
+			Leases.AddRange( (Await _getAllLeasesQuery.ExecuteAsync()).Where( Function( l ) Not l.IsPaid ) )
 			InitValues()
 		End Function
 
@@ -97,6 +106,7 @@ Namespace Bills.ViewModels
 		Public Sub InsertRoomId( id As String )
 			Dim room = Rooms.FirstOrDefault( Function( r ) r.Id = id )
 			If IsNothing( room ) Then Return
+			If Bill.Details.Any( Function( d ) d.Room?.Id = room.Id ) Then Return
 
 			Dim detail = New EditableBillDetailModel
 			detail.Room = room
@@ -107,6 +117,7 @@ Namespace Bills.ViewModels
 		Public Sub InsertLeaseId( id As String )
 			Dim lease = Leases.FirstOrDefault( Function( l ) l.Id = id )
 			If IsNothing( lease ) Then Return
+			If Bill.Details.Any( Function( d ) d.Lease?.Id = lease.Id ) Then Return
 
 			Dim detail = New EditableBillDetailModel
 			detail.Lease = lease
@@ -193,6 +204,8 @@ Namespace Bills.ViewModels
 				Return False
 			End If
 
+			Dim removeMessage = String.Empty
+
 			' Remove invalid detail
 			Dim detailsToRemove = New List(Of EditableBillDetailModel)
 			For Each detail As EditableBillDetailModel In Bill.Details
@@ -210,7 +223,16 @@ Namespace Bills.ViewModels
 					detailsToRemove.Add( detail )
 					Continue For
 				End If
+
+				If detail.Lease.IsPaid
+					detailsToRemove.Add( detail )
+					Continue For
+				End If
 			Next
+
+			If detailsToRemove.Count > 0
+				removeMessage += "Đã xóa một số phòng không hợp lệ (đã thanh toán,.. ). "
+			End If
 			Bill.Details.RemoveRange( detailsToRemove )
 
 			' Remove duplicate detail
@@ -223,8 +245,10 @@ Namespace Bills.ViewModels
 			Next
 
 			If uniqueLeaseIds.Count < Bill.Details.Count
-				ShowStaticBottomNotification( StaticNotificationType.Information,
-				                              "Đã xóa các hóa đơn trùng, vui lòng kiểm tra lại trước khi lưu" )
+				removeMessage += "Đã xóa các hóa đơn trùng. "
+			End If
+
+			If uniqueLeaseIds.Count < Bill.Details.Count
 				Bill.Details.Clear()
 				For Each leaseId As String In uniqueLeaseIds
 					Dim lease = Leases.FirstOrDefault( Function( l ) l.Id = leaseId )
@@ -234,6 +258,11 @@ Namespace Bills.ViewModels
 					detail.Lease = lease
 					Bill.Details.Add( detail )
 				Next
+			End If
+
+			If Not String.IsNullOrEmpty( removeMessage )
+				ShowStaticBottomNotification( StaticNotificationType.Information,
+				                              $"{removeMessage}Vui lòng kiểm tra lại!" )
 				Return False
 			End If
 
@@ -261,11 +290,152 @@ Namespace Bills.ViewModels
 		End Function
 
 		Private Async Function OnSaveSuccessAsync( newId As String ) As Task
+			Dim leaseIds = New List(Of String)
+			Dim roomIds = New List(Of String)
+
+			If Bill.Details IsNot Nothing
+				For Each detail As EditableBillDetailModel In Bill.Details
+					If IsNothing( detail ) Then Continue For
+
+					If detail.Lease IsNot Nothing AndAlso Not String.IsNullOrEmpty( detail.Lease.Id )
+						leaseIds.Add( detail.Lease.Id )
+					End If
+					If detail.Room IsNot Nothing AndAlso Not String.IsNullOrEmpty( detail.Room.Id )
+						roomIds.Add( detail.Room.Id )
+					End If
+				Next
+			End If
+
+			Await _inventory.OnBillAddedAsync( newId )
+			For Each leaseId As String In leaseIds
+				Await _inventory.OnLeaseUpdatedAsync( leaseId )
+			Next
+			For Each roomId As String In roomIds
+				Await _inventory.OnRoomUpdatedAsync( roomId )
+			Next
+
 			Await ActualExitAsync()
 		End Function
 
 		Private Sub OnSaveFail()
 			ShowStaticBottomNotification( StaticNotificationType.Error, "Gặp sự cố trong lúc lập hóa đơn" )
+		End Sub
+
+		' Infrastructure
+		Public Sub OnLeaseAdded( model As ILeaseModel ) Implements ILeasesListPresenter.OnLeaseAdded
+			If IsNothing( model ) OrElse String.IsNullOrEmpty( model.Id ) Then Return
+			If model.IsPaid Then Return
+
+			Dim lease = Leases.FirstOrDefault( Function( l ) l.Id = model.Id )
+			If lease IsNot Nothing
+					Leases( Leases.IndexOf( lease ) ) = model
+				if Bill.Details IsNot Nothing
+					For Each detail As EditableBillDetailModel In Bill.Details
+						If detail.Lease?.Id = model.Id Then detail.Lease = model
+					Next
+				End If
+			Else
+				Leases.Add( model )
+			End If
+		End Sub
+
+		Public Sub OnLeaseUpdated( model As ILeaseModel ) Implements ILeasesListPresenter.OnLeaseUpdated
+			If IsNothing( model ) OrElse String.IsNullOrEmpty( model.Id ) Then Return
+
+			If Not model.IsPaid
+				Dim leaseToUpdate = Leases.FirstOrDefault( Function( l ) l.Id = model.Id )
+				If IsNothing( leaseToUpdate )
+					Leases.Add( model )
+				Else
+					Leases( Leases.IndexOf( leaseToUpdate ) ) = model
+					if Bill.Details IsNot Nothing
+						For Each detail As EditableBillDetailModel In Bill.Details
+							If detail.Lease?.Id = model.Id Then detail.Lease = model
+						Next
+					End If
+				End If
+
+			Else
+				Dim leaseToRemove = Leases.FirstOrDefault( Function( l ) l.Id = model.Id )
+				If IsNothing( leaseToRemove ) Then Return
+
+				Leases.Remove( leaseToRemove )
+				if Bill.Details IsNot Nothing
+					For Each detail As EditableBillDetailModel In Bill.Details
+						If detail.Lease?.Id = leaseToRemove.Id Then detail.Lease = Leases.FirstOrDefault()
+					Next
+				End If
+			End If
+		End Sub
+
+		Public Sub OnLeaseRemoved( id As String ) Implements ILeasesListPresenter.OnLeaseRemoved
+			Dim leaseToRemove = Leases.FirstOrDefault( Function( l ) l.Id = id )
+			If IsNothing( leaseToRemove ) Then Return
+
+			Leases.Remove( leaseToRemove )
+			if Bill.Details IsNot Nothing
+				For Each detail As EditableBillDetailModel In Bill.Details
+					If detail.Lease?.Id = leaseToRemove.Id Then detail.Lease = Leases.FirstOrDefault()
+				Next
+			End If
+		End Sub
+
+		Public Sub OnRoomAdded( model As IRoomModel ) Implements IRoomsListPresenter.OnRoomAdded
+			If IsNothing( model ) OrElse String.IsNullOrEmpty( model.Id ) Then Return
+			If model.State = 0 Then Return
+
+			Dim room = Rooms.FirstOrDefault( Function( r ) r.Id = model.Id )
+			If room IsNot Nothing
+				Rooms( Rooms.IndexOf( room ) ) = model
+				if Bill.Details IsNot Nothing
+					For Each detail As EditableBillDetailModel In Bill.Details
+						If detail.Room?.Id = model.Id Then detail.Room = model
+					Next
+				End If
+			Else
+				Rooms.Add( model )
+			End If
+		End Sub
+
+		Public Sub OnRoomUpdated( model As IRoomModel ) Implements IRoomsListPresenter.OnRoomUpdated
+			If IsNothing( model ) OrElse String.IsNullOrEmpty( model.Id ) Then Return
+
+			If model.State = 1
+				Dim roomToUpdate = Rooms.FirstOrDefault( Function( r ) r.Id = model.Id )
+				If IsNothing( roomToUpdate )
+					Rooms.Add( model )
+				Else
+					Rooms( Rooms.IndexOf( roomToUpdate ) ) = model
+					if Bill.Details IsNot Nothing
+						For Each detail As EditableBillDetailModel In Bill.Details
+							If detail.Room?.Id = model.Id Then detail.Room = model
+						Next
+					End If
+				End If
+
+			Else
+				Dim roomToRemove = Rooms.FirstOrDefault( Function( r ) r.Id = model.Id )
+				If IsNothing( roomToRemove ) Then Return
+
+				Rooms.Remove( roomToRemove )
+				if Bill.Details IsNot Nothing
+					For Each detail As EditableBillDetailModel In Bill.Details
+						If detail.Room?.Id = roomToRemove.Id Then detail.Room = Rooms.FirstOrDefault()
+					Next
+				End If
+			End If
+		End Sub
+
+		Public Sub OnRoomRemoved( id As String ) Implements IRoomsListPresenter.OnRoomRemoved
+			Dim roomToRemove = Rooms.FirstOrDefault( Function( r ) r.Id = id )
+			If IsNothing( roomToRemove ) Then Return
+
+			Rooms.Remove( roomToRemove )
+			if Bill.Details IsNot Nothing
+				For Each detail As EditableBillDetailModel In Bill.Details
+					If detail.Room?.Id = roomToRemove.Id Then detail.Room = Rooms.FirstOrDefault()
+				Next
+			End If
 		End Sub
 	End Class
 End Namespace

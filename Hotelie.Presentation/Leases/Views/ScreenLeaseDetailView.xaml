@@ -244,16 +244,6 @@
                     </DataGrid>
                 </StackPanel>
 
-                <!--Commands-->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 16 0 0">
-                    <Button DockPanel.Dock="Right" HorizontalAlignment="Right"
-                            Style="{DynamicResource MaterialDesignFlatAccentButton}"
-                            Content="THANH TOÁN"
-                            Margin="8" Height="36" Padding="8"
-                            cal:Message.Attach="PreviewOrder" />
-                </StackPanel>
-
-
             </StackPanel>
         </ScrollViewer>
 

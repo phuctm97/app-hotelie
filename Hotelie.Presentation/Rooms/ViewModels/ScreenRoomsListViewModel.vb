@@ -71,7 +71,7 @@ Namespace Rooms.ViewModels
 			AddHandler FilterRoomModel.PropertyChanged, AddressOf OnFilterRoomModelUpdated
 
 			SortRoomModel = New SortRoomModel()
-			SortRoomModel.SortingCode = -1
+			SortRoomModel.SortingCode = - 1
 			AddHandler SortRoomModel.PropertyChanged, AddressOf OnSortRoomModelUpdated
 		End Sub
 
@@ -142,6 +142,18 @@ Namespace Rooms.ViewModels
 			States.Clear()
 			States.AddRange( {0, 1} )
 			States.Add( 2 ) 'filter all
+		End Sub
+
+		' Business Actions
+		Public Sub DoRoomAction( model As IRoomModel )
+			If IsNothing( model ) Then Return
+
+			Select Case model.State
+				Case 0
+					ParentWorkspace.ParentShell.NavigateToScreenAddLease( model.Id )
+				Case 1
+					ParentWorkspace.ParentShell.NavigateToScreenAddBillWithRoom( model.Id )
+			End Select
 		End Sub
 
 		' Filtering
@@ -258,14 +270,16 @@ Namespace Rooms.ViewModels
 
 		Public Sub OnRoomAdded( model As IRoomModel ) _
 			Implements IRoomsListPresenter.OnRoomAdded
-			Dim room = Rooms.FirstOrDefault( Function( r ) r.Model.Id = model.Id )
+			If IsNothing( model ) OrElse String.IsNullOrEmpty( model.Id ) Then Return
+
+			Dim room = Rooms.FirstOrDefault( Function( r ) r.Model?.Id = model.Id )
 			If room IsNot Nothing
 				ShowStaticBottomNotification( Start.MainWindow.Models.StaticNotificationType.Warning,
 				                              "Tìm thấy phòng cùng id trong danh sách" )
-				Rooms.Remove( room )
+				room.Model = model
+			Else
+				Rooms.Add( New FilterableRoomModel With {.Model=model, .IsFiltersMatch=False} )
 			End If
-
-			Rooms.Add( New FilterableRoomModel With {.Model=model, .IsFiltersMatch=False} )
 
 			RefreshRoomsListVisibility()
 			SortRoomsList()
@@ -273,12 +287,15 @@ Namespace Rooms.ViewModels
 
 		Public Sub OnRoomUpdated( model As IRoomModel ) _
 			Implements IRoomsListPresenter.OnRoomUpdated
+			If IsNothing( model ) OrElse String.IsNullOrEmpty( model.Id ) Then Return
+		
 			' find room
-			Dim room = Rooms.FirstOrDefault( Function( r ) r.Model.Id = model.Id )
+			Dim room = Rooms.FirstOrDefault( Function( r ) r.Model?.Id = model.Id )
 			If room Is Nothing
 				ShowStaticBottomNotification( Start.MainWindow.Models.StaticNotificationType.Warning,
 				                              $"Không tìm thấy phòng {model.Name} trong danh sách phòng để cập nhật" )
-				Return
+				room = new FilterableRoomModel With {.IsFiltersMatch=False}
+				Rooms.Add( room )
 			End If
 
 			' update
