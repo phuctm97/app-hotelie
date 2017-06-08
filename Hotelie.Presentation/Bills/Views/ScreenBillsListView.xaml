@@ -121,9 +121,6 @@
                                                                         Header="Khách hàng" />
                                                 </DataGrid.Columns>
                                             </DataGrid>
-
-                                            <Button Margin="0 16 0 8" Content="XÓA HÓA ĐƠN" HorizontalAlignment="Right"
-                                                    Style="{DynamicResource MaterialDesignFlatAccentButton}" />
                                         </StackPanel>
                                     </Expander>
                                 </materialDesign:Card>
