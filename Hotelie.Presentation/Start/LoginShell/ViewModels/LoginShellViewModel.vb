@@ -92,10 +92,18 @@ Namespace Start.LoginShell.ViewModels
 
 			If result
 				' reload database service
-				_databaseService.SetDatabaseConnection( My.Settings.ConnectionDataSource,
-				                                        My.Settings.ConnectionCatalog )
-				' show login screen
-				DisplayCode = 0
+				Dim canCreate = _databaseService.SetDatabaseConnection( My.Settings.ConnectionDataSource,
+				                                                        My.Settings.ConnectionCatalog )
+				If canCreate
+					' show login screen
+					DisplayCode = 0
+				Else
+					' report error
+					ShowStaticTopNotification( StaticNotificationType.Error,
+					                           "Sự cố kết nối! Vui lòng kiểm tra lại thiết lập kết nối!" )
+					' show settings screen
+					DisplayCode = 1
+				End If
 			Else
 				' report error
 				ShowStaticTopNotification( StaticNotificationType.Error,
