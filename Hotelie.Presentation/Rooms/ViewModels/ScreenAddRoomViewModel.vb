@@ -1,6 +1,6 @@
 ﻿Imports Caliburn.Micro
-Imports Hotelie.Application.Rooms.Models
 Imports Hotelie.Application.Rooms.Factories
+Imports Hotelie.Application.Rooms.Models
 Imports Hotelie.Application.Rooms.Queries
 Imports Hotelie.Application.Services.Infrastructure
 Imports Hotelie.Presentation.Common
@@ -106,8 +106,14 @@ Namespace Rooms.ViewModels
 		' Save
 		Public Overrides Function CanSave() As Task(Of Boolean)
 			If String.IsNullOrWhiteSpace( Room.Name )
-				IoC.Get(Of IMainWindow).ShowStaticBottomNotification( StaticNotificationType.Information,
-				                                                      "Vui lòng nhập tên phòng" )
+				ShowStaticBottomNotification( StaticNotificationType.Information,
+				                              "Vui lòng nhập tên phòng" )
+				Return Task.FromResult( False )
+			End If
+
+			If IsNothing( Room.Category ) OrElse String.IsNullOrEmpty( Room.Category.Id )
+				ShowStaticBottomNotification( StaticNotificationType.Information,
+				                              "Vui lòng chọn loại phòng" )
 				Return Task.FromResult( False )
 			End If
 

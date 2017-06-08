@@ -75,6 +75,7 @@ Namespace Rooms.ViewModels
 			Room.Note = String.Empty
 			Room.Category = Categories.FirstOrDefault()
 			Room.State = 0
+			NotifyOfPropertyChange(Function() ActionName)
 
 			_originalRoomName = Room.Name
 			_originalRoomCategoryId = Room.Category.Id
@@ -84,6 +85,16 @@ Namespace Rooms.ViewModels
 		' Binding model
 		Public ReadOnly Property Room As EditableRoomModel
 
+		Public ReadOnly Property ActionName As String
+			Get
+				If IsNothing( Room ) Then Return String.Empty
+				If Room.State = 0 
+					Return "THUÊ"
+				Else
+					Return "THANH TOÁN"
+				End If
+			End Get
+		End Property
 		' Binding data
 		' ReSharper disable once CollectionNeverUpdated.Global
 		' ReSharper disable once UnassignedGetOnlyAutoProperty
@@ -103,6 +114,7 @@ Namespace Rooms.ViewModels
 			Room.Name = model.Name
 			Room.Category = category
 			Room.State = model.State
+			NotifyOfPropertyChange( Function() ActionName )
 			Room.Note = model.Note
 
 			' Backup old values
@@ -128,6 +140,7 @@ Namespace Rooms.ViewModels
 			Room.Name = model.Name
 			Room.Category = category
 			Room.State = model.State
+			NotifyOfPropertyChange( Function() ActionName )
 			Room.Note = model.Note
 
 			' Backup old values
@@ -143,6 +156,7 @@ Namespace Rooms.ViewModels
 			Room.Category = Categories.FirstOrDefault()
 			Room.Note = String.Empty
 			Room.State = 0
+			NotifyOfPropertyChange( Function() ActionName )
 
 			_originalRoomName = Room.Name
 			_originalRoomCategoryId = Room.Category.Id
@@ -240,7 +254,7 @@ Namespace Rooms.ViewModels
 		' Add lease
 		Public Sub AddLease()
 			If CheckCanAddLease()
-				ParentWorkspace.ParentShell.NavigateToScreenAddLease(Room.Id)
+				ParentWorkspace.ParentShell.NavigateToScreenAddLease( Room.Id )
 			End If
 		End Sub
 
@@ -276,6 +290,11 @@ Namespace Rooms.ViewModels
 			Room.Category = category
 			Room.Note = model.Note
 			Room.State = model.State
+			NotifyOfPropertyChange( Function() ActionName )
+		End Sub
+
+		Public Sub DoActionAsync()
+
 		End Sub
 	End Class
 End Namespace
