@@ -9,7 +9,7 @@ Namespace Start.LoginShell.ViewModels
 
 		Public Property ParentShell As LoginShellViewModel
 			Get
-				Return CType(Parent, LoginShellViewModel)
+				Return TryCast(Parent, LoginShellViewModel)
 			End Get
 			Set
 				Parent = Value

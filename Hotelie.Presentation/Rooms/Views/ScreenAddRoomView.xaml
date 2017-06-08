@@ -143,11 +143,11 @@
                     IconForeground="White">
                         <materialDesign:Chip.IconBackground>
                             <SolidColorBrush
-                            Color="{Binding RoomState, Converter={StaticResource RoomStateToBackColorConverter}}" />
+                            Color="{Binding Path=Room.State, Converter={StaticResource RoomStateToBackColorConverter}}" />
                         </materialDesign:Chip.IconBackground>
                         <materialDesign:Chip.Icon>
                             <materialDesign:PackIcon
-                            Kind="{Binding RoomState, Converter={StaticResource RoomStateToIconKindConverter}}"
+                            Kind="{Binding Path=Room.State, Converter={StaticResource RoomStateToIconKindConverter}}"
                             Width="24" Height="24" />
                         </materialDesign:Chip.Icon>
                     </materialDesign:Chip>

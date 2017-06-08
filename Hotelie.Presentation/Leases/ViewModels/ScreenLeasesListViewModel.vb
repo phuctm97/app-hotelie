@@ -5,7 +5,6 @@ Imports Hotelie.Application.Rooms.Models
 Imports Hotelie.Presentation.Common.Controls
 Imports Hotelie.Presentation.Common.Infrastructure
 Imports Hotelie.Presentation.Leases.Models
-Imports Hotelie.Presentation.Rooms.Models
 
 Namespace Leases.ViewModels
 	Public Class ScreenLeasesListViewModel
@@ -18,8 +17,8 @@ Namespace Leases.ViewModels
 
 		Public Sub New( getAllLeasesQuery As IGetAllLeasesQuery )
 			_getAllLeasesQuery = getAllLeasesQuery
-			CType(Me, IRoomPresenter).RegisterInventory()
-			CType(Me, ILeasesListPresenter).RegisterInventory()
+			TryCast(Me, IRoomPresenter).RegisterInventory()
+			TryCast(Me, ILeasesListPresenter).RegisterInventory()
 
 			Leases = New BindableCollection(Of ILeaseModel)()
 		End Sub
@@ -53,7 +52,7 @@ Namespace Leases.ViewModels
 			End If
 
 			' add new lease item
-			Leases.Add( lease )
+			Leases.Add( model )
 		End Sub
 
 		Public Sub OnLeaseUpdated( model As ILeaseModel ) Implements ILeasesListPresenter.OnLeaseUpdated
@@ -84,16 +83,16 @@ Namespace Leases.ViewModels
 			If IsNothing( leaseToUpdate ) Then Return
 
 			' if lease is updatable, update it room
-			Dim updatableLease = CType(leaseToUpdate, UpdatableLeaseModel)
-			If updatableLease IsNot Nothing
+			Dim updatableLease As UpdatableLeaseModel = TryCast(leaseToUpdate, UpdatableLeaseModel)
+			If (updatableLease IsNot Nothing)
 				updatableLease.Room = model
 				Return
 			End If
 
 			' create new lease with new room model
-			updatableLease = New UpdatableLeaseModel( leaseToUpdate )
-			updatableLease.Room = model
-			Leases( Leases.IndexOf( leaseToUpdate ) ) = updatableLease
+			Dim newLease = New UpdatableLeaseModel( leaseToUpdate )
+			newLease.Room = model
+			Leases( Leases.IndexOf( leaseToUpdate ) ) = newLease
 		End Sub
 	End Class
 End Namespace
