@@ -7,6 +7,7 @@ Imports Hotelie.Application.Leases.Factories
 Imports Hotelie.Application.Leases.Queries
 Imports Hotelie.Application.Parameters.Commands
 Imports Hotelie.Application.Parameters.Queries
+Imports Hotelie.Application.Reports
 Imports Hotelie.Application.Rooms.Commands
 Imports Hotelie.Application.Rooms.Factories
 Imports Hotelie.Application.Rooms.Queries
@@ -82,6 +83,10 @@ Public Class AppBootstrapper
 			New ContainerControlledLifetimeManager() )
 		_container.RegisterType(Of IGetParametersQuery, GetParametersQuery)(
 			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IGetRoomCategoriesProfit, GetRoomCategoriesProfit)(
+			New ContainerControlledLifetimeManager())
+				_container.RegisterType(Of IGetRoomUsedDaysReport, GetRoomUsedDaysReport)(
+			New ContainerControlledLifetimeManager())
 
 		' Commands
 		_container.RegisterType(Of IRemoveRoomCategoryCommand, RemoveRoomCategoryCommand)(

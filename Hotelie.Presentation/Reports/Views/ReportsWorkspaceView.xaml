@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Hotelie.Presentation"
              xmlns:commonConverters="clr-namespace:Hotelie.Presentation.Common.Converters"
+             xmlns:converters="clr-namespace:Hotelie.Presentation.Reports.Converters"
              xmlns:viewModels="clr-namespace:Hotelie.Presentation.Bills.ViewModels"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:cal="http://www.caliburnproject.org"
@@ -14,11 +15,10 @@
     <!--Resources-->
     <UserControl.Resources>
         <ResourceDictionary>
-            <commonConverters:StringToUpperConverter x:Key="StringToUpperConverter" />
-            <commonConverters:DoubleToStringConverter x:Key="DoubleToStringConverter" />
-            <commonConverters:IntegerToStringConverter x:Key="IntegerToStringConverter" />
             <commonConverters:DecimalToCurrencyStringConverter x:Key="DecimalToCurrencyStringConverter" />
             <commonConverters:DateTimeToShortDateStringConverter2 x:Key="DateTimeToShortDateStringConverter2" />
+            <converters:RatioToPercentConverter x:Key="RatioToPercentConverter" />
+            <converters:NumberOfDaysConverter x:Key="NumberOfDaysConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -57,7 +57,7 @@
                             Style="{DynamicResource MaterialDesignToolButton}"
                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                             FontSize="18"
-                            Content="IN" />
+                            Content="IN BÁO CÁO" />
                 </DockPanel>
 
                 <!--Content-->
@@ -146,7 +146,7 @@
                                 </DataGridTextColumn>
 
                                 <DataGridTextColumn IsReadOnly="True"
-                                    Binding="{Binding Ratio, Mode=OneWay, Converter={StaticResource DecimalToCurrencyStringConverter}}"
+                                    Binding="{Binding Ratio, Mode=OneWay, Converter={StaticResource RatioToPercentConverter}}"
                                     EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}">
                                     <DataGridTextColumn.Header>
                                         <TextBlock Text="Tỉ lệ" FontSize="20" FontWeight="Bold" />
@@ -167,7 +167,8 @@
                         </StackPanel>
 
                         <!--table-->
-                        <DataGrid ItemsSource="{Binding Path=Model.FigureModels}"
+                        <DataGrid ItemsSource="{Binding Path=Model.FigureModels}" 
+                                  MaxHeight="1280"
                                   CanUserSortColumns="True"
                                   CanUserResizeColumns="True"
                                   AutoGenerateColumns="False"
@@ -184,7 +185,7 @@
                                 </DataGridTextColumn>
 
                                 <DataGridTextColumn IsReadOnly="True"
-                                    Binding="{Binding Figure, Mode=OneWay, Converter={StaticResource DecimalToCurrencyStringConverter}}"
+                                    Binding="{Binding Figure, Mode=OneWay, Converter={StaticResource NumberOfDaysConverter}}"
                                     EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}">
                                     <DataGridTextColumn.Header>
                                         <TextBlock Text="Số ngày sử dụng" FontSize="20" FontWeight="Bold" />
@@ -192,7 +193,7 @@
                                 </DataGridTextColumn>
 
                                 <DataGridTextColumn IsReadOnly="True"
-                                    Binding="{Binding Ratio, Mode=OneWay, Converter={StaticResource IntegerToStringConverter}}"
+                                    Binding="{Binding Ratio, Mode=OneWay, Converter={StaticResource RatioToPercentConverter}}"
                                     EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}">
                                     <DataGridTextColumn.Header>
                                         <TextBlock Text="Tỉ lệ" FontSize="20" FontWeight="Bold" />

@@ -195,6 +195,8 @@
     <Compile Include="Leases\Views\ScreenLeasesListView.xaml.vb">
       <DependentUpon>ScreenLeasesListView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Reports\Converters\NumberOfDaysConverter.vb" />
+    <Compile Include="Reports\Converters\RatioToPercentConverter.vb" />
     <Compile Include="Reports\Models\FigureModel.vb" />
     <Compile Include="Reports\Models\ReportsModel.vb" />
     <Compile Include="Reports\Models\RevenueModel.vb" />
