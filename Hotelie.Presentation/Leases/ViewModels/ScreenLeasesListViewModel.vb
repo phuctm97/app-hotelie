@@ -29,12 +29,17 @@ Namespace Leases.ViewModels
 
 		Private Sub InitLeases()
 			Leases.Clear()
-			Leases.AddRange( _getAllLeasesQuery.Execute() )
+
+			Leases.AddRange(
+				_getAllLeasesQuery.Execute().
+				               Where( Function( l ) Not l.IsPaid ) )
 		End Sub
 
 		Private Async Function InitLeasesAsync() As Task
 			Leases.Clear()
-			Leases.AddRange( Await _getAllLeasesQuery.ExecuteAsync() )
+			Leases.AddRange(
+				(Await _getAllLeasesQuery.ExecuteAsync()).
+				               Where( Function( l ) Not l.IsPaid ) )
 		End Function
 
 		' Bind models
@@ -44,6 +49,8 @@ Namespace Leases.ViewModels
 		' Infrastructure
 
 		Public Sub OnLeaseAdded( model As ILeaseModel ) Implements ILeasesListPresenter.OnLeaseAdded
+			If model.IsPaid Then Return
+
 			Dim lease = Leases.FirstOrDefault( Function( l ) l.Id = model.Id )
 			If lease IsNot Nothing
 				ShowStaticTopNotification( Start.MainWindow.Models.StaticNotificationType.Warning,
@@ -63,8 +70,11 @@ Namespace Leases.ViewModels
 				Return
 			End If
 
-			' update lease item
-			Leases( Leases.IndexOf( leaseToUpdate ) ) = model
+			If model.IsPaid
+				Leases.Remove( leaseToUpdate )
+			Else
+				Leases( Leases.IndexOf( leaseToUpdate ) ) = model
+			End If
 		End Sub
 
 		Public Sub OnLeaseRemoved( id As String ) Implements ILeasesListPresenter.OnLeaseRemoved
@@ -83,7 +93,7 @@ Namespace Leases.ViewModels
 			If IsNothing( leaseToUpdate ) Then Return
 
 			' if lease is updatable, update it room
-			Dim updatableLease As UpdatableLeaseModel = TryCast(leaseToUpdate, UpdatableLeaseModel)
+			Dim updatableLease = TryCast(leaseToUpdate, UpdatableLeaseModel)
 			If (updatableLease IsNot Nothing)
 				updatableLease.Room = model
 				Return

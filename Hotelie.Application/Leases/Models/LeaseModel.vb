@@ -86,5 +86,11 @@ Namespace Leases.Models
 		End Property
 
 		Public ReadOnly Property Details As List(Of ILeaseDetailModel) Implements ILeaseModel.Details
+
+		Public ReadOnly Property IsPaid As Boolean Implements ILeaseModel.IsPaid
+			Get
+				Return _entity.Paid
+			End Get
+		End Property
 	End Class
 End Namespace

@@ -67,7 +67,7 @@ Namespace Bills.ViewModels
 			Rooms.AddRange( _getAllRoomsQuery.Execute().Where( Function( r ) r.State = 1 ) )
 
 			Leases.Clear()
-			Leases.AddRange( _getAllLeasesQuery.Execute() )
+			Leases.AddRange( _getAllLeasesQuery.Execute().Where( Function( l ) Not l.IsPaid ) )
 			InitValues()
 		End Sub
 
@@ -76,7 +76,7 @@ Namespace Bills.ViewModels
 			Rooms.AddRange( (Await _getAllRoomsQuery.ExecuteAsync()).Where( Function( r ) r.State = 1 ) )
 
 			Leases.Clear()
-			Leases.AddRange( Await _getAllLeasesQuery.ExecuteAsync() )
+			Leases.AddRange( (Await _getAllLeasesQuery.ExecuteAsync()).Where( Function( l ) Not l.IsPaid ) )
 			InitValues()
 		End Function
 
@@ -197,6 +197,8 @@ Namespace Bills.ViewModels
 				Return False
 			End If
 
+			Dim removeMessage = String.Empty
+
 			' Remove invalid detail
 			Dim detailsToRemove = New List(Of EditableBillDetailModel)
 			For Each detail As EditableBillDetailModel In Bill.Details
@@ -214,7 +216,16 @@ Namespace Bills.ViewModels
 					detailsToRemove.Add( detail )
 					Continue For
 				End If
+
+				If detail.Lease.IsPaid
+					detailsToRemove.Add( detail )
+					Continue For
+				End If
 			Next
+
+			If detailsToRemove.Count > 0
+				removeMessage += "Đã xóa một số phòng không hợp lệ (đã thanh toán,.. ). "
+			End If
 			Bill.Details.RemoveRange( detailsToRemove )
 
 			' Remove duplicate detail
@@ -227,8 +238,10 @@ Namespace Bills.ViewModels
 			Next
 
 			If uniqueLeaseIds.Count < Bill.Details.Count
-				ShowStaticBottomNotification( StaticNotificationType.Information,
-				                              "Đã xóa các hóa đơn trùng, vui lòng kiểm tra lại trước khi lưu" )
+				removeMessage += "Đã xóa các hóa đơn trùng. "
+			End If
+
+			If uniqueLeaseIds.Count < Bill.Details.Count
 				Bill.Details.Clear()
 				For Each leaseId As String In uniqueLeaseIds
 					Dim lease = Leases.FirstOrDefault( Function( l ) l.Id = leaseId )
@@ -238,6 +251,11 @@ Namespace Bills.ViewModels
 					detail.Lease = lease
 					Bill.Details.Add( detail )
 				Next
+			End If
+
+			If Not String.IsNullOrEmpty( removeMessage )
+				ShowStaticBottomNotification( StaticNotificationType.Information,
+				                              $"{removeMessage}Vui lòng kiểm tra lại!" )
 				Return False
 			End If
 
