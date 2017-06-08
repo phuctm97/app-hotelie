@@ -89,8 +89,8 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bills\Commands\RemoveBill\IRemoveBillCommand.vb" />
-    <Compile Include="Bills\Commands\RemoveBill\RemoveBillCommand.vb" />
+    <Compile Include="Bills\Commands\IRemoveBillCommand.vb" />
+    <Compile Include="Bills\Commands\RemoveBillCommand.vb" />
     <Compile Include="Bills\Factories\CreateBillFactory.vb" />
     <Compile Include="Bills\Factories\ICreateBillFactory.vb" />
     <Compile Include="Bills\Models\BillDetailModel.vb" />

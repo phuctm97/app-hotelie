@@ -82,13 +82,6 @@ Namespace Leases.ViewModels
 			DisplayCode = 0
 		End Sub
 
-		Private Async Function InitAsync() As Task
-			Await ScreenLeasesList.InitAsync()
-			Await ScreenLeaseDetail.InitAsync()
-			Await ScreenAddLease.InitAsync()
-			DisplayCode = 0
-		End Function
-
 		' Navigations
 		Public Sub NavigateToScreenLeasesList()
 			DisplayCode = 0
