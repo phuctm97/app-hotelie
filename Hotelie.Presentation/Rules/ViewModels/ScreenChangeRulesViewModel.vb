@@ -36,8 +36,8 @@ Namespace Rules.ViewModels
         Private _isEdited As Boolean
         Private _originalRoomCapacity As Integer
         Private _originalExtraCoefficient As Double
-        Private ReadOnly _originalCustomerCategories As List(Of ICustomerCategoryModel)
-        Private ReadOnly _originalRoomCategories As List(Of IRoomCategoryModel)
+        Private ReadOnly _originalCustomerCategories As List(Of EditableCustomerCategoryModel)
+        Private ReadOnly _originalRoomCategories As List(Of EditableRoomCategoryModel)
 
         ' Bind models
         Public Property Rule As EditableRuleModel
@@ -66,8 +66,8 @@ Namespace Rules.ViewModels
             _createRoomCategoryFactory = createRoomCategoryFactory
             _createCustomerCategoryFactory = createCustomerCategoryFactory
 
-            _originalRoomCategories = New List(Of IRoomCategoryModel)()
-            _originalCustomerCategories = New List(Of ICustomerCategoryModel)()
+            _originalRoomCategories = New List(Of EditableRoomCategoryModel)()
+            _originalCustomerCategories = New List(Of EditableCustomerCategoryModel)()
 
             DisplayName = "Thay đổi quy định"
             Username = "<tên người dùng>"
