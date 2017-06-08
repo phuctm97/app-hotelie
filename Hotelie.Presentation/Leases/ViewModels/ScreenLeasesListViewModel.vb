@@ -8,6 +8,7 @@ Imports Hotelie.Presentation.Leases.Models
 
 Namespace Leases.ViewModels
 	Public Class ScreenLeasesListViewModel
+		Implements IChild(Of LeasesWorkspaceViewModel)
 		Implements INeedWindowModals
 		Implements ILeasesListPresenter
 		Implements IRoomPresenter
@@ -15,7 +16,21 @@ Namespace Leases.ViewModels
 		' Dependencies
 		Private ReadOnly _getAllLeasesQuery As IGetAllLeasesQuery
 
-		Public Sub New( getAllLeasesQuery As IGetAllLeasesQuery )
+		' Parent 
+		Public Property Parent As Object Implements IChild.Parent
+
+		Public Property ParentWorkspace As LeasesWorkspaceViewModel Implements IChild(Of LeasesWorkspaceViewModel).Parent
+			get
+				Return TryCast(Parent, LeasesWorkspaceViewModel)
+			End Get
+			Set
+				Parent = value
+			End Set
+		End Property
+
+		Public Sub New( workspace As LeasesWorkspaceViewModel,
+		                getAllLeasesQuery As IGetAllLeasesQuery )
+			ParentWorkspace = workspace
 			_getAllLeasesQuery = getAllLeasesQuery
 			TryCast(Me, IRoomPresenter).RegisterInventory()
 			TryCast(Me, ILeasesListPresenter).RegisterInventory()
@@ -45,6 +60,13 @@ Namespace Leases.ViewModels
 		' Bind models
 
 		Public ReadOnly Property Leases As IObservableCollection(Of ILeaseModel)
+
+		' Business actions
+		Public Sub DoLeaseAction( model As ILeaseModel )
+			If IsNothing( model ) Then Return
+
+			ParentWorkspace.ParentShell.NavigateToScreenAddBillWithLease( model.Id )
+		End Sub
 
 		' Infrastructure
 

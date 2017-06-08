@@ -105,9 +105,9 @@
                                                         Opacity="0.65" />
                                                     <!--Total expense-->
                                                     <TextBlock Margin="4 0 0 0"
-                                                        Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
-                                                        Text="{Binding TotalExpense, Mode=OneWay, Converter={StaticResource TotalExpenseDisplayConverter}}"
-                                                        Opacity="0.65" />
+                                                               Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
+                                                               Text="{Binding TotalExpense, Mode=OneWay, Converter={StaticResource TotalExpenseDisplayConverter}}"
+                                                               Opacity="0.65" />
                                                 </StackPanel>
 
                                                 <!--Room name-->
@@ -115,7 +115,8 @@
                                                         Foreground="{DynamicResource PrimaryHueMidBrush}"
                                                         HorizontalAlignment="Left" Height="Auto" Margin="-4 20 0 0"
                                                         Padding="8 4">
-                                                    <TextBlock Text="{Binding Path=Room.Name, Mode=OneWay}" FontSize="24" />
+                                                    <TextBlock Text="{Binding Path=Room.Name, Mode=OneWay}"
+                                                               FontSize="24" />
                                                 </Button>
                                             </StackPanel>
 
@@ -136,7 +137,8 @@
                                                 <StackPanel Margin="0 0 4 4" Grid.Row="0" Grid.Column="0"
                                                             Orientation="Horizontal">
                                                     <materialDesign:PackIcon Kind="HomeVariant" Margin="0 0 8 0" />
-                                                    <TextBlock Margin="0 0 16 0" Text="{Binding Path=Room.Category.Name, Mode=OneWay}"
+                                                    <TextBlock Margin="0 0 16 0"
+                                                               Text="{Binding Path=Room.Category.Name, Mode=OneWay}"
                                                                FontWeight="Light" />
                                                 </StackPanel>
 
@@ -145,7 +147,8 @@
                                                             Orientation="Horizontal">
                                                     <materialDesign:PackIcon Kind="AccountMultiple"
                                                                              Margin="0 0 8 0" />
-                                                    <TextBlock Text="{Binding Path=Details.Count, Mode=OneWay}" FontWeight="Light" />
+                                                    <TextBlock Text="{Binding Path=Details.Count, Mode=OneWay}"
+                                                               FontWeight="Light" />
                                                     <TextBlock Text=" người" FontWeight="Light" />
                                                 </StackPanel>
 
@@ -226,7 +229,15 @@
                                                     HorizontalAlignment="Left"
                                                     Margin="15 4 4 8"
                                                     Style="{DynamicResource MaterialDesignFlatAccentButton}"
-                                                    Content="THANH TOÁN" />
+                                                    Content="THANH TOÁN">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="Click">
+                                                        <cal:ActionMessage MethodName="DoLeaseAction">
+                                                            <cal:Parameter Value="{Binding}" />
+                                                        </cal:ActionMessage>
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </Button>
                                         </DockPanel>
                                     </Grid>
                                 </materialDesign:Card>

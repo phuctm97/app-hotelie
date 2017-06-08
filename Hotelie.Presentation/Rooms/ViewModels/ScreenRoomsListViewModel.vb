@@ -71,7 +71,7 @@ Namespace Rooms.ViewModels
 			AddHandler FilterRoomModel.PropertyChanged, AddressOf OnFilterRoomModelUpdated
 
 			SortRoomModel = New SortRoomModel()
-			SortRoomModel.SortingCode = -1
+			SortRoomModel.SortingCode = - 1
 			AddHandler SortRoomModel.PropertyChanged, AddressOf OnSortRoomModelUpdated
 		End Sub
 
@@ -142,6 +142,18 @@ Namespace Rooms.ViewModels
 			States.Clear()
 			States.AddRange( {0, 1} )
 			States.Add( 2 ) 'filter all
+		End Sub
+
+		' Business Actions
+		Public Sub DoRoomAction( model As IRoomModel )
+			If IsNothing(model) Then Return
+
+			Select Case model.State
+				Case 0
+					ParentWorkspace.ParentShell.NavigateToScreenAddLease( model.Id )
+				Case 1
+					ParentWorkspace.ParentShell.NavigateToScreenAddBillWithRoom( model.Id )
+			End Select
 		End Sub
 
 		' Filtering

@@ -42,7 +42,9 @@ Namespace Start.WorkspaceShell.ViewModels
 
 			' load workspace
 			WorkspaceRooms = IoC.Get(Of RoomsWorkspaceViewModel)
+			WorkspaceRooms.ParentShell = Me
 			WorkspaceLeases = IoC.Get(Of LeasesWorkspaceViewModel)
+			WorkspaceLeases.ParentShell = Me
 			WorkspaceBills = IoC.Get(Of BillsWorkspaceViewModel)
 			Workspaces = New BindableCollection(Of IAppScreen) From {WorkspaceRooms, WorkspaceLeases, WorkspaceBills}
 
@@ -142,6 +144,16 @@ Namespace Start.WorkspaceShell.ViewModels
 		Public Sub NavigateToScreenAddLease( roomId As String )
 			DisplayWorkspaceCode = 1
 			WorkspaceLeases.NavigateToScreenAddLease( roomId )
+		End Sub
+
+		Public Sub NavigateToScreenAddBillWithRoom( roomId As String )
+			DisplayWorkspaceCode = 2
+			WorkspaceBills.NavigateToScreenAddBillWithRoom( roomId )
+		End Sub
+
+		Public Sub NavigateToScreenAddBillWithLease( leaseId As String )
+			DisplayWorkspaceCode = 2
+			WorkspaceBills.NavigateToScreenAddBillWithLease( leaseId )
 		End Sub
 
 		Public Sub NavigateToScreenChangeRules()

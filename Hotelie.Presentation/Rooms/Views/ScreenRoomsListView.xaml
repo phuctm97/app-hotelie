@@ -24,6 +24,7 @@
             <converters:RoomStateToBackColorConverter x:Key="RoomStateToBackColorConverter" />
             <converters:RoomStateToStringConverter x:Key="RoomStateToStringConverter" />
             <converters:RoomStateToVisibiltyConverter x:Key="RoomStateToVisibiltyConverter" />
+            <converters:RoomStateToActionNameConverter x:Key="RoomStateToActionNameConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -269,12 +270,15 @@
                                                     HorizontalAlignment="Left"
                                                     Margin="15 4 4 8"
                                                     Style="{DynamicResource MaterialDesignFlatAccentButton}"
-                                                    Visibility="{Binding State, Converter={StaticResource RoomStateToVisibiltyConverter}}"
-                                                    Content="THUÊ">
+                                                    Content="{Binding Path=Model.State, Converter={StaticResource RoomStateToActionNameConverter}}"
+                                                    >
+                                                <Button.Foreground>
+                                                    <SolidColorBrush Color="{Binding Path=Model.State, Converter={StaticResource RoomStateToBackColorConverter}}" />
+                                                </Button.Foreground>
                                                 <i:Interaction.Triggers>
                                                     <i:EventTrigger EventName="Click">
-                                                        <cal:ActionMessage MethodName="NavigateToScreenAddLease">
-                                                            <cal:Parameter Value="{Binding Path=Model.Id}" />
+                                                        <cal:ActionMessage MethodName="DoRoomAction">
+                                                            <cal:Parameter Value="{Binding Path=Model}" />
                                                         </cal:ActionMessage>
                                                     </i:EventTrigger>
                                                 </i:Interaction.Triggers>

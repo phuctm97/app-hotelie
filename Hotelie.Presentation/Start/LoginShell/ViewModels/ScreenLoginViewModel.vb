@@ -24,8 +24,8 @@ Namespace Start.LoginShell.ViewModels
 		End Sub
 
 		Public Sub Login( username As String,
-		                         password As String,
-		                         rememberAccount As Boolean )
+		                  password As String,
+		                  rememberAccount As Boolean )
 			If Not ValidateAccount( username, password ) Then Return
 
 			ActualLoginAsync( username, password, rememberAccount )
@@ -112,8 +112,12 @@ Namespace Start.LoginShell.ViewModels
 			If rememberAccount
 				My.Settings.SavedAccount = username
 				My.Settings.SavedPassword = password
-				My.Settings.Save()
+			Else
+				My.Settings.SavedAccount = String.Empty
+				My.Settings.SavedPassword = String.Empty
 			End If
+
+			My.Settings.Save()
 		End Sub
 
 		Private Sub OnLoginFail( err As String )

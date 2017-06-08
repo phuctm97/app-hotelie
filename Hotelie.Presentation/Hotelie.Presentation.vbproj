@@ -195,6 +195,7 @@
       <DependentUpon>ScreenLeasesListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Rooms\Converters\RoomNameWhenEmptyConverter.vb" />
+    <Compile Include="Rooms\Converters\RoomStateToActionNameConverter.vb" />
     <Compile Include="Rooms\Converters\RoomStateToBackColorConverter.vb" />
     <Compile Include="Rooms\Converters\RoomStateToIconKindConverter.vb" />
     <Compile Include="Rooms\Converters\RoomStateToStringConverter.vb" />

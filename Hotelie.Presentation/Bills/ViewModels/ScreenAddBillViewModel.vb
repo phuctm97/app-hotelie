@@ -101,6 +101,7 @@ Namespace Bills.ViewModels
 		Public Sub InsertRoomId( id As String )
 			Dim room = Rooms.FirstOrDefault( Function( r ) r.Id = id )
 			If IsNothing( room ) Then Return
+			If Bill.Details.Any( Function( d ) d.Room.Id = room.Id ) Then Return
 
 			Dim detail = New EditableBillDetailModel
 			detail.Room = room
@@ -111,6 +112,7 @@ Namespace Bills.ViewModels
 		Public Sub InsertLeaseId( id As String )
 			Dim lease = Leases.FirstOrDefault( Function( l ) l.Id = id )
 			If IsNothing( lease ) Then Return
+			If Bill.Details.Any( Function( d ) d.Lease.Id = lease.Id ) Then Return
 
 			Dim detail = New EditableBillDetailModel
 			detail.Lease = lease
