@@ -26,12 +26,12 @@ Namespace Leases.Models
 			Dim text = AnyText.ToLower()
 
 			If String.IsNullOrWhiteSpace( text ) Then Return True
-			If lease.Id.ToLower().Contains( text ) Then Return True
+			If lease.IdEx.ToLower().Contains( text ) Then Return True
 			If lease.Room.Name.ToLower().Contains( text ) Then Return True
 
 			Dim expense As Decimal = - 1
 			If Decimal.TryParse( text, expense )
-				Return lease.ToString >= expense
+				Return lease.TotalExpense >= expense
 			End If
 
 			Dim checkinDate As Date = Today
