@@ -103,6 +103,7 @@ Namespace Bills.Factories
                     billDetail.ExtraCharge = extraPrice
                     billDetail.TotalExpense = extraPrice + expense
                     newBill.Details.Add(billDetail)
+                    lease.Room.State = 0
                     lease.Paid = 1
                 Next
 
@@ -195,6 +196,7 @@ Namespace Bills.Factories
                     billDetail.ExtraCharge = extraPrice
                     billDetail.TotalExpense = extraPrice + expense
                     newBill.Details.Add(billDetail)
+                    lease.Room.State = 0
                     lease.Paid = 1
                 Next
 

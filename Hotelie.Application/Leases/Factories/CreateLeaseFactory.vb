@@ -107,6 +107,13 @@ Namespace Leases.Factories
                                                  .LicenseId = detailModel.CustomerLicenseId})
                 Next
 
+                ' init lease coefficient
+                Dim coeff = 0
+                For Each leaseDetail As LeaseDetail In newLease.LeaseDetails
+                    If coeff<leaseDetail.CustomerCategory.Coefficient Then coeff = leaseDetail.CustomerCategory.Coefficient
+                Next
+                newLease.CustomerCoefficient = coeff
+
                 ' add new lease to database
                 _leaseRepository.Add(newLease)
                 _unitOfWork.Commit()
@@ -203,6 +210,13 @@ Namespace Leases.Factories
                                                  .CustomerName = detailModel.CustomerName,
                                                  .LicenseId = detailModel.CustomerLicenseId})
                 Next
+
+                ' init lease coefficient
+                Dim coeff = 0
+                For Each leaseDetail As LeaseDetail In newLease.LeaseDetails
+                    If coeff<leaseDetail.CustomerCategory.Coefficient Then coeff = leaseDetail.CustomerCategory.Coefficient
+                Next
+                newLease.CustomerCoefficient = coeff
 
                 ' add new lease to database
                 _leaseRepository.Add(newLease)
