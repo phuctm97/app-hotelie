@@ -195,6 +195,13 @@
     <Compile Include="Leases\Views\ScreenLeasesListView.xaml.vb">
       <DependentUpon>ScreenLeasesListView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Reports\Models\FigureModel.vb" />
+    <Compile Include="Reports\Models\ReportsModel.vb" />
+    <Compile Include="Reports\Models\RevenueModel.vb" />
+    <Compile Include="Reports\ViewModels\ReportWorkspaceViewModel.vb" />
+    <Compile Include="Reports\Views\ReportsWorkspaceView.xaml.vb">
+      <DependentUpon>ReportsWorkspaceView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Rooms\Converters\RoomNameWhenEmptyConverter.vb" />
     <Compile Include="Rooms\Converters\RoomStateToActionNameConverter.vb" />
     <Compile Include="Rooms\Converters\RoomStateToBackColorConverter.vb" />
@@ -363,6 +370,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Reports\Views\ReportsWorkspaceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Rooms\Views\ScreenAddRoomView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -431,7 +442,6 @@
     <Resource Include="Resources\Icons\icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Reports\" />
     <Folder Include="Users\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
