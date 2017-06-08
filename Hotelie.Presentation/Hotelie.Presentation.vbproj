@@ -160,6 +160,7 @@
     <Compile Include="Common\Converters\DecimalToCurrencyStringConverter.vb" />
     <Compile Include="Common\Converters\DecimalToStringConverter.vb" />
     <Compile Include="Common\Converters\DoubleToStringConverter.vb" />
+    <Compile Include="Common\Converters\IntegerToStringConverter.vb" />
     <Compile Include="Common\Converters\StringToUpperConverter.vb" />
     <Compile Include="Common\IAppScreen.vb" />
     <Compile Include="Common\IAppScreenHasSaving.vb" />
@@ -218,9 +219,9 @@
     <Compile Include="Rooms\Views\RoomsWorkspaceView.xaml.vb">
       <DependentUpon>RoomsWorkspaceView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Rules\Models\CustomerCategoryModel.vb" />
-    <Compile Include="Rules\Models\RoomCategoryModel.vb" />
-    <Compile Include="Rules\Models\RuleModel.vb" />
+    <Compile Include="Rules\Models\EditableCustomerCategoryModel.vb" />
+    <Compile Include="Rules\Models\EditableRoomCategoryModel.vb" />
+    <Compile Include="Rules\Models\EditableRuleModel.vb" />
     <Compile Include="Rules\ViewModel\ScreenChangeRulesViewModel.vb" />
     <Compile Include="Rules\Views\ScreenChangeRulesView.xaml.vb">
       <DependentUpon>ScreenChangeRulesView.xaml</DependentUpon>

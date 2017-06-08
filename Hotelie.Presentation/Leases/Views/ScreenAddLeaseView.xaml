@@ -98,7 +98,7 @@
                         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
                                    FontSize="15"
                                    Opacity="0.9"
-                                   Text="{Binding CheckinDate, Mode=OneWay Converter={StaticResource DateTimeToShortDateStringConverter}}" />
+                                   Text="{Binding CheckinDate, Mode=OneWay, Converter={StaticResource DateTimeToShortDateStringConverter}}" />
                     </StackPanel>
 
                 </DockPanel>

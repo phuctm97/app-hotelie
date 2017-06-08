@@ -2,12 +2,12 @@
 
 Namespace Rules.Views
 	Public Class ScreenChangeRulesView
-		Private Sub OnNumericTextboxPreviewTextInput( sender As Object,
+		Private Sub OnIntegerTextboxPreviewTextInput( sender As Object,
 		                                              e As TextCompositionEventArgs )
 			e.Handled = Not IsNumericString( e.Text )
 		End Sub
 
-		Private Sub OnNumericTextBoxLostFocus( sender As Object,
+		Private Sub OnIntegerTextBoxLostFocus( sender As Object,
 		                                       e As RoutedEventArgs )
 			Dim textBox = CType(sender, TextBox)
 			If String.IsNullOrWhiteSpace( textBox.Text ) Then _

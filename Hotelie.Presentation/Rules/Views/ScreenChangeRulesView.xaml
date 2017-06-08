@@ -16,6 +16,7 @@
         <ResourceDictionary>
             <commonConverters:StringToUpperConverter x:Key="StringToUpperConverter" />
             <commonConverters:DoubleToStringConverter x:Key="DoubleToStringConverter" />
+            <commonConverters:IntegerToStringConverter x:Key="IntegerToStringConverter" />
             <commonConverters:DecimalToCurrencyStringConverter x:Key="DecimalToCurrencyStringConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
@@ -99,10 +100,10 @@
                                FontSize="20" Margin="0 0 0 4" />
                     <!--main-->
                     <TextBox Margin="8 0 8 4" HorizontalAlignment="Left"
-                             Text="{Binding Path=Rule.RoomCapacity, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" FontWeight="Medium"
+                             Text="{Binding Path=Rule.RoomCapacity, Mode=TwoWay, Converter={StaticResource IntegerToStringConverter}, UpdateSourceTrigger=LostFocus}" FontWeight="Medium"
                              FontSize="28"
-                             PreviewTextInput="OnNumericTextboxPreviewTextInput"
-                             LostFocus="OnNumericTextBoxLostFocus" />
+                             PreviewTextInput="OnIntegerTextboxPreviewTextInput"
+                             LostFocus="OnIntegerTextBoxLostFocus" />
 
                     <TextBlock Text="khách hàng." IsEnabled="False"
                                VerticalAlignment="Center"
@@ -127,9 +128,9 @@
 
                     <!--main-->
                     <TextBox Margin="8 0 8 4" HorizontalAlignment="Left"
-                             Text="{Binding Path=Rule.ExtraCoefficient, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" FontWeight="Medium"
-                             FontSize="28" PreviewTextInput="OnNumericTextboxPreviewTextInput"
-                             LostFocus="OnNumericTextBoxLostFocus" />
+                             Text="{Binding Path=Rule.ExtraCoefficient, Mode=TwoWay, Converter={StaticResource DoubleToStringConverter}, UpdateSourceTrigger=LostFocus}" FontWeight="Medium"
+                             FontSize="28" PreviewTextInput="OnIntegerTextboxPreviewTextInput"
+                             LostFocus="OnIntegerTextBoxLostFocus" />
 
                     <TextBlock Text="%." IsEnabled="False"
                                VerticalAlignment="Center"

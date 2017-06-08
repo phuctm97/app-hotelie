@@ -1,21 +1,21 @@
 ﻿Imports Caliburn.Micro
 
 Namespace Rules.Models
-	Public Class RoomCategoryModel
+	Public Class EditableCustomerCategoryModel
 		Inherits PropertyChangedBase
 
 		Private _id As String
 		Private _name As String
-		Private _unitPrice As Decimal
+		Private _coefficient As Double
 
 		Public Property Id As String
 			Get
 				Return _id
 			End Get
 			Set
-				If IsNothing(Value) OrElse Equals(Value, _id) Then Return
+				If IsNothing( Value ) OrElse Equals( Value, _id ) Then Return
 				_id = value
-				NotifyOfPropertyChange(Function() Id)
+				NotifyOfPropertyChange( Function() Id )
 			End Set
 		End Property
 
@@ -30,21 +30,21 @@ Namespace Rules.Models
 			End Set
 		End Property
 
-		Public Property UnitPrice As Decimal
+		Public Property Coefficient As Double
 			Get
-				Return _unitPrice
+				Return _coefficient
 			End Get
 			Set
-				If IsNothing( Value ) OrElse Equals( Value, _unitPrice ) Then Return
-				_unitPrice = value
-				NotifyOfPropertyChange( Function() UnitPrice )
+				If IsNothing( Value ) OrElse Equals( Value, _coefficient ) Then Return
+				_coefficient = value
+				NotifyOfPropertyChange( Function() Coefficient )
 			End Set
 		End Property
 
 		Sub New()
 			_id = String.Empty
 			_name = String.Empty
-			_unitPrice = 0
+			_coefficient = 0
 		End Sub
 	End Class
 End Namespace
