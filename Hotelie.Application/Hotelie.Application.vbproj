@@ -153,6 +153,12 @@
     <Compile Include="Parameters\Models\ParameterModel.vb" />
     <Compile Include="Parameters\Queries\GetParametersQuery.vb" />
     <Compile Include="Parameters\Queries\IGetParametersQuery.vb" />
+    <Compile Include="Reports\GetRoomCategoriesProfit.vb" />
+    <Compile Include="Reports\GetRoomUsedDaysReport.vb" />
+    <Compile Include="Reports\IGetRoomCategoriesProfit.vb" />
+    <Compile Include="Reports\IGetRoomUsedDaysReport.vb" />
+    <Compile Include="Reports\RoomUsedReportModel.vb" />
+    <Compile Include="Reports\ProfitReportModel.vb" />
     <Compile Include="Rooms\Commands\IRemoveRoomCategoryCommand.vb" />
     <Compile Include="Rooms\Commands\IRemoveRoomCommand.vb" />
     <Compile Include="Rooms\Commands\IUpdateRoomCategoryCommand.vb" />
@@ -191,6 +197,7 @@
     <Compile Include="Services\Persistence\IRoomRepository.vb" />
     <Compile Include="Services\Persistence\IUnitOfWork.vb" />
     <Compile Include="Services\Persistence\IUserRepository.vb" />
+    <Compile Include="Users\IUserModel.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

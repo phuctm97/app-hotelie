@@ -62,6 +62,7 @@
                                Margin="16 0 0 0"
                                FontSize="36" FontWeight="Light"
                                Text="HÓA ĐƠN THANH TOÁN" />
+                    
 
                     <!--Save button-->
                     <Button DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
@@ -70,6 +71,14 @@
                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                             FontSize="18"
                             Content="LƯU"
+                            cal:Message.Attach="SaveAsync" />
+
+                    <Button DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
+                            Margin="8 0 16 0" Padding="8" Height="Auto"
+                            Style="{DynamicResource MaterialDesignToolButton}"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            FontSize="18"
+                            Content="XUẤT HÓA ĐƠN"
                             cal:Message.Attach="SaveAsync" />
                 </DockPanel>
 
