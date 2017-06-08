@@ -68,29 +68,21 @@ Namespace Leases.Models
 
 		Public ReadOnly Property ExtraCharge As Decimal Implements ILeaseModel.ExtraCharge
 			Get
-				Dim numberOfDays = Today.Subtract( CheckinDate ).TotalDays
+				If Details.Count < 3 Then Return 0
+				Dim numberOfDays = CType(Today.Subtract( CheckinDate ).TotalDays, Integer)
+				If numberOfDays = 0 Then numberOfDays = 1
 				Dim extraCharges = numberOfDays * RoomUnitPrice * ExtraCoefficient
-				Return extraCharge
+				Return extraCharges
 			End Get
 		End Property
 
-		Public ReadOnly Property ExtraCharge As Decimal
-        Get
-                If Details.Count <3 Then Return 0
-                Dim numberOfDays =  CType(Today.Subtract(CheckinDate).TotalDays, Integer)
-                If numberOfDays = 0 Then numberOfDays = 1
-                Dim extraCharges = numberOfDays*RoomUnitPrice*ExtraCoefficient
-                Return extraCharges
-        End Get
-        End Property
-
-		Public ReadOnly Property TotalExpense As Decimal
-		    Get
-		        Dim numberOfDays = CType(Today.Subtract(CheckinDate).TotalDays, Integer)
-                If numberOfDays = 0 Then numberOfDays = 1
-		        Dim expense = numberOfDays*RoomUnitPrice*(1+CustomerCoefficient)
-		        Return expense + ExtraCharge
-		    End Get
+		Public ReadOnly Property TotalExpense As Decimal Implements ILeaseModel.TotalExpense
+			Get
+				Dim numberOfDays = CType(Today.Subtract( CheckinDate ).TotalDays, Integer)
+				If numberOfDays = 0 Then numberOfDays = 1
+				Dim expense = numberOfDays * RoomUnitPrice * (1 + CustomerCoefficient)
+				Return expense + ExtraCharge
+			End Get
 		End Property
 
 		Public ReadOnly Property Details As List(Of ILeaseDetailModel) Implements ILeaseModel.Details
