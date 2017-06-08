@@ -19,5 +19,9 @@
 		ReadOnly Property CustomerCoefficient As Double
 
 		ReadOnly Property Details As List(Of ILeaseDetailModel)
+
+        ReadOnly Property ExtraCharge As Decimal
+
+        ReadOnly Property TotalExpense As Decimal
 	End Interface
 End Namespace
