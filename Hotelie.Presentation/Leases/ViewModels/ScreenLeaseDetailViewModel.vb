@@ -487,8 +487,9 @@ Namespace Leases.ViewModels
 		End Function
 
 		Private Async Function OnSaveSuccessAsync() As Task
+			Dim roomId = Lease.Room.Id
 			Await _inventory.OnLeaseUpdatedAsync( Lease.Id )
-			Await _inventory.OnRoomUpdatedAsync( Lease.Room.Id )
+			Await _inventory.OnRoomUpdatedAsync( roomId )
 			Await ActualExitAsync()
 		End Function
 
@@ -533,8 +534,6 @@ Namespace Leases.ViewModels
 
 			Dim room = Rooms.FirstOrDefault( Function( r ) r.Id = model.Id )
 			If room IsNot Nothing
-				ShowStaticBottomNotification( Start.MainWindow.Models.StaticNotificationType.Warning,
-				                              "Tìm thấy phòng cùng id trong danh sách" )
 				Rooms( Rooms.IndexOf( room ) ) = model
 				If Lease.Room?.Id = model.Id Then Lease.Room = model
 			Else
@@ -547,8 +546,6 @@ Namespace Leases.ViewModels
 
 			Dim roomToUpdate = Rooms.FirstOrDefault( Function( r ) r.Id = model.Id )
 			If IsNothing( roomToUpdate )
-				ShowStaticBottomNotification( StaticNotificationType.Warning,
-				                              "Không tìm thấy phòng trong danh sách để cập nhật" )
 				Rooms.Add( model )
 			Else
 				Rooms( Rooms.IndexOf( roomToUpdate ) ) = model
@@ -570,8 +567,6 @@ Namespace Leases.ViewModels
 			If Not String.Equals( Lease.Id, model.Id ) Then Return
 
 			If model.IsPaid
-				ShowStaticBottomNotification( StaticNotificationType.Warning,
-				                              $"Phiếu thuê phòng {model.IdEx} vừa được thanh toán. Thay đổi bị hủy" )
 				ActualExitAsync()
 			End If
 		End Sub

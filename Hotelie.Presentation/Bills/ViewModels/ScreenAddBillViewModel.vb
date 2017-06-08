@@ -290,19 +290,29 @@ Namespace Bills.ViewModels
 		End Function
 
 		Private Async Function OnSaveSuccessAsync( newId As String ) As Task
-			Await _inventory.OnBillAddedAsync( newId )
+			Dim leaseIds = New List(Of String)
+			Dim roomIds = New List(Of String)
 
 			If Bill.Details IsNot Nothing
 				For Each detail As EditableBillDetailModel In Bill.Details
 					If IsNothing( detail ) Then Continue For
+
 					If detail.Lease IsNot Nothing AndAlso Not String.IsNullOrEmpty( detail.Lease.Id )
-						Await _inventory.OnLeaseUpdatedAsync( detail.Lease.Id )
+						leaseIds.Add( detail.Lease.Id )
 					End If
 					If detail.Room IsNot Nothing AndAlso Not String.IsNullOrEmpty( detail.Room.Id )
-						Await _inventory.OnRoomUpdatedAsync( detail.Room.Id )
+						roomIds.Add( detail.Room.Id )
 					End If
 				Next
 			End If
+
+			Await _inventory.OnBillAddedAsync( newId )
+			For Each leaseId As String In leaseIds
+				Await _inventory.OnLeaseUpdatedAsync( leaseId )
+			Next
+			For Each roomId As String In roomIds
+				Await _inventory.OnRoomUpdatedAsync( roomId )
+			Next
 
 			Await ActualExitAsync()
 		End Function
@@ -318,9 +328,7 @@ Namespace Bills.ViewModels
 
 			Dim lease = Leases.FirstOrDefault( Function( l ) l.Id = model.Id )
 			If lease IsNot Nothing
-				ShowStaticBottomNotification( Start.MainWindow.Models.StaticNotificationType.Warning,
-				                              $"Tìm thấy phiếu thuê phòng cùng mã {model.IdEx} trong danh sách" )
-				Leases( Leases.IndexOf( lease ) ) = model
+					Leases( Leases.IndexOf( lease ) ) = model
 				if Bill.Details IsNot Nothing
 					For Each detail As EditableBillDetailModel In Bill.Details
 						If detail.Lease?.Id = model.Id Then detail.Lease = model
@@ -337,8 +345,6 @@ Namespace Bills.ViewModels
 			If Not model.IsPaid
 				Dim leaseToUpdate = Leases.FirstOrDefault( Function( l ) l.Id = model.Id )
 				If IsNothing( leaseToUpdate )
-					ShowStaticBottomNotification( StaticNotificationType.Warning,
-					                              $"Không tìm thấy phiếu thuê {model.IdEx} trong danh sách để cập nhật" )
 					Leases.Add( model )
 				Else
 					Leases( Leases.IndexOf( leaseToUpdate ) ) = model
@@ -380,8 +386,6 @@ Namespace Bills.ViewModels
 
 			Dim room = Rooms.FirstOrDefault( Function( r ) r.Id = model.Id )
 			If room IsNot Nothing
-				ShowStaticBottomNotification( Start.MainWindow.Models.StaticNotificationType.Warning,
-				                              "Tìm thấy phòng cùng id trong danh sách" )
 				Rooms( Rooms.IndexOf( room ) ) = model
 				if Bill.Details IsNot Nothing
 					For Each detail As EditableBillDetailModel In Bill.Details
