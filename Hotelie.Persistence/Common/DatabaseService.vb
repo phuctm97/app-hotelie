@@ -49,30 +49,26 @@ Namespace Common
 
             Dim dbContext = New DatabaseContext(connectionString)
 
-            Try
-                If dbContext.Database.Exists() Then checker = 1
-            Catch
-            End Try
-
-            If checker = 1
-                Dim serverAdmin
-                Try
-                    serverAdmin = dbContext.Users.FirstOrDefault(Function(p)p.Id = "admin")
-                    If IsNothing(serverAdmin) Then
-                        dbContext.Dispose()
-                        Return 1
-                    End If
-                Catch
-                End Try
-            End If
 
             Try
                 dbContext.Database.Connection.Open()
                 dbContext.Database.Connection.Close()
                 checker = 2
             Catch
+                dbContext.Dispose()
                 Return checker
             End Try
+
+            Dim serverAdmin
+            Try
+                serverAdmin = dbContext.Users.FirstOrDefault(Function(p)p.Id = "admin")
+                If IsNothing(serverAdmin) Then
+                    dbContext.Dispose()
+                    Return 1
+                End If
+            Catch
+            End Try
+
             dbContext.Dispose()
             Return checker
         End Function
@@ -89,29 +85,24 @@ Namespace Common
             Dim dbContext = New DatabaseContext(connectionString)
 
             Try
-                If dbContext.Database.Exists() Then checker = 1
-            Catch
-            End Try
-
-            If checker = 1
-                Dim serverAdmin
-                Try
-                    serverAdmin = dbContext.Users.FirstOrDefaultAsync(Function(p)p.Id = "admin")
-                    If IsNothing(serverAdmin) Then
-                        dbContext.Dispose()
-                        Return 1
-                    End If
-                Catch
-                End Try
-            End If
-
-            Try
                 Await dbContext.Database.Connection.OpenAsync()
                 dbContext.Database.Connection.Close()
-                checker = 2
+                checker = 1
             Catch
+                dbContext.Dispose()
                 Return checker
             End Try
+
+            Dim serverAdmin
+            Try
+                serverAdmin = Await dbContext.Users.FirstOrDefaultAsync(Function(p)p.Id = "admin")
+                If IsNothing(serverAdmin) Then
+                    dbContext.Dispose()
+                    Return 2
+                End If
+            Catch
+            End Try
+
             dbContext.Dispose()
             Return checker
         End Function
