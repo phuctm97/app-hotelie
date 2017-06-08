@@ -11,14 +11,16 @@ Namespace Bills.Factories
         Private ReadOnly _billRepository As IBillRepository
         Private ReadOnly _unitOfWork As IUnitOfWork
         Private ReadOnly _userRepository As IUserRepository
+        Private ReadOnly _leaseRepository As ILeaseRepository
 
-        Sub New(billRepository As IBillRepository, unitOfWork As IUnitOfWork, userRepository As IUserRepository)
+        Sub New(billRepository As IBillRepository, unitOfWork As IUnitOfWork, userRepository As IUserRepository, leaseRepository As ILeaseRepository)
             _billRepository = billRepository
             _unitOfWork = unitOfWork
             _userRepository = userRepository
+            _leaseRepository = leaseRepository
         End Sub
 
-        Public Function Execute(payerName As String, payerAddress As String, leases As List(Of Lease),
+        Public Function Execute(payerName As String, payerAddress As String, leases As List(Of String),
                                 totalExpense As Decimal, userId As String) As String _
             Implements ICreateBillFactory.Execute
             Try
@@ -89,8 +91,9 @@ Namespace Bills.Factories
                 Next
 
                 Dim j = - 1
-                For Each lease As Lease In leases
+                For Each leaseString As String In leases
                     j += 1
+                    Dim lease = _leaseRepository.GetOne(leaseString)
                     Dim billDetail = New BillDetail() _
                             With {.Id = idList(j),.CheckinDate=lease.CheckinDate,.Lease = lease}
                     Dim numberOfDays = DateTime.Now().Subtract(lease.CheckinDate).TotalDays()
@@ -111,7 +114,7 @@ Namespace Bills.Factories
             End Try
         End Function
 
-        Public Async Function ExecuteAsync(payerName As String, payerAddress As String, leases As List(Of Lease),
+        Public Async Function ExecuteAsync(payerName As String, payerAddress As String, leases As List(Of String),
                                            totalExpense As Decimal, userId As String) As Task(Of String) _
             Implements ICreateBillFactory.ExecuteAsync
             Try
@@ -180,8 +183,9 @@ Namespace Bills.Factories
                 Next
 
                 Dim j = - 1
-                For Each lease As Lease In leases
+                For Each leaseString As String In leases
                     j += 1
+                    Dim lease = Await _leaseRepository.GetOneAsync(leaseString)
                     Dim billDetail = New BillDetail() _
                             With {.Id = idList(j),.CheckinDate=lease.CheckinDate,.Lease = lease}
                     Dim numberOfDays = DateTime.Now().Subtract(lease.CheckinDate).TotalDays()
