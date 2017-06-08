@@ -56,6 +56,17 @@
                 <ContentControl cal:View.Model="{Binding WorkspaceBills}" />
             </materialDesign:TransitionerSlide>
 
+
+            <materialDesign:TransitionerSlide>
+                <materialDesign:TransitionerSlide.BackwardWipe>
+                    <materialDesign:CircleWipe />
+                </materialDesign:TransitionerSlide.BackwardWipe>
+                <materialDesign:TransitionerSlide.ForwardWipe>
+                    <materialDesign:CircleWipe />
+                </materialDesign:TransitionerSlide.ForwardWipe>
+                <ContentControl cal:View.Model="{Binding WorkspaceReports}" />
+            </materialDesign:TransitionerSlide>
+
             <materialDesign:TransitionerSlide>
                 <materialDesign:TransitionerSlide.BackwardWipe>
                     <materialDesign:CircleWipe />

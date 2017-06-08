@@ -4,6 +4,7 @@ Imports Hotelie.Presentation.Bills.ViewModels
 Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
 Imports Hotelie.Presentation.Leases.ViewModels
+Imports Hotelie.Presentation.Reports.ViewModels
 Imports Hotelie.Presentation.Rooms.ViewModels
 Imports Hotelie.Presentation.Rules.ViewModels
 Imports MaterialDesignThemes.Wpf
@@ -46,12 +47,13 @@ Namespace Start.WorkspaceShell.ViewModels
 			WorkspaceLeases = IoC.Get(Of LeasesWorkspaceViewModel)
 			WorkspaceLeases.ParentShell = Me
 			WorkspaceBills = IoC.Get(Of BillsWorkspaceViewModel)
-			Workspaces = New BindableCollection(Of IAppScreen) From {WorkspaceRooms, WorkspaceLeases, WorkspaceBills}
+			WorkspaceReports = IoC.Get(Of ReportsWorkspaceViewModel)
+			Workspaces = New BindableCollection(Of IAppScreen) From {WorkspaceRooms, WorkspaceLeases, WorkspaceBills, WorkspaceReports}
 
 			' load other screens
 			ScreenChangeRules = IoC.Get(Of ScreenChangeRulesViewModel)
 			Screens = New BindableCollection(Of IAppScreen) From {
-				WorkspaceRooms, WorkspaceLeases, WorkspaceBills,
+				WorkspaceRooms, WorkspaceLeases, WorkspaceBills, WorkspaceReports,
 				ScreenChangeRules}
 
 			' subcribe exited event
@@ -71,6 +73,8 @@ Namespace Start.WorkspaceShell.ViewModels
 		Public ReadOnly Property WorkspaceLeases As LeasesWorkspaceViewModel
 
 		Public ReadOnly Property WorkspaceBills As BillsWorkspaceViewModel
+
+		Public ReadOnly Property WorkspaceReports As ReportsWorkspaceViewModel
 
 		Public ReadOnly Property Workspaces As IObservableCollection(Of IAppScreen)
 

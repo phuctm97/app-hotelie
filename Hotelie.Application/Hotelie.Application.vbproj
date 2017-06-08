@@ -157,8 +157,8 @@
     <Compile Include="Reports\GetRoomUsedDaysReport.vb" />
     <Compile Include="Reports\IGetRoomCategoriesProfit.vb" />
     <Compile Include="Reports\IGetRoomUsedDaysReport.vb" />
-    <Compile Include="Reports\RoomUsedReportModel.vb" />
     <Compile Include="Reports\ProfitReportModel.vb" />
+    <Compile Include="Reports\RoomUsedReportModel.vb" />
     <Compile Include="Rooms\Commands\IRemoveRoomCategoryCommand.vb" />
     <Compile Include="Rooms\Commands\IRemoveRoomCommand.vb" />
     <Compile Include="Rooms\Commands\IUpdateRoomCategoryCommand.vb" />
