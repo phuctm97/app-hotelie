@@ -284,7 +284,6 @@ Namespace Rules.ViewModels
 		End Sub
 
 		Private Function CanRemove() As Task
-			ShowloadigWindowModlas
 		End Function
 
 		Private Async Function UpdateParameters() As Task(Of Boolean)
