@@ -1,6 +1,6 @@
 ﻿Imports Hotelie.Domain.Users
 
-Namespace Users
+Namespace Users.UserModels
     Public Class UserModel
         Implements IUserModel
 
@@ -11,6 +11,12 @@ Namespace Users
             _entity = entity
             _permission = permission
         End Sub
+
+        Public ReadOnly Property UserName As String Implements IUserModel.UserName
+            Get
+                Return _entity.Id
+            End Get
+        End Property
 
         Public ReadOnly Property CouldConfigRoom As Boolean Implements IUserModel.CouldConfigRoom
             Get
@@ -54,5 +60,7 @@ Namespace Users
                 Return False
             End Get
         End Property
+
+        
     End Class
 End NameSpace

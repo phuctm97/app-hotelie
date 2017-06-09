@@ -1,6 +1,6 @@
-﻿Imports Hotelie.Domain.Users
+﻿Imports Hotelie.Application.Users.UserModels
 
-Namespace Users
+Namespace Users.Queries
     Public Interface IGetUserPermissions
         Function Execute(id As String) As IUserModel
         Function ExecuteAsync(id As String) As Task(Of IUserModel)

@@ -1,5 +1,6 @@
 ﻿Imports System.Data.Entity
 Imports Hotelie.Application.Services.Persistence
+Imports Hotelie.Application.Users.Queries
 
 Namespace Services.Authentication
     Public Class Authentication
@@ -10,6 +11,7 @@ Namespace Services.Authentication
         Public Const PasswordInvalidError As String = "Mật khẩu không chính xác."
 
         Private ReadOnly _userRepository As IUserRepository
+        Private ReadOnly _getUserPermissions As IGetUserPermissions
 
         Public Property LoggedAccount As Account Implements IAuthentication.LoggedAccount
 
@@ -44,8 +46,17 @@ Namespace Services.Authentication
                 Return errorLog
             End If
 
+            Dim account = New Account() With {.Username = username}
+            Dim userPermissions = _getUserPermissions.Execute(username)
+            account.CouldAddLease = userPermissions.CouldAddLease
+            account.CouldConfigRoom = userPermissions.CouldConfigRoom
+            account.CouldEditLease = userPermissions.CouldEditLease
+            account.CouldEditRules = userPermissions.CouldEditRule
+            account.CouldManageUsers = userPermissions.CouldManageUser
+            account.CouldRemoveLease = userPermissions.CouldRemoveLease
+            
             ' Logging in
-            LoggedAccount = New Account() With {.Username=username}
+            LoggedAccount = account
 
             Return errorLog
         End Function
@@ -57,9 +68,10 @@ Namespace Services.Authentication
             LoggedAccount = Nothing
         End Sub
 
-        Public Sub New(userRepository As IUserRepository)
+        Public Sub New(userRepository As IUserRepository, getUserPermissions As IGetUserPermissions)
             Logout()
             _userRepository = userRepository
+            _getUserPermissions = getUserPermissions
         End Sub
 
         Public Async Function TryLoginAsync(username As String, password As String) As Task(Of IEnumerable(Of String)) Implements IAuthentication.TryLoginAsync
@@ -84,8 +96,17 @@ Namespace Services.Authentication
                 Return errorLog
             End If
 
+            Dim account = New Account() With {.Username = username}
+            Dim userPermissions = Await _getUserPermissions.ExecuteAsync(username)
+            account.CouldAddLease = userPermissions.CouldAddLease
+            account.CouldConfigRoom = userPermissions.CouldConfigRoom
+            account.CouldEditLease = userPermissions.CouldEditLease
+            account.CouldEditRules = userPermissions.CouldEditRule
+            account.CouldManageUsers = userPermissions.CouldManageUser
+            account.CouldRemoveLease = userPermissions.CouldRemoveLease
+
             ' Logging in
-            LoggedAccount = New Account() With {.Username=username}
+            LoggedAccount = account
 
             Return errorLog
         End Function
