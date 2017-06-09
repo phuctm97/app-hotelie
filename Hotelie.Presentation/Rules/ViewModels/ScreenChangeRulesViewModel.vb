@@ -264,13 +264,13 @@ Namespace Rules.ViewModels
 		End Function
 
 		Public Overrides Async Function ActualSaveAsync() As Task
-			' try update parameters
-			'Dim err = Await _updateParametersCommand.ExecuteAsync( Rule.RoomCapacity, Rule.ExtraCoefficient )
+			'try update parameters
+			Dim err = Await _updateParametersCommand.ExecuteAsync( Rule.RoomCapacity, Rule.ExtraCoefficient )
 
-			'If Not String.IsNullOrEmpty( err )
-			'	ShowStaticBottomNotification( StaticNotificationType.Error, err )
-			'	Return
-			'End If
+			If Not String.IsNullOrEmpty( err )
+				ShowStaticBottomNotification( StaticNotificationType.Error, err )
+				Return
+			End If
 
 			Await ActualExitAsync()
 		End Function
