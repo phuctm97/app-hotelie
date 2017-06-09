@@ -2,6 +2,7 @@
 Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Domain.Leases
 Imports Hotelie.Domain.Rooms
+Imports Hotelie.Domain.Users
 
 Namespace Common
     Public Class DatabaseService
@@ -34,7 +35,7 @@ Namespace Common
                 Dim roomCategories = _context.RoomCategories.ToList()
                 Dim users = _context.Users.ToList()
                 Dim customerCategories = _context.CustomerCategories.ToList()
-
+                
                 For Each room As Room In rooms
                     room.State = 0
                 Next

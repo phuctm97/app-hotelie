@@ -112,6 +112,7 @@
     <Compile Include="Rooms\RoomCategoryConfiguration.vb" />
     <Compile Include="Rooms\RoomConfiguration.vb" />
     <Compile Include="Rooms\RoomRepository.vb" />
+    <Compile Include="Users\PermissionRepository.vb" />
     <Compile Include="Users\UserConfiguration.vb" />
     <Compile Include="Users\UserRepository.vb" />
   </ItemGroup>

@@ -193,10 +193,13 @@
     <Compile Include="Services\Persistence\IDatabaseService.vb" />
     <Compile Include="Services\Persistence\ILeaseRepository.vb" />
     <Compile Include="Services\Persistence\IParameterRepository.vb" />
+    <Compile Include="Services\Persistence\IPermissionRepository.vb" />
     <Compile Include="Services\Persistence\IRepository.vb" />
     <Compile Include="Services\Persistence\IRoomRepository.vb" />
     <Compile Include="Services\Persistence\IUnitOfWork.vb" />
     <Compile Include="Services\Persistence\IUserRepository.vb" />
+    <Compile Include="Users\GetUserPermissions.vb" />
+    <Compile Include="Users\IGetUserPermissions.vb" />
     <Compile Include="Users\IUserModel.vb" />
     <Compile Include="Users\UserModel.vb" />
   </ItemGroup>

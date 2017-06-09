@@ -43,8 +43,8 @@ Namespace Leases.Factories
 
             Dim roomCategory = New RoomCategory() With {.Id = "00001", .Name = "Annonymous", .Price = 200000}
             _databaseService.Context.Parameters.Add(New Parameter() _
-                                                       With {.Id="00001",.MaximumCustomer=4,.CustomerCoefficient=0.5,
-                                                       .ExtraCoefficient=0.25})
+                                                       With {.Id = "00001", .MaximumCustomer = 4, .CustomerCoefficient = 0.5,
+                                                       .ExtraCoefficient = 0.25})
             _roomRepository.AddRoomCategory(roomCategory)
             _databaseService.Context.SaveChanges()
 
@@ -77,19 +77,19 @@ Namespace Leases.Factories
             LeasesInitialize()
 
             ' input
-            Dim cusCate = New CustomerCategory() With {.Id = "CUS01", .Name = "Khach", .Coefficient =1}
+            Dim cusCate = New CustomerCategory() With {.Id = "CUS01", .Name = "Khach", .Coefficient = 1}
             _databaseService.Context.CustomerCategories.Add(cusCate)
             _databaseService.Context.SaveChanges()
 
             Dim leaseDetail1 = New CreateLeaseDetailModel() _
-                    With{.CustomerName="Cus 1", .CustomerAddress="adr 1",.CustomerCategoryId=cusCate.Id,
-                    .CustomerLicenseId="lsc id"}
+                    With {.CustomerName = "Cus 1", .CustomerAddress = "adr 1", .CustomerCategoryId = cusCate.Id,
+                    .CustomerLicenseId = "lsc id"}
             Dim leaseDetail2 = New CreateLeaseDetailModel() _
-                    With{.CustomerName="Cus 2", .CustomerAddress="adr 21",.CustomerCategoryId=cusCate.Id,
-                    .CustomerLicenseId="lsc id"}
+                    With {.CustomerName = "Cus 2", .CustomerAddress = "adr 21", .CustomerCategoryId = cusCate.Id,
+                    .CustomerLicenseId = "lsc id"}
             Dim leaseDetail3 = New CreateLeaseDetailModel() _
-                    With{.CustomerName="Cus 31", .CustomerAddress="adr 421",.CustomerCategoryId=cusCate.Id,
-                    .CustomerLicenseId="lsc id"}
+                    With {.CustomerName = "Cus 31", .CustomerAddress = "adr 421", .CustomerCategoryId = cusCate.Id,
+                    .CustomerLicenseId = "lsc id"}
             Dim details = New List(Of CreateLeaseDetailModel)
             details.Add(leaseDetail1)
             details.Add(leaseDetail2)
@@ -99,8 +99,8 @@ Namespace Leases.Factories
             Dim lease1 = _createLeaseFactory.Execute(_roomsList(0).Id, DateTime.Now(), DateTime.Now(), details)
 
             Dim leaseDetail4 = New CreateLeaseDetailModel() _
-                    With{.CustomerName="Cus 4 1", .CustomerAddress="adr 31",.CustomerCategoryId=cusCate.Id,
-                    .CustomerLicenseId="lsc id"}
+                    With {.CustomerName = "Cus 4 1", .CustomerAddress = "adr 31", .CustomerCategoryId = cusCate.Id,
+                    .CustomerLicenseId = "lsc id"}
             Dim k = _createLeaseDetailFactory.Execute(lease1, "NewCustomerFromFactory", "12345678", "Addressssssss",
                                                       "CUS01")
 
