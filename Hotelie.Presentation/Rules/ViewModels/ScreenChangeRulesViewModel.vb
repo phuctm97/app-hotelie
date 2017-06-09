@@ -1,4 +1,5 @@
 ﻿Imports System.Collections.Specialized
+Imports Caliburn.Micro
 Imports Hotelie.Application.Leases.Commands
 Imports Hotelie.Application.Leases.Factories
 Imports Hotelie.Application.Leases.Queries
@@ -12,12 +13,14 @@ Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
 Imports Hotelie.Presentation.Rules.Models
 Imports Hotelie.Presentation.Start.MainWindow.Models
+Imports Hotelie.Presentation.Start.WorkspaceShell.ViewModels
 Imports MaterialDesignThemes.Wpf
 
 Namespace Rules.ViewModels
 	Public Class ScreenChangeRulesViewModel
 		Inherits AppScreenHasSaving
 		Implements INeedWindowModals
+		Implements IChild(Of WorkspaceShellViewModel)
 
 		' Dependencies
 		Private ReadOnly _authentication As IAuthentication
@@ -38,6 +41,17 @@ Namespace Rules.ViewModels
 		Private _originalExtraCoefficient As Double
 		Private ReadOnly _originalCustomerCategories As List(Of EditableCustomerCategoryModel)
 		Private ReadOnly _originalRoomCategories As List(Of EditableRoomCategoryModel)
+
+		Public Property Parent As WorkspaceShellViewModel Implements IChild(Of WorkspaceShellViewModel).Parent
+
+		Private Property IChild_Parent As Object Implements IChild.Parent
+			Get
+				Return Parent
+			End Get
+			Set
+				Parent = Value
+			End Set
+		End Property
 
 		' Bind models
 		Public Property Rule As EditableRuleModel
@@ -194,7 +208,7 @@ Namespace Rules.ViewModels
 
 		' Save
 		Public Overrides Function CanSave() As Task(Of Boolean)
-			Return Task.Run(Function() ValidateSaving())
+			Return Task.Run( Function() ValidateSaving() )
 		End Function
 
 		Private Function ValidateSaving() As Boolean
@@ -243,7 +257,7 @@ Namespace Rules.ViewModels
 
 		Public Overrides Async Function ActualSaveAsync() As Task
 			ShowStaticWindowLoadingDialog()
-			
+
 			'try update parameters
 			If Not Await UpdateParameters()
 				CloseStaticWindowDialog()
@@ -259,9 +273,11 @@ Namespace Rules.ViewModels
 			Await UpdateRoomCategories( roomCategoriesToUpdate )
 			Await CreateRoomCategories( roomCategoriesToCreate )
 			If roomCategoriesToRemove.Count > 0
+				CloseStaticWindowDialog()
 				If Await ConfirmDeleteRoomCategories()
 					Await RemoveRoomCategores( roomCategoriesToRemove )
 				End If
+				ShowStaticWindowLoadingDialog()
 			End If
 
 			'split customer categories actions
@@ -273,9 +289,16 @@ Namespace Rules.ViewModels
 			Await UpdateCustomerCategories( customerCategoriesToUpdate )
 			Await CreateCustomerCategories( customerCategoriesToCreate )
 			If customerCategoriesToRemove.Count > 0
+				CloseStaticWindowDialog()
 				If Await ConfirmDeleteCustomerCategories()
 					Await RemoveCustomerCategories( customerCategoriesToRemove )
 				End If
+				ShowStaticWindowLoadingDialog()
+			End If
+
+			'reload workspaces
+			If Parent IsNot Nothing
+				Await Parent.ReloadAllWorkspaces()
 			End If
 
 			'exit

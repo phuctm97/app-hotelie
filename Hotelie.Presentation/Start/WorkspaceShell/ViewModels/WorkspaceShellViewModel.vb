@@ -66,6 +66,10 @@ Namespace Start.WorkspaceShell.ViewModels
 			DisplayWorkspaceCode = 0
 		End Sub
 
+		Public Async Function ReloadAllWorkspaces() As Task
+			Await Task.FromResult( True )
+		End Function
+
 		' Display
 		Public ReadOnly Property CommandsBar As IWindowCommandsBar Implements IShell.CommandsBar
 
