@@ -40,7 +40,7 @@ Namespace Start.LoginShell.ViewModels
 		End Sub
 
 		' Apply connection
-		Private Async Sub ApplyConnection( dataSource As String,
+		Public Async Sub ApplyConnection( dataSource As String,
 		                                   catalog As String )
 			'test connection before apply
 			ShowStaticWindowLoadingDialog()
