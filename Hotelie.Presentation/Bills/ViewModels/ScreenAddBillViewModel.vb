@@ -68,12 +68,12 @@ Namespace Bills.ViewModels
 		Public Shared ReadOnly Leases As IObservableCollection(Of ILeaseModel)
 
 		Public Sub Init()
-			Rooms.Clear()
-			Rooms.AddRange( _getAllRoomsQuery.Execute().Where( Function( r ) r.State = 1 ) )
+			'Rooms.Clear()
+			'Rooms.AddRange( _getAllRoomsQuery.Execute().Where( Function( r ) r.State = 1 ) )
 
-			Leases.Clear()
-			Leases.AddRange( _getAllLeasesQuery.Execute().Where( Function( l ) Not l.IsPaid ) )
-			InitValues()
+			'Leases.Clear()
+			'Leases.AddRange( _getAllLeasesQuery.Execute().Where( Function( l ) Not l.IsPaid ) )
+			'InitValues()
 		End Sub
 
 		Public Async Function InitAsync() As Task

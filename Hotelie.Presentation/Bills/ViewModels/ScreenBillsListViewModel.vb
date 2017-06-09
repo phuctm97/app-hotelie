@@ -27,11 +27,11 @@ Namespace Bills.ViewModels
 		End Sub
 
 		Public Sub Init()
-			Bills.Clear()
-			Bills.AddRange(
-				_getAllBillsQuery.Execute().
-				              OrderByDescending( Function( b ) b.CreateDate ).
-				              Take( MaxDisplayCapacity ) )
+			'Bills.Clear()
+			'Bills.AddRange(
+			'	_getAllBillsQuery.Execute().
+			'	              OrderByDescending( Function( b ) b.CreateDate ).
+			'	              Take( MaxDisplayCapacity ) )
 		End Sub
 
 		Public Async Function InitAsync() As Task

@@ -43,7 +43,7 @@ Namespace Leases.ViewModels
 		End Sub
 
 		Public Sub Init()
-			InitLeases()
+			'InitLeases()
 		End Sub
 
 		Private Sub InitLeases()

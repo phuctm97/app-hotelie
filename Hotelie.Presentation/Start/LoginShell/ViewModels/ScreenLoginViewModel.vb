@@ -111,7 +111,6 @@ Namespace Start.LoginShell.ViewModels
 		                            password As String,
 		                            rememberAccount As Boolean )
 			IoC.Get(Of IMainWindow).SwitchShell( "workspace-shell" )
-			IoC.Get(Of IMainWindow).WindowState = WindowState.Maximized
 
 			If rememberAccount
 				My.Settings.SavedAccount = username

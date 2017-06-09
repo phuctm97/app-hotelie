@@ -55,8 +55,8 @@ Namespace Rooms.ViewModels
 		End Sub
 
 		Public Sub Init()
-			InitRoomCategories()
-			InitValues()
+			'InitRoomCategories()
+			'InitValues()
 		End Sub
 
 		Private Sub InitRoomCategories()

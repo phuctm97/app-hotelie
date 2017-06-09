@@ -104,15 +104,15 @@ Namespace Rooms.ViewModels
 		End Sub
 
 		Public Sub Init()
-			InitRooms()
+			'InitRooms()
 
-			InitRoomCategories()
+			'InitRoomCategories()
 
-			InitRoomStates()
+			'InitRoomStates()
 
-			InitRoomUnitPrices()
+			'InitRoomUnitPrices()
 
-			RefreshRoomsListVisibility()
+			'RefreshRoomsListVisibility()
 		End Sub
 
 		Private Sub InitRooms()

@@ -118,14 +118,14 @@ Namespace Leases.ViewModels
 		End Sub
 
 		Public Sub Init()
-			Rooms.Clear()
-			Rooms.AddRange( _getAllRoomsQuery.Execute() )
+			'Rooms.Clear()
+			'Rooms.AddRange( _getAllRoomsQuery.Execute() )
 
-			CustomerCategories.Clear()
-			CustomerCategories.AddRange( _getAllCustomerCategoriesQuery.Execute() )
+			'CustomerCategories.Clear()
+			'CustomerCategories.AddRange( _getAllCustomerCategoriesQuery.Execute() )
 
-			_roomCapacity = _getParametersQuery.Execute().RoomCapacity
-			InitValues()
+			'_roomCapacity = _getParametersQuery.Execute().RoomCapacity
+			'InitValues()
 		End Sub
 
 		Public Async Function InitAsync() As Task
