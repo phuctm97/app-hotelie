@@ -26,6 +26,11 @@ Namespace Reports.Models
 			Set
 				If Equals( Value, _beginDate ) Then Return
 				_beginDate = value
+
+				If _endDate < _beginDate
+					_endDate = _beginDate.Add( TimeSpan.FromDays( 1 ) )
+					NotifyOfPropertyChange( Function() EndDate )
+				End If
 				NotifyOfPropertyChange( Function() BeginDate )
 			End Set
 		End Property
@@ -37,6 +42,11 @@ Namespace Reports.Models
 			Set
 				If Equals( Value, _endDate ) Then Return
 				_endDate = value
+
+				If _beginDate > _endDate
+					_beginDate = _endDate.Subtract( TimeSpan.FromDays( 1 ) )
+					NotifyOfPropertyChange( Function() BeginDate )
+				End If
 				NotifyOfPropertyChange( Function() EndDate )
 			End Set
 		End Property

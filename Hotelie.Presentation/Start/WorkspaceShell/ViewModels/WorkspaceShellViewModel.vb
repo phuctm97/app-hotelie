@@ -39,7 +39,7 @@ Namespace Start.WorkspaceShell.ViewModels
 			DisplayName = "Bàn làm việc"
 
 			' load command bar
-			CommandsBar = New WorkspaceShellCommandsBarViewModel( Me )
+			CommandsBar = New WorkspaceShellCommandsBarViewModel( Me, authentication )
 
 			' load workspace
 			WorkspaceRooms = IoC.Get(Of RoomsWorkspaceViewModel)
@@ -48,7 +48,8 @@ Namespace Start.WorkspaceShell.ViewModels
 			WorkspaceLeases.ParentShell = Me
 			WorkspaceBills = IoC.Get(Of BillsWorkspaceViewModel)
 			WorkspaceReports = IoC.Get(Of ReportsWorkspaceViewModel)
-			Workspaces = New BindableCollection(Of IAppScreen) From {WorkspaceRooms, WorkspaceLeases, WorkspaceBills, WorkspaceReports}
+			Workspaces = New BindableCollection(Of IAppScreen) _
+				From {WorkspaceRooms, WorkspaceLeases, WorkspaceBills, WorkspaceReports}
 
 			' load other screens
 			ScreenChangeRules = IoC.Get(Of ScreenChangeRulesViewModel)

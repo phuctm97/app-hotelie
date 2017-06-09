@@ -120,23 +120,12 @@
                                    FontSize="15"
                                    FontWeight="Medium"
                                    Foreground="{DynamicResource SecondaryAccentForegroundBrush}"
-                                   Text="username" />
+                                   Text="{Binding Username, Mode=OneWay}" />
                     </materialDesign:Card>
                 </materialDesign:PopupBox.ToggleContent>
 
                 <StackPanel Orientation="Vertical">
                     
-                    <!--Account detail-->
-                    <Button>
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon VerticalAlignment="Center"
-                                                     Width="24" Height="24"
-                                                     Margin="0 0 8 0"
-                                                     Kind="AccountCardDetails" />
-                            <TextBlock Text="Quản lý tài khoản" VerticalAlignment="Center" />
-                        </StackPanel>
-                    </Button>
-
                     <!--Settings-->
                     <Button cal:Message.Attach="NavigateToScreenChangeRules">
                         <StackPanel Orientation="Horizontal">

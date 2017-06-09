@@ -11,8 +11,10 @@ Namespace Reports.ViewModels
 
 		Private ReadOnly _getRoomUsedDaysReport As IGetRoomUsedDaysReport
 		Private ReadOnly _getRoomCategoriesProfit As IGetRoomCategoriesProfit
+		Private _updating = False
 
 		Public ReadOnly Property Model As ReportsModel
+
 
 		Public Sub New( getRoomUsedDaysReport As IGetRoomUsedDaysReport,
 		                getRoomCategoriesProfit As IGetRoomCategoriesProfit )
@@ -29,12 +31,15 @@ Namespace Reports.ViewModels
 		Public Sub Init()
 			Model.CreateDate = Today
 			AddHandler Model.PropertyChanged, AddressOf OnModelUpdated
+			_updating = False
 		End Sub
 
 		Private Async Sub OnModelUpdated( sender As Object,
 		                                  e As PropertyChangedEventArgs )
+			If _updating Then Return
 
 			If String.Equals( e.PropertyName, "BeginDate" ) Or String.Equals( e.PropertyName, "EndDate" )
+				_updating = True
 				ShowStaticWindowLoadingDialog()
 
 				Model.RevenueModels.Clear()
@@ -73,6 +78,7 @@ Namespace Reports.ViewModels
 				Next
 
 				CloseStaticWindowDialog()
+			_updating = False
 			End If
 		End Sub
 	End Class
