@@ -70,23 +70,29 @@
                                FontSize="60" FontWeight="Light"
                                Text="{Binding Path=Lease.Id, Mode=OneWay}" />
 
-                    <!--Delete button-->
-                    <Button DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
-                            Margin="8 0 16 0" Padding="8" Height="Auto"
-                            Style="{DynamicResource MaterialDesignToolButton}"
-                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-                            FontSize="18"
-                            Content="XÓA"
-                            cal:Message.Attach="DeleteAsync" />
+                    <StackPanel DockPanel.Dock="Right" Margin="0 0 16 0" Orientation="Horizontal"
+                                HorizontalAlignment="Right" VerticalAlignment="Center">
 
-                    <!--Save button-->
-                    <Button DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
-                            Padding="8" Height="Auto"
-                            Style="{DynamicResource MaterialDesignToolButton}"
-                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-                            FontSize="18"
-                            Content="LƯU"
-                            cal:Message.Attach="SaveAsync" />
+                        <!--Save button-->
+                        <Button DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                Padding="8" Height="Auto"
+                                Style="{DynamicResource MaterialDesignToolButton}"
+                                Visibility="{Binding Path=Parent.Parent.LoggedAccount.CouldEditLease, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                FontSize="18"
+                                Content="LƯU"
+                                cal:Message.Attach="SaveAsync" />
+
+                        <!--Delete button-->
+                        <Button HorizontalAlignment="Right" VerticalAlignment="Center"
+                                Margin="8 0 0 0" Padding="8" Height="Auto"
+                                Style="{DynamicResource MaterialDesignToolButton}"
+                                Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                Visibility="{Binding Path=Parent.Parent.LoggedAccount.CouldRemoveLease, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                FontSize="18"
+                                Content="XÓA"
+                                cal:Message.Attach="DeleteAsync" />
+                    </StackPanel>
                 </DockPanel>
 
                 <!--Main content-->
@@ -144,7 +150,7 @@
                                Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                FontSize="15" Margin="0 0 0 4" />
                     <ComboBox materialDesign:HintAssist.Hint="Tên phòng"
-                              FontSize="35"
+                              FontSize="35" IsEnabled="{Binding Path=Parent.Parent.LoggedAccount.CouldEditLease}"
                               ItemsSource="{Binding Rooms}"
                               DisplayMemberPath="Name"
                               SelectedItem="{Binding Path=Lease.Room, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -158,6 +164,7 @@
                                    Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                    FontSize="15" Margin="0 0 0 4" />
                         <DatePicker FontSize="15" Width="130" HorizontalAlignment="Left"
+                                    IsEnabled="{Binding Path=Parent.Parent.LoggedAccount.CouldEditLease}"
                                     SelectedDate="{Binding Path=Lease.ExpectedCheckoutDate, Mode=TwoWay}"
                                     materialDesign:HintAssist.Hint="Ngày dự kiến trả" FirstDayOfWeek="Monday" />
                     </StackPanel>
@@ -186,8 +193,9 @@
                     <StackPanel Orientation="Horizontal" Margin="0 0 0 4">
                         <TextBlock Text="Danh sách khách hàng" IsEnabled="False"
                                    Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                                   FontSize="15" VerticalAlignment="Center"/>
-                        <Button Style="{DynamicResource MaterialDesignFloatingActionButton}" Width="24" Height="24" Margin="8 0 0 0"
+                                   FontSize="15" VerticalAlignment="Center" />
+                        <Button Style="{DynamicResource MaterialDesignFloatingActionButton}" Width="24" Height="24"
+                                Margin="8 0 0 0"
                                 cal:Message.Attach="AddEmptyDetail">
                             <materialDesign:PackIcon Kind="Plus" />
                         </Button>
@@ -199,6 +207,7 @@
                               materialDesign:DataGridAssist.CellPadding="13 8 8 8"
                               materialDesign:DataGridAssist.ColumnHeaderPadding="8"
                               ItemsSource="{Binding Path=Lease.Details}"
+                              IsEnabled="{Binding Path=Parent.Parent.LoggedAccount.CouldEditLease}"
                               FontSize="15">
                         <DataGrid.Columns>
                             <DataGridTextColumn
