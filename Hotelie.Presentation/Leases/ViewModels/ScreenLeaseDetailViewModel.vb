@@ -118,14 +118,14 @@ Namespace Leases.ViewModels
 		End Sub
 
 		Public Sub Init()
-			Rooms.Clear()
-			Rooms.AddRange( _getAllRoomsQuery.Execute() )
+			'Rooms.Clear()
+			'Rooms.AddRange( _getAllRoomsQuery.Execute() )
 
-			CustomerCategories.Clear()
-			CustomerCategories.AddRange( _getAllCustomerCategoriesQuery.Execute() )
+			'CustomerCategories.Clear()
+			'CustomerCategories.AddRange( _getAllCustomerCategoriesQuery.Execute() )
 
-			_roomCapacity = _getParametersQuery.Execute().RoomCapacity
-			InitValues()
+			'_roomCapacity = _getParametersQuery.Execute().RoomCapacity
+			'InitValues()
 		End Sub
 
 		Public Async Function InitAsync() As Task
@@ -155,6 +155,45 @@ Namespace Leases.ViewModels
 		End Sub
 
 		Private Sub ResetValues()
+			Lease.Id = String.Empty
+			Lease.Room = Rooms.FirstOrDefault()
+			Lease.RoomUnitPrice = 0
+			Lease.CheckinDate = Today
+			Lease.ExpectedCheckoutDate = Today
+
+			_originalcheckinDate = Lease.CheckinDate
+			_originalexpectedCheckoutDate = Lease.ExpectedCheckoutDate
+			_originalroomUnitPrice = Lease.RoomUnitPrice
+			_originalroomId = Lease.Room.Id
+			_originalDetails.Clear()
+			_isEdited = False
+		End Sub
+
+		' Loading
+		Public Sub Reload() Implements IRoomsListPresenter.Reload
+			Throw New NotImplementedException()
+		End Sub
+
+		Private Sub Reload_() Implements ILeasePresenter.Reload
+		End Sub
+
+		Public Function ReloadAsync_() As Task Implements ILeasePresenter.ReloadAsync
+			Return Task.FromResult( True )
+		End Function
+
+		Public Async Function ReloadAsync() As Task Implements IRoomsListPresenter.ReloadAsync
+			Rooms.Clear()
+			Rooms.AddRange( (Await _getAllRoomsQuery.ExecuteAsync()) )
+
+			CustomerCategories.Clear()
+			CustomerCategories.AddRange( Await _getAllCustomerCategoriesQuery.ExecuteAsync() )
+
+			_roomCapacity = (Await _getParametersQuery.ExecuteAsync()).RoomCapacity
+			ReloadValues()
+			ResetValues()
+		End Function
+
+		Private Sub ReloadValues()
 			Lease.Id = String.Empty
 			Lease.Room = Rooms.FirstOrDefault()
 			Lease.RoomUnitPrice = 0
@@ -321,11 +360,7 @@ Namespace Leases.ViewModels
 			_isEdited = True
 		End Sub
 
-		Public Sub PreviewOrder()
-		End Sub
-
 		' Exit
-
 		Public Overrides ReadOnly Property IsEdited As Boolean
 			Get
 				Return _isEdited OrElse CheckForPendingChanges()

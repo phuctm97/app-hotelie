@@ -17,6 +17,7 @@ Namespace Bills.ViewModels
 		' Binding models
 		Public ReadOnly Property Bills As IObservableCollection(Of IBillModel)
 
+		' Initializations
 		Public Sub New( workspace As BillsWorkspaceViewModel,
 		                getAllBillsQuery As IGetAllBillsQuery )
 			_getAllBillsQuery = getAllBillsQuery
@@ -26,14 +27,27 @@ Namespace Bills.ViewModels
 		End Sub
 
 		Public Sub Init()
-			Bills.Clear()
-			Bills.AddRange(
-				_getAllBillsQuery.Execute().
-				              OrderByDescending( Function( b ) b.CreateDate ).
-				              Take( MaxDisplayCapacity ) )
+			'Bills.Clear()
+			'Bills.AddRange(
+			'	_getAllBillsQuery.Execute().
+			'	              OrderByDescending( Function( b ) b.CreateDate ).
+			'	              Take( MaxDisplayCapacity ) )
 		End Sub
 
 		Public Async Function InitAsync() As Task
+			Bills.Clear()
+			Bills.AddRange(
+				(Await _getAllBillsQuery.ExecuteAsync()).
+				              OrderByDescending( Function( b ) b.CreateDate ).
+				              Take( MaxDisplayCapacity ) )
+		End Function
+
+		' Loading
+		Public Sub Reload() Implements IBillsListPresenter.Reload
+			Throw New NotImplementedException()
+		End Sub
+
+		Public Async Function ReloadAsync() As Task Implements IBillsListPresenter.ReloadAsync
 			Bills.Clear()
 			Bills.AddRange(
 				(Await _getAllBillsQuery.ExecuteAsync()).
@@ -53,6 +67,13 @@ Namespace Bills.ViewModels
 			Else
 				Bills.Add( model )
 			End If
+
+			' reorder
+			Dim bakBills = New List(Of IBillModel)
+			bakBills.AddRange( Bills.OrderByDescending( Function( b ) b.CreateDate ) )
+
+			Bills.Clear()
+			Bills.AddRange( bakBills )
 		End Sub
 
 		Public Sub OnBillRemoved( id As String ) Implements IBillsListPresenter.OnBillRemoved

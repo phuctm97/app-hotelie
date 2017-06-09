@@ -42,6 +42,14 @@ Namespace Start.LoginShell.ViewModels
 			DisplayCode = - 1
 		End Sub
 
+		Protected Overrides Sub OnViewReady( view As Object )
+			MyBase.OnViewReady( view )
+
+			SetUpConnectionAsync()
+		End Sub
+
+		' Screens
+
 		Public ReadOnly Property ScreenLogin As ScreenLoginViewModel
 
 		Public ReadOnly Property ScreenSettings As ScreenSettingsViewModel
@@ -59,12 +67,7 @@ Namespace Start.LoginShell.ViewModels
 			End Set
 		End Property
 
-		Protected Overrides Sub OnViewReady( view As Object )
-			MyBase.OnViewReady( view )
-
-			SetUpConnectionAsync()
-		End Sub
-
+		' Connection setup
 		Private Sub SetUpConnection()
 			Dim result = _databaseService.CheckDatabaseConnection( My.Settings.ConnectionDataSource,
 			                                                       My.Settings.ConnectionCatalog )
@@ -84,31 +87,31 @@ Namespace Start.LoginShell.ViewModels
 		End Sub
 
 		Private Async Sub SetUpConnectionAsync()
-			' try connection
+			'test connection
 			ShowStaticWindowDialog( New LoadingDialog( "Đang kiểm tra kết nối..." ) )
 			Dim result = Await _databaseService.CheckDatabaseConnectionAsync( My.Settings.ConnectionDataSource,
 			                                                                  My.Settings.ConnectionCatalog )
 			CloseStaticWindowDialog()
 
 			If result = 2
-				' reload database service
+				'setup database service
 				Dim canSet = _databaseService.SetDatabaseConnection( My.Settings.ConnectionDataSource,
 				                                                     My.Settings.ConnectionCatalog )
 				If canSet
-					' show login screen
+					'show login screen
 					DisplayCode = 0
 				Else
-					' report error
+					'report error
 					ShowStaticTopNotification( StaticNotificationType.Error,
 					                           "Sự cố kết nối! Vui lòng kiểm tra lại thiết lập kết nối!" )
-					' show settings screen
+					'show settings screen
 					DisplayCode = 1
 				End If
 			Else
-				' report error
+				'report error
 				ShowStaticTopNotification( StaticNotificationType.Error,
 				                           "Sự cố kết nối! Vui lòng kiểm tra lại thiết lập kết nối!" )
-				' show settings screen
+				'show settings screen
 				DisplayCode = 1
 			End If
 		End Sub

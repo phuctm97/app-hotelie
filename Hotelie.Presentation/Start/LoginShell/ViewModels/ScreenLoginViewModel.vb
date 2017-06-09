@@ -12,17 +12,19 @@ Namespace Start.LoginShell.ViewModels
 		' Dependencies
 		Private ReadOnly _authentication As IAuthentication
 
-		' Initilization
+		' Bind models
 		Public ReadOnly Property InitialAccount As String
 
 		Public ReadOnly Property InitialPassword As String
 
+		' Initilization
 		Public Sub New( authentication As IAuthentication )
 			_authentication = authentication
 			InitialAccount = My.Settings.SavedAccount
 			InitialPassword = My.Settings.SavedPassword
 		End Sub
 
+		' Login
 		Public Sub Login( username As String,
 		                  password As String,
 		                  rememberAccount As Boolean )
@@ -62,25 +64,25 @@ Namespace Start.LoginShell.ViewModels
 		                                    rememberAccount As Boolean )
 			Dim err As String
 			Try
-				' try login
+				' ry login
 				ShowStaticWindowDialog( New LoadingDialog() )
 				err = (Await _authentication.TryLoginAsync( username, password )).FirstOrDefault()
 				CloseStaticWindowDialog()
 
 			Catch ex As DatabaseConnectionFailedException
-				' connection errors
+				'connection errors
 				err = "Mất kết nối máy chủ. Không thể đăng nhập!"
 
 			Catch ex As Exception
-				' other errors
+				'other errors
 				err = ex.Message
 			End Try
 
 			If String.IsNullOrEmpty( err )
-				' success
+				'success
 				OnLoginSuccess( username, password, rememberAccount )
 			Else
-				' fail
+				'fail
 				OnLoginFail( err )
 			End If
 		End Sub
@@ -104,6 +106,7 @@ Namespace Start.LoginShell.ViewModels
 			Return True
 		End Function
 
+		' Login results
 		Private Sub OnLoginSuccess( username As String,
 		                            password As String,
 		                            rememberAccount As Boolean )

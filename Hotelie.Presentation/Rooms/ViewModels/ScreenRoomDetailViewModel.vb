@@ -55,8 +55,8 @@ Namespace Rooms.ViewModels
 		End Sub
 
 		Public Sub Init()
-			InitRoomCategories()
-			InitValues()
+			'InitRoomCategories()
+			'InitValues()
 		End Sub
 
 		Private Sub InitRoomCategories()
@@ -70,6 +70,33 @@ Namespace Rooms.ViewModels
 		End Function
 
 		Private Sub InitValues()
+			Room.Id = String.Empty
+			Room.Name = String.Empty
+			Room.Note = String.Empty
+			Room.Category = Categories.FirstOrDefault()
+			Room.State = 0
+
+			_originalRoomName = Room.Name
+			_originalRoomCategoryId = Room.Category.Id
+			_originalRoomNote = Room.Note
+		End Sub
+
+		' Loading
+		Public Sub Reload() Implements IRoomPresenter.Reload
+			Throw New NotImplementedException()
+		End Sub
+
+		Public Async Function ReloadAsync() As Task Implements IRoomPresenter.ReloadAsync
+			Await ReloadRoomCategoriesAsync()
+			ReloadValues()
+		End Function
+
+		Private Async Function ReloadRoomCategoriesAsync() As Task
+			Categories.Clear()
+			Categories.AddRange( Await _getAllRoomsCategoriesQuery.ExecuteAsync() )
+		End Function
+
+		Private Sub ReloadValues()
 			Room.Id = String.Empty
 			Room.Name = String.Empty
 			Room.Note = String.Empty
@@ -98,14 +125,14 @@ Namespace Rooms.ViewModels
 				Return
 			End If
 
-			' Update bind models
+			'update bind models
 			Room.Id = id
 			Room.Name = model.Name
 			Room.Category = category
 			Room.State = model.State
 			Room.Note = model.Note
 
-			' Backup old values
+			'backup old values
 			_originalRoomName = Room.Name
 			_originalRoomCategoryId = Room.Category.Id
 			_originalRoomNote = Room.Note
@@ -123,14 +150,14 @@ Namespace Rooms.ViewModels
 				Return
 			End If
 
-			' Update bind models
+			'update bind models
 			Room.Id = id
 			Room.Name = model.Name
 			Room.Category = category
 			Room.State = model.State
 			Room.Note = model.Note
 
-			' Backup old values
+			'backup old values
 			_originalRoomName = Room.Name
 			_originalRoomCategoryId = Room.Category.Id
 			_originalRoomNote = Room.Note
@@ -183,7 +210,6 @@ Namespace Rooms.ViewModels
 		Public Overrides Async Function ActualSaveAsync() As Task
 			' try update
 			ShowStaticWindowLoadingDialog()
-
 			Dim err = Await _updateRoomCommand.ExecuteAsync( Room.Id, Room.Name, Room.Category.Id, Room.Note, Room.State )
 
 			If String.IsNullOrEmpty( err )
@@ -258,7 +284,8 @@ Namespace Rooms.ViewModels
 			Dim category = Categories.FirstOrDefault( Function( c ) c.Id = model.Category.Id )
 			If IsNothing( category )
 				ShowStaticBottomNotification( StaticNotificationType.Warning,
-				                              $"Không tìm thấy loại phòng {model.Category.Name} trong danh sách loại phòng để cập nhật" )
+				                              $"Không tìm thấy loại phòng {model.Category.Name _
+					                            } trong danh sách loại phòng để cập nhật" )
 				Return
 			End If
 

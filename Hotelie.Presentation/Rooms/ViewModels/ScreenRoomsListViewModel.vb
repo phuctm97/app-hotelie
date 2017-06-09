@@ -37,22 +37,50 @@ Namespace Rooms.ViewModels
 		End Property
 
 		' Binding models
+
 		Public ReadOnly Property Rooms As IObservableCollection(Of FilterableRoomModel)
+
+		Public Property FilterRoomModel As FilterRoomModel
+			Get
+				Return _filterRoomModel
+			End Get
+			Set
+				If IsNothing( Value ) OrElse Equals( Value, _filterRoomModel ) Then Return
+				_filterRoomModel = value
+				NotifyOfPropertyChange( Function() FilterRoomModel )
+			End Set
+		End Property
+
+		Public Property SortRoomModel As SortRoomModel
+			Get
+				Return _sortRoomModel
+			End Get
+			Set
+				If IsNothing( Value ) OrElse Equals( Value, _sortRoomModel ) Then Return
+				_sortRoomModel = value
+				NotifyOfPropertyChange( Function() SortRoomModel )
+			End Set
+		End Property
 
 		' Binding data
 		' ReSharper disable once UnassignedGetOnlyAutoProperty
+
 		Public ReadOnly Property Categories As IObservableCollection(Of IRoomCategoryModel)
 
 		' ReSharper disable once UnassignedGetOnlyAutoProperty
+
 		Public ReadOnly Property States As IObservableCollection(Of Integer)
 
 		' ReSharper disable once UnassignedGetOnlyAutoProperty
+
 		Public ReadOnly Property MinUnitPrices As IObservableCollection(Of Decimal)
 
 		' ReSharper disable once UnassignedGetOnlyAutoProperty
+
 		Public ReadOnly Property MaxUnitPrices As IObservableCollection(Of Decimal)
 
 		' Initialization
+
 		Public Sub New( workspace As RoomsWorkspaceViewModel,
 		                getAllRoomsQuery As IGetAllRoomsQuery,
 		                getAllRoomCategoriesQuery As IGetAllRoomCategoriesQuery )
@@ -76,15 +104,15 @@ Namespace Rooms.ViewModels
 		End Sub
 
 		Public Sub Init()
-			InitRooms()
+			'InitRooms()
 
-			InitRoomCategories()
+			'InitRoomCategories()
 
-			InitRoomStates()
+			'InitRoomStates()
 
-			InitRoomUnitPrices()
+			'InitRoomUnitPrices()
 
-			RefreshRoomsListVisibility()
+			'RefreshRoomsListVisibility()
 		End Sub
 
 		Private Sub InitRooms()
@@ -144,7 +172,70 @@ Namespace Rooms.ViewModels
 			States.Add( 2 ) 'filter all
 		End Sub
 
+		' Loading
+		Public Sub Reload() Implements IRoomsListPresenter.Reload
+			Throw New NotImplementedException()
+		End Sub
+
+		Public Async Function ReloadAsync() As Task Implements IRoomsListPresenter.ReloadAsync
+			Await ReloadRoomsAsync()
+
+			Await ReloadRoomCategoriesAsync()
+
+			ReloadRoomStates()
+
+			ReloadRoomUnitPrices()
+
+			RefreshRoomsListVisibility()
+		End Function
+
+		Private Async Function ReloadRoomsAsync() As Task
+			Rooms.Clear()
+			Rooms.AddRange( (Await _getAllRoomsQuery.ExecuteAsync()).Select( Function( r ) New FilterableRoomModel With
+				                                                               {.Model=r, .IsFiltersMatch=False} ) )
+		End Function
+
+		Private Async Function ReloadRoomCategoriesAsync() As Task
+			Categories.Clear()
+			Categories.AddRange( Await _getAllRoomCategoriesQuery.ExecuteAsync() )
+			Categories.Add( New FakeRoomCategoryModel() ) 'filter all
+		End Function
+
+		Private Sub ReloadRoomUnitPrices()
+			Dim minPrices = New List(Of Decimal)
+			Dim maxPrices = New List(Of Decimal)
+
+			For i = 0 To Categories.Count - 2
+				Dim price = Categories( i ).UnitPrice
+
+				If Not minPrices.Contains( price ) Then minPrices.Add( price )
+
+				If Not maxPrices.Contains( price ) Then maxPrices.Add( price )
+			Next
+
+			minPrices.Sort( Function( a,
+				              b ) a < b )
+			minPrices.Add( - 1 )
+
+			maxPrices.Sort( Function( a,
+				              b ) a > b )
+			maxPrices.Add( - 1 )
+
+			MinUnitPrices.Clear()
+			MinUnitPrices.AddRange( minPrices )
+
+			MaxUnitPrices.Clear()
+			MaxUnitPrices.AddRange( maxPrices )
+		End Sub
+
+		Private Sub ReloadRoomStates()
+			States.Clear()
+			States.AddRange( {0, 1} )
+			States.Add( 2 ) 'filter all
+		End Sub
+
 		' Business Actions
+
 		Public Sub DoRoomAction( model As IRoomModel )
 			If IsNothing( model ) Then Return
 
@@ -157,17 +248,6 @@ Namespace Rooms.ViewModels
 		End Sub
 
 		' Filtering
-
-		Public Property FilterRoomModel As FilterRoomModel
-			Get
-				Return _filterRoomModel
-			End Get
-			Set
-				If IsNothing( Value ) OrElse Equals( Value, _filterRoomModel ) Then Return
-				_filterRoomModel = value
-				NotifyOfPropertyChange( Function() FilterRoomModel )
-			End Set
-		End Property
 
 		Public Sub ResetFilters()
 			RemoveHandler FilterRoomModel.PropertyChanged, AddressOf OnFilterRoomModelUpdated
@@ -194,6 +274,11 @@ Namespace Rooms.ViewModels
 			FilterRoomModel.State = state
 		End Sub
 
+		Private Sub OnFilterRoomModelUpdated( sender As Object,
+		                                      e As PropertyChangedEventArgs )
+			RefreshRoomsListVisibility()
+		End Sub
+
 		Public Sub RefreshRoomsListVisibility()
 			For Each filterableRoomModel As FilterableRoomModel In Rooms
 				If IsNothing( FilterRoomModel ) Then filterableRoomModel.IsFiltersMatch = True
@@ -203,23 +288,11 @@ Namespace Rooms.ViewModels
 			Next
 		End Sub
 
-		Private Sub OnFilterRoomModelUpdated( sender As Object,
-		                                      e As PropertyChangedEventArgs )
-			RefreshRoomsListVisibility()
-		End Sub
-
 		' Sorting
-
-		Public Property SortRoomModel As SortRoomModel
-			Get
-				Return _sortRoomModel
-			End Get
-			Set
-				If IsNothing( Value ) OrElse Equals( Value, _sortRoomModel ) Then Return
-				_sortRoomModel = value
-				NotifyOfPropertyChange( Function() SortRoomModel )
-			End Set
-		End Property
+		Private Sub OnSortRoomModelUpdated( sender As Object,
+		                                    e As PropertyChangedEventArgs )
+			SortRoomsList()
+		End Sub
 
 		Public Sub SortRoomsList()
 			Dim orderedRooms As IObservableCollection(Of FilterableRoomModel ) = Nothing
@@ -261,11 +334,6 @@ Namespace Rooms.ViewModels
 			End If
 		End Sub
 
-		Private Sub OnSortRoomModelUpdated( sender As Object,
-		                                    e As PropertyChangedEventArgs )
-			SortRoomsList()
-		End Sub
-
 		' Infrastructure
 
 		Public Sub OnRoomAdded( model As IRoomModel ) _
@@ -288,7 +356,7 @@ Namespace Rooms.ViewModels
 		Public Sub OnRoomUpdated( model As IRoomModel ) _
 			Implements IRoomsListPresenter.OnRoomUpdated
 			If IsNothing( model ) OrElse String.IsNullOrEmpty( model.Id ) Then Return
-		
+
 			' find room
 			Dim room = Rooms.FirstOrDefault( Function( r ) r.Model?.Id = model.Id )
 			If room Is Nothing

@@ -24,7 +24,7 @@ Namespace Rooms.ViewModels
 
 		Public Property ParentWorkspace As RoomsWorkspaceViewModel Implements IChild(Of RoomsWorkspaceViewModel).Parent
 
-		' Initialization
+		' Initializations
 		Sub New( workspace As RoomsWorkspaceViewModel,
 		         getAllRoomCategoriesQuery As IGetAllRoomCategoriesQuery,
 		         createRoomFactory As ICreateRoomFactory,
@@ -41,8 +41,8 @@ Namespace Rooms.ViewModels
 		End Sub
 
 		Public Sub Init()
-			InitRoomCategories()
-			InitValues()
+			'InitRoomCategories()
+			'InitValues()
 		End Sub
 
 		Public Async Function InitAsync() As Task
@@ -61,6 +61,25 @@ Namespace Rooms.ViewModels
 		End Function
 
 		Private Sub InitValues()
+			Room.Id = String.Empty
+			Room.Name = String.Empty
+			Room.Category = Categories.FirstOrDefault()
+			Room.Note = String.Empty
+			Room.State = 0
+		End Sub
+
+		' Loading
+		Public Async Function ReloadAsync() As Task
+			Await ReloadRoomCategoriesAsync()
+			ReloadValues()
+		End Function
+
+		Private Async Function ReloadRoomCategoriesAsync() As Task
+			Categories.Clear()
+			Categories.AddRange( Await _getAllRoomCategoriesQuery.ExecuteAsync() )
+		End Function
+
+		Private Sub ReloadValues()
 			Room.Id = String.Empty
 			Room.Name = String.Empty
 			Room.Category = Categories.FirstOrDefault()

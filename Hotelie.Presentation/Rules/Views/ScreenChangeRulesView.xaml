@@ -42,7 +42,7 @@
                 </Grid.RowDefinitions>
 
                 <!--Close button-->
-                <Button Grid.Row="0" Grid.Column="0"
+                <Button Grid.Row="0" Grid.Column="0" ToolTip="Đóng"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Margin="16 24 0 0" Style="{DynamicResource MaterialDesignToolButton}"
@@ -67,7 +67,7 @@
                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                             FontSize="18"
                             Content="LƯU"
-                            ToolTip="Thoát"
+                            ToolTip="Áp dụng quy định mới"
                             cal:Message.Attach="SaveAsync" />
                 </DockPanel>
 
@@ -150,7 +150,7 @@
                                        Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                        FontSize="20" VerticalAlignment="Center" />
                             <Button Style="{DynamicResource MaterialDesignFloatingActionButton}" Width="32" Height="32"
-                                    Margin="8 0 0 0"
+                                    Margin="8 0 0 0" ToolTip="Thêm loại phòng"
                                     cal:Message.Attach="AddEmptyRoomCategory">
                                 <materialDesign:PackIcon Kind="Plus" />
                             </Button>
@@ -206,7 +206,7 @@
                                        Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                        FontSize="20" VerticalAlignment="Center" />
                             <Button Style="{DynamicResource MaterialDesignFloatingActionButton}" Width="32" Height="32"
-                                    Margin="8 0 0 0"
+                                    Margin="8 0 0 0" ToolTip="Thêm loại khách"
                                     cal:Message.Attach="AddEmptyCustomerCategory">
                                 <materialDesign:PackIcon Kind="Plus" />
                             </Button>

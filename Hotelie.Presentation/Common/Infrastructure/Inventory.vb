@@ -18,6 +18,7 @@ Namespace Common.Infrastructure
 
 	Public Class Inventory
 		Implements IInventory
+
 		Implements INeedWindowModals
 
 		' Dependencies
@@ -248,6 +249,42 @@ Namespace Common.Infrastructure
 			Next
 
 			Return Task.FromResult( True )
+		End Function
+
+		Public Sub Reload() Implements IInventory.Reload
+			For Each presenter In _roomPresenters
+				presenter.Reload()
+			Next
+			For Each presenter In _roomsListPresenters
+				presenter.Reload()
+			Next
+			For Each presenter In _leasePresenters
+				presenter.Reload()
+			Next
+			For Each presenter In _leasesListPresenters
+				presenter.Reload()
+			Next
+			For Each presenter In _billsListPresenters
+				presenter.Reload()
+			Next
+		End Sub
+
+		Public Async Function ReloadAsync() As Task Implements IInventory.ReloadAsync
+			For Each presenter In _roomPresenters
+				Await presenter.ReloadAsync()
+			Next
+			For Each presenter In _roomsListPresenters
+				Await presenter.ReloadAsync()
+			Next
+			For Each presenter In _leasePresenters
+				Await presenter.ReloadAsync()
+			Next
+			For Each presenter In _leasesListPresenters
+				Await presenter.ReloadAsync()
+			Next
+			For Each presenter In _billsListPresenters
+				Await presenter.ReloadAsync()
+			Next
 		End Function
 	End Class
 

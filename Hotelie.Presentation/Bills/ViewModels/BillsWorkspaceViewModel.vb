@@ -12,12 +12,15 @@ Namespace Bills.ViewModels
 		Inherits AppScreen
 		Implements INeedWindowModals
 
+		' Backing fields
 		Private _displayCode As Integer
 
+		' Screens
 		Public ReadOnly Property ScreenBillsList As ScreenBillsListVIewModel
 
 		Public ReadOnly Property ScreenAddBill As ScreenAddBillViewModel
 
+		' Bind properties
 		Public Property DisplayCode As Integer
 			Get
 				Return _displayCode
@@ -29,6 +32,7 @@ Namespace Bills.ViewModels
 			End Set
 		End Property
 
+		' Initializations
 		Public Sub New( getAllBillsQuery As IGetAllBillsQuery,
 		                getAllRoomsQuery As IGetAllRoomsQuery,
 		                getAllLeasesQuery As IGetAllLeasesQuery,
@@ -50,10 +54,6 @@ Namespace Bills.ViewModels
 		End Sub
 
 		Private Sub InitializeComponents()
-			Init()
-		End Sub
-
-		Private Sub Init()
 			ScreenBillsList.Init()
 			ScreenAddBill.Init()
 			DisplayCode = 0
@@ -65,6 +65,7 @@ Namespace Bills.ViewModels
 			DisplayCode = 0
 		End Function
 
+		' Navigations
 		Public Sub NavigateToScreenAddBill()
 			DisplayCode = 1
 		End Sub

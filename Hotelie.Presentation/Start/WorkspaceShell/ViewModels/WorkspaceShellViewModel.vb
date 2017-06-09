@@ -18,6 +18,7 @@ Namespace Start.WorkspaceShell.ViewModels
 		' Dependencies
 		Private ReadOnly _authentication As IAuthentication
 
+		' Backing fields
 		Private _activeWorkspace As IScreen
 		Private _displayWorkspaceCode As Integer
 		Private _displayCode As Integer
@@ -38,10 +39,10 @@ Namespace Start.WorkspaceShell.ViewModels
 
 			DisplayName = "Bàn làm việc"
 
-			' load command bar
+			'load command bar
 			CommandsBar = New WorkspaceShellCommandsBarViewModel( Me, authentication )
 
-			' load workspace
+			'load workspaces
 			WorkspaceRooms = IoC.Get(Of RoomsWorkspaceViewModel)
 			WorkspaceRooms.ParentShell = Me
 			WorkspaceLeases = IoC.Get(Of LeasesWorkspaceViewModel)
@@ -51,22 +52,22 @@ Namespace Start.WorkspaceShell.ViewModels
 			Workspaces = New BindableCollection(Of IAppScreen) _
 				From {WorkspaceRooms, WorkspaceLeases, WorkspaceBills, WorkspaceReports}
 
-			' load other screens
+			'load other screens
 			ScreenChangeRules = IoC.Get(Of ScreenChangeRulesViewModel)
 			Screens = New BindableCollection(Of IAppScreen) From {
 				WorkspaceRooms, WorkspaceLeases, WorkspaceBills, WorkspaceReports,
 				ScreenChangeRules}
 
-			' subcribe exited event
+			'subcribe exited event
 			For Each screen As IAppScreen In Screens
 				AddHandler screen.OnExited, AddressOf OnScreenExited
 			Next
 
-			' initial screen
+			'initial screen
 			DisplayWorkspaceCode = 0
 		End Sub
 
-		' Display
+		' Bind models
 		Public ReadOnly Property CommandsBar As IWindowCommandsBar Implements IShell.CommandsBar
 
 		Public ReadOnly Property WorkspaceRooms As RoomsWorkspaceViewModel
@@ -83,6 +84,7 @@ Namespace Start.WorkspaceShell.ViewModels
 
 		Public ReadOnly Property Screens As IObservableCollection(Of IAppScreen)
 
+		' Bind properties
 		Public Property DisplayWorkspaceCode As Integer
 			Get
 				Return _displayWorkspaceCode
@@ -106,7 +108,7 @@ Namespace Start.WorkspaceShell.ViewModels
 			End Set
 		End Property
 
-		' Navigation
+		' Navigations
 		Private Async Sub UpdateScreen( code As Integer )
 			Dim oldScreen = Screens( _displayCode )
 			' check can hide old screen
@@ -125,12 +127,12 @@ Namespace Start.WorkspaceShell.ViewModels
 
 		Private Async Sub UpdateScreenAsync( code As Integer )
 			Dim oldScreen = Screens( _displayCode )
-			' check can hide old screen
+			'check can hide old screen
 			If Not Await oldScreen.CanHide()
 				Return
 			End If
 
-			' change active screen
+			'change active screen
 			_displayCode = code
 			Dim screen = Screens( _displayCode )
 

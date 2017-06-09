@@ -2,6 +2,10 @@
 
 Namespace Common.Infrastructure
 	Public Interface ILeasePresenter
-		Sub OnLeaseUpdated(model As ILeaseModel)
+		Sub Reload()
+
+		Function ReloadAsync() As Task
+
+		Sub OnLeaseUpdated( model As ILeaseModel )
 	End Interface
 End Namespace

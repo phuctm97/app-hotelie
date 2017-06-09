@@ -34,7 +34,7 @@ Namespace Bills.ViewModels
 
 		Public Property ParentWorkspace As BillsWorkspaceViewModel Implements IChild(Of BillsWorkspaceViewModel).Parent
 
-		' Initialization
+		' Initializations
 		Shared Sub New()
 			Rooms = New BindableCollection(Of IRoomModel)
 			Leases = New BindableCollection(Of ILeaseModel)
@@ -68,12 +68,12 @@ Namespace Bills.ViewModels
 		Public Shared ReadOnly Leases As IObservableCollection(Of ILeaseModel)
 
 		Public Sub Init()
-			Rooms.Clear()
-			Rooms.AddRange( _getAllRoomsQuery.Execute().Where( Function( r ) r.State = 1 ) )
+			'Rooms.Clear()
+			'Rooms.AddRange( _getAllRoomsQuery.Execute().Where( Function( r ) r.State = 1 ) )
 
-			Leases.Clear()
-			Leases.AddRange( _getAllLeasesQuery.Execute().Where( Function( l ) Not l.IsPaid ) )
-			InitValues()
+			'Leases.Clear()
+			'Leases.AddRange( _getAllLeasesQuery.Execute().Where( Function( l ) Not l.IsPaid ) )
+			'InitValues()
 		End Sub
 
 		Public Async Function InitAsync() As Task
@@ -94,6 +94,35 @@ Namespace Bills.ViewModels
 		End Sub
 
 		Private Sub ResetValues()
+			Bill.CustomerName = String.Empty
+			Bill.CustomerAddress = String.Empty
+			Bill.CreateDate = Today
+			Bill.TotalExpense = 0
+			Bill.Details.Clear()
+		End Sub
+
+		' Loading
+		Public Sub Reload() Implements IRoomsListPresenter.Reload
+			Throw New NotImplementedException()
+		End Sub
+
+		Private Sub Reload_() Implements ILeasesListPresenter.Reload
+		End Sub
+
+		Public Function ReloadAsync_() As Task Implements ILeasesListPresenter.ReloadAsync
+			Return Task.FromResult( True )
+		End Function
+
+		Public Async Function ReloadAsync() As Task Implements IRoomsListPresenter.ReloadAsync
+			Rooms.Clear()
+			Rooms.AddRange( (Await _getAllRoomsQuery.ExecuteAsync()).Where( Function( r ) r.State = 1 ) )
+
+			Leases.Clear()
+			Leases.AddRange( (Await _getAllLeasesQuery.ExecuteAsync()).Where( Function( l ) Not l.IsPaid ) )
+			ReloadValues()
+		End Function
+
+		Private Sub ReloadValues()
 			Bill.CustomerName = String.Empty
 			Bill.CustomerAddress = String.Empty
 			Bill.CreateDate = Today
@@ -328,7 +357,7 @@ Namespace Bills.ViewModels
 
 			Dim lease = Leases.FirstOrDefault( Function( l ) l.Id = model.Id )
 			If lease IsNot Nothing
-					Leases( Leases.IndexOf( lease ) ) = model
+				Leases( Leases.IndexOf( lease ) ) = model
 				if Bill.Details IsNot Nothing
 					For Each detail As EditableBillDetailModel In Bill.Details
 						If detail.Lease?.Id = model.Id Then detail.Lease = model

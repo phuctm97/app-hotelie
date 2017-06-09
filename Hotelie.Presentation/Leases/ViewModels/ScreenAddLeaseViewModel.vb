@@ -94,14 +94,14 @@ Namespace Leases.ViewModels
 		End Sub
 
 		Public Sub Init()
-			Rooms.Clear()
-			Rooms.AddRange( _getAllRoomsQuery.Execute().Where( Function( r ) r.State = 0 ) )
+			'Rooms.Clear()
+			'Rooms.AddRange( _getAllRoomsQuery.Execute().Where( Function( r ) r.State = 0 ) )
 
-			CustomerCategories.Clear()
-			CustomerCategories.AddRange( _getAllCustomerCategoriesQuery.Execute() )
+			'CustomerCategories.Clear()
+			'CustomerCategories.AddRange( _getAllCustomerCategoriesQuery.Execute() )
 
-			_roomCapacity = _getParametersQuery.Execute().RoomCapacity
-			InitValues()
+			'_roomCapacity = _getParametersQuery.Execute().RoomCapacity
+			'InitValues()
 		End Sub
 
 		Public Async Function InitAsync() As Task
@@ -124,6 +124,30 @@ Namespace Leases.ViewModels
 		End Sub
 
 		Private Sub ResetValues()
+			Lease.Id = String.Empty
+			Lease.Room = Rooms.FirstOrDefault()
+			Lease.CheckinDate = Today
+			Lease.ExpectedCheckoutDate = Today
+			Lease.Details.Clear()
+		End Sub
+
+		' Loading
+		Public Sub Reload() Implements IRoomsListPresenter.Reload
+			Throw New NotImplementedException()
+		End Sub
+
+		Public Async Function ReloadAsync() As Task Implements IRoomsListPresenter.ReloadAsync
+			Rooms.Clear()
+			Rooms.AddRange( (Await _getAllRoomsQuery.ExecuteAsync()).Where( Function( r ) r.State = 0 ) )
+
+			CustomerCategories.Clear()
+			CustomerCategories.AddRange( Await _getAllCustomerCategoriesQuery.ExecuteAsync() )
+
+			_roomCapacity = (Await _getParametersQuery.ExecuteAsync()).RoomCapacity
+			ReloadValues()
+		End Function
+
+		Private Sub ReloadValues()
 			Lease.Id = String.Empty
 			Lease.Room = Rooms.FirstOrDefault()
 			Lease.CheckinDate = Today
