@@ -24,7 +24,7 @@ Namespace Start.LoginShell.ViewModels
 		End Sub
 
 		' Test connection
-		Private Async Sub TestConnection( dataSource As String,
+		Public Async Sub TestConnection( dataSource As String,
 		                                  catalog As String )
 			'test connection
 			ShowStaticWindowLoadingDialog()

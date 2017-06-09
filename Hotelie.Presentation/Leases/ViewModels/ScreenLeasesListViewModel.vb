@@ -33,7 +33,7 @@ Namespace Leases.ViewModels
 
 		Public Sub New( workspace As LeasesWorkspaceViewModel,
 		                getAllLeasesQuery As IGetAllLeasesQuery )
-			MyBase.New(MaterialDesignThemes.Wpf.ColorZoneMode.PrimaryDark)
+			MyBase.New( MaterialDesignThemes.Wpf.ColorZoneMode.PrimaryDark )
 			ParentWorkspace = workspace
 			_getAllLeasesQuery = getAllLeasesQuery
 			TryCast(Me, IRoomPresenter).RegisterInventory()
