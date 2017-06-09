@@ -76,6 +76,16 @@
                 </materialDesign:TransitionerSlide.ForwardWipe>
                 <ContentControl cal:View.Model="{Binding ScreenChangeRules}" />
             </materialDesign:TransitionerSlide>
+
+            <materialDesign:TransitionerSlide>
+                <materialDesign:TransitionerSlide.BackwardWipe>
+                    <materialDesign:CircleWipe />
+                </materialDesign:TransitionerSlide.BackwardWipe>
+                <materialDesign:TransitionerSlide.ForwardWipe>
+                    <materialDesign:CircleWipe />
+                </materialDesign:TransitionerSlide.ForwardWipe>
+                <ContentControl cal:View.Model="{Binding ScreenManageUsers}" />
+            </materialDesign:TransitionerSlide>
         </materialDesign:Transitioner>
 
     </materialDesign:TransitioningContent>

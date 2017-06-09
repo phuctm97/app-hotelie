@@ -52,6 +52,10 @@ Namespace Start.WorkspaceShell.ViewModels
 			ParentShell.NavigateToScreenChangeRules()
 		End Sub
 
+		Public Sub NavigateToScreenManageUsers()
+			ParentShell.NavigateToScreenManageUsers()
+		End Sub
+
 		Public Sub Logout()
 			IoC.Get(Of IMainWindow).SwitchShell( "login-shell" )
 		End Sub

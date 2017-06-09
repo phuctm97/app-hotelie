@@ -278,6 +278,11 @@
     <Compile Include="Start\WorkspaceShell\Views\WorkspaceShellView.xaml.vb">
       <DependentUpon>WorkspaceShellView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Users\Models\EditableUserModel.vb" />
+    <Compile Include="Users\ViewModels\ScreenManageUsersViewModel.vb" />
+    <Compile Include="Users\Views\ScreenManageUsersView.xaml.vb">
+      <DependentUpon>ScreenManageUsersView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Import Include="System.Threading.Tasks" />
@@ -429,6 +434,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Users\Views\ScreenManageUsersView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Hotelie.Application\Hotelie.Application.vbproj">
@@ -444,8 +453,6 @@
     <Resource Include="Resources\Icons\icon.ico" />
     <Resource Include="Resources\Icons\icon.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Users\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

@@ -139,6 +139,19 @@
                         </StackPanel>
                     </Button>
 
+                    <!--Manage users-->
+                    <Button
+                        Visibility="{Binding CanChangeRules, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        cal:Message.Attach="NavigateToScreenManageUsers">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="AccountMultiple"
+                                                     VerticalAlignment="Center"
+                                                     Width="24" Height="24"
+                                                     Margin="0 0 8 0" />
+                            <TextBlock Text="Quản lý tài khoản" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+
                     <!--Log out-->
                     <Button cal:Message.Attach="Logout">
                         <StackPanel Orientation="Horizontal">

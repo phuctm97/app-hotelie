@@ -1,4 +1,4 @@
 ﻿Namespace Users.Views
-	Public Class ScreenManageUserView
+	Public Class ScreenManageUsersView
 	End Class
 End Namespace

@@ -7,6 +7,7 @@ Imports Hotelie.Presentation.Leases.ViewModels
 Imports Hotelie.Presentation.Reports.ViewModels
 Imports Hotelie.Presentation.Rooms.ViewModels
 Imports Hotelie.Presentation.Rules.ViewModels
+Imports Hotelie.Presentation.Users.ViewModels
 Imports MaterialDesignThemes.Wpf
 
 Namespace Start.WorkspaceShell.ViewModels
@@ -54,9 +55,10 @@ Namespace Start.WorkspaceShell.ViewModels
 
 			'load other screens
 			ScreenChangeRules = IoC.Get(Of ScreenChangeRulesViewModel)
+			ScreenManageUsers = IoC.Get(Of ScreenManageUsersViewModel)
 			Screens = New BindableCollection(Of IAppScreen) From {
 				WorkspaceRooms, WorkspaceLeases, WorkspaceBills, WorkspaceReports,
-				ScreenChangeRules}
+				ScreenChangeRules, ScreenManageUsers}
 
 			'subcribe exited event
 			For Each screen As IAppScreen In Screens
@@ -81,6 +83,8 @@ Namespace Start.WorkspaceShell.ViewModels
 		Public ReadOnly Property Workspaces As IObservableCollection(Of IAppScreen)
 
 		Public ReadOnly Property ScreenChangeRules As ScreenChangeRulesViewModel
+
+		Public ReadOnly Property ScreenManageUsers As ScreenManageUsersViewModel
 
 		Public ReadOnly Property Screens As IObservableCollection(Of IAppScreen)
 
@@ -165,6 +169,10 @@ Namespace Start.WorkspaceShell.ViewModels
 
 		Public Sub NavigateToScreenChangeRules()
 			DisplayCode = 4
+		End Sub
+
+		Public Sub NavigateToScreenManageUsers()
+			DisplayCode = 5
 		End Sub
 
 		' Closing
