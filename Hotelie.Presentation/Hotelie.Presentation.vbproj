@@ -144,6 +144,9 @@
     </Compile>
     <Compile Include="Common\AppScreen.vb" />
     <Compile Include="Common\AppScreenHasSaving.vb" />
+    <Compile Include="Common\Controls\ChangePasswordDialog.xaml.vb">
+      <DependentUpon>ChangePasswordDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Common\Controls\LoadingDialog.xaml.vb">
       <DependentUpon>LoadingDialog.xaml</DependentUpon>
     </Compile>
@@ -161,6 +164,7 @@
     <Compile Include="Common\Converters\DecimalToStringConverter.vb" />
     <Compile Include="Common\Converters\DoubleToStringConverter.vb" />
     <Compile Include="Common\Converters\IntegerToStringConverter.vb" />
+    <Compile Include="Common\Converters\MultiStringConverter.vb" />
     <Compile Include="Common\Converters\StringToUpperConverter.vb" />
     <Compile Include="Common\IAppScreen.vb" />
     <Compile Include="Common\IAppScreenHasSaving.vb" />
@@ -347,6 +351,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Bills\Views\ScreenBillsListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Common\Controls\ChangePasswordDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

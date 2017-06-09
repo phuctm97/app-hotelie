@@ -126,6 +126,17 @@
 
                 <StackPanel Orientation="Vertical">
 
+                    <!--Change password-->
+                    <Button cal:Message.Attach="ChangePassword">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="AccountKey"
+                                                     VerticalAlignment="Center"
+                                                     Width="24" Height="24"
+                                                     Margin="0 0 8 0" />
+                            <TextBlock Text="Đổi mật khẩu" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+
                     <!--Settings-->
                     <Button
                         Visibility="{Binding CanChangeRules, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"

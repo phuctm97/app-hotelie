@@ -1,11 +1,13 @@
 ﻿Imports Caliburn.Micro
 Imports Hotelie.Application.Services.Authentication
 Imports Hotelie.Presentation.Common
+Imports Hotelie.Presentation.Common.Controls
 
 Namespace Start.WorkspaceShell.ViewModels
 	Public Class WorkspaceShellCommandsBarViewModel
 		Inherits PropertyChangedBase
 		Implements IWindowCommandsBar
+		Implements INeedWindowModals
 
 		' Dependencies
 		Private ReadOnly _authentication As IAuthentication
@@ -54,6 +56,25 @@ Namespace Start.WorkspaceShell.ViewModels
 
 		Public Sub NavigateToScreenManageUsers()
 			ParentShell.NavigateToScreenManageUsers()
+		End Sub
+
+		Public Async Sub ChangePassword()
+			Dim dialog = New ChangePasswordDialog()
+
+			Dim result = Await ShowDynamicWindowDialog( dialog )
+
+			If result Is Nothing Then Return
+			Dim values = TryCast(result, String())
+
+			Dim oldPassword = values( 0 )
+			Dim newPassword = values( 1 )
+			Dim confirmPassword = values( 2 )
+
+			If Not String.Equals( newPassword, confirmPassword )
+				ShowStaticBottomNotification( MainWindow.Models.StaticNotificationType.Warning,
+				                              "Mật khẩu mới và xác nhận mật khẩu không giống nhau" )
+				Return
+			End If
 		End Sub
 
 		Public Sub Logout()
