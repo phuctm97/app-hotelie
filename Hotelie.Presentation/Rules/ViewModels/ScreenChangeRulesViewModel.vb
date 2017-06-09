@@ -72,13 +72,13 @@ Namespace Rules.ViewModels
 			_createRoomCategoryFactory = createRoomCategoryFactory
 			_createCustomerCategoryFactory = createCustomerCategoryFactory
 
-			_originalRoomCategories = New List(Of EditableRoomCategoryModel)()
-			_originalCustomerCategories = New List(Of EditableCustomerCategoryModel)()
-
 			DisplayName = "Thay đổi quy định"
 			Rule = New EditableRuleModel()
 			Rule.RoomCapacity = 0
 			Rule.ExtraCoefficient = 0
+
+			_originalRoomCategories = New List(Of EditableRoomCategoryModel)()
+			_originalCustomerCategories = New List(Of EditableCustomerCategoryModel)()
 			_originalRoomCapacity = Rule.RoomCapacity
 			_originalExtraCoefficient = Rule.ExtraCoefficient
 		End Sub
@@ -105,7 +105,7 @@ Namespace Rules.ViewModels
 
 		Private Sub ReloadRules()
 			Dim model = _getParametersQuery.Execute()
-			Rule.ExtraCoefficient = model.ExtraCoefficient*100
+			Rule.ExtraCoefficient = model.ExtraCoefficient * 100 'convert to percentage
 			Rule.RoomCapacity = model.RoomCapacity
 
 			_originalExtraCoefficient = Rule.ExtraCoefficient
@@ -137,7 +137,7 @@ Namespace Rules.ViewModels
 
 		Private Async Function ReloadRulesAsync() As Task
 			Dim model = Await _getParametersQuery.ExecuteAsync()
-			Rule.ExtraCoefficient = model.ExtraCoefficient*100
+			Rule.ExtraCoefficient = model.ExtraCoefficient * 100
 			Rule.RoomCapacity = model.RoomCapacity
 
 			_originalExtraCoefficient = Rule.ExtraCoefficient
@@ -193,30 +193,8 @@ Namespace Rules.ViewModels
 		End Function
 
 		' Save
-		Public Overrides Async Function CanSave() As Task(Of Boolean)
-			If Not ValidateSaving() Then Return False
-
-			For Each roomCategory As EditableRoomCategoryModel In _originalRoomCategories
-				If Not Rule.RoomCategories.Any( Function( r ) r.Id = roomCategory.Id )
-					If Await ConfirmDeleteRoomCategories()
-						Exit For
-					Else
-						Return False
-					End If
-				End If
-			Next
-
-			For Each customerCategories As EditableCustomerCategoryModel In _originalCustomerCategories
-				If Not Rule.CustomerCategories.Any( Function( c ) c.Id = customerCategories.Id )
-					If Await ConfirmDeleteCustomerCategories()
-						Exit For
-					Else
-						Return False
-					End If
-				End If
-			Next
-
-			Return True
+		Public Overrides Function CanSave() As Task(Of Boolean)
+			Return Task.Run(Function() ValidateSaving())
 		End Function
 
 		Private Function ValidateSaving() As Boolean
@@ -264,59 +242,131 @@ Namespace Rules.ViewModels
 		End Function
 
 		Public Overrides Async Function ActualSaveAsync() As Task
+			ShowStaticWindowLoadingDialog()
+			
 			'try update parameters
-			Dim err = Await _updateParametersCommand.ExecuteAsync( Rule.RoomCapacity, Rule.ExtraCoefficient/100 )
-
-			If Not String.IsNullOrEmpty( err )
-				ShowStaticBottomNotification( StaticNotificationType.Error, err )
+			If Not Await UpdateParameters()
+				CloseStaticWindowDialog()
 				Return
 			End If
 
-			'update room categories
-			Dim removeRoomCategoryIds = New List(Of String)
-			For Each roomCategory As EditableRoomCategoryModel In _originalRoomCategories
-				Dim newRoomCategory = Rule.RoomCategories.FirstOrDefault( Function( r ) r.Id = roomCategory.Id )
-				If newRoomCategory Is Nothing
-					removeRoomCategoryIds.Add( roomCategory.Id )
-				Else
-					Await _
-						_updateRoomCategoryCommand.ExecuteAsync( newRoomCategory.Id, newRoomCategory.Name, newRoomCategory.UnitPrice )
-				End If
-			Next
-			'remove room categories
-			For Each removeId As String In removeRoomCategoryIds
-				Await _removeRoomCategoryCommand.ExecuteAsync( removeId )
-			Next
-			'create room categories
-			For Each roomCategory As EditableRoomCategoryModel In Rule.RoomCategories
-				If Not _originalRoomCategories.Any( Function( r ) r.Id = roomCategory.Id )
-					Await _createRoomCategoryFactory.ExecuteAsync( roomCategory.Name, roomCategory.UnitPrice )
-				End If
-			Next
+			'split room categories actions
+			Dim roomCategoriesToRemove = New List(Of String)
+			Dim roomCategoriesToUpdate = New List(Of EditableRoomCategoryModel)
+			Dim roomCategoriesToCreate = New List(Of EditableRoomCategoryModel)
 
-			'update customer categories
-			Dim removeCustomerCategoryIds = New List(Of String)
+			SpitRoomCategoryActions( roomCategoriesToRemove, roomCategoriesToUpdate, roomCategoriesToCreate )
+			Await UpdateRoomCategories( roomCategoriesToUpdate )
+			Await CreateRoomCategories( roomCategoriesToCreate )
+			If roomCategoriesToRemove.Count > 0
+				If Await ConfirmDeleteRoomCategories()
+					Await RemoveRoomCategores( roomCategoriesToRemove )
+				End If
+			End If
+
+			'split customer categories actions
+			Dim customerCategoriesToRemove = New List(Of String)
+			Dim customerCategoriesToUpdate = New List(Of EditableCustomerCategoryModel)
+			Dim customerCategoriesToCreate = New List(Of EditableCustomerCategoryModel)
+
+			SplitCustomerCategoryActions( customerCategoriesToRemove, customerCategoriesToUpdate, customerCategoriesToCreate )
+			Await UpdateCustomerCategories( customerCategoriesToUpdate )
+			Await CreateCustomerCategories( customerCategoriesToCreate )
+			If customerCategoriesToRemove.Count > 0
+				If Await ConfirmDeleteCustomerCategories()
+					Await RemoveCustomerCategories( customerCategoriesToRemove )
+				End If
+			End If
+
+			'exit
+			CloseStaticWindowDialog()
+			Await ActualExitAsync()
+		End Function
+
+		' Parameters actions
+		Private Async Function UpdateParameters() As Task(Of Boolean)
+			Dim err = Await _updateParametersCommand.ExecuteAsync( Rule.RoomCapacity, Rule.ExtraCoefficient / 100 )
+
+			If Not String.IsNullOrEmpty( err )
+				ShowStaticBottomNotification( StaticNotificationType.Error, err )
+				Return False
+			End If
+
+			Return True
+		End Function
+
+		' Customer category actions
+		Private Sub SplitCustomerCategoryActions( customerCategoriesToRemove As List(Of String),
+		                                          customerCategoriesToUpdate As List(Of EditableCustomerCategoryModel),
+		                                          customerCategoriesToCreate As List(Of EditableCustomerCategoryModel) )
 			For Each customerCategory As EditableCustomerCategoryModel In _originalCustomerCategories
-				Dim newCustomerCategory = Rule.CustomerCategories.FirstOrDefault( Function( r ) r.Id = customerCategory.Id )
-				If newCustomerCategory Is Nothing
-					removeCustomerCategoryIds.Add( customerCategory.Id )
+				Dim oldCustomerCategory = Rule.CustomerCategories.FirstOrDefault( Function( c ) c.Id = customerCategory.Id )
+				If oldCustomerCategory Is Nothing
+					customerCategoriesToRemove.Add( customerCategory.Id )
 				Else
-					Await _
-						_updateCustomerCategoryCommand.ExecuteAsync( newCustomerCategory.Id, newCustomerCategory.Name, newCustomerCategory.Coefficient )
+					customerCategoriesToUpdate.Add( oldCustomerCategory )
 				End If
 			Next
-			'remove customer categories
-			For Each removeId As String In removeCustomerCategoryIds
-				Await _removeCustomerCategoryCommand.ExecuteAsync( removeId )
-			Next
-			'create customer categories
 			For Each customerCategory As EditableCustomerCategoryModel In Rule.CustomerCategories
 				If Not _originalCustomerCategories.Any( Function( r ) r.Id = customerCategory.Id )
-					Await _createCustomerCategoryFactory.ExecuteAsync( customerCategory.Name, customerCategory.Coefficient )
+					customerCategoriesToCreate.Add( customerCategory )
 				End If
 			Next
+		End Sub
 
-			Await ActualExitAsync()
+		Private Async Function CreateCustomerCategories( list As List(Of EditableCustomerCategoryModel) ) As Task
+			For Each model As EditableCustomerCategoryModel In list
+				Await _createCustomerCategoryFactory.ExecuteAsync( model.Name, model.Coefficient )
+			Next
+		End Function
+
+		Private Async Function UpdateCustomerCategories( list As List(Of EditableCustomerCategoryModel) ) As Task
+			For Each model As EditableCustomerCategoryModel In list
+				Await _updateCustomerCategoryCommand.ExecuteAsync( model.Id, model.Name, model.Coefficient )
+			Next
+		End Function
+
+		Private Async Function RemoveCustomerCategories( list As List(Of String) ) As Task
+			For Each id As String In list
+				Await _removeCustomerCategoryCommand.ExecuteAsync( id )
+			Next
+		End Function
+
+		' Room category actions
+		Private Sub SpitRoomCategoryActions( roomCategoriesToRemove As List(Of String),
+		                                     roomCategoriesToUpdate As List(Of EditableRoomCategoryModel),
+		                                     roomCategoriesToCreate As List(Of EditableRoomCategoryModel) )
+			For Each roomCategory As EditableRoomCategoryModel In _originalRoomCategories
+				Dim oldRoomCategory = Rule.RoomCategories.FirstOrDefault( Function( r ) r.Id = roomCategory.Id )
+				If oldRoomCategory Is Nothing
+					roomCategoriesToRemove.Add( roomCategory.Id )
+				Else
+					roomCategoriesToUpdate.Add( oldRoomCategory )
+				End If
+			Next
+			For Each roomCategory As EditableRoomCategoryModel In Rule.RoomCategories
+				If Not _originalRoomCategories.Any( Function( r ) r.Id = roomCategory.Id )
+					roomCategoriesToCreate.Add( roomCategory )
+				End If
+			Next
+		End Sub
+
+		Private Async Function CreateRoomCategories( list As List(Of EditableRoomCategoryModel) ) As Task
+			For Each model As EditableRoomCategoryModel In list
+				Await _createRoomCategoryFactory.ExecuteAsync( model.Name, model.UnitPrice )
+			Next
+		End Function
+
+		Private Async Function UpdateRoomCategories( list As List(Of EditableRoomCategoryModel) ) As Task
+			For Each model As EditableRoomCategoryModel In list
+				Await _updateRoomCategoryCommand.ExecuteAsync( model.Id, model.Name, model.UnitPrice )
+			Next
+		End Function
+
+		Private Async Function RemoveRoomCategores( list As List(Of String) ) As Task
+			For Each id As String In list
+				Await _removeRoomCategoryCommand.ExecuteAsync( id )
+			Next
 		End Function
 	End Class
 End Namespace
