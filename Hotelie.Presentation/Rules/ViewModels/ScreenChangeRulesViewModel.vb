@@ -21,7 +21,6 @@ Namespace Rules.ViewModels
 		Implements INeedWindowModals
 
 		' Dependencies
-		Private ReadOnly _authentication As IAuthentication
 		Private ReadOnly _getParametersQuery As IGetParametersQuery
 		Private ReadOnly _getAllRoomCategoriesQuery As IGetAllRoomCategoriesQuery
 		Private ReadOnly _getAllCustomerCategoriesQuery As IGetAllCustomerCategoriesQuery
@@ -44,14 +43,7 @@ Namespace Rules.ViewModels
 		' Bind models
 		Public Property Rule As EditableRuleModel
 
-		Public ReadOnly Property Username As String
-			Get
-				Return _authentication.LoggedAccount?.Username
-			End Get
-		End Property
-
-		Public Sub New( authentication As IAuthentication,
-		                getParametersQuery As IGetParametersQuery,
+		Public Sub New( getParametersQuery As IGetParametersQuery,
 		                getAllRoomCategoriesQuery As IGetAllRoomCategoriesQuery,
 		                getAllCustomerCategoriesQuery As IGetAllCustomerCategoriesQuery,
 		                updateParametersCommand As IUpdateParametersCommand,
@@ -63,7 +55,6 @@ Namespace Rules.ViewModels
 		                createCustomerCategoryFactory As ICreateCustomerCategoryFactory,
 		                inventory As IInventory )
 			MyBase.New( ColorZoneMode.Accent )
-			_authentication = authentication
 			_getParametersQuery = getParametersQuery
 			_getAllRoomCategoriesQuery = getAllRoomCategoriesQuery
 			_getAllCustomerCategoriesQuery = getAllCustomerCategoriesQuery

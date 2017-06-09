@@ -3,12 +3,14 @@ Imports Caliburn.Micro
 Imports Hotelie.Application.Leases.Models
 Imports Hotelie.Application.Leases.Queries
 Imports Hotelie.Application.Rooms.Models
+Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
 Imports Hotelie.Presentation.Common.Infrastructure
 Imports Hotelie.Presentation.Leases.Models
 
 Namespace Leases.ViewModels
 	Public Class ScreenLeasesListViewModel
+		Inherits AppScreen
 		Implements IChild(Of LeasesWorkspaceViewModel)
 		Implements INeedWindowModals
 		Implements ILeasesListPresenter
@@ -18,19 +20,20 @@ Namespace Leases.ViewModels
 		Private ReadOnly _getAllLeasesQuery As IGetAllLeasesQuery
 
 		' Parent 
-		Public Property Parent As Object Implements IChild.Parent
-
 		Public Property ParentWorkspace As LeasesWorkspaceViewModel Implements IChild(Of LeasesWorkspaceViewModel).Parent
-			get
+			Get
 				Return TryCast(Parent, LeasesWorkspaceViewModel)
 			End Get
 			Set
+				If IsNothing( Value ) OrElse Equals( Value, Parent ) Then Return
 				Parent = value
+				NotifyOfPropertyChange( Function() ParentWorkspace )
 			End Set
 		End Property
 
 		Public Sub New( workspace As LeasesWorkspaceViewModel,
 		                getAllLeasesQuery As IGetAllLeasesQuery )
+			MyBase.New(MaterialDesignThemes.Wpf.ColorZoneMode.PrimaryDark)
 			ParentWorkspace = workspace
 			_getAllLeasesQuery = getAllLeasesQuery
 			TryCast(Me, IRoomPresenter).RegisterInventory()

@@ -14,9 +14,6 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <commonConverters:StringToUpperConverter x:Key="StringToUpperConverter" />
-            <commonConverters:DoubleToStringConverter x:Key="DoubleToStringConverter" />
-            <commonConverters:IntegerToStringConverter x:Key="IntegerToStringConverter" />
-            <commonConverters:DecimalToCurrencyStringConverter x:Key="DecimalToCurrencyStringConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -71,7 +68,7 @@
                         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
                                    FontSize="15"
                                    Opacity="0.9"
-                                   Text="{Binding Username, Converter={StaticResource StringToUpperConverter}}" />
+                                   Text="{Binding Path=Parent.LoggedAccount.Username, Converter={StaticResource StringToUpperConverter}}" />
                     </StackPanel>
                 </DockPanel>
             </Grid>

@@ -46,14 +46,14 @@ Namespace Leases.ViewModels
 		Private _roomCapacity As Integer
 
 		' Parent
-		Public Property Parent As Object Implements IChild.Parent
-
 		Public Property ParentWorkspace As LeasesWorkspaceViewModel Implements IChild(Of LeasesWorkspaceViewModel).Parent
 			Get
 				Return TryCast(Parent, LeasesWorkspaceViewModel)
 			End Get
 			Set
+				If IsNothing( Value ) OrElse Equals( Value, Parent ) Then Return
 				Parent = value
+				NotifyOfPropertyChange( Function() ParentWorkspace )
 			End Set
 		End Property
 

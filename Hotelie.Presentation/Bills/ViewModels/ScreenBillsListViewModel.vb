@@ -1,11 +1,13 @@
 ﻿Imports Caliburn.Micro
 Imports Hotelie.Application.Bills.Models
 Imports Hotelie.Application.Bills.Queries
+Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
 Imports Hotelie.Presentation.Common.Infrastructure
 
 Namespace Bills.ViewModels
 	Public Class ScreenBillsListViewModel
+		Inherits AppScreen
 		Implements IBillsListPresenter,
 		           INeedWindowModals
 
@@ -20,6 +22,7 @@ Namespace Bills.ViewModels
 		' Initializations
 		Public Sub New( workspace As BillsWorkspaceViewModel,
 		                getAllBillsQuery As IGetAllBillsQuery )
+			MyBase.New( MaterialDesignThemes.Wpf.ColorZoneMode.PrimaryDark )
 			_getAllBillsQuery = getAllBillsQuery
 			RegisterInventory()
 

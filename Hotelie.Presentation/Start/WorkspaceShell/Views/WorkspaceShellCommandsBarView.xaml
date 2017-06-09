@@ -120,7 +120,7 @@
                                    FontSize="15"
                                    FontWeight="Medium"
                                    Foreground="{DynamicResource SecondaryAccentForegroundBrush}"
-                                   Text="{Binding Username, Mode=OneWay}" />
+                                   Text="{Binding Path=Parent.LoggedAccount.Username, Mode=OneWay}" />
                     </materialDesign:Card>
                 </materialDesign:PopupBox.ToggleContent>
 

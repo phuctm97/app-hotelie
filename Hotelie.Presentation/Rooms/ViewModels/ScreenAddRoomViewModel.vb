@@ -20,9 +20,15 @@ Namespace Rooms.ViewModels
 		Private ReadOnly _inventory As IInventory
 
 		' Parent
-		Public Property Parent As Object Implements IChild.Parent
-
 		Public Property ParentWorkspace As RoomsWorkspaceViewModel Implements IChild(Of RoomsWorkspaceViewModel).Parent
+			Get
+				Return TryCast(Parent, RoomsWorkspaceViewModel)
+			End Get
+			Set
+				Parent = value
+				NotifyOfPropertyChange(Function() ParentWorkspace)
+			End Set
+		End Property
 
 		' Initializations
 		Sub New( workspace As RoomsWorkspaceViewModel,

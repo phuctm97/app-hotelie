@@ -2,13 +2,14 @@
 Imports Caliburn.Micro
 Imports Hotelie.Application.Rooms.Models
 Imports Hotelie.Application.Rooms.Queries
+Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
 Imports Hotelie.Presentation.Common.Infrastructure
 Imports Hotelie.Presentation.Rooms.Models
 
 Namespace Rooms.ViewModels
 	Public Class ScreenRoomsListViewModel
-		Inherits PropertyChangedBase
+		Inherits AppScreen
 		Implements IRoomsListPresenter,
 		           INeedWindowModals,
 		           IChild(Of RoomsWorkspaceViewModel)
@@ -22,17 +23,13 @@ Namespace Rooms.ViewModels
 		Private ReadOnly _getAllRoomCategoriesQuery As IGetAllRoomCategoriesQuery
 
 		' Parent
-		Public Property Parent As Object Implements IChild.Parent
-
 		Public Property ParentWorkspace As RoomsWorkspaceViewModel Implements IChild(Of RoomsWorkspaceViewModel).Parent
 			Get
 				Return TryCast(Parent, RoomsWorkspaceViewModel)
 			End Get
 			Set
-				If IsNothing( Value ) OrElse Equals( Value, Parent ) Then Return
 				Parent = value
-				NotifyOfPropertyChange( Function() Parent )
-				NotifyOfPropertyChange( Function() ParentWorkspace )
+				NotifyOfPropertyChange(Function() ParentWorkspace)
 			End Set
 		End Property
 
@@ -84,6 +81,8 @@ Namespace Rooms.ViewModels
 		Public Sub New( workspace As RoomsWorkspaceViewModel,
 		                getAllRoomsQuery As IGetAllRoomsQuery,
 		                getAllRoomCategoriesQuery As IGetAllRoomCategoriesQuery )
+			MyBase.New( MaterialDesignThemes.Wpf.ColorZoneMode.PrimaryDark )
+
 			ParentWorkspace = workspace
 			_getAllRoomsQuery = getAllRoomsQuery
 			_getAllRoomCategoriesQuery = getAllRoomCategoriesQuery

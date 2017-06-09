@@ -3,7 +3,7 @@ Imports MaterialDesignThemes.Wpf
 
 Namespace Common
 	Public Interface IAppScreen
-		Inherits IHaveDisplayName
+		Inherits IHaveDisplayName, IChild
 
 		ReadOnly Property ColorMode As ColorZoneMode
 

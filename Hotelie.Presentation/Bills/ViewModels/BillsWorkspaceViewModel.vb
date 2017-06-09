@@ -1,10 +1,12 @@
-﻿Imports Hotelie.Application.Bills.Factories
+﻿Imports Caliburn.Micro
+Imports Hotelie.Application.Bills.Factories
 Imports Hotelie.Application.Bills.Queries
 Imports Hotelie.Application.Leases.Queries
 Imports Hotelie.Application.Rooms.Queries
 Imports Hotelie.Application.Services.Infrastructure
 Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
+Imports Hotelie.Presentation.Start.WorkspaceShell.ViewModels
 Imports MaterialDesignThemes.Wpf
 
 Namespace Bills.ViewModels

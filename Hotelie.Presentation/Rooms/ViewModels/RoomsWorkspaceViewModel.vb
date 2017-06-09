@@ -37,14 +37,13 @@ Namespace Rooms.ViewModels
 		End Property
 
 		' Parent
-		Public Property Parent As Object Implements IChild.Parent
-
 		Public Property ParentShell As WorkspaceShellViewModel Implements IChild(Of WorkspaceShellViewModel).Parent
 			Get
 				Return TryCast(Parent, WorkspaceShellViewModel)
 			End Get
 			Set
 				Parent = Value
+				NotifyOfPropertyChange(Function() ParentShell)
 			End Set
 		End Property
 

@@ -45,9 +45,7 @@ Namespace Start.WorkspaceShell.ViewModels
 
 			'load workspaces
 			WorkspaceRooms = IoC.Get(Of RoomsWorkspaceViewModel)
-			WorkspaceRooms.ParentShell = Me
 			WorkspaceLeases = IoC.Get(Of LeasesWorkspaceViewModel)
-			WorkspaceLeases.ParentShell = Me
 			WorkspaceBills = IoC.Get(Of BillsWorkspaceViewModel)
 			WorkspaceReports = IoC.Get(Of ReportsWorkspaceViewModel)
 			Workspaces = New BindableCollection(Of IAppScreen) _
@@ -60,8 +58,9 @@ Namespace Start.WorkspaceShell.ViewModels
 				WorkspaceRooms, WorkspaceLeases, WorkspaceBills, WorkspaceReports,
 				ScreenChangeRules, ScreenManageUsers}
 
-			'subcribe exited event
+			'subcribe exited event and parent
 			For Each screen As IAppScreen In Screens
+				screen.Parent = Me
 				AddHandler screen.OnExited, AddressOf OnScreenExited
 			Next
 
@@ -110,6 +109,12 @@ Namespace Start.WorkspaceShell.ViewModels
 				If Value < 0 OrElse Value >= Screens.Count Then Return
 				UpdateScreenAsync( value )
 			End Set
+		End Property
+
+		Public ReadOnly Property LoggedAccount As Account
+			Get
+				Return _authentication.LoggedAccount
+			End Get
 		End Property
 
 		' Navigations

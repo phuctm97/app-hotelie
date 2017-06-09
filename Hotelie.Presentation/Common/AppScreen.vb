@@ -7,6 +7,7 @@ Namespace Common
 		Implements IAppScreen
 
 		Private _displayName As String
+		Private _parent As Object
 
 		Sub New( colorMode As ColorZoneMode )
 			Me.ColorMode = colorMode
@@ -22,6 +23,17 @@ Namespace Common
 				If String.IsNullOrEmpty( Value ) OrElse String.Equals( Value, _displayName ) Then Return
 				_displayName = value
 				NotifyOfPropertyChange( Function() DisplayName )
+			End Set
+		End Property
+
+		Public Property Parent As Object Implements IChild.Parent
+			Get
+				Return _parent
+			End Get
+			Set
+				If Equals( Value, _parent ) Then Return
+				_parent = value
+				NotifyOfPropertyChange( Function() Parent )
 			End Set
 		End Property
 

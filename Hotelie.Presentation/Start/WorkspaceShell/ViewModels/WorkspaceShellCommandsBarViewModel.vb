@@ -13,12 +13,6 @@ Namespace Start.WorkspaceShell.ViewModels
 		Private ReadOnly _authentication As IAuthentication
 
 		' Binding properties
-		Public ReadOnly Property Username As String
-			Get
-				Return _authentication.LoggedAccount?.Username
-			End Get
-		End Property
-
 		Public ReadOnly Property CanChangeRules As Boolean
 			Get
 				Return True
@@ -45,7 +39,6 @@ Namespace Start.WorkspaceShell.ViewModels
 		End Sub
 
 		Public Sub Reload()
-			NotifyOfPropertyChange( Function() Username )
 			NotifyOfPropertyChange( Function() CanChangeRules )
 		End Sub
 

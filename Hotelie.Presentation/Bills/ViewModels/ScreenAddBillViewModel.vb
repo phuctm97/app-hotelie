@@ -30,9 +30,15 @@ Namespace Bills.ViewModels
 		Private ReadOnly _inventory As IInventory
 
 		' Parent
-		Public Property Parent As Object Implements IChild.Parent
-
 		Public Property ParentWorkspace As BillsWorkspaceViewModel Implements IChild(Of BillsWorkspaceViewModel).Parent
+			Get
+				Return TryCast(Parent, BillsWorkspaceViewModel)
+			End Get
+			Set
+				Parent = Value
+				NotifyOfPropertyChange(Function() ParentWorkspace)
+			End Set
+		End Property
 
 		' Initializations
 		Shared Sub New()

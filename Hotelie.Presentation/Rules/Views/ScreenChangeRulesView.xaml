@@ -82,7 +82,7 @@
                         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
                                    FontSize="15"
                                    Opacity="0.9"
-                                   Text="{Binding Username, Converter={StaticResource StringToUpperConverter}}" />
+                                   Text="{Binding Path=Parent.LoggedAccount.Username, Converter={StaticResource StringToUpperConverter}}" />
                     </StackPanel>
                 </DockPanel>
             </Grid>
