@@ -25,6 +25,7 @@ Namespace Common
         Public Property Users As DbSet(of User) Implements IDatabaseContext.Users
         Public Property Bills As DbSet(of Bill) Implements IDatabaseContext.Bills
         Public Property BillDetails As DbSet(Of BillDetail) Implements IDatabaseContext.BillDetails
+        Public Property UserPermissions As DbSet(Of UserPermission) Implements IDatabaseContext.UserPermissions
 
 
         Public Overrides Function [Set] (Of TEntity As Class)() As DbSet(Of TEntity) Implements IDatabaseContext.[Set]
@@ -50,7 +51,7 @@ Namespace Common
         Public Sub New(connectionString As String)
 
             MyBase.New(connectionString)
-
+            
             Database.SetInitializer(New DatabaseInitializer)
         End Sub
 
@@ -67,6 +68,7 @@ Namespace Common
             modelBuilder.Configurations.Add(New CustomerCategoryConfiguration)
             modelBuilder.Configurations.Add(New BillConfiguration)
             modelBuilder.Configurations.Add(New BillDetailConfiguration)
+            modelBuilder.Configurations.Add(New UserPermissionConfiguration)
         End Sub
     End Class
 End Namespace

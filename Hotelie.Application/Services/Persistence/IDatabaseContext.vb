@@ -20,6 +20,7 @@ Namespace Services.Persistence
         Property Users As DbSet(Of User)
         Property Bills As DbSet(Of Bill)
         Property BillDetails As DbSet(Of BillDetail)
+        Property UserPermissions As DbSet(Of UserPermission)
         Function [Set](Of TEntity As Class) As DbSet(Of TEntity)
         Function SaveChanges() As Integer
         Function SaveChangesAsync() As Task(Of Integer)

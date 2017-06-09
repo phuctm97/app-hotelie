@@ -18,11 +18,6 @@ Namespace Users
                 IsUnicode(False).
                 HasMaxLength(50)
 
-            HasMany(Function(p) p.Permissions).WithMany().Map(Sub(m)
-                m.MapLeftKey("UserId")
-                m.MapRightKey("PermissionId")
-                m.ToTable("UserPermissions")
-                                                                 End Sub)
         End Sub
     End Class
 End Namespace

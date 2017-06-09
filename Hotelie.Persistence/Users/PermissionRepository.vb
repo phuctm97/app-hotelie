@@ -13,13 +13,11 @@ Namespace Users
         End Sub
 
         Public Function GetPermission(user As User) As List(Of Permission) Implements IPermissionRepository.GetPermission
-            Dim userFinder = _databaseService.Context.Users.FirstOrDefault(Function(p)p.Id = user.Id)
-            Return userFinder.Permissions
+            Return Nothing
         End Function
 
-        Public Async Function GetPermissionAsync(user As User) As Task(Of List(Of Permission)) Implements IPermissionRepository.GetPermissionAsync
-            Dim userFinder = Await _databaseService.Context.Users.FirstOrDefaultAsync(Function(p)p.Id = user.Id)
-            Return userFinder.Permissions
+        Public Function GetPermissionAsync(user As User) As Task(Of List(Of Permission)) Implements IPermissionRepository.GetPermissionAsync
+            Throw New Exception
         End Function
     End Class
 End NameSpace
