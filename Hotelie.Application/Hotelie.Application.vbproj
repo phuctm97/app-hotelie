@@ -198,6 +198,7 @@
     <Compile Include="Services\Persistence\IUnitOfWork.vb" />
     <Compile Include="Services\Persistence\IUserRepository.vb" />
     <Compile Include="Users\IUserModel.vb" />
+    <Compile Include="Users\UserModel.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

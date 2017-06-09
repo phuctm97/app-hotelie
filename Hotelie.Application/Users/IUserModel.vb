@@ -1,10 +1,10 @@
 ﻿Namespace Users
     Public Interface IUserModel
-        ReadOnly Property CanConfigRoom As Boolean
-        ReadOnly Property CanAddLease As Boolean
-        ReadOnly Property CanEditLease As Boolean
-        ReadOnly Property CanAddUser As Boolean
-        ReadOnly Property CanEditRule As Boolean
-        ReadOnly Property CanMakeBill As Boolean
+        ReadOnly Property CouldConfigRoom As Boolean
+        ReadOnly Property CouldAddLease As Boolean
+        ReadOnly Property CouldEditLease As Boolean
+        ReadOnly Property CouldRemoveLease As Boolean
+        ReadOnly Property CouldAddManageUser As Boolean
+        ReadOnly Property CouldEditRule As Boolean
     End Interface
 End NameSpace

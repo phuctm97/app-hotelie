@@ -32,7 +32,6 @@ Namespace Common
                 Dim parameters = _context.Parameters.ToList()
                 Dim permissions = _context.Permissions.ToList()
                 Dim roomCategories = _context.RoomCategories.ToList()
-                Dim userCategories = _context.UserCategories.ToList()
                 Dim users = _context.Users.ToList()
                 Dim customerCategories = _context.CustomerCategories.ToList()
 

@@ -15,7 +15,6 @@ Namespace Services.Persistence
         Property Permissions As DbSet(Of Permission)
         Property RoomCategories As DbSet(Of RoomCategory)
         Property Rooms As DbSet(Of Room)
-        Property UserCategories As DbSet(Of UserCategory)
         Property Users As DbSet(Of User)
         Property Bills As DbSet(Of Bill)
         Property BillDetails As DbSet(Of BillDetail)

@@ -41,7 +41,6 @@ Namespace Common
         End Function
 
         Public Property Permissions As DbSet(of Permission) Implements IDatabaseContext.Permissions
-        Public Property UserCategories As DbSet(of UserCategory) Implements IDatabaseContext.UserCategories
 
         Public Sub New()
             MyBase.New("data source=.;initial catalog=HotelieDatabase;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
@@ -63,7 +62,6 @@ Namespace Common
             modelBuilder.Configurations.Add(New ParameterConfiguration)
             modelBuilder.Configurations.Add(New UserConfiguration)
             modelBuilder.Configurations.Add(New PermissionConfiguration)
-            modelBuilder.Configurations.Add(New UserCategoryConfiguration)
             modelBuilder.Configurations.Add(New LeaseConfiguration)
             modelBuilder.Configurations.Add(New LeaseDetailConfiguration)
             modelBuilder.Configurations.Add(New CustomerCategoryConfiguration)

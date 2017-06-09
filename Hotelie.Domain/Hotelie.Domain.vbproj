@@ -88,7 +88,6 @@
     <Compile Include="Rooms\Room.vb" />
     <Compile Include="Rooms\RoomCategory.vb" />
     <Compile Include="Users\User.vb" />
-    <Compile Include="Users\UserCategory.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

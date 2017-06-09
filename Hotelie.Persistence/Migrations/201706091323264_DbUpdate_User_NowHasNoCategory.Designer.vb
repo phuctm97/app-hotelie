@@ -6,14 +6,14 @@ Imports System.Resources
 
 Namespace Migrations
     <GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")>
-    Public NotInheritable Partial Class INITIAL
+    Public NotInheritable Partial Class DbUpdate_User_NowHasNoCategory
         Implements IMigrationMetadata
     
-        Private ReadOnly Resources As New ResourceManager(GetType(INITIAL))
+        Private ReadOnly Resources As New ResourceManager(GetType(DbUpdate_User_NowHasNoCategory))
         
         Private ReadOnly Property IMigrationMetadata_Id() As String Implements IMigrationMetadata.Id
             Get
-                Return "201706080726357_INITIAL"
+                Return "201706091323264_DbUpdate_User_NowHasNoCategory"
             End Get
         End Property
         
