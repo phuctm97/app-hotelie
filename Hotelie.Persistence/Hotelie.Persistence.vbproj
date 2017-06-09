@@ -86,10 +86,10 @@
     <Compile Include="Leases\LeaseConfiguration.vb" />
     <Compile Include="Leases\LeaseDetailConfiguration.vb" />
     <Compile Include="Leases\LeaseRepository.vb" />
-    <Compile Include="Migrations\201706080726357_INITIAL.Designer.vb">
-      <DependentUpon>201706080726357_INITIAL.vb</DependentUpon>
+    <Compile Include="Migrations\201706091527169_DbInitial.Designer.vb">
+      <DependentUpon>201706091527169_DbInitial.vb</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201706080726357_INITIAL.vb" />
+    <Compile Include="Migrations\201706091527169_DbInitial.vb" />
     <Compile Include="Migrations\Configuration.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -112,13 +112,14 @@
     <Compile Include="Rooms\RoomCategoryConfiguration.vb" />
     <Compile Include="Rooms\RoomConfiguration.vb" />
     <Compile Include="Rooms\RoomRepository.vb" />
-    <Compile Include="Users\UserCategoryConfiguration.vb" />
+    <Compile Include="Users\PermissionRepository.vb" />
     <Compile Include="Users\UserConfiguration.vb" />
+    <Compile Include="Users\UserPermissionConfiguration.vb" />
     <Compile Include="Users\UserRepository.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201706080726357_INITIAL.resx">
-      <DependentUpon>201706080726357_INITIAL.vb</DependentUpon>
+    <EmbeddedResource Include="Migrations\201706091527169_DbInitial.resx">
+      <DependentUpon>201706091527169_DbInitial.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

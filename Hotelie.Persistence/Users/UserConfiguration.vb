@@ -18,8 +18,6 @@ Namespace Users
                 IsUnicode(False).
                 HasMaxLength(50)
 
-            HasRequired(Function(p)p.Category).
-                WithMany().Map(Function(m)m.MapKey("CategoryId"))
         End Sub
     End Class
 End Namespace

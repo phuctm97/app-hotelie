@@ -122,6 +122,7 @@
     <Compile Include="Query\TestGetRoomsListQuery.vb" />
     <Compile Include="Rooms\Commands\TestRoomCommands.vb" />
     <Compile Include="Rooms\Factories\TestRoomFactories.vb" />
+    <Compile Include="User\TestGetUserPermission.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
