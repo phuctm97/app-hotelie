@@ -105,7 +105,7 @@ Namespace Rules.ViewModels
 
 		Private Sub ReloadRules()
 			Dim model = _getParametersQuery.Execute()
-			Rule.ExtraCoefficient = model.ExtraCoefficient * 100
+			Rule.ExtraCoefficient = model.ExtraCoefficient*100
 			Rule.RoomCapacity = model.RoomCapacity
 
 			_originalExtraCoefficient = Rule.ExtraCoefficient
@@ -137,7 +137,7 @@ Namespace Rules.ViewModels
 
 		Private Async Function ReloadRulesAsync() As Task
 			Dim model = Await _getParametersQuery.ExecuteAsync()
-			Rule.ExtraCoefficient = model.ExtraCoefficient
+			Rule.ExtraCoefficient = model.ExtraCoefficient*100
 			Rule.RoomCapacity = model.RoomCapacity
 
 			_originalExtraCoefficient = Rule.ExtraCoefficient
@@ -248,8 +248,8 @@ Namespace Rules.ViewModels
 			                                  True,
 			                                  False )
 			Dim result As String = Await ShowDynamicWindowDialog( dialog )
-			If String.Equals( result, $"TIẾP TỤC XÓA" ) Then Return 0
-			Return 1
+			If String.Equals( result, $"TIẾP TỤC XÓA" ) Then Return True
+			Return False
 		End Function
 
 		Private Async Function ConfirmDeleteCustomerCategories() As Task(Of Boolean)
@@ -259,18 +259,62 @@ Namespace Rules.ViewModels
 			                                  True,
 			                                  False )
 			Dim result As String = Await ShowDynamicWindowDialog( dialog )
-			If String.Equals( result, $"TIẾP TỤC XÓA" ) Then Return 0
-			Return 1
+			If String.Equals( result, $"TIẾP TỤC XÓA" ) Then Return True
+			Return False
 		End Function
 
 		Public Overrides Async Function ActualSaveAsync() As Task
 			'try update parameters
-			Dim err = Await _updateParametersCommand.ExecuteAsync( Rule.RoomCapacity, Rule.ExtraCoefficient )
+			Dim err = Await _updateParametersCommand.ExecuteAsync( Rule.RoomCapacity, Rule.ExtraCoefficient/100 )
 
 			If Not String.IsNullOrEmpty( err )
 				ShowStaticBottomNotification( StaticNotificationType.Error, err )
 				Return
 			End If
+
+			'update room categories
+			Dim removeRoomCategoryIds = New List(Of String)
+			For Each roomCategory As EditableRoomCategoryModel In _originalRoomCategories
+				Dim newRoomCategory = Rule.RoomCategories.FirstOrDefault( Function( r ) r.Id = roomCategory.Id )
+				If newRoomCategory Is Nothing
+					removeRoomCategoryIds.Add( roomCategory.Id )
+				Else
+					Await _
+						_updateRoomCategoryCommand.ExecuteAsync( newRoomCategory.Id, newRoomCategory.Name, newRoomCategory.UnitPrice )
+				End If
+			Next
+			'remove room categories
+			For Each removeId As String In removeRoomCategoryIds
+				Await _removeRoomCategoryCommand.ExecuteAsync( removeId )
+			Next
+			'create room categories
+			For Each roomCategory As EditableRoomCategoryModel In Rule.RoomCategories
+				If Not _originalRoomCategories.Any( Function( r ) r.Id = roomCategory.Id )
+					Await _createRoomCategoryFactory.ExecuteAsync( roomCategory.Name, roomCategory.UnitPrice )
+				End If
+			Next
+
+			'update customer categories
+			Dim removeCustomerCategoryIds = New List(Of String)
+			For Each customerCategory As EditableCustomerCategoryModel In _originalCustomerCategories
+				Dim newCustomerCategory = Rule.CustomerCategories.FirstOrDefault( Function( r ) r.Id = customerCategory.Id )
+				If newCustomerCategory Is Nothing
+					removeCustomerCategoryIds.Add( customerCategory.Id )
+				Else
+					Await _
+						_updateCustomerCategoryCommand.ExecuteAsync( newCustomerCategory.Id, newCustomerCategory.Name, newCustomerCategory.Coefficient )
+				End If
+			Next
+			'remove customer categories
+			For Each removeId As String In removeCustomerCategoryIds
+				Await _removeCustomerCategoryCommand.ExecuteAsync( removeId )
+			Next
+			'create customer categories
+			For Each customerCategory As EditableCustomerCategoryModel In Rule.CustomerCategories
+				If Not _originalCustomerCategories.Any( Function( r ) r.Id = customerCategory.Id )
+					Await _createCustomerCategoryFactory.ExecuteAsync( customerCategory.Name, customerCategory.Coefficient )
+				End If
+			Next
 
 			Await ActualExitAsync()
 		End Function
