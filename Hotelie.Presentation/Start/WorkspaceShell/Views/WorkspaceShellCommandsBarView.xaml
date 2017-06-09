@@ -139,7 +139,7 @@
 
                     <!--Settings-->
                     <Button
-                        Visibility="{Binding CanChangeRules, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Visibility="{Binding Path=Parent.LoggedAccount.CouldEditRules, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
                         cal:Message.Attach="NavigateToScreenChangeRules">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Settings"
@@ -152,7 +152,7 @@
 
                     <!--Manage users-->
                     <Button
-                        Visibility="{Binding CanChangeRules, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Visibility="{Binding Path=Parent.LoggedAccount.CouldManageUsers, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
                         cal:Message.Attach="NavigateToScreenManageUsers">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="AccountMultiple"

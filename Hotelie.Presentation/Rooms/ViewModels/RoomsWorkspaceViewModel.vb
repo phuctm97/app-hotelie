@@ -43,7 +43,7 @@ Namespace Rooms.ViewModels
 			End Get
 			Set
 				Parent = Value
-				NotifyOfPropertyChange(Function() ParentShell)
+				NotifyOfPropertyChange( Function() ParentShell )
 			End Set
 		End Property
 

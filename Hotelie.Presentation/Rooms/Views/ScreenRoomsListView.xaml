@@ -25,6 +25,7 @@
             <converters:RoomStateToStringConverter x:Key="RoomStateToStringConverter" />
             <converters:RoomStateToVisibiltyConverter x:Key="RoomStateToVisibiltyConverter" />
             <converters:RoomStateToActionNameConverter x:Key="RoomStateToActionNameConverter" />
+            <converters:RoomStateAndPermissionsToVisibilityConverter x:Key="RoomStateAndPermissionsToVisibilityConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -272,6 +273,12 @@
                                                     Style="{DynamicResource MaterialDesignFlatAccentButton}"
                                                     Content="{Binding Path=Model.State, Converter={StaticResource RoomStateToActionNameConverter}}"
                                                     >
+                                                <Button.Visibility>
+                                                    <MultiBinding Converter="{StaticResource RoomStateAndPermissionsToVisibilityConverter}">
+                                                        <Binding Path="Model.State" />
+                                                        <Binding Path="DataContext.Parent.Parent.LoggedAccount.CouldAddLease" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                                    </MultiBinding>
+                                                </Button.Visibility>
                                                 <Button.Foreground>
                                                     <SolidColorBrush Color="{Binding Path=Model.State, Converter={StaticResource RoomStateToBackColorConverter}}" />
                                                 </Button.Foreground>
@@ -305,6 +312,7 @@
                 HorizontalAlignment="Right"
                 ToolTip="Thêm phòng"
                 Margin="0 -119 32 0"
+                Visibility="{Binding Path=Parent.Parent.LoggedAccount.CouldConfigRoom, Converter={StaticResource BooleanToVisibilityConverter}}"
                 cal:Message.Attach="NavigateToScreenAddRoom">
             <materialDesign:PackIcon Width="24" Height="24"
                                      Kind="Plus" />

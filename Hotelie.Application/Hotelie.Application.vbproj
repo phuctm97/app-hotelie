@@ -207,9 +207,9 @@
     <Compile Include="Users\Factories\CreateUserFactory.vb" />
     <Compile Include="Users\Factories\ICreateUserFactory.vb" />
     <Compile Include="Users\Queries\GetAllUsersQuery.vb" />
-    <Compile Include="Users\Queries\GetUserPermissions.vb" />
+    <Compile Include="Users\Queries\GetUserPermissionsQuery.vb" />
     <Compile Include="Users\Queries\IGetAllUsersQuery.vb" />
-    <Compile Include="Users\Queries\IGetUserPermissions.vb" />
+    <Compile Include="Users\Queries\IGetUserPermissionsQuery.vb" />
     <Compile Include="Users\UserModels\IUserModel.vb" />
     <Compile Include="Users\UserModels\UserModel.vb" />
   </ItemGroup>

@@ -13,6 +13,7 @@ Imports Hotelie.Application.Rooms.Factories
 Imports Hotelie.Application.Rooms.Queries
 Imports Hotelie.Application.Services.Authentication
 Imports Hotelie.Application.Services.Persistence
+Imports Hotelie.Application.Users.Queries
 Imports Hotelie.Persistence.Bills
 Imports Hotelie.Persistence.Common
 Imports Hotelie.Persistence.Leases
@@ -61,6 +62,8 @@ Public Class AppBootstrapper
 			New ContainerControlledLifetimeManager )
 		_container.RegisterType(Of IParameterRepository, ParameterRepository)(
 			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IPermissionRepository, PermissionRepository)(
+			New ContainerControlledLifetimeManager() )
 
 		' Queries
 		_container.RegisterType(Of IGetAllRoomsQuery, GetAllRoomsQuery)(
@@ -84,9 +87,11 @@ Public Class AppBootstrapper
 		_container.RegisterType(Of IGetParametersQuery, GetParametersQuery)(
 			New ContainerControlledLifetimeManager() )
 		_container.RegisterType(Of IGetRoomCategoriesProfit, GetRoomCategoriesProfit)(
-			New ContainerControlledLifetimeManager())
-				_container.RegisterType(Of IGetRoomUsedDaysReport, GetRoomUsedDaysReport)(
-			New ContainerControlledLifetimeManager())
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IGetRoomUsedDaysReport, GetRoomUsedDaysReport)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IGetUserPermissionsQuery, GetUserPermissionsQuery)(
+			New ContainerControlledLifetimeManager() )
 
 		' Commands
 		_container.RegisterType(Of IRemoveRoomCategoryCommand, RemoveRoomCategoryCommand)(

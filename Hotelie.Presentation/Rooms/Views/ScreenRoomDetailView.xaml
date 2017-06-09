@@ -14,12 +14,14 @@
     <!--Resources-->
     <UserControl.Resources>
         <ResourceDictionary>
+            <commonConverters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <commonConverters:DecimalToCurrencyStringConverter x:Key="DecimalToCurrencyStringConverter" />
             <converters:RoomStateToBackColorConverter x:Key="RoomStateToBackColorConverter" />
             <converters:RoomStateToStringConverter x:Key="RoomStateToStringConverter" />
             <converters:RoomStateToIconKindConverter x:Key="RoomStateToIconKindConverter" />
             <converters:RoomStateToActionNameConverter x:Key="RoomStateToActionNameConverter" />
             <converters:RoomNameWhenEmptyConverter x:Key="RoomNameWhenEmptyConverter" />
+            <converters:RoomStateAndPermissionsToVisibilityConverter x:Key="RoomStateAndPermissionsToVisibilityConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -84,6 +86,7 @@
                             Style="{DynamicResource MaterialDesignToolButton}"
                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                             FontSize="18"
+                            Visibility="{Binding Path=Parent.Parent.LoggedAccount.CouldConfigRoom, Converter={StaticResource BooleanToVisibilityConverter}}"
                             Content="XÓA"
                             cal:Message.Attach="DeleteAsync" />
 
@@ -92,6 +95,7 @@
                             Padding="8" Height="Auto"
                             Style="{DynamicResource MaterialDesignToolButton}"
                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            Visibility="{Binding Path=Parent.Parent.LoggedAccount.CouldConfigRoom, Converter={StaticResource BooleanToVisibilityConverter}}"
                             FontSize="18"
                             Content="LƯU"
                             cal:Message.Attach="SaveAsync" />
@@ -108,7 +112,8 @@
                     <TextBlock Text="Tên phòng" IsEnabled="False"
                                Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                FontSize="15" Margin="0 0 0 4" />
-                    <TextBox materialDesign:HintAssist.Hint="Tên phòng"
+                    <TextBox materialDesign:HintAssist.Hint="Tên phòng" 
+                             IsEnabled="{Binding Path=Parent.Parent.LoggedAccount.CouldConfigRoom}"
                              Text="{Binding Path=Room.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              FontSize="35" />
                 </StackPanel>
@@ -119,7 +124,7 @@
                                Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                FontSize="15" Margin="0 0 0 4" />
                     <ComboBox materialDesign:HintAssist.Hint="Loại phòng"
-                              FontSize="20"
+                              FontSize="20" IsEnabled="{Binding Path=Parent.Parent.LoggedAccount.CouldConfigRoom}"
                               ItemsSource="{Binding Categories}"
                               DisplayMemberPath="Name"
                               SelectedItem="{Binding Path=Room.Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -133,7 +138,7 @@
                     <TextBox materialDesign:HintAssist.Hint="Thông tin thêm về phòng"
                              TextWrapping="Wrap"
                              AcceptsReturn="True"
-                             VerticalScrollBarVisibility="Auto"
+                             VerticalScrollBarVisibility="Auto" IsEnabled="{Binding Path=Parent.Parent.LoggedAccount.CouldConfigRoom}"
                              FontSize="15"
                              Padding="0 0 4 0"
                              Height="Auto"
@@ -171,6 +176,12 @@
                         <Button.Foreground>
                             <SolidColorBrush Color="{Binding Path=Room.State, Mode=OneWay, Converter={StaticResource RoomStateToBackColorConverter}}" />
                         </Button.Foreground>
+                        <Button.Visibility>
+                            <MultiBinding Converter="{StaticResource RoomStateAndPermissionsToVisibilityConverter}">
+                                <Binding Path="Room.State" />
+                                <Binding Path="DataContext.Parent.Parent.LoggedAccount.CouldAddLease" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                            </MultiBinding>
+                        </Button.Visibility>
                     </Button>
                 </StackPanel>
             </StackPanel>

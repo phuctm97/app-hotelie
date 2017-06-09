@@ -61,6 +61,7 @@ Namespace Leases.ViewModels
 		                createLeaseFactory As ICreateLeaseFactory,
 		                inventory As IInventory )
 			MyBase.New( MaterialDesignThemes.Wpf.ColorZoneMode.PrimaryDark )
+
 			ScreenLeasesList = New ScreenLeasesListViewModel( Me,
 			                                                  getAllLeasesQuery )
 

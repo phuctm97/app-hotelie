@@ -11,7 +11,7 @@ Namespace Services.Authentication
         Public Const PasswordInvalidError As String = "Mật khẩu không chính xác."
 
         Private ReadOnly _userRepository As IUserRepository
-        Private ReadOnly _getUserPermissions As IGetUserPermissions
+        Private ReadOnly _getUserPermissionsQuery As IGetUserPermissionsQuery
 
         Public Property LoggedAccount As Account Implements IAuthentication.LoggedAccount
 
@@ -47,7 +47,7 @@ Namespace Services.Authentication
             End If
 
             Dim account = New Account() With {.Username = username}
-            Dim userPermissions = _getUserPermissions.Execute(username)
+            Dim userPermissions = _getUserPermissionsQuery.Execute(username)
             account.CouldAddLease = userPermissions.CouldAddLease
             account.CouldConfigRoom = userPermissions.CouldConfigRoom
             account.CouldEditLease = userPermissions.CouldEditLease
@@ -68,10 +68,10 @@ Namespace Services.Authentication
             LoggedAccount = Nothing
         End Sub
 
-        Public Sub New(userRepository As IUserRepository, getUserPermissions As IGetUserPermissions)
+        Public Sub New(userRepository As IUserRepository, getUserPermissionsQuery As IGetUserPermissionsQuery)
             Logout()
             _userRepository = userRepository
-            _getUserPermissions = getUserPermissions
+            _getUserPermissionsQuery = getUserPermissionsQuery
         End Sub
 
         Public Async Function TryLoginAsync(username As String, password As String) As Task(Of IEnumerable(Of String)) Implements IAuthentication.TryLoginAsync
@@ -97,7 +97,7 @@ Namespace Services.Authentication
             End If
 
             Dim account = New Account() With {.Username = username}
-            Dim userPermissions = Await _getUserPermissions.ExecuteAsync(username)
+            Dim userPermissions = Await _getUserPermissionsQuery.ExecuteAsync(username)
             account.CouldAddLease = userPermissions.CouldAddLease
             account.CouldConfigRoom = userPermissions.CouldConfigRoom
             account.CouldEditLease = userPermissions.CouldEditLease

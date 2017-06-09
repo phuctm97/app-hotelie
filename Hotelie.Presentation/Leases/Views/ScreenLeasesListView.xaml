@@ -284,6 +284,7 @@
                 HorizontalAlignment="Right"
                 ToolTip="Lập phiếu thuê phòng mới"
                 Margin="0 -119 32 0"
+                Visibility="{Binding Path=Parent.Parent.LoggedAccount.CouldAddLease, Converter={StaticResource BooleanToVisibilityConverter}}"
                 cal:Message.Attach="NavigateToScreenAddLease">
             <materialDesign:PackIcon Width="24" Height="24"
                                      Kind="Plus" />
