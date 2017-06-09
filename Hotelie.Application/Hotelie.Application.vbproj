@@ -177,10 +177,12 @@
     <Compile Include="Rooms\Models\RoomModel.vb" />
     <Compile Include="Rooms\Queries\GetAllRoomCategoriesQuery.vb" />
     <Compile Include="Rooms\Queries\GetAllRoomsQuery.vb" />
+    <Compile Include="Rooms\Queries\GetCanRemoveRoomCategory.vb" />
     <Compile Include="Rooms\Queries\GetRoomCategoryQuery.vb" />
     <Compile Include="Rooms\Queries\GetRooomQuery.vb" />
     <Compile Include="Rooms\Queries\IGetAllRoomCategoriesQuery.vb" />
     <Compile Include="Rooms\Queries\IGetAllRoomsQuery.vb" />
+    <Compile Include="Rooms\Queries\IGetCanRemoveRoomCategoryQuery.vb" />
     <Compile Include="Rooms\Queries\IGetRoomCategoryQuery.vb" />
     <Compile Include="Rooms\Queries\IGetRoomQuery.vb" />
     <Compile Include="Services\Authentication\Account.vb" />
@@ -198,10 +200,18 @@
     <Compile Include="Services\Persistence\IRoomRepository.vb" />
     <Compile Include="Services\Persistence\IUnitOfWork.vb" />
     <Compile Include="Services\Persistence\IUserRepository.vb" />
-    <Compile Include="Users\GetUserPermissions.vb" />
-    <Compile Include="Users\IGetUserPermissions.vb" />
-    <Compile Include="Users\IUserModel.vb" />
-    <Compile Include="Users\UserModel.vb" />
+    <Compile Include="Users\Commands\IRemoveUserCommand.vb" />
+    <Compile Include="Users\Commands\IUpdateUserPermissionCommand.vb" />
+    <Compile Include="Users\Commands\RemoveUserCommand.vb" />
+    <Compile Include="Users\Commands\UpdateUserPermissionCommand.vb" />
+    <Compile Include="Users\Factories\CreateUserFactory.vb" />
+    <Compile Include="Users\Factories\ICreateUserFactory.vb" />
+    <Compile Include="Users\Queries\GetAllUsersQuery.vb" />
+    <Compile Include="Users\Queries\GetUserPermissions.vb" />
+    <Compile Include="Users\Queries\IGetAllUsersQuery.vb" />
+    <Compile Include="Users\Queries\IGetUserPermissions.vb" />
+    <Compile Include="Users\UserModels\IUserModel.vb" />
+    <Compile Include="Users\UserModels\UserModel.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

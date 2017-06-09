@@ -1,7 +1,8 @@
 ﻿Imports Hotelie.Application.Services.Persistence
+Imports Hotelie.Application.Users.UserModels
 Imports Hotelie.Domain.Users
 
-Namespace Users
+Namespace Users.Queries
     Public Class GetUserPermissions
         Implements IGetUserPermissions
 
