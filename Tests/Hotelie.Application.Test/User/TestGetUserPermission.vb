@@ -8,6 +8,7 @@ Namespace User
     Public Class TestGetUserPermission
         Private  _databaseService As IDatabaseService
         Private  _userRepository As IUserRepository
+        Private  _permissionRepository As IPermissionRepository
         Private _getUserPermissions As IGetUserPermissions
 
         <TestInitialize>
@@ -15,7 +16,8 @@ Namespace User
             _databaseService = New DatabaseService()
             _databaseService.SetDatabaseConnection($"KHUONG-ASUS\SQLEXPRESS", $"HotelieDatabase")
             _userRepository = New UserRepository(_databaseService)
-            _getUserPermissions = New GetUserPermissions(_userRepository)
+            _permissionRepository = New PermissionRepository(_databaseService)
+            _getUserPermissions = New GetUserPermissions(_userRepository,_permissionRepository)
         End Sub
 
         <TestCleanup>

@@ -35,7 +35,8 @@ Namespace Common
                 Dim roomCategories = _context.RoomCategories.ToList()
                 Dim users = _context.Users.ToList()
                 Dim customerCategories = _context.CustomerCategories.ToList()
-                
+                Dim userpermission = _context.UserPermissions.ToList()
+
                 For Each room As Room In rooms
                     room.State = 0
                 Next

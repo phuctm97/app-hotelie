@@ -6,19 +6,23 @@ Namespace Users
         Implements IGetUserPermissions
 
         Private ReadOnly _userRepository As IUserRepository
+        Private ReadOnly _permissionRepository As IPermissionRepository
 
-        Sub New(userRepository As IUserRepository)
+        Sub New(userRepository As IUserRepository, permissionRepository As IPermissionRepository)
             _userRepository = userRepository
+            _permissionRepository = permissionRepository
         End Sub
 
         Public Function Execute(id As String) As IUserModel Implements IGetUserPermissions.Execute
             Dim user = _userRepository.GetOne(id)
-            Return New UserModel(user)
+            Dim permissions = _permissionRepository.GetPermission(user)
+            Return New UserModel(user,permissions)
         End Function
 
         Public Async Function ExecuteAsync(id As String) As Task(Of IUserModel) Implements IGetUserPermissions.ExecuteAsync
             Dim user = Await _userRepository.GetOneAsync(id)
-            Return New UserModel(user)
+            Dim permissions = Await _permissionRepository.GetPermissionAsync(user)
+            Return New UserModel(user,permissions)
         End Function
     End Class
 End NameSpace

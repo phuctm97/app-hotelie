@@ -12,12 +12,12 @@ Namespace Users
             _databaseService = databaseService
         End Sub
 
-        Public Function GetPermission(user As User) As List(Of Permission) Implements IPermissionRepository.GetPermission
-            Return Nothing
+        Public Function GetPermission(user As User) As List(Of UserPermission) Implements IPermissionRepository.GetPermission
+            Return _databaseService.Context.UserPermissions.Where(Function(p)p.User.Id= user.id).ToList()
         End Function
 
-        Public Function GetPermissionAsync(user As User) As Task(Of List(Of Permission)) Implements IPermissionRepository.GetPermissionAsync
-            Throw New Exception
+        Public Async Function GetPermissionAsync(user As User) As Task(Of List(Of UserPermission)) Implements IPermissionRepository.GetPermissionAsync
+            Return Await _databaseService.Context.UserPermissions.Where(Function(p)p.User.Id= user.id).ToListAsync()
         End Function
     End Class
 End NameSpace
