@@ -81,6 +81,33 @@ Namespace Rooms.ViewModels
 			_originalRoomNote = Room.Note
 		End Sub
 
+		' Loading
+		Public Sub Reload() Implements IRoomPresenter.Reload
+			Throw New NotImplementedException()
+		End Sub
+
+		Public Async Function ReloadAsync() As Task Implements IRoomPresenter.ReloadAsync
+			Await ReloadRoomCategoriesAsync()
+			ReloadValues()
+		End Function
+
+		Private Async Function ReloadRoomCategoriesAsync() As Task
+			Categories.Clear()
+			Categories.AddRange( Await _getAllRoomsCategoriesQuery.ExecuteAsync() )
+		End Function
+
+		Private Sub ReloadValues()
+			Room.Id = String.Empty
+			Room.Name = String.Empty
+			Room.Note = String.Empty
+			Room.Category = Categories.FirstOrDefault()
+			Room.State = 0
+
+			_originalRoomName = Room.Name
+			_originalRoomCategoryId = Room.Category.Id
+			_originalRoomNote = Room.Note
+		End Sub
+
 		' Binding model
 		Public ReadOnly Property Room As EditableRoomModel
 
@@ -257,7 +284,8 @@ Namespace Rooms.ViewModels
 			Dim category = Categories.FirstOrDefault( Function( c ) c.Id = model.Category.Id )
 			If IsNothing( category )
 				ShowStaticBottomNotification( StaticNotificationType.Warning,
-				                              $"Không tìm thấy loại phòng {model.Category.Name} trong danh sách loại phòng để cập nhật" )
+				                              $"Không tìm thấy loại phòng {model.Category.Name _
+					                            } trong danh sách loại phòng để cập nhật" )
 				Return
 			End If
 

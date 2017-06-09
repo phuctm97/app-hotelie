@@ -86,9 +86,6 @@ Namespace Rooms.ViewModels
 			DisplayCode = 0
 		End Sub
 
-		Public Sub Reload()
-		End Sub
-
 		' Navigations
 		Public Sub NavigateToScreenRoomsList()
 			DisplayCode = 0

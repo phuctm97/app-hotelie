@@ -101,6 +101,35 @@ Namespace Bills.ViewModels
 			Bill.Details.Clear()
 		End Sub
 
+		' Loading
+		Public Sub Reload() Implements IRoomsListPresenter.Reload
+			Throw New NotImplementedException()
+		End Sub
+
+		Private Sub Reload_() Implements ILeasesListPresenter.Reload
+		End Sub
+
+		Public Function ReloadAsync_() As Task Implements ILeasesListPresenter.ReloadAsync
+			Return Task.FromResult( True )
+		End Function
+
+		Public Async Function ReloadAsync() As Task Implements IRoomsListPresenter.ReloadAsync
+			Rooms.Clear()
+			Rooms.AddRange( (Await _getAllRoomsQuery.ExecuteAsync()).Where( Function( r ) r.State = 1 ) )
+
+			Leases.Clear()
+			Leases.AddRange( (Await _getAllLeasesQuery.ExecuteAsync()).Where( Function( l ) Not l.IsPaid ) )
+			ReloadValues()
+		End Function
+
+		Private Sub ReloadValues()
+			Bill.CustomerName = String.Empty
+			Bill.CustomerAddress = String.Empty
+			Bill.CreateDate = Today
+			Bill.TotalExpense = 0
+			Bill.Details.Clear()
+		End Sub
+
 		' Domain actions
 
 		Public Sub InsertRoomId( id As String )
@@ -328,7 +357,7 @@ Namespace Bills.ViewModels
 
 			Dim lease = Leases.FirstOrDefault( Function( l ) l.Id = model.Id )
 			If lease IsNot Nothing
-					Leases( Leases.IndexOf( lease ) ) = model
+				Leases( Leases.IndexOf( lease ) ) = model
 				if Bill.Details IsNot Nothing
 					For Each detail As EditableBillDetailModel In Bill.Details
 						If detail.Lease?.Id = model.Id Then detail.Lease = model

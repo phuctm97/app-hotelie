@@ -172,6 +172,68 @@ Namespace Rooms.ViewModels
 			States.Add( 2 ) 'filter all
 		End Sub
 
+		' Loading
+		Public Sub Reload() Implements IRoomsListPresenter.Reload
+			Throw New NotImplementedException()
+		End Sub
+
+		Public Async Function ReloadAsync() As Task Implements IRoomsListPresenter.ReloadAsync
+			Await ReloadRoomsAsync()
+
+			Await ReloadRoomCategoriesAsync()
+
+			ReloadRoomStates()
+
+			ReloadRoomUnitPrices()
+
+			RefreshRoomsListVisibility()
+		End Function
+
+		Private Async Function ReloadRoomsAsync() As Task
+			Rooms.Clear()
+			Rooms.AddRange( (Await _getAllRoomsQuery.ExecuteAsync()).Select( Function( r ) New FilterableRoomModel With
+				                                                               {.Model=r, .IsFiltersMatch=False} ) )
+		End Function
+
+		Private Async Function ReloadRoomCategoriesAsync() As Task
+			Categories.Clear()
+			Categories.AddRange( Await _getAllRoomCategoriesQuery.ExecuteAsync() )
+			Categories.Add( New FakeRoomCategoryModel() ) 'filter all
+		End Function
+
+		Private Sub ReloadRoomUnitPrices()
+			Dim minPrices = New List(Of Decimal)
+			Dim maxPrices = New List(Of Decimal)
+
+			For i = 0 To Categories.Count - 2
+				Dim price = Categories( i ).UnitPrice
+
+				If Not minPrices.Contains( price ) Then minPrices.Add( price )
+
+				If Not maxPrices.Contains( price ) Then maxPrices.Add( price )
+			Next
+
+			minPrices.Sort( Function( a,
+				              b ) a < b )
+			minPrices.Add( - 1 )
+
+			maxPrices.Sort( Function( a,
+				              b ) a > b )
+			maxPrices.Add( - 1 )
+
+			MinUnitPrices.Clear()
+			MinUnitPrices.AddRange( minPrices )
+
+			MaxUnitPrices.Clear()
+			MaxUnitPrices.AddRange( maxPrices )
+		End Sub
+
+		Private Sub ReloadRoomStates()
+			States.Clear()
+			States.AddRange( {0, 1} )
+			States.Add( 2 ) 'filter all
+		End Sub
+
 		' Business Actions
 
 		Public Sub DoRoomAction( model As IRoomModel )
@@ -294,7 +356,7 @@ Namespace Rooms.ViewModels
 		Public Sub OnRoomUpdated( model As IRoomModel ) _
 			Implements IRoomsListPresenter.OnRoomUpdated
 			If IsNothing( model ) OrElse String.IsNullOrEmpty( model.Id ) Then Return
-		
+
 			' find room
 			Dim room = Rooms.FirstOrDefault( Function( r ) r.Model?.Id = model.Id )
 			If room Is Nothing

@@ -54,7 +54,6 @@ Namespace Start.WorkspaceShell.ViewModels
 
 			'load other screens
 			ScreenChangeRules = IoC.Get(Of ScreenChangeRulesViewModel)
-			ScreenChangeRules.Parent = Me
 			Screens = New BindableCollection(Of IAppScreen) From {
 				WorkspaceRooms, WorkspaceLeases, WorkspaceBills, WorkspaceReports,
 				ScreenChangeRules}
@@ -67,10 +66,6 @@ Namespace Start.WorkspaceShell.ViewModels
 			'initial screen
 			DisplayWorkspaceCode = 0
 		End Sub
-
-		Public Async Function ReloadAllWorkspaces() As Task
-			Await Task.FromResult( True )
-		End Function
 
 		' Bind models
 		Public ReadOnly Property CommandsBar As IWindowCommandsBar Implements IShell.CommandsBar

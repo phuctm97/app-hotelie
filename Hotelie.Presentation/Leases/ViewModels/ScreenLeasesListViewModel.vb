@@ -66,6 +66,31 @@ Namespace Leases.ViewModels
 			RefreshLeasesVisibity()
 		End Function
 
+		' Loading
+		Public Sub Reload() Implements ILeasesListPresenter.Reload
+			Throw New NotImplementedException()
+		End Sub
+
+		Private Sub Reload_() Implements IRoomPresenter.Reload
+		End Sub
+
+		Public Function ReloadAsync_() As Task Implements IRoomPresenter.ReloadAsync
+			Return Task.FromResult( True )
+		End Function
+
+		Public Async Function ReloadAsync() As Task Implements ILeasesListPresenter.ReloadAsync
+			Await ReloadLeasesAsync()
+		End Function
+
+		Private Async Function ReloadLeasesAsync() As Task
+			Leases.Clear()
+			Leases.AddRange(
+				(Await _getAllLeasesQuery.ExecuteAsync()).
+				               Where( Function( l ) Not l.IsPaid ).
+				               Select( Function( l ) New UpdatableLeaseModel( l ) With {.IsFiltersMatch=False} ) )
+			RefreshLeasesVisibity()
+		End Function
+
 		' Bind models
 
 		Public ReadOnly Property FilterModel As FilterLeaseModel
@@ -126,7 +151,6 @@ Namespace Leases.ViewModels
 					Leases.Add( New UpdatableLeaseModel( model ) )
 				End If
 			End If
-
 
 			RefreshLeasesVisibity()
 		End Sub

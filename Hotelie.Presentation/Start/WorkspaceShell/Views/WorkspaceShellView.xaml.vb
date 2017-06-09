@@ -5,7 +5,7 @@ Namespace Start.WorkspaceShell.Views
 		Implements INeedWindowModals
 
 		Private Sub OnShellLoaded( sender As Object,
-		                                 e As RoutedEventArgs )
+		                           e As RoutedEventArgs )
 		End Sub
 	End Class
 End Namespace

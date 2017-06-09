@@ -42,6 +42,19 @@ Namespace Bills.ViewModels
 				              Take( MaxDisplayCapacity ) )
 		End Function
 
+		' Loading
+		Public Sub Reload() Implements IBillsListPresenter.Reload
+			Throw New NotImplementedException()
+		End Sub
+
+		Public Async Function ReloadAsync() As Task Implements IBillsListPresenter.ReloadAsync
+			Bills.Clear()
+			Bills.AddRange(
+				(Await _getAllBillsQuery.ExecuteAsync()).
+				              OrderByDescending( Function( b ) b.CreateDate ).
+				              Take( MaxDisplayCapacity ) )
+		End Function
+
 		' Infrastructure
 		Public Sub OnBillAdded( model As IBillModel ) Implements IBillsListPresenter.OnBillAdded
 			If IsNothing( model ) OrElse String.IsNullOrEmpty( model.Id ) Then Return
@@ -54,6 +67,13 @@ Namespace Bills.ViewModels
 			Else
 				Bills.Add( model )
 			End If
+
+			' reorder
+			Dim bakBills = New List(Of IBillModel)
+			bakBills.AddRange( Bills.OrderByDescending( Function( b ) b.CreateDate ) )
+
+			Bills.Clear()
+			Bills.AddRange( bakBills )
 		End Sub
 
 		Public Sub OnBillRemoved( id As String ) Implements IBillsListPresenter.OnBillRemoved

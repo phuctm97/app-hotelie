@@ -131,6 +131,30 @@ Namespace Leases.ViewModels
 			Lease.Details.Clear()
 		End Sub
 
+		' Loading
+		Public Sub Reload() Implements IRoomsListPresenter.Reload
+			Throw New NotImplementedException()
+		End Sub
+
+		Public Async Function ReloadAsync() As Task Implements IRoomsListPresenter.ReloadAsync
+			Rooms.Clear()
+			Rooms.AddRange( (Await _getAllRoomsQuery.ExecuteAsync()).Where( Function( r ) r.State = 0 ) )
+
+			CustomerCategories.Clear()
+			CustomerCategories.AddRange( Await _getAllCustomerCategoriesQuery.ExecuteAsync() )
+
+			_roomCapacity = (Await _getParametersQuery.ExecuteAsync()).RoomCapacity
+			ReloadValues()
+		End Function
+
+		Private Sub ReloadValues()
+			Lease.Id = String.Empty
+			Lease.Room = Rooms.FirstOrDefault()
+			Lease.CheckinDate = Today
+			Lease.ExpectedCheckoutDate = Today
+			Lease.Details.Clear()
+		End Sub
+
 		' Domain actions
 
 		Public Sub SetRoomId( id As String )

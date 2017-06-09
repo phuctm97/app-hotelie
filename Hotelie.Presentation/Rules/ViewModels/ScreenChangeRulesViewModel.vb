@@ -1,5 +1,4 @@
 ﻿Imports System.Collections.Specialized
-Imports Caliburn.Micro
 Imports Hotelie.Application.Leases.Commands
 Imports Hotelie.Application.Leases.Factories
 Imports Hotelie.Application.Leases.Queries
@@ -9,18 +8,17 @@ Imports Hotelie.Application.Rooms.Commands
 Imports Hotelie.Application.Rooms.Factories
 Imports Hotelie.Application.Rooms.Queries
 Imports Hotelie.Application.Services.Authentication
+Imports Hotelie.Application.Services.Infrastructure
 Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
 Imports Hotelie.Presentation.Rules.Models
 Imports Hotelie.Presentation.Start.MainWindow.Models
-Imports Hotelie.Presentation.Start.WorkspaceShell.ViewModels
 Imports MaterialDesignThemes.Wpf
 
 Namespace Rules.ViewModels
 	Public Class ScreenChangeRulesViewModel
 		Inherits AppScreenHasSaving
 		Implements INeedWindowModals
-		Implements IChild(Of WorkspaceShellViewModel)
 
 		' Dependencies
 		Private ReadOnly _authentication As IAuthentication
@@ -34,6 +32,7 @@ Namespace Rules.ViewModels
 		Private ReadOnly _removeCustomerCategoryCommand As IRemoveCustomerCategoryCommand
 		Private ReadOnly _createRoomCategoryFactory As ICreateRoomCategoryCommand
 		Private ReadOnly _createCustomerCategoryFactory As ICreateCustomerCategoryFactory
+		Private ReadOnly _inventory As IInventory
 
 		' Backing fields
 		Private _isEdited As Boolean
@@ -41,17 +40,6 @@ Namespace Rules.ViewModels
 		Private _originalExtraCoefficient As Double
 		Private ReadOnly _originalCustomerCategories As List(Of EditableCustomerCategoryModel)
 		Private ReadOnly _originalRoomCategories As List(Of EditableRoomCategoryModel)
-
-		Public Property Parent As WorkspaceShellViewModel Implements IChild(Of WorkspaceShellViewModel).Parent
-
-		Private Property IChild_Parent As Object Implements IChild.Parent
-			Get
-				Return Parent
-			End Get
-			Set
-				Parent = Value
-			End Set
-		End Property
 
 		' Bind models
 		Public Property Rule As EditableRuleModel
@@ -72,7 +60,8 @@ Namespace Rules.ViewModels
 		                removeRoomCategoryCommand As IRemoveRoomCategoryCommand,
 		                removeCustomerCategoryCommand As IRemoveCustomerCategoryCommand,
 		                createRoomCategoryFactory As ICreateRoomCategoryCommand,
-		                createCustomerCategoryFactory As ICreateCustomerCategoryFactory )
+		                createCustomerCategoryFactory As ICreateCustomerCategoryFactory,
+		                inventory As IInventory )
 			MyBase.New( ColorZoneMode.Accent )
 			_authentication = authentication
 			_getParametersQuery = getParametersQuery
@@ -85,6 +74,7 @@ Namespace Rules.ViewModels
 			_removeCustomerCategoryCommand = removeCustomerCategoryCommand
 			_createRoomCategoryFactory = createRoomCategoryFactory
 			_createCustomerCategoryFactory = createCustomerCategoryFactory
+			_inventory = inventory
 
 			DisplayName = "Thay đổi quy định"
 			Rule = New EditableRuleModel()
@@ -297,9 +287,7 @@ Namespace Rules.ViewModels
 			End If
 
 			'reload workspaces
-			If Parent IsNot Nothing
-				Await Parent.ReloadAllWorkspaces()
-			End If
+			Await _inventory.ReloadAsync()
 
 			'exit
 			CloseStaticWindowDialog()
@@ -351,7 +339,11 @@ Namespace Rules.ViewModels
 
 		Private Async Function RemoveCustomerCategories( list As List(Of String) ) As Task
 			For Each id As String In list
-				Await _removeCustomerCategoryCommand.ExecuteAsync( id )
+				Dim err = Await _removeCustomerCategoryCommand.ExecuteAsync( id )
+								If Not String.IsNullOrEmpty( err )
+					ShowStaticBottomNotification( StaticNotificationType.Error, err )
+					Exit For
+				End If
 			Next
 		End Function
 
@@ -388,7 +380,11 @@ Namespace Rules.ViewModels
 
 		Private Async Function RemoveRoomCategores( list As List(Of String) ) As Task
 			For Each id As String In list
-				Await _removeRoomCategoryCommand.ExecuteAsync( id )
+				Dim err = Await _removeRoomCategoryCommand.ExecuteAsync( id )
+				If Not String.IsNullOrEmpty( err )
+					ShowStaticBottomNotification( StaticNotificationType.Error, err )
+					Exit For
+				End If
 			Next
 		End Function
 	End Class

@@ -3,6 +3,10 @@
 		Sub Track( childInventory As Object,
 		           code As Integer )
 
+		Sub Reload()
+
+		Function ReloadAsync() As Task
+
 		Sub OnRoomAdded( id As String )
 
 		Function OnRoomAddedAsync( id As String ) As Task

@@ -68,6 +68,25 @@ Namespace Rooms.ViewModels
 			Room.State = 0
 		End Sub
 
+		' Loading
+		Public Async Function ReloadAsync() As Task
+			Await ReloadRoomCategoriesAsync()
+			ReloadValues()
+		End Function
+
+		Private Async Function ReloadRoomCategoriesAsync() As Task
+			Categories.Clear()
+			Categories.AddRange( Await _getAllRoomCategoriesQuery.ExecuteAsync() )
+		End Function
+
+		Private Sub ReloadValues()
+			Room.Id = String.Empty
+			Room.Name = String.Empty
+			Room.Category = Categories.FirstOrDefault()
+			Room.Note = String.Empty
+			Room.State = 0
+		End Sub
+
 		' Binding model
 		Public ReadOnly Property Room As EditableRoomModel
 
