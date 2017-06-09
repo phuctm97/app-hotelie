@@ -40,7 +40,7 @@ Namespace Start.MainWindow.ViewModels
 			_staticWindowDialogRefs = 0
 		End Sub
 
-		' Window properties
+		' Bind properties
 
 		Public Property Title As String Implements IMainWindow.Title
 			Get
@@ -101,6 +101,7 @@ Namespace Start.MainWindow.ViewModels
 			End Set
 		End Property
 
+		' Bind models
 		Public ReadOnly Property StaticTopNotification As StaticNotificationModel
 
 		Public ReadOnly Property StaticBottomNotification As StaticNotificationModel
@@ -124,10 +125,10 @@ Namespace Start.MainWindow.ViewModels
 		                                          closePrevious As Boolean )
 			MyBase.ChangeActiveItem( newItem, closePrevious )
 
-			' update view
+			'update view
 			NotifyOfPropertyChange( Function() Shell )
 
-			' update window display name
+			'update window display name
 			If Shell Is Nothing
 				DisplayName = "Hotelie"
 			Else
@@ -152,7 +153,7 @@ Namespace Start.MainWindow.ViewModels
 			Windows.Application.Current.MainWindow.Close()
 		End Sub
 
-		' Notification
+		' Notifications
 		Public Sub ShowStaticTopNotification( type As Integer,
 		                                      text As String ) Implements IMainWindow.ShowStaticTopNotification
 			If StaticTopNotification.Type <> StaticNotificationType.None Then Return
@@ -177,7 +178,7 @@ Namespace Start.MainWindow.ViewModels
 			StaticBottomNotification.Text = String.Empty
 		End Sub
 
-		' Dialog
+		' Dialogs
 		Public Sub ShowStaticWindowDialog( content As Object ) _
 			Implements IMainWindow.ShowStaticWindowDialog
 			_staticWindowDialogRefs += 1
