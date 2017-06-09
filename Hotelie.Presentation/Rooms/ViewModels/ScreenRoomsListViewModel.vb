@@ -37,22 +37,50 @@ Namespace Rooms.ViewModels
 		End Property
 
 		' Binding models
+
 		Public ReadOnly Property Rooms As IObservableCollection(Of FilterableRoomModel)
+
+		Public Property FilterRoomModel As FilterRoomModel
+			Get
+				Return _filterRoomModel
+			End Get
+			Set
+				If IsNothing( Value ) OrElse Equals( Value, _filterRoomModel ) Then Return
+				_filterRoomModel = value
+				NotifyOfPropertyChange( Function() FilterRoomModel )
+			End Set
+		End Property
+
+		Public Property SortRoomModel As SortRoomModel
+			Get
+				Return _sortRoomModel
+			End Get
+			Set
+				If IsNothing( Value ) OrElse Equals( Value, _sortRoomModel ) Then Return
+				_sortRoomModel = value
+				NotifyOfPropertyChange( Function() SortRoomModel )
+			End Set
+		End Property
 
 		' Binding data
 		' ReSharper disable once UnassignedGetOnlyAutoProperty
+
 		Public ReadOnly Property Categories As IObservableCollection(Of IRoomCategoryModel)
 
 		' ReSharper disable once UnassignedGetOnlyAutoProperty
+
 		Public ReadOnly Property States As IObservableCollection(Of Integer)
 
 		' ReSharper disable once UnassignedGetOnlyAutoProperty
+
 		Public ReadOnly Property MinUnitPrices As IObservableCollection(Of Decimal)
 
 		' ReSharper disable once UnassignedGetOnlyAutoProperty
+
 		Public ReadOnly Property MaxUnitPrices As IObservableCollection(Of Decimal)
 
 		' Initialization
+
 		Public Sub New( workspace As RoomsWorkspaceViewModel,
 		                getAllRoomsQuery As IGetAllRoomsQuery,
 		                getAllRoomCategoriesQuery As IGetAllRoomCategoriesQuery )
@@ -145,6 +173,7 @@ Namespace Rooms.ViewModels
 		End Sub
 
 		' Business Actions
+
 		Public Sub DoRoomAction( model As IRoomModel )
 			If IsNothing( model ) Then Return
 
@@ -157,17 +186,6 @@ Namespace Rooms.ViewModels
 		End Sub
 
 		' Filtering
-
-		Public Property FilterRoomModel As FilterRoomModel
-			Get
-				Return _filterRoomModel
-			End Get
-			Set
-				If IsNothing( Value ) OrElse Equals( Value, _filterRoomModel ) Then Return
-				_filterRoomModel = value
-				NotifyOfPropertyChange( Function() FilterRoomModel )
-			End Set
-		End Property
 
 		Public Sub ResetFilters()
 			RemoveHandler FilterRoomModel.PropertyChanged, AddressOf OnFilterRoomModelUpdated
@@ -194,6 +212,11 @@ Namespace Rooms.ViewModels
 			FilterRoomModel.State = state
 		End Sub
 
+		Private Sub OnFilterRoomModelUpdated( sender As Object,
+		                                      e As PropertyChangedEventArgs )
+			RefreshRoomsListVisibility()
+		End Sub
+
 		Public Sub RefreshRoomsListVisibility()
 			For Each filterableRoomModel As FilterableRoomModel In Rooms
 				If IsNothing( FilterRoomModel ) Then filterableRoomModel.IsFiltersMatch = True
@@ -203,23 +226,11 @@ Namespace Rooms.ViewModels
 			Next
 		End Sub
 
-		Private Sub OnFilterRoomModelUpdated( sender As Object,
-		                                      e As PropertyChangedEventArgs )
-			RefreshRoomsListVisibility()
-		End Sub
-
 		' Sorting
-
-		Public Property SortRoomModel As SortRoomModel
-			Get
-				Return _sortRoomModel
-			End Get
-			Set
-				If IsNothing( Value ) OrElse Equals( Value, _sortRoomModel ) Then Return
-				_sortRoomModel = value
-				NotifyOfPropertyChange( Function() SortRoomModel )
-			End Set
-		End Property
+		Private Sub OnSortRoomModelUpdated( sender As Object,
+		                                    e As PropertyChangedEventArgs )
+			SortRoomsList()
+		End Sub
 
 		Public Sub SortRoomsList()
 			Dim orderedRooms As IObservableCollection(Of FilterableRoomModel ) = Nothing
@@ -259,11 +270,6 @@ Namespace Rooms.ViewModels
 				Rooms.Clear()
 				Rooms.AddRange( orderedRooms )
 			End If
-		End Sub
-
-		Private Sub OnSortRoomModelUpdated( sender As Object,
-		                                    e As PropertyChangedEventArgs )
-			SortRoomsList()
 		End Sub
 
 		' Infrastructure

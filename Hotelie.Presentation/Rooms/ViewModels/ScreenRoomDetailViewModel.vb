@@ -98,14 +98,14 @@ Namespace Rooms.ViewModels
 				Return
 			End If
 
-			' Update bind models
+			'update bind models
 			Room.Id = id
 			Room.Name = model.Name
 			Room.Category = category
 			Room.State = model.State
 			Room.Note = model.Note
 
-			' Backup old values
+			'backup old values
 			_originalRoomName = Room.Name
 			_originalRoomCategoryId = Room.Category.Id
 			_originalRoomNote = Room.Note
@@ -123,14 +123,14 @@ Namespace Rooms.ViewModels
 				Return
 			End If
 
-			' Update bind models
+			'update bind models
 			Room.Id = id
 			Room.Name = model.Name
 			Room.Category = category
 			Room.State = model.State
 			Room.Note = model.Note
 
-			' Backup old values
+			'backup old values
 			_originalRoomName = Room.Name
 			_originalRoomCategoryId = Room.Category.Id
 			_originalRoomNote = Room.Note
@@ -183,7 +183,6 @@ Namespace Rooms.ViewModels
 		Public Overrides Async Function ActualSaveAsync() As Task
 			' try update
 			ShowStaticWindowLoadingDialog()
-
 			Dim err = Await _updateRoomCommand.ExecuteAsync( Room.Id, Room.Name, Room.Category.Id, Room.Note, Room.State )
 
 			If String.IsNullOrEmpty( err )

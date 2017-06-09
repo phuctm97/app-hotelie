@@ -24,7 +24,7 @@ Namespace Rooms.ViewModels
 
 		Public Property ParentWorkspace As RoomsWorkspaceViewModel Implements IChild(Of RoomsWorkspaceViewModel).Parent
 
-		' Initialization
+		' Initializations
 		Sub New( workspace As RoomsWorkspaceViewModel,
 		         getAllRoomCategoriesQuery As IGetAllRoomCategoriesQuery,
 		         createRoomFactory As ICreateRoomFactory,
