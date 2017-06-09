@@ -321,11 +321,7 @@ Namespace Leases.ViewModels
 			_isEdited = True
 		End Sub
 
-		Public Sub PreviewOrder()
-		End Sub
-
 		' Exit
-
 		Public Overrides ReadOnly Property IsEdited As Boolean
 			Get
 				Return _isEdited OrElse CheckForPendingChanges()

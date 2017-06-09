@@ -91,10 +91,6 @@ Namespace Leases.ViewModels
 		End Sub
 
 		Private Sub InitializeComponents()
-			Init()
-		End Sub
-
-		Private Sub Init()
 			ScreenLeasesList.Init()
 			ScreenLeaseDetail.Init()
 			ScreenAddLease.Init()

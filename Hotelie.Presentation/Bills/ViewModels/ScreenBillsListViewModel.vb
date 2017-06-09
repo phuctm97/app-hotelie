@@ -17,6 +17,7 @@ Namespace Bills.ViewModels
 		' Binding models
 		Public ReadOnly Property Bills As IObservableCollection(Of IBillModel)
 
+		' Initializations
 		Public Sub New( workspace As BillsWorkspaceViewModel,
 		                getAllBillsQuery As IGetAllBillsQuery )
 			_getAllBillsQuery = getAllBillsQuery

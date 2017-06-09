@@ -34,7 +34,7 @@ Namespace Bills.ViewModels
 
 		Public Property ParentWorkspace As BillsWorkspaceViewModel Implements IChild(Of BillsWorkspaceViewModel).Parent
 
-		' Initialization
+		' Initializations
 		Shared Sub New()
 			Rooms = New BindableCollection(Of IRoomModel)
 			Leases = New BindableCollection(Of ILeaseModel)
