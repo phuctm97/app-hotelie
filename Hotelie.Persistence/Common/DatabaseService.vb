@@ -2,7 +2,6 @@
 Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Domain.Leases
 Imports Hotelie.Domain.Rooms
-Imports Hotelie.Domain.Users
 
 Namespace Common
     Public Class DatabaseService
@@ -19,10 +18,15 @@ Namespace Common
         Public Function SetDatabaseConnection(serverName As String, databaseName As String) As Boolean _
             Implements IDatabaseService.SetDatabaseConnection
             _context?.Dispose()
-            Dim connectionString =
-                    $"data source={serverName};initial catalog={databaseName _
+            Dim connectionString As String
+            If databaseName.ToLower.EndsWith(".mdf") Then
+                connectionString = $"data source={serverName};AttachDbFilename={databaseName _
                     };integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
-
+            Else
+                connectionString = $"data source={serverName};initial catalog={databaseName _
+                    };integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
+            End If
+            
             _context = New DatabaseContext(connectionString)
             Try
                 Dim leases = _context.Leases.ToList()
@@ -56,9 +60,14 @@ Namespace Common
             Implements IDatabaseService.CheckDatabaseConnection
             Dim checker = 0
 
-            Dim connectionString =
-                    $"data source={serverName};initial catalog={databaseName _
+            Dim connectionString As String
+            If databaseName.ToLower.EndsWith(".mdf") Then
+                connectionString = $"data source={serverName};AttachDbFilename={databaseName _
                     };integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
+            Else
+                connectionString = $"data source={serverName};initial catalog={databaseName _
+                    };integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
+            End If
 
             Dim dbContext = New DatabaseContext(connectionString)
 
@@ -91,9 +100,14 @@ Namespace Common
 
             Dim checker = 0
 
-            Dim connectionString =
-                    $"data source={serverName};initial catalog={databaseName _
+            Dim connectionString As String
+            If databaseName.ToLower.EndsWith(".mdf") Then
+                connectionString = $"data source={serverName};AttachDbFilename={databaseName _
                     };integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
+            Else
+                connectionString = $"data source={serverName};initial catalog={databaseName _
+                    };integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
+            End If
 
             Dim dbContext = New DatabaseContext(connectionString)
 
