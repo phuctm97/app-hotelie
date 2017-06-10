@@ -215,6 +215,7 @@ Namespace Rules.ViewModels
 					ShowStaticBottomNotification( StaticNotificationType.Warning,
 					                              $"Không thể xóa loại phòng {roomCategory.Name _
 						                            } khi vẫn còn phòng thuộc loại phòng này" )
+					RollbackChanges()
 					Return False
 				End If
 			Next
@@ -234,6 +235,7 @@ Namespace Rules.ViewModels
 					ShowStaticBottomNotification( StaticNotificationType.Warning,
 					                              $"Không thể xóa loại khách {customerCategory.Name _
 						                            } khi vẫn còn các hóa đơn lưu thông tin của loại khách này" )
+					RollbackChanges()
 					Return False
 				End If
 			Next
@@ -303,13 +305,7 @@ Namespace Rules.ViewModels
 			SpitRoomCategoryActions( roomCategoriesToRemove, roomCategoriesToUpdate, roomCategoriesToCreate )
 			Await UpdateRoomCategories( roomCategoriesToUpdate )
 			Await CreateRoomCategories( roomCategoriesToCreate )
-			If roomCategoriesToRemove.Count > 0
-				CloseStaticWindowDialog()
-				If Await ConfirmDeleteRoomCategories()
-					Await RemoveRoomCategores( roomCategoriesToRemove )
-				End If
-				ShowStaticWindowLoadingDialog()
-			End If
+			Await RemoveRoomCategores( roomCategoriesToRemove )
 
 			'split customer categories actions
 			Dim customerCategoriesToRemove = New List(Of String)
@@ -319,13 +315,7 @@ Namespace Rules.ViewModels
 			SplitCustomerCategoryActions( customerCategoriesToRemove, customerCategoriesToUpdate, customerCategoriesToCreate )
 			Await UpdateCustomerCategories( customerCategoriesToUpdate )
 			Await CreateCustomerCategories( customerCategoriesToCreate )
-			If customerCategoriesToRemove.Count > 0
-				CloseStaticWindowDialog()
-				If Await ConfirmDeleteCustomerCategories()
-					Await RemoveCustomerCategories( customerCategoriesToRemove )
-				End If
-				ShowStaticWindowLoadingDialog()
-			End If
+			Await RemoveCustomerCategories( customerCategoriesToRemove )
 
 			'reload workspaces
 			Await _inventory.ReloadAsync()
@@ -334,6 +324,14 @@ Namespace Rules.ViewModels
 			CloseStaticWindowDialog()
 			Await ActualExitAsync()
 		End Function
+
+		Private Sub RollbackChanges()
+			Rule.RoomCategories.Clear()
+			Rule.RoomCategories.AddRange( _originalRoomCategories )
+
+			Rule.CustomerCategories.Clear()
+			Rule.CustomerCategories.AddRange( _originalCustomerCategories )
+		End Sub
 
 		' Parameters actions
 		Private Async Function UpdateParameters() As Task(Of Boolean)
