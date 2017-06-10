@@ -168,7 +168,6 @@
 
                         <!--table-->
                         <DataGrid ItemsSource="{Binding Path=Model.FigureModels}" 
-                                  MaxHeight="1280"
                                   CanUserSortColumns="True"
                                   CanUserResizeColumns="True"
                                   AutoGenerateColumns="False"

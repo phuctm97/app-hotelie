@@ -2,8 +2,8 @@
 Imports Hotelie.Domain.Leases
 
 Namespace Leases.Queries
-    Public Class GetCanRemoveUserCategoryQuery
-        Implements IGetCanRemoveUserCategoryQuery
+    Public Class GetCanRemoveCustomerCategoryQuery
+        Implements IGetCanRemoveCustomerCategoryQuery
 
         Private ReadOnly _leaseRepository As ILeaseRepository
 
@@ -11,7 +11,7 @@ Namespace Leases.Queries
             _leaseRepository = leaseRepository
         End Sub
 
-        Public Function Execute(id As String) As Boolean Implements IGetCanRemoveUserCategoryQuery.Execute
+        Public Function Execute(id As String) As Boolean Implements IGetCanRemoveCustomerCategoryQuery.Execute
             Dim category = _leaseRepository.GetCustomerCategories().FirstOrDefault(Function(p)p.Id = id)
             Dim leases = _leaseRepository.GetAll().Where(Function(p)p.Paid = 0)
             For Each lease As Lease In leases
@@ -23,7 +23,7 @@ Namespace Leases.Queries
         End Function
 
         Public Async Function ExecuteAsync(id As String) As Task(Of Boolean) _
-            Implements IGetCanRemoveUserCategoryQuery.ExecuteAsync
+            Implements IGetCanRemoveCustomerCategoryQuery.ExecuteAsync
             Dim categories = Await _leaseRepository.GetCustomerCategoriesAsync()
             Dim category = categories.FirstOrDefault(Function(p)p.Id = id)
             Dim leases = _leaseRepository.GetAll().Where(Function(p)p.Paid = 0)

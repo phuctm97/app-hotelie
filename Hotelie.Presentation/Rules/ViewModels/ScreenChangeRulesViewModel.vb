@@ -7,7 +7,6 @@ Imports Hotelie.Application.Parameters.Queries
 Imports Hotelie.Application.Rooms.Commands
 Imports Hotelie.Application.Rooms.Factories
 Imports Hotelie.Application.Rooms.Queries
-Imports Hotelie.Application.Services.Authentication
 Imports Hotelie.Application.Services.Infrastructure
 Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
@@ -24,6 +23,8 @@ Namespace Rules.ViewModels
 		Private ReadOnly _getParametersQuery As IGetParametersQuery
 		Private ReadOnly _getAllRoomCategoriesQuery As IGetAllRoomCategoriesQuery
 		Private ReadOnly _getAllCustomerCategoriesQuery As IGetAllCustomerCategoriesQuery
+		Private ReadOnly _getCanRemoveRoomCategoryQuery As IGetCanRemoveRoomCategoryQuery
+		Private ReadOnly _getCanRemoveCustomerCategoryQuery As IGetCanRemoveCustomerCategoryQuery
 		Private ReadOnly _updateParametersCommand As IUpdateParametersCommand
 		Private ReadOnly _updateRoomCategoryCommand As IUpdateRoomCategoryCommand
 		Private ReadOnly _updateCustomerCategoryCommand As IUpdateCustomerCategoryCommand
@@ -46,6 +47,8 @@ Namespace Rules.ViewModels
 		Public Sub New( getParametersQuery As IGetParametersQuery,
 		                getAllRoomCategoriesQuery As IGetAllRoomCategoriesQuery,
 		                getAllCustomerCategoriesQuery As IGetAllCustomerCategoriesQuery,
+		                getCanRemoveRoomCategoryQuery As IGetCanRemoveRoomCategoryQuery,
+		                getCanRemoveCustomerCategoryQuery As IGetCanRemoveCustomerCategoryQuery,
 		                updateParametersCommand As IUpdateParametersCommand,
 		                updateRoomCategoryCommand As IUpdateRoomCategoryCommand,
 		                updateCustomerCategoryCommand As IUpdateCustomerCategoryCommand,
@@ -66,6 +69,8 @@ Namespace Rules.ViewModels
 			_createRoomCategoryFactory = createRoomCategoryFactory
 			_createCustomerCategoryFactory = createCustomerCategoryFactory
 			_inventory = inventory
+			_getCanRemoveCustomerCategoryQuery = getCanRemoveCustomerCategoryQuery
+			_getCanRemoveRoomCategoryQuery = getCanRemoveRoomCategoryQuery
 
 			DisplayName = "Thay đổi quy định"
 			Rule = New EditableRuleModel()
@@ -188,8 +193,53 @@ Namespace Rules.ViewModels
 		End Function
 
 		' Save
-		Public Overrides Function CanSave() As Task(Of Boolean)
-			Return Task.Run( Function() ValidateSaving() )
+		Public Overrides Async Function CanSave() As Task(Of Boolean)
+			If Not ValidateSaving()
+				Return False
+			End If
+
+			ShowStaticWindowLoadingDialog()
+
+			Dim roomCategoriesToRemove = New List(Of EditableRoomCategoryModel)
+
+			For Each roomCategory As EditableRoomCategoryModel In _originalRoomCategories
+				If Not Rule.RoomCategories.Any( Function( r ) r.Id = roomCategory.Id )
+					roomCategoriesToRemove.Add( roomCategory )
+				End If
+			Next
+
+			For Each roomCategory As EditableRoomCategoryModel In roomCategoriesToRemove
+				Dim canRemove = Await _getCanRemoveRoomCategoryQuery.ExecuteAsync( roomCategory.Id )
+				If Not canRemove
+					CloseStaticWindowDialog()
+					ShowStaticBottomNotification( StaticNotificationType.Warning,
+					                              $"Không thể xóa loại phòng {roomCategory.Name _
+						                            } khi vẫn còn phòng thuộc loại phòng này" )
+					Return False
+				End If
+			Next
+
+			Dim customerCategoriesToRemove = New List(Of EditableCustomerCategoryModel)
+
+			For Each customerCategory As EditableCustomerCategoryModel In _originalCustomerCategories
+				If Not Rule.CustomerCategories.Any( Function( r ) r.Id = customerCategory.Id )
+					customerCategoriesToRemove.Add( customerCategory )
+				End If
+			Next
+
+			For Each customerCategory As EditableCustomerCategoryModel In customerCategoriesToRemove
+				Dim canRemove = Await _getCanRemoveCustomerCategoryQuery.ExecuteAsync( customerCategory.Id )
+				If Not canRemove
+					CloseStaticWindowDialog()
+					ShowStaticBottomNotification( StaticNotificationType.Warning,
+					                              $"Không thể xóa loại khách {customerCategory.Name _
+						                            } khi vẫn còn các hóa đơn lưu thông tin của loại khách này" )
+					Return False
+				End If
+			Next
+
+			CloseStaticWindowDialog()
+			Return True
 		End Function
 
 		Private Function ValidateSaving() As Boolean
@@ -331,7 +381,7 @@ Namespace Rules.ViewModels
 		Private Async Function RemoveCustomerCategories( list As List(Of String) ) As Task
 			For Each id As String In list
 				Dim err = Await _removeCustomerCategoryCommand.ExecuteAsync( id )
-								If Not String.IsNullOrEmpty( err )
+				If Not String.IsNullOrEmpty( err )
 					ShowStaticBottomNotification( StaticNotificationType.Error, err )
 					Exit For
 				End If
