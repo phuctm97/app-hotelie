@@ -22,9 +22,9 @@ Namespace Users.Factories
                 If users.Exists(Function(p)p.Id = id) Then Return "Tên tài khoản đã tồn tại"
                 _userRepository.Add(New User() With {.Id = id, .Password = password})
                 _unitOfWork.Commit()
-                Return String.Empty
+                Return id
             Catch
-                Return "Hiện tại không thể thêm tài khoản"
+                Return String.Empty
             End Try
         End Function
 
@@ -35,9 +35,9 @@ Namespace Users.Factories
                 If users.Exists(Function(p)p.Id = id) Then Return "Tên tài khoản đã tồn tại"
                 _userRepository.Add(New User() With {.Id = id, .Password = password})
                 Await _unitOfWork.CommitAsync()
-                Return String.Empty
+                Return id
             Catch
-                Return "Hiện tại không thể thêm tài khoản"
+                Return String.Empty
             End Try
         End Function
     End Class
