@@ -34,9 +34,9 @@ Namespace DatabaseServices
             ' assert
             _databaseService.SetDatabaseConnection(validServerName,validDatabaseName)
             Assert.IsTrue(_databaseService.CheckDatabaseConnection(validServerName,validDatabaseName) = 2)
-            Dim userCategory = New UserCategory() With {.Id = "00001",.Name =  "Test"}
-            _databaseService.Context.UserCategories.Add(userCategory)
-            _databaseService.Context.UserCategories.Remove(userCategory)
+            'Dim userCategory = New UserCategory() With {.Id = "00001",.Name =  "Test"}
+            '_databaseService.Context.UserCategories.Add(userCategory)
+            '_databaseService.Context.UserCategories.Remove(userCategory)
 
 
             _databaseService.SetDatabaseConnection(validServerName1,inValidDatabaseName)
