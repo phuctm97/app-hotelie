@@ -163,6 +163,7 @@
     <Compile Include="Common\Converters\DecimalToCurrencyStringConverter.vb" />
     <Compile Include="Common\Converters\DecimalToStringConverter.vb" />
     <Compile Include="Common\Converters\DoubleToStringConverter.vb" />
+    <Compile Include="Common\Converters\FirstCharacterUpperConverter.vb" />
     <Compile Include="Common\Converters\IntegerToStringConverter.vb" />
     <Compile Include="Common\Converters\MultiStringConverter.vb" />
     <Compile Include="Common\Converters\StringToUpperConverter.vb" />

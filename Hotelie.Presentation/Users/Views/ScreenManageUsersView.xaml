@@ -14,6 +14,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <commonConverters:StringToUpperConverter x:Key="StringToUpperConverter" />
+            <commonConverters:FirstCharacterUpperConverter x:Key="FirstCharacterUpperConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -102,48 +103,64 @@
                              SelectedItem="{Binding SelectedUser, Mode=TwoWay}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Username, Mode=OneWay}" />
+                                <StackPanel Margin="0 0 0 0" Orientation="Horizontal">
+                                    <Border Background="{DynamicResource PrimaryHueLightBrush}" Width="32" Height="32" CornerRadius="16">
+                                        <TextBlock Text="{Binding Username, Converter={StaticResource FirstCharacterUpperConverter}}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                       FontSize="15" FontWeight="Light" />
+                                    </Border>
+                                    <TextBlock Margin="12 0 0 0" VerticalAlignment="Center" Text="{Binding Username}" />
+                                </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
                 </StackPanel>
 
-                <StackPanel Grid.Column="2" Margin="32 24 16 0">
-                    <TextBlock FontSize="40" FontWeight="Bold" Text="{Binding Path=SelectedUser.Username}"
-                               Margin="66 0 0 0" />
+                <StackPanel Grid.Column="2" Margin="48 24 16 0">
+                    <StackPanel Margin="0 0 0 0" Orientation="Horizontal">
+                        <Border Background="#99F50057"  Width="64" Height="64" CornerRadius="32">
+                            <TextBlock Text="{Binding Path=SelectedUser.Username, Converter={StaticResource FirstCharacterUpperConverter}}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                       FontSize="42" FontWeight="Light" />
+                        </Border>
+                        <TextBlock Margin="12 0 0 0" VerticalAlignment="Center" FontSize="40" FontWeight="Bold" Text="{Binding Path=SelectedUser.Username}" />
+                    </StackPanel>
 
                     <StackPanel Orientation="Vertical" Margin="16 32 0 0">
                         <StackPanel Orientation="Horizontal" Margin="0 16 0 16">
                             <ToggleButton IsEnabled="{Binding CanEditUser}"
-                                IsChecked="{Binding Path=SelectedUser.CouldConfigRoom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                Style="{DynamicResource MaterialDesignSwitchAccentToggleButton}"
-                                VerticalAlignment="Center" Margin="0 0 16 0" />
+                                          IsChecked="{Binding Path=SelectedUser.CouldConfigRoom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          Style="{DynamicResource MaterialDesignSwitchAccentToggleButton}"
+                                          VerticalAlignment="Center" Margin="0 0 16 0" />
                             <TextBlock FontSize="20" Text="Được phép thêm, sửa, xóa, phòng" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0 16 0 16">
-                            <ToggleButton VerticalAlignment="Center" Margin="0 0 16 0" IsEnabled="{Binding CanEditUser}"
+                            <ToggleButton VerticalAlignment="Center" Margin="0 0 16 0"
+                                          IsEnabled="{Binding CanEditUser}"
                                           IsChecked="{Binding Path=SelectedUser.CouldAddLease, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock FontSize="20" Text="Được phép lập phiếu thuê phòng" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0 16 0 16">
                             <ToggleButton Style="{DynamicResource MaterialDesignSwitchAccentToggleButton}"
-                                          VerticalAlignment="Center" Margin="0 0 16 0" IsEnabled="{Binding CanEditUser}"
+                                          VerticalAlignment="Center" Margin="0 0 16 0"
+                                          IsEnabled="{Binding CanEditUser}"
                                           IsChecked="{Binding Path=SelectedUser.CouldEditLease, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock FontSize="20" Text="Được phép chỉnh sửa phiếu thuê phòng" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0 16 0 16">
-                            <ToggleButton VerticalAlignment="Center" Margin="0 0 16 0" IsEnabled="{Binding CanEditUser}"
+                            <ToggleButton VerticalAlignment="Center" Margin="0 0 16 0"
+                                          IsEnabled="{Binding CanEditUser}"
                                           IsChecked="{Binding Path=SelectedUser.CouldRemoveLease, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock FontSize="20" Text="Được phép xóa phiếu thuê phòng" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0 16 0 16">
                             <ToggleButton Style="{DynamicResource MaterialDesignSwitchAccentToggleButton}"
-                                          VerticalAlignment="Center" Margin="0 0 16 0" IsEnabled="{Binding CanEditUser}"
+                                          VerticalAlignment="Center" Margin="0 0 16 0"
+                                          IsEnabled="{Binding CanEditUser}"
                                           IsChecked="{Binding Path=SelectedUser.CouldManageUser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock FontSize="20" Text="Được phép quản lý tài khoản" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0 16 0 16">
-                            <ToggleButton VerticalAlignment="Center" Margin="0 0 16 0" IsEnabled="{Binding CanEditUser}"
+                            <ToggleButton VerticalAlignment="Center" Margin="0 0 16 0"
+                                          IsEnabled="{Binding CanEditUser}"
                                           IsChecked="{Binding Path=SelectedUser.CouldEditRule, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock FontSize="20" Text="Được phép thay đổi quy định" />
                         </StackPanel>
@@ -151,9 +168,11 @@
 
                     <StackPanel Orientation="Horizontal"
                                 Margin="66 32 0 0">
-                        <Button Margin="0 0 16 0" IsEnabled="{Binding CanEditUser}" Style="{DynamicResource MaterialDesignRaisedAccentButton}" HorizontalAlignment="Left"
+                        <Button Margin="0 0 16 0" IsEnabled="{Binding CanEditUser}"
+                                Style="{DynamicResource MaterialDesignRaisedAccentButton}" HorizontalAlignment="Left"
                                 FontSize="18" Content="Áp dụng" cal:Message.Attach="SaveAsync" />
-                        <Button IsEnabled="{Binding CanEditUser}" Style="{DynamicResource MaterialDesignRaisedButton}" HorizontalAlignment="Left"
+                        <Button IsEnabled="{Binding CanEditUser}" Style="{DynamicResource MaterialDesignRaisedButton}"
+                                HorizontalAlignment="Left"
                                 FontSize="18" Content="Xóa tài khoản" cal:Message.Attach="DeleteAsync" />
                     </StackPanel>
                 </StackPanel>
