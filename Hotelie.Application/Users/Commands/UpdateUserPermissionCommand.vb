@@ -62,32 +62,32 @@ Namespace Users.Commands
                 Dim j = 0
                 If canConfigRoom Then
                     Dim permission = _permissionRepository.GetPermissionType("PM001")
-                    _permissionRepository.Add(New UserPermission() With {.Id = idList(j), .Permission=permission})
+                    _permissionRepository.Add(New UserPermission() With {.Id = idList(j), .Permission=permission, .User = user})
                     j += 1
                 End If
                 If canAddLease Then
                     Dim permission = _permissionRepository.GetPermissionType("PM002")
-                    _permissionRepository.Add(New UserPermission() With {.Id = idList(j), .Permission=permission})
+                    _permissionRepository.Add(New UserPermission() With {.Id = idList(j), .Permission=permission, .User = user})
                     j += 1
                 End If
                 If canEditLease Then
                     Dim permission = _permissionRepository.GetPermissionType("PM003")
-                    _permissionRepository.Add(New UserPermission() With {.Id = idList(j), .Permission=permission})
+                    _permissionRepository.Add(New UserPermission() With {.Id = idList(j), .Permission=permission, .User = user})
                     j += 1
                 End If
                 If canRemoveLease Then
                     Dim permission = _permissionRepository.GetPermissionType("PM004")
-                    _permissionRepository.Add(New UserPermission() With {.Id = idList(j), .Permission=permission})
+                    _permissionRepository.Add(New UserPermission() With {.Id = idList(j), .Permission=permission, .User = user})
                     j += 1
                 End If
                 If canManageUser Then
                     Dim permission = _permissionRepository.GetPermissionType("PM005")
-                    _permissionRepository.Add(New UserPermission() With {.Id = idList(j), .Permission=permission})
+                    _permissionRepository.Add(New UserPermission() With {.Id = idList(j), .Permission=permission, .User = user})
                     j += 1
                 End If
                 If canEditRules Then
                     Dim permission = _permissionRepository.GetPermissionType("PM006")
-                    _permissionRepository.Add(New UserPermission() With {.Id = idList(j), .Permission=permission})
+                    _permissionRepository.Add(New UserPermission() With {.Id = idList(j), .Permission=permission, .User = user})
                 End If
 
                 _unitOfWork.Commit()
@@ -142,32 +142,32 @@ Namespace Users.Commands
                 Dim j = 0
                 If canConfigRoom Then
                     Dim permission = _permissionRepository.GetPermissionType("PM001")
-                    _permissionRepository.Add(New UserPermission() With {.Id = idList(j), .Permission=permission})
+                    _permissionRepository.Add(New UserPermission() With {.Id = idList(j), .Permission=permission, .User = user})
                     j += 1
                 End If
                 If canAddLease Then
                     Dim permission = _permissionRepository.GetPermissionType("PM002")
-                    _permissionRepository.Add(New UserPermission() With {.Id = idList(j), .Permission=permission})
+                    _permissionRepository.Add(New UserPermission() With {.Id = idList(j), .Permission=permission, .User = user})
                     j += 1
                 End If
                 If canEditLease Then
                     Dim permission = _permissionRepository.GetPermissionType("PM003")
-                    _permissionRepository.Add(New UserPermission() With {.Id = idList(j), .Permission=permission})
+                    _permissionRepository.Add(New UserPermission() With {.Id = idList(j), .Permission=permission, .User = user})
                     j += 1
                 End If
                 If canRemoveLease Then
                     Dim permission = _permissionRepository.GetPermissionType("PM004")
-                    _permissionRepository.Add(New UserPermission() With {.Id = idList(j), .Permission=permission})
+                    _permissionRepository.Add(New UserPermission() With {.Id = idList(j), .Permission=permission, .User = user})
                     j += 1
                 End If
                 If canManageUser Then
                     Dim permission = _permissionRepository.GetPermissionType("PM005")
-                    _permissionRepository.Add(New UserPermission() With {.Id = idList(j), .Permission=permission})
+                    _permissionRepository.Add(New UserPermission() With {.Id = idList(j), .Permission=permission, .User = user})
                     j += 1
                 End If
                 If canEditRules Then
                     Dim permission = _permissionRepository.GetPermissionType("PM006")
-                    _permissionRepository.Add(New UserPermission() With {.Id = idList(j), .Permission=permission})
+                    _permissionRepository.Add(New UserPermission() With {.Id = idList(j), .Permission=permission, .User = user})
                 End If
 
                 Await _unitOfWork.CommitAsync()
