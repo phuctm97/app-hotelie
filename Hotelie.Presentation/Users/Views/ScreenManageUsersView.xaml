@@ -93,7 +93,7 @@
                                    FontSize="24" VerticalAlignment="Center" />
                         <Button Style="{DynamicResource MaterialDesignFloatingActionAccentButton}"
                                 Margin="16 0 0 0" ToolTip="Tài khoản mới" Width="48" Height="48"
-                                cal:Message.Attach="AddEmptyRoomCategory">
+                                cal:Message.Attach="AddUser">
                             <materialDesign:PackIcon Kind="Plus" Width="24" Height="24" />
                         </Button>
                     </StackPanel>

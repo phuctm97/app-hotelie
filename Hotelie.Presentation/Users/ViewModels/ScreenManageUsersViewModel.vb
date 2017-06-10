@@ -4,6 +4,8 @@ Imports Hotelie.Application.Users.Factories
 Imports Hotelie.Application.Users.Queries
 Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
+Imports Hotelie.Presentation.Start.WorkspaceShell.ViewModels
+Imports Hotelie.Presentation.Users.Views
 Imports MaterialDesignThemes.Wpf
 
 Namespace Users.ViewModels
@@ -36,7 +38,11 @@ Namespace Users.ViewModels
 		Public ReadOnly Property CanEditUser As Boolean
 			Get
 				If IsNothing( SelectedUser ) Then Return False
-				Return Not String.Equals( SelectedUser.Username, "admin" )
+				If String.Equals( SelectedUser.Username, "admin" ) Or
+				   String.Equals( SelectedUser.Username, TryCast(Parent, WorkspaceShellViewModel).LoggedAccount.Username ) Then _
+					Return False
+
+				Return True
 			End Get
 		End Property
 
@@ -93,6 +99,8 @@ Namespace Users.ViewModels
 
 		Public Overrides ReadOnly Property IsEdited As Boolean
 			Get
+				If IsNothing( SelectedUser ) OrElse IsNothing( _originalSelectedUser ) Then Return False
+
 				Return (Not String.Equals( SelectedUser.Username, _originalSelectedUser.Username )) Or
 				       (Not Equals( SelectedUser.CouldAddLease, _originalSelectedUser.CouldAddLease )) Or
 				       (Not Equals( SelectedUser.CouldConfigRoom, _originalSelectedUser.CouldConfigRoom )) Or
@@ -230,5 +238,55 @@ Namespace Users.ViewModels
 				SelectedUser = Users.FirstOrDefault()
 			End If
 		End Function
+
+		' Add
+		Public Async Sub AddUser()
+			Dim dialog = New DialogAddUser()
+
+			Dim data = Await ShowDynamicWindowDialog( dialog )
+			If data Is Nothing Then Return
+
+			Dim values = TryCast(data, Object())
+
+			Dim username = CType(values( 0 ), String)
+			Dim password = CType(values( 1 ), String)
+			Dim confirmPassword = CType(values( 2 ), String)
+
+			If Not String.Equals( password, confirmPassword )
+				ShowStaticBottomNotification( Start.MainWindow.Models.StaticNotificationType.Warning,
+				                           "Mật khẩu và xác nhận mật khẩu không khớp" )
+				Return
+			End If
+
+			If username.Length = 0
+				ShowStaticBottomNotification( Start.MainWindow.Models.StaticNotificationType.Warning,
+				                           "Tên tài khoản không hợp lệ" )
+				Return
+			End If
+
+			If password.Length = 0
+				ShowStaticBottomNotification( Start.MainWindow.Models.StaticNotificationType.Warning,
+				                           "Mật khẩu không hợp lệ" )
+				Return
+			End If
+
+			If Users.Any( Function( u ) u.Username = username )
+				ShowStaticBottomNotification( Start.MainWindow.Models.StaticNotificationType.Warning,
+				                           "Tên tài khoản đã tồn tại" )
+				Return
+			End If
+
+			Dim newId = Await _createUserFactory.ExecuteAsync( username, password )
+			If String.IsNullOrEmpty( newId )
+				ShowStaticTopNotification( Start.MainWindow.Models.StaticNotificationType.Error,
+				                           "Gặp sự cố trong lúc tạo tài khoản" )
+			Else
+				Dim newUser = New EditableUserModel With {
+					    .Username=username,
+					    .Password=password}
+				Users.Add( newUser )
+				SelectedUser = newUser
+			End If
+		End Sub
 	End Class
 End Namespace
