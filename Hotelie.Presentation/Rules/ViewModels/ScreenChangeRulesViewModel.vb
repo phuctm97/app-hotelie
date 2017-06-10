@@ -215,6 +215,7 @@ Namespace Rules.ViewModels
 					ShowStaticBottomNotification( StaticNotificationType.Warning,
 					                              $"Không thể xóa loại phòng {roomCategory.Name _
 						                            } khi vẫn còn phòng thuộc loại phòng này" )
+					RollbackChanges()
 					Return False
 				End If
 			Next
@@ -234,6 +235,7 @@ Namespace Rules.ViewModels
 					ShowStaticBottomNotification( StaticNotificationType.Warning,
 					                              $"Không thể xóa loại khách {customerCategory.Name _
 						                            } khi vẫn còn các hóa đơn lưu thông tin của loại khách này" )
+					RollbackChanges()
 					Return False
 				End If
 			Next
@@ -334,6 +336,14 @@ Namespace Rules.ViewModels
 			CloseStaticWindowDialog()
 			Await ActualExitAsync()
 		End Function
+
+		Private Sub RollbackChanges()
+			Rule.RoomCategories.Clear()
+			Rule.RoomCategories.AddRange( _originalRoomCategories )
+
+			Rule.CustomerCategories.Clear()
+			Rule.CustomerCategories.AddRange( _originalCustomerCategories )
+		End Sub
 
 		' Parameters actions
 		Private Async Function UpdateParameters() As Task(Of Boolean)
