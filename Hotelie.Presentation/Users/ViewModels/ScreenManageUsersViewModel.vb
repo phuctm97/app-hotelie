@@ -153,6 +153,11 @@ Namespace Users.ViewModels
 			Return 0
 		End Function
 
+		Public Overrides Function ActualExitAsync() As Task
+			UpdateOriginalUser()
+			Return MyBase.ActualExitAsync()
+		End Function
+
 		' Save
 
 		Private Sub UpdateOriginalUser()
