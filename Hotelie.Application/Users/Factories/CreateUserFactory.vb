@@ -17,9 +17,9 @@ Namespace Users.Factories
 
         Public Function Execute(id As String, password As String) As String Implements ICreateUserFactory.Execute
             Try
-                If id.Length > 20 Then Return "Tên tài khoản bé hơn 20 kí tự"
+                If id.Length > 20 Then Return String.Empty
                 Dim users = _userRepository.GetAll().ToList()
-                If users.Exists(Function(p)p.Id = id) Then Return "Tên tài khoản đã tồn tại"
+                If users.Exists(Function(p)p.Id = id) Then Return String.Empty
                 _userRepository.Add(New User() With {.Id = id, .Password = password})
                 _unitOfWork.Commit()
                 Return id
@@ -30,9 +30,9 @@ Namespace Users.Factories
 
         Public Async Function ExecuteAsync(id As String, password As String) As Task(Of String) Implements ICreateUserFactory.ExecuteAsync
             Try
-                If id.Length > 20 Then Return "Tên tài khoản bé hơn 20 kí tự"
+                If id.Length > 20 Then Return String.Empty
                 Dim users = Await _userRepository.GetAll().ToListAsync()
-                If users.Exists(Function(p)p.Id = id) Then Return "Tên tài khoản đã tồn tại"
+                If users.Exists(Function(p)p.Id = id) Then Return String.Empty
                 _userRepository.Add(New User() With {.Id = id, .Password = password})
                 Await _unitOfWork.CommitAsync()
                 Return id
