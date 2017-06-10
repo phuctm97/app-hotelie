@@ -1,5 +1,6 @@
 ﻿Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Application.Users.Commands
+Imports Hotelie.Application.Users.Factories
 Imports Hotelie.Application.Users.Queries
 Imports Hotelie.Persistence.Common
 Imports Hotelie.Persistence.Users
@@ -12,6 +13,7 @@ Namespace User
         Private _permissionRepository As IPermissionRepository
         Private _getUserPermissions As IGetUserPermissionsQuery
         Private _updateUserPermissions As IUpdateUserPermissionCommand
+        Private _createUserFactory As ICreateUserFactory
         Private _unitOfWork As IUnitOfWork
 
         <TestInitialize>
@@ -23,6 +25,7 @@ Namespace User
             _permissionRepository = New PermissionRepository(_databaseService)
             _getUserPermissions = New GetUserPermissionsQuery(_userRepository, _permissionRepository)
             _updateUserPermissions = New UpdateUserPermissionCommand(_userRepository, _unitOfWork, _permissionRepository)
+            _createUserFactory = New CreateUserFactory(_userRepository,_unitOfWork)
         End Sub
 
         <TestCleanup>
@@ -42,6 +45,12 @@ Namespace User
         Public Sub Estupdate()
             Dim r = _updateUserPermissions.Execute("admin", True, True, True, True, True, True) 
             Assert.IsTrue(True)
+        End Sub
+
+        <TestMethod>
+        Public Sub TestAdduser()
+            Dim r = _createUserFactory.ExecuteAsync("khach3","khach")
+            Assert.IsFalse(False)
         End Sub
     End Class
 End NameSpace
