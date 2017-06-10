@@ -305,13 +305,7 @@ Namespace Rules.ViewModels
 			SpitRoomCategoryActions( roomCategoriesToRemove, roomCategoriesToUpdate, roomCategoriesToCreate )
 			Await UpdateRoomCategories( roomCategoriesToUpdate )
 			Await CreateRoomCategories( roomCategoriesToCreate )
-			If roomCategoriesToRemove.Count > 0
-				CloseStaticWindowDialog()
-				If Await ConfirmDeleteRoomCategories()
-					Await RemoveRoomCategores( roomCategoriesToRemove )
-				End If
-				ShowStaticWindowLoadingDialog()
-			End If
+			Await RemoveRoomCategores( roomCategoriesToRemove )
 
 			'split customer categories actions
 			Dim customerCategoriesToRemove = New List(Of String)
@@ -321,13 +315,7 @@ Namespace Rules.ViewModels
 			SplitCustomerCategoryActions( customerCategoriesToRemove, customerCategoriesToUpdate, customerCategoriesToCreate )
 			Await UpdateCustomerCategories( customerCategoriesToUpdate )
 			Await CreateCustomerCategories( customerCategoriesToCreate )
-			If customerCategoriesToRemove.Count > 0
-				CloseStaticWindowDialog()
-				If Await ConfirmDeleteCustomerCategories()
-					Await RemoveCustomerCategories( customerCategoriesToRemove )
-				End If
-				ShowStaticWindowLoadingDialog()
-			End If
+			Await RemoveCustomerCategories( customerCategoriesToRemove )
 
 			'reload workspaces
 			Await _inventory.ReloadAsync()
