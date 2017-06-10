@@ -13,6 +13,8 @@ Imports Hotelie.Application.Rooms.Factories
 Imports Hotelie.Application.Rooms.Queries
 Imports Hotelie.Application.Services.Authentication
 Imports Hotelie.Application.Services.Persistence
+Imports Hotelie.Application.Users.Commands
+Imports Hotelie.Application.Users.Factories
 Imports Hotelie.Application.Users.Queries
 Imports Hotelie.Persistence.Bills
 Imports Hotelie.Persistence.Common
@@ -120,6 +122,10 @@ Public Class AppBootstrapper
 			New ContainerControlledLifetimeManager() )
 		_container.RegisterType(Of IUpdateParametersCommand, UpdateParametersCommand)(
 			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IUpdateUserPermissionCommand, UpdateUserPermissionCommand)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IRemoveUserCommand, RemoveUserCommand)(
+			New ContainerControlledLifetimeManager() )
 
 		' Factories
 		_container.RegisterType(Of ICreateRoomCategoryCommand, CreateRoomCategoryCommand)(
@@ -133,6 +139,8 @@ Public Class AppBootstrapper
 		_container.RegisterType(Of ICreateLeaseFactory, CreateLeaseFactory)(
 			New ContainerControlledLifetimeManager() )
 		_container.RegisterType(Of ICreateBillFactory, CreateBillFactory)(
+			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of ICreateUserFactory, CreateUserFactory)(
 			New ContainerControlledLifetimeManager() )
 	End Sub
 

@@ -286,6 +286,9 @@
     </Compile>
     <Compile Include="Users\Models\EditableUserModel.vb" />
     <Compile Include="Users\ViewModels\ScreenManageUsersViewModel.vb" />
+    <Compile Include="Users\Views\DialogAddUser.xaml.vb">
+      <DependentUpon>DialogAddUser.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Users\Views\ScreenManageUsersView.xaml.vb">
       <DependentUpon>ScreenManageUsersView.xaml</DependentUpon>
     </Compile>
@@ -441,6 +444,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Start\WorkspaceShell\Views\WorkspaceShellView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Users\Views\DialogAddUser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

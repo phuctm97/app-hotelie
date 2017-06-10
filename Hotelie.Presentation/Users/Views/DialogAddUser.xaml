@@ -1,0 +1,60 @@
+﻿<UserControl x:Class="Users.Views.DialogAddUser"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Hotelie.Presentation"
+             xmlns:commonConverts="clr-namespace:Hotelie.Presentation.Common.Converters"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="250"
+             MaxWidth="800" MaxHeight="600"
+             MinWidth="250">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <commonConverts:MultiStringConverter x:Key="MultiStringConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Margin="24 24 24 20">
+            <TextBox x:Name="NewPasswordStorage" Visibility="Collapsed" />
+            <TextBox x:Name="ConfirmPasswordStorage" Visibility="Collapsed" />
+            <TextBox x:Name="UsernameStorage" materialDesign:HintAssist.Hint="Tài khoản" Margin="0 0 0 0"
+                     Style="{DynamicResource MaterialDesignFloatingHintTextBox}" FontSize="18" />
+            <PasswordBox x:Name="TextBoxNewPassword" materialDesign:HintAssist.Hint="Mật khẩu" Margin="0 20 0 0"
+                         Style="{DynamicResource MaterialDesignFloatingHintPasswordBox}" FontSize="18"
+                         PasswordChanged="OnNewPasswordChanged" />
+            <PasswordBox x:Name="TextBoxConfirmPassword" materialDesign:HintAssist.Hint="Xác nhận mật khẩu"
+                         Margin="0 20 0 0"
+                         Style="{DynamicResource MaterialDesignFloatingHintPasswordBox}" FontSize="18"
+                         PasswordChanged="OnConfirmPasswordChanged" />
+        </StackPanel>
+        <StackPanel Grid.Row="1" HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <Button Style="{DynamicResource MaterialDesignFlatAccentButton}"
+                    Padding="8" Margin="8" Height="36"
+                    Content="THÊM"
+                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                <Button.CommandParameter>
+                    <MultiBinding Converter="{StaticResource MultiStringConverter}">
+                        <Binding ElementName="UsernameStorage" Path="Text" />
+                        <Binding ElementName="NewPasswordStorage" Path="Text" />
+                        <Binding ElementName="ConfirmPasswordStorage" Path="Text" />
+                    </MultiBinding>
+                </Button.CommandParameter>
+            </Button>
+            <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                    Padding="8" Margin="8" Height="36"
+                    Content="HỦY"
+                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                    CommandParameter="{x:Null}" />
+        </StackPanel>
+
+    </Grid>
+</UserControl>
