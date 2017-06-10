@@ -15,8 +15,8 @@ Namespace Users.Commands
         Public Function Execute(id As String, password As String, repassword As String) As String Implements IChangeUserPasswordCommand.Execute
             Dim user = _userRepository.GetOne(id)
             If IsNothing(user) Then Return "Không tìm thấy tài khoản"
-            If password <> repassword Then Return "Mật khẩu không trùng khớp"
-            user.Password = password
+            If password <> user.Password Then Return "Mật khẩu cũ không trùng khớp"
+            user.Password = repassword
             _unitOfWork.Commit()
             Return String.Empty
         End Function
@@ -24,8 +24,8 @@ Namespace Users.Commands
         Public Async Function ExecuteAsync(id As String, password As String, repassword As String) As Task(Of String) Implements IChangeUserPasswordCommand.ExecuteAsync
             Dim user = Await _userRepository.GetOneAsync(id)
             If IsNothing(user) Then Return "Không tìm thấy tài khoản"
-            If password <> repassword Then Return "Mật khẩu không trùng khớp"
-            user.Password = password
+            If password <> user.Password Then Return "Mật khẩu cũ không trùng khớp"
+            user.Password = repassword
             Await _unitOfWork.CommitAsync()
             Return String.Empty
         End Function
