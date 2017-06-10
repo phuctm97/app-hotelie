@@ -22,6 +22,9 @@ Namespace Common
             Dim connectionString =
                     $"data source={serverName};initial catalog={databaseName _
                     };integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
+            'Dim connectionString =
+            '        $"data source={serverName};AttachDbFilename={databaseName _
+            '        };integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
 
             _context = New DatabaseContext(connectionString)
             Try
@@ -59,6 +62,9 @@ Namespace Common
             Dim connectionString =
                     $"data source={serverName};initial catalog={databaseName _
                     };integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
+            'Dim connectionString =
+            '        $"data source={serverName};AttachDbFilename={databaseName _
+            '        };integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
 
             Dim dbContext = New DatabaseContext(connectionString)
 
@@ -94,6 +100,9 @@ Namespace Common
             Dim connectionString =
                     $"data source={serverName};initial catalog={databaseName _
                     };integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
+            'Dim connectionString =
+            '        $"data source={serverName};AttachDbFilename={databaseName _
+            '        };integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"
 
             Dim dbContext = New DatabaseContext(connectionString)
 

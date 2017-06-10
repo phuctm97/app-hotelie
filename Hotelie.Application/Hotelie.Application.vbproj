@@ -128,9 +128,11 @@
     <Compile Include="Leases\Models\LeaseDetailModel.vb" />
     <Compile Include="Leases\Queries\GetAllCustomerCategoriesQuery.vb" />
     <Compile Include="Leases\Queries\GetAllLeasesQuery.vb" />
+    <Compile Include="Leases\Queries\GetCanRemoveUserCategoryQuery.vb" />
     <Compile Include="Leases\Queries\GetLeaseQuery.vb" />
     <Compile Include="Leases\Queries\IGetAllCustomerCategoriesQuery.vb" />
     <Compile Include="Leases\Queries\IGetAllLeasesQuery.vb" />
+    <Compile Include="Leases\Queries\IGetCanRemoveUserCategoryQuery.vb" />
     <Compile Include="Leases\Queries\IGetLeaseQuery.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -200,6 +202,8 @@
     <Compile Include="Services\Persistence\IRoomRepository.vb" />
     <Compile Include="Services\Persistence\IUnitOfWork.vb" />
     <Compile Include="Services\Persistence\IUserRepository.vb" />
+    <Compile Include="Users\Commands\ChangeUserPasswordCommand.vb" />
+    <Compile Include="Users\Commands\IChangeUserPasswordCommand.vb" />
     <Compile Include="Users\Commands\IRemoveUserCommand.vb" />
     <Compile Include="Users\Commands\IUpdateUserPermissionCommand.vb" />
     <Compile Include="Users\Commands\RemoveUserCommand.vb" />
