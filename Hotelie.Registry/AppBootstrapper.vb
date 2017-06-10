@@ -92,6 +92,8 @@ Public Class AppBootstrapper
 			New ContainerControlledLifetimeManager() )
 		_container.RegisterType(Of IGetUserPermissionsQuery, GetUserPermissionsQuery)(
 			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IGetAllUsersQuery, GetAllUsersQuery)(
+			New ContainerControlledLifetimeManager() )
 
 		' Commands
 		_container.RegisterType(Of IRemoveRoomCategoryCommand, RemoveRoomCategoryCommand)(

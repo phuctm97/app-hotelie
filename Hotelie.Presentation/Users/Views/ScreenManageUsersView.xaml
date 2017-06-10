@@ -109,41 +109,41 @@
                 </StackPanel>
 
                 <StackPanel Grid.Column="2" Margin="32 24 16 0">
-                    <TextBlock FontSize="40" FontWeight="Bold" Text="Username" Margin="66 0 0 0" />
+                    <TextBlock FontSize="40" FontWeight="Bold" Text="{Binding Path=SelectedUser.Username}" Margin="66 0 0 0" />
 
                     <StackPanel Orientation="Vertical" Margin="16 32 0 0">
                         <StackPanel Orientation="Horizontal" Margin="0 16 0 16">
                             <ToggleButton
-                                IsChecked="{Binding Path=SelectedUser.CanConfigRoom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                IsChecked="{Binding Path=SelectedUser.CouldConfigRoom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{DynamicResource MaterialDesignSwitchAccentToggleButton}"
                                 VerticalAlignment="Center" Margin="0 0 16 0" />
                             <TextBlock FontSize="20" Text="Được phép thêm, sửa, xóa, phòng" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0 16 0 16">
                             <ToggleButton VerticalAlignment="Center" Margin="0 0 16 0"
-                                          IsChecked="{Binding Path=SelectedUser.CanAddLease, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                          IsChecked="{Binding Path=SelectedUser.CouldAddLease, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock FontSize="20" Text="Được phép lập phiếu thuê phòng" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0 16 0 16">
                             <ToggleButton Style="{DynamicResource MaterialDesignSwitchAccentToggleButton}"
                                           VerticalAlignment="Center" Margin="0 0 16 0"
-                                          IsChecked="{Binding Path=SelectedUser.CanEditLease, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                          IsChecked="{Binding Path=SelectedUser.CouldEditLease, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock FontSize="20" Text="Được phép chỉnh sửa phiếu thuê phòng" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0 16 0 16">
                             <ToggleButton VerticalAlignment="Center" Margin="0 0 16 0"
-                                          IsChecked="{Binding Path=SelectedUser.CanRemoveLease, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                          IsChecked="{Binding Path=SelectedUser.CouldRemoveLease, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock FontSize="20" Text="Được phép xóa phiếu thuê phòng" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0 16 0 16">
                             <ToggleButton Style="{DynamicResource MaterialDesignSwitchAccentToggleButton}"
                                           VerticalAlignment="Center" Margin="0 0 16 0"
-                                          IsChecked="{Binding Path=SelectedUser.CanManageUser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                          IsChecked="{Binding Path=SelectedUser.CouldManageUser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock FontSize="20" Text="Được phép quản lý tài khoản" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0 16 0 16">
                             <ToggleButton VerticalAlignment="Center" Margin="0 0 16 0"
-                                          IsChecked="{Binding Path=SelectedUser.CanEditRule, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                          IsChecked="{Binding Path=SelectedUser.CouldEditRule, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock FontSize="20" Text="Được phép thay đổi quy định" />
                         </StackPanel>
                     </StackPanel>

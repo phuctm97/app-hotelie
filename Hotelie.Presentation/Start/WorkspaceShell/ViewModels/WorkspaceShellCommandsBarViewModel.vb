@@ -9,37 +9,38 @@ Namespace Start.WorkspaceShell.ViewModels
 		Implements IWindowCommandsBar
 		Implements INeedWindowModals
 
+		' Backing fields
+		Private _parent As Object
+
 		' Dependencies
 		Private ReadOnly _authentication As IAuthentication
 
-		' Binding properties
-		Public ReadOnly Property CanChangeRules As Boolean
-			Get
-				Return True
-			End Get
-		End Property
-
 		' Parent
 		Public Property Parent As Object Implements IChild.Parent
+			Get
+				Return _parent
+			End Get
+			Set
+				If Equals( Value, _parent ) Then Return
+				_parent = value
+				NotifyOfPropertyChange( Function() Parent )
+			End Set
+		End Property
 
 		Public Property ParentShell As WorkspaceShellViewModel
 			Get
 				Return CType(Parent, WorkspaceShellViewModel)
 			End Get
 			Set
+				If Equals( Parent, Value ) Then Return
 				Parent = value
+				NotifyOfPropertyChange( Function() ParentShell )
 			End Set
 		End Property
 
 		' Initializations
-		Public Sub New( shell As WorkspaceShellViewModel,
-		                authentication As IAuthentication )
-			ParentShell = shell
+		Public Sub New( authentication As IAuthentication )
 			_authentication = authentication
-		End Sub
-
-		Public Sub Reload()
-			NotifyOfPropertyChange( Function() CanChangeRules )
 		End Sub
 
 		' User actions

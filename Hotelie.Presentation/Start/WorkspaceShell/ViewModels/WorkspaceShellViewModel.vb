@@ -41,7 +41,8 @@ Namespace Start.WorkspaceShell.ViewModels
 			DisplayName = "Bàn làm việc"
 
 			'load command bar
-			CommandsBar = New WorkspaceShellCommandsBarViewModel( Me, authentication )
+			CommandsBar = IoC.Get(Of WorkspaceShellCommandsBarViewModel)
+			CommandsBar.Parent = Me
 
 			'load workspaces
 			WorkspaceRooms = IoC.Get(Of RoomsWorkspaceViewModel)
