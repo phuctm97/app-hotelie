@@ -126,6 +126,8 @@ Public Class AppBootstrapper
 			New ContainerControlledLifetimeManager() )
 		_container.RegisterType(Of IRemoveUserCommand, RemoveUserCommand)(
 			New ContainerControlledLifetimeManager() )
+		_container.RegisterType(Of IChangeUserPasswordCommand, ChangeUserPasswordCommand)(
+			New ContainerControlledLifetimeManager() )
 
 		' Factories
 		_container.RegisterType(Of ICreateRoomCategoryCommand, CreateRoomCategoryCommand)(

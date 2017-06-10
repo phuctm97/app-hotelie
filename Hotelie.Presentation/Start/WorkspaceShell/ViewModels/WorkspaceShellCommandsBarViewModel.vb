@@ -1,5 +1,6 @@
 ﻿Imports Caliburn.Micro
 Imports Hotelie.Application.Services.Authentication
+Imports Hotelie.Application.Users.Commands
 Imports Hotelie.Presentation.Common
 Imports Hotelie.Presentation.Common.Controls
 
@@ -14,6 +15,7 @@ Namespace Start.WorkspaceShell.ViewModels
 
 		' Dependencies
 		Private ReadOnly _authentication As IAuthentication
+		Private ReadOnly _changeUserPasswordCommand As IChangeUserPasswordCommand
 
 		' Parent
 		Public Property Parent As Object Implements IChild.Parent
@@ -39,8 +41,10 @@ Namespace Start.WorkspaceShell.ViewModels
 		End Property
 
 		' Initializations
-		Public Sub New( authentication As IAuthentication )
+		Public Sub New( authentication As IAuthentication,
+		                changeUserPasswordCommand As IChangeUserPasswordCommand )
 			_authentication = authentication
+			_changeUserPasswordCommand = changeUserPasswordCommand
 		End Sub
 
 		' User actions
@@ -55,19 +59,35 @@ Namespace Start.WorkspaceShell.ViewModels
 		Public Async Sub ChangePassword()
 			Dim dialog = New ChangePasswordDialog()
 
-			Dim result = Await ShowDynamicWindowDialog( dialog )
+			Dim data = Await ShowDynamicWindowDialog( dialog )
 
-			If result Is Nothing Then Return
-			Dim values = TryCast(result, String())
+			If data Is Nothing Then Return
+			Dim values = TryCast(data, Object())
 
-			Dim oldPassword = values( 0 )
-			Dim newPassword = values( 1 )
-			Dim confirmPassword = values( 2 )
+			Dim oldPassword = CType(values( 0 ), String)
+			Dim newPassword = CType(values( 1 ), String)
+			Dim confirmPassword = CType(values( 2 ), String)
 
 			If Not String.Equals( newPassword, confirmPassword )
 				ShowStaticBottomNotification( MainWindow.Models.StaticNotificationType.Warning,
-				                              "Mật khẩu mới và xác nhận mật khẩu không giống nhau" )
+				                              "Mật khẩu mới và xác nhận mật khẩu không khớp" )
 				Return
+			End If
+
+			If newPassword.Length = 0
+				ShowStaticBottomNotification( MainWindow.Models.StaticNotificationType.Warning,
+				                              "Mật khẩu mới không hợp lệ" )
+				Return
+			End If
+
+			Dim err = Await _changeUserPasswordCommand.ExecuteAsync( _authentication.LoggedAccount.Username,
+			                                                         oldPassword,
+			                                                         newPassword )
+			If Not String.IsNullOrEmpty( err )
+				ShowStaticBottomNotification( MainWindow.Models.StaticNotificationType.Error, err )
+			Else
+				ShowStaticTopNotification( MainWindow.Models.StaticNotificationType.Ok,
+				                           "Đổi mật khẩu thành công" )
 			End If
 		End Sub
 

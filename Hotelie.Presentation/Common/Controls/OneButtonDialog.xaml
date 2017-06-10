@@ -22,7 +22,7 @@
                     Orientation="Horizontal">
             <Button x:Name="Button1" Style="{DynamicResource MaterialDesignFlatButton}"
                     Padding="8" Margin="8" Height="36"
-                    Content="YES"
+                    Content="YES" IsDefault="True"
                     Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                     CommandParameter="{Binding ElementName=Button1, Path=Content}">
             </Button>

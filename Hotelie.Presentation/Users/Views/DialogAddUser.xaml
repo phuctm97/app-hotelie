@@ -39,7 +39,7 @@
                     Orientation="Horizontal">
             <Button Style="{DynamicResource MaterialDesignFlatAccentButton}"
                     Padding="8" Margin="8" Height="36"
-                    Content="THÊM"
+                    Content="THÊM" IsDefault="True"
                     Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
                 <Button.CommandParameter>
                     <MultiBinding Converter="{StaticResource MultiStringConverter}">
@@ -51,7 +51,7 @@
             </Button>
             <Button Style="{DynamicResource MaterialDesignFlatButton}"
                     Padding="8" Margin="8" Height="36"
-                    Content="HỦY"
+                    Content="HỦY" IsCancel="True"
                     Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                     CommandParameter="{x:Null}" />
         </StackPanel>

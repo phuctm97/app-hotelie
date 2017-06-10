@@ -254,25 +254,25 @@ Namespace Users.ViewModels
 
 			If Not String.Equals( password, confirmPassword )
 				ShowStaticBottomNotification( Start.MainWindow.Models.StaticNotificationType.Warning,
-				                           "Mật khẩu và xác nhận mật khẩu không khớp" )
+				                              "Mật khẩu và xác nhận mật khẩu không khớp" )
 				Return
 			End If
 
 			If username.Length = 0
 				ShowStaticBottomNotification( Start.MainWindow.Models.StaticNotificationType.Warning,
-				                           "Tên tài khoản không hợp lệ" )
+				                              "Tên tài khoản không hợp lệ" )
 				Return
 			End If
 
 			If password.Length = 0
 				ShowStaticBottomNotification( Start.MainWindow.Models.StaticNotificationType.Warning,
-				                           "Mật khẩu không hợp lệ" )
+				                              "Mật khẩu không hợp lệ" )
 				Return
 			End If
 
 			If Users.Any( Function( u ) u.Username = username )
 				ShowStaticBottomNotification( Start.MainWindow.Models.StaticNotificationType.Warning,
-				                           "Tên tài khoản đã tồn tại" )
+				                              "Tên tài khoản đã tồn tại" )
 				Return
 			End If
 
