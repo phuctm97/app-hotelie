@@ -40,8 +40,7 @@
             <!--Clear button-->
             <Button DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"
                     Margin="0" Padding="0"
-                    Style="{DynamicResource MaterialDesignToolButton}"
-                    ToolTip="Nhấp để xóa tất cả điều kiện lọc">
+                    Style="{DynamicResource MaterialDesignToolButton}">
                 <materialDesign:PackIcon Width="20" Height="20" Kind="Magnify" />
             </Button>
 
@@ -71,7 +70,8 @@
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
                     <Setter Property="Margin" Value="10" />
-                    <Setter Property="Visibility" Value="{Binding IsFiltersMatch, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    <Setter Property="Visibility"
+                            Value="{Binding IsFiltersMatch, Converter={StaticResource BooleanToVisibilityConverter}}" />
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="ListBoxItem">

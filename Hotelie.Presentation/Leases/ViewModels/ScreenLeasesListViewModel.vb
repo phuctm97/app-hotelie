@@ -58,6 +58,7 @@ Namespace Leases.ViewModels
 				               Select( Function( l ) New UpdatableLeaseModel( l ) With {.IsFiltersMatch=False} ) )
 
 			RefreshLeasesVisibity()
+			SortLeases()
 		End Sub
 
 		Private Async Function InitLeasesAsync() As Task
@@ -67,6 +68,7 @@ Namespace Leases.ViewModels
 				               Where( Function( l ) Not l.IsPaid ).
 				               Select( Function( l ) New UpdatableLeaseModel( l ) With {.IsFiltersMatch=False} ) )
 			RefreshLeasesVisibity()
+			SortLeases()
 		End Function
 
 		' Loading
@@ -92,6 +94,7 @@ Namespace Leases.ViewModels
 				               Where( Function( l ) Not l.IsPaid ).
 				               Select( Function( l ) New UpdatableLeaseModel( l ) With {.IsFiltersMatch=False} ) )
 			RefreshLeasesVisibity()
+			SortLeases()
 		End Function
 
 		' Bind models
@@ -109,6 +112,14 @@ Namespace Leases.ViewModels
 			For Each lease As UpdatableLeaseModel In Leases
 				lease.IsFiltersMatch = FilterModel.IsMatch( lease )
 			Next
+		End Sub
+
+		Private Sub SortLeases()
+			Dim bakLeases = New List(Of UpdatableLeaseModel)
+			bakLeases.AddRange( Leases.OrderByDescending(Function(l) l.CheckinDate) )
+
+			Leases.Clear()
+			Leases.AddRange( bakLeases )
 		End Sub
 
 		' Business actions
@@ -135,6 +146,7 @@ Namespace Leases.ViewModels
 			End If
 
 			RefreshLeasesVisibity()
+			SortLeases()
 		End Sub
 
 		Public Sub OnLeaseUpdated( model As ILeaseModel ) Implements ILeasesListPresenter.OnLeaseUpdated
@@ -156,6 +168,7 @@ Namespace Leases.ViewModels
 			End If
 
 			RefreshLeasesVisibity()
+			SortLeases()
 		End Sub
 
 		Public Sub OnLeaseRemoved( id As String ) Implements ILeasesListPresenter.OnLeaseRemoved
