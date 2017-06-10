@@ -15,6 +15,7 @@ Namespace User
         Private _updateUserPermissions As IUpdateUserPermissionCommand
         Private _createUserFactory As ICreateUserFactory
         Private _unitOfWork As IUnitOfWork
+        Private _removeUser As IRemoveUserCommand
 
         <TestInitialize>
         Public Sub TestInitialize()
@@ -26,6 +27,7 @@ Namespace User
             _getUserPermissions = New GetUserPermissionsQuery(_userRepository, _permissionRepository)
             _updateUserPermissions = New UpdateUserPermissionCommand(_userRepository, _unitOfWork, _permissionRepository)
             _createUserFactory = New CreateUserFactory(_userRepository,_unitOfWork)
+            _removeUser = New RemoveUserCommand(_userRepository,_unitOfWork)
         End Sub
 
         <TestCleanup>
@@ -49,8 +51,15 @@ Namespace User
 
         <TestMethod>
         Public Sub TestAdduser()
-            Dim r = _createUserFactory.ExecuteAsync("khach3","khach")
+            Dim r = _createUserFactory.Execute("khach3","khach")
             Assert.IsFalse(False)
+        End Sub
+
+        <TestMethod>
+        Public Sub TestRemove()
+            Dim r = _removeUser.Execute("khach")
+            Assert.IsFalse(False)
+
         End Sub
     End Class
 End NameSpace

@@ -14,14 +14,14 @@ Namespace Rooms.Queries
         Public Function Execute(id As String) As Boolean Implements IGetCanRemoveRoomCategoryQuery.Execute
             Dim category = _roomRepository.GetRoomCategory(id)
             Dim rooms = _roomRepository.Find(Function(p)p.Category.Id = category.Id).ToList()
-            If IsNothing(rooms) Then Return True
+            If rooms.Count = 0 Then Return True
             Return False
         End Function
 
         Public Async Function ExecuteAsync(id As String) As Task(Of Boolean) Implements IGetCanRemoveRoomCategoryQuery.ExecuteAsync
             Dim category = Await _roomRepository.GetRoomCategoryAsync(id)
             Dim rooms = Await _roomRepository.Find(Function(p)p.Category.Id = category.Id).ToListAsync()
-            If IsNothing(rooms) Then Return True
+            If rooms.Count = 0 Then Return True
             Return False
         End Function
     End Class
