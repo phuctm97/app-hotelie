@@ -109,9 +109,9 @@ Namespace Rooms.ViewModels
 			Room.Category = Categories.FirstOrDefault()
 			Room.State = 0
 
-			_originalRoomName = Room.Name
-			_originalRoomCategoryId = Room.Category.Id
-			_originalRoomNote = Room.Note
+			_originalRoomName = Room?.Name
+			_originalRoomCategoryId = Room?.Category?.Id
+			_originalRoomNote = Room?.Note
 		End Sub
 
 		' Binding model
@@ -177,9 +177,9 @@ Namespace Rooms.ViewModels
 			Room.Note = String.Empty
 			Room.State = 0
 
-			_originalRoomName = Room.Name
-			_originalRoomCategoryId = Room.Category.Id
-			_originalRoomNote = Room.Note
+			_originalRoomName = Room?.Name
+			_originalRoomCategoryId = Room?.Category?.Id
+			_originalRoomNote = Room?.Note
 		End Sub
 
 		Public Overrides ReadOnly Property IsEdited As Boolean

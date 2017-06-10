@@ -164,7 +164,7 @@ Namespace Leases.ViewModels
 			_originalcheckinDate = Lease.CheckinDate
 			_originalexpectedCheckoutDate = Lease.ExpectedCheckoutDate
 			_originalroomUnitPrice = Lease.RoomUnitPrice
-			_originalroomId = Lease.Room.Id
+			_originalroomId = Lease.Room?.Id
 			_originalDetails.Clear()
 			_isEdited = False
 		End Sub
@@ -190,7 +190,6 @@ Namespace Leases.ViewModels
 
 			_roomCapacity = (Await _getParametersQuery.ExecuteAsync()).RoomCapacity
 			ReloadValues()
-			ResetValues()
 		End Function
 
 		Private Sub ReloadValues()
@@ -203,7 +202,7 @@ Namespace Leases.ViewModels
 			_originalcheckinDate = Lease.CheckinDate
 			_originalexpectedCheckoutDate = Lease.ExpectedCheckoutDate
 			_originalroomUnitPrice = Lease.RoomUnitPrice
-			_originalroomId = Lease.Room.Id
+			_originalroomId = Lease.Room?.Id
 			_originalDetails.Clear()
 			_isEdited = False
 		End Sub
