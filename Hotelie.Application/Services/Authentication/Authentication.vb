@@ -1,4 +1,4 @@
-﻿Imports System.Data.Entity
+Imports System.Data.Entity
 Imports Hotelie.Application.Services.Persistence
 Imports Hotelie.Application.Users.Queries
 

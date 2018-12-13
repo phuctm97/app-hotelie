@@ -1,4 +1,4 @@
-﻿'Imports Hotelie.Application.Services.Authentication
+'Imports Hotelie.Application.Services.Authentication
 'Imports Hotelie.Application.Services.Persistence
 'Imports Hotelie.Domain.Users
 'Imports Hotelie.Persistence.Common
