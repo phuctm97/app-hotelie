@@ -9,14 +9,20 @@ Namespace Leases
             HasKey(Function(p)p.Id)
 
             [Property](Function(p)p.Id).
+                HasMaxLength(5).
+                IsUnicode(False).
                 IsRequired().
-                IsUnicode( False ).
-                IsFixedLength().
-                HasMaxLength(5)
+                IsFixedLength()
 
             [Property](Function(p)p.Name).
                 IsRequired().
-                HasMaxLength(50)
+                HasMaxLength(30).
+                IsUnicode()
+
+            [Property](Function(p)p.Coefficient).
+                IsRequired()
+
         End Sub
+
     End Class
-End Namespace
+End NameSpace

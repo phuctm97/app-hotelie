@@ -74,22 +74,22 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bills\BillConfiguration.vb" />
+    <Compile Include="Bills\BillDetailConfiguration.vb" />
+    <Compile Include="Bills\BillRepository.vb" />
     <Compile Include="Common\DatabaseContext.vb" />
     <Compile Include="Common\DatabaseInitializer.vb" />
     <Compile Include="Common\Repository.vb" />
     <Compile Include="Common\UnitOfWork.vb" />
-    <Compile Include="Leases\BillConfiguration.vb" />
+    <Compile Include="Common\DatabaseService.vb" />
     <Compile Include="Leases\CustomerCategoryConfiguration.vb" />
     <Compile Include="Leases\LeaseConfiguration.vb" />
     <Compile Include="Leases\LeaseDetailConfiguration.vb" />
-    <Compile Include="Migrations\201705301447357_DbInitialize_FirstComplete.Designer.vb">
-      <DependentUpon>201705301447357_DbInitialize_FirstComplete.vb</DependentUpon>
+    <Compile Include="Leases\LeaseRepository.vb" />
+    <Compile Include="Migrations\201706091606298_INITIAL.Designer.vb">
+      <DependentUpon>201706091606298_INITIAL.vb</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201705301447357_DbInitialize_FirstComplete.vb" />
-    <Compile Include="Migrations\201705301458228_DbUpdate_FixUsersTable_1.Designer.vb">
-      <DependentUpon>201705301458228_DbUpdate_FixUsersTable_1.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201705301458228_DbUpdate_FixUsersTable_1.vb" />
+    <Compile Include="Migrations\201706091606298_INITIAL.vb" />
     <Compile Include="Migrations\Configuration.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -107,20 +107,19 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Parameters\ParameterConfiguration.vb" />
+    <Compile Include="Parameters\ParameterRepository.vb" />
     <Compile Include="Users\PermissionConfiguration.vb" />
     <Compile Include="Rooms\RoomCategoryConfiguration.vb" />
     <Compile Include="Rooms\RoomConfiguration.vb" />
     <Compile Include="Rooms\RoomRepository.vb" />
-    <Compile Include="Users\UserCategoryConfiguration.vb" />
+    <Compile Include="Users\PermissionRepository.vb" />
     <Compile Include="Users\UserConfiguration.vb" />
+    <Compile Include="Users\UserPermissionConfiguration.vb" />
     <Compile Include="Users\UserRepository.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201705301447357_DbInitialize_FirstComplete.resx">
-      <DependentUpon>201705301447357_DbInitialize_FirstComplete.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201705301458228_DbUpdate_FixUsersTable_1.resx">
-      <DependentUpon>201705301458228_DbUpdate_FixUsersTable_1.vb</DependentUpon>
+    <EmbeddedResource Include="Migrations\201706091606298_INITIAL.resx">
+      <DependentUpon>201706091606298_INITIAL.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

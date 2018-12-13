@@ -29,7 +29,8 @@ Namespace Rooms
 				IsUnicode()
 
 			HasRequired( Function( p ) p.Category ).
-				WithMany().Map( Function( m ) m.MapKey( "CategoryId" ) )
+				WithMany().Map( Function( m ) m.MapKey( "CategoryId" ))
+
 		End Sub
 	End Class
 End Namespace

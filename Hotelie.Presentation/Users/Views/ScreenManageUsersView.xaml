@@ -1,0 +1,183 @@
+﻿<UserControl x:Class="Users.Views.ScreenManageUsersView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Hotelie.Presentation"
+             xmlns:commonConverters="clr-namespace:Hotelie.Presentation.Common.Converters"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="700" d:DesignWidth="1024">
+    <!--Resources-->
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <commonConverters:StringToUpperConverter x:Key="StringToUpperConverter" />
+            <commonConverters:FirstCharacterUpperConverter x:Key="FirstCharacterUpperConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <!--Content-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--Title bar-->
+        <materialDesign:ColorZone Grid.Row="0" Mode="PrimaryDark"
+                                  materialDesign:ShadowAssist.ShadowDepth="Depth2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="72" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!--Close button-->
+                <Button Grid.Row="0" Grid.Column="0" ToolTip="Đóng"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="16 24 0 0" Style="{DynamicResource MaterialDesignToolButton}"
+                        cal:Message.Attach="ExitAsync">
+                    <materialDesign:PackIcon Width="24" Height="24"
+                                             Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                             Kind="Close" />
+                </Button>
+
+                <!--Title and save-->
+                <DockPanel Grid.Row="0" Grid.Column="1" Margin="0 24 0 8">
+                    <!--Title-->
+                    <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               FontSize="36" FontWeight="Light"
+                               Text="{Binding DisplayName, Converter={StaticResource StringToUpperConverter}}" />
+                </DockPanel>
+
+                <!--Content-->
+                <DockPanel Grid.Row="1" Grid.Column="1" Margin="0 0 0 20">
+                    <!--Username-->
+                    <StackPanel Margin="0 0 0 0" Orientation="Horizontal">
+                        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   FontSize="15"
+                                   Opacity="0.7"
+                                   Text="THỰC HIỆN" Margin="0 0 8 0" />
+                        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   FontSize="15"
+                                   Opacity="0.9"
+                                   Text="{Binding Path=Parent.LoggedAccount.Username, Converter={StaticResource StringToUpperConverter}}" />
+                    </StackPanel>
+                </DockPanel>
+            </Grid>
+        </materialDesign:ColorZone>
+
+        <ScrollViewer Grid.Row="1" Margin="4 0 4 0" HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="16" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+
+                <Rectangle Grid.Column="1" Width="0.5" Fill="#33000000" Margin="0 32 0 32" />
+
+                <StackPanel Grid.Column="0" Margin="16 24 16 0">
+                    <!--title-->
+                    <StackPanel Orientation="Horizontal" Margin="0 0 0 4">
+                        <TextBlock Text="Danh sách tài khoản" IsEnabled="False"
+                                   Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                                   FontSize="24" VerticalAlignment="Center" />
+                        <Button Style="{DynamicResource MaterialDesignFloatingActionAccentButton}"
+                                Margin="16 0 0 0" ToolTip="Tài khoản mới" Width="48" Height="48"
+                                cal:Message.Attach="AddUser">
+                            <materialDesign:PackIcon Kind="Plus" Width="24" Height="24" />
+                        </Button>
+                    </StackPanel>
+
+                    <ListBox FontSize="18" ItemsSource="{Binding Users}"
+                             SelectedItem="{Binding SelectedUser, Mode=TwoWay}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0 0 0 0" Orientation="Horizontal">
+                                    <Border Background="{DynamicResource PrimaryHueLightBrush}" Width="32" Height="32" CornerRadius="16">
+                                        <TextBlock Text="{Binding Username, Converter={StaticResource FirstCharacterUpperConverter}}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                       FontSize="15" FontWeight="Light" />
+                                    </Border>
+                                    <TextBlock Margin="12 0 0 0" VerticalAlignment="Center" Text="{Binding Username}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Margin="48 24 16 0">
+                    <StackPanel Margin="0 0 0 0" Orientation="Horizontal">
+                        <Border Background="#99F50057"  Width="64" Height="64" CornerRadius="32">
+                            <TextBlock Text="{Binding Path=SelectedUser.Username, Converter={StaticResource FirstCharacterUpperConverter}}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                       FontSize="42" FontWeight="Light" />
+                        </Border>
+                        <TextBlock Margin="12 0 0 0" VerticalAlignment="Center" FontSize="40" FontWeight="Bold" Text="{Binding Path=SelectedUser.Username}" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical" Margin="16 32 0 0">
+                        <StackPanel Orientation="Horizontal" Margin="0 16 0 16">
+                            <ToggleButton IsEnabled="{Binding CanEditUser}"
+                                          IsChecked="{Binding Path=SelectedUser.CouldConfigRoom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          Style="{DynamicResource MaterialDesignSwitchAccentToggleButton}"
+                                          VerticalAlignment="Center" Margin="0 0 16 0" />
+                            <TextBlock FontSize="20" Text="Được phép thêm, sửa, xóa, phòng" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0 16 0 16">
+                            <ToggleButton VerticalAlignment="Center" Margin="0 0 16 0"
+                                          IsEnabled="{Binding CanEditUser}"
+                                          IsChecked="{Binding Path=SelectedUser.CouldAddLease, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock FontSize="20" Text="Được phép lập phiếu thuê phòng" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0 16 0 16">
+                            <ToggleButton Style="{DynamicResource MaterialDesignSwitchAccentToggleButton}"
+                                          VerticalAlignment="Center" Margin="0 0 16 0"
+                                          IsEnabled="{Binding CanEditUser}"
+                                          IsChecked="{Binding Path=SelectedUser.CouldEditLease, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock FontSize="20" Text="Được phép chỉnh sửa phiếu thuê phòng" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0 16 0 16">
+                            <ToggleButton VerticalAlignment="Center" Margin="0 0 16 0"
+                                          IsEnabled="{Binding CanEditUser}"
+                                          IsChecked="{Binding Path=SelectedUser.CouldRemoveLease, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock FontSize="20" Text="Được phép xóa phiếu thuê phòng" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0 16 0 16">
+                            <ToggleButton Style="{DynamicResource MaterialDesignSwitchAccentToggleButton}"
+                                          VerticalAlignment="Center" Margin="0 0 16 0"
+                                          IsEnabled="{Binding CanEditUser}"
+                                          IsChecked="{Binding Path=SelectedUser.CouldManageUser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock FontSize="20" Text="Được phép quản lý tài khoản" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0 16 0 16">
+                            <ToggleButton VerticalAlignment="Center" Margin="0 0 16 0"
+                                          IsEnabled="{Binding CanEditUser}"
+                                          IsChecked="{Binding Path=SelectedUser.CouldEditRule, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock FontSize="20" Text="Được phép thay đổi quy định" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal"
+                                Margin="66 32 0 0">
+                        <Button Margin="0 0 16 0" IsEnabled="{Binding CanEditUser}"
+                                Style="{DynamicResource MaterialDesignRaisedAccentButton}" HorizontalAlignment="Left"
+                                FontSize="18" Content="Áp dụng" cal:Message.Attach="SaveAsync" />
+                        <Button IsEnabled="{Binding CanEditUser}" Style="{DynamicResource MaterialDesignRaisedButton}"
+                                HorizontalAlignment="Left"
+                                FontSize="18" Content="Xóa tài khoản" cal:Message.Attach="DeleteAsync" />
+                    </StackPanel>
+                </StackPanel>
+
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

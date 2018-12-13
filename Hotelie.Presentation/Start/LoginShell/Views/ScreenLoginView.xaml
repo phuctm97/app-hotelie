@@ -1,0 +1,105 @@
+﻿<UserControl x:Class="Start.LoginShell.Views.ScreenLoginView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Hotelie.Presentation"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="700" d:DesignWidth="1024">
+    <!--Resources-->
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PasswordBox.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <!--Content-->
+    <materialDesign:Card HorizontalAlignment="Center" VerticalAlignment="Center"
+                         Width="400" Height="Auto">
+        <StackPanel Orientation="Vertical">
+
+            <!--Title-->
+            <StackPanel Margin="0 48 0 32" Orientation="Horizontal">
+                <Rectangle Width="8" Fill="{DynamicResource SecondaryAccentBrush}" />
+                <TextBlock Margin="32 8 8 8"
+                           FontSize="21"
+                           FontWeight="Bold"
+                           Foreground="{DynamicResource SecondaryAccentBrush}"
+                           Text="ĐĂNG NHẬP" />
+            </StackPanel>
+
+            <!--Account-->
+            <TextBox x:Name="AccountTextBox"
+                     Margin="40 0 40 16"
+                     materialDesign:HintAssist.FloatingOffset="0, -24"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     FontSize="18"
+                     TextChanged="OnAccountChanged"
+                     Text="{Binding InitialAccount, Mode=OneWay}">
+                <materialDesign:HintAssist.Hint>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon VerticalAlignment="Center"
+                                                 Margin="0 0 4 0"
+                                                 Kind="Account" />
+                        <TextBlock VerticalAlignment="Center" Text="Tài khoản" />
+                    </StackPanel>
+                </materialDesign:HintAssist.Hint>
+            </TextBox>
+
+            <!--Password-->
+            <TextBlock x:Name="PasswordStorage" Visibility="Collapsed"
+                       Text="{Binding InitialPassword, Mode=OneWay}" Loaded="OnPasswordStorageLoaded" />
+            <PasswordBox x:Name="PasswordTextBox" Margin="40 0 40 32"
+                         materialDesign:HintAssist.FloatingOffset="0, -24"
+                         Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
+                         FontSize="18"
+                         PasswordChanged="OnPasswordChanged">
+                <materialDesign:HintAssist.Hint>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon VerticalAlignment="Center"
+                                                 Margin="0 0 4 0"
+                                                 Kind="Key" />
+                        <TextBlock VerticalAlignment="Center" Text="Mật khẩu" />
+                    </StackPanel>
+                </materialDesign:HintAssist.Hint>
+            </PasswordBox>
+
+            <!--Submit-->
+            <DockPanel Margin="40 0 40 32">
+
+                <!--Button login-->
+                <Button DockPanel.Dock="Left" HorizontalAlignment="Left"
+                        Style="{DynamicResource MaterialDesignRaisedAccentButton}"
+                        FontSize="16"
+                        IsDefault="True"
+                        Content="Đăng nhập">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="Login">
+                                <cal:Parameter Value="{Binding ElementName=AccountTextBox, Path=Text}" />
+                                <cal:Parameter Value="{Binding ElementName=PasswordStorage, Path=Text}" />
+                                <cal:Parameter Value="{Binding ElementName=RememberCheckBox, Path=IsChecked}" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+
+                <!--Remember acount-->
+                <CheckBox x:Name="RememberCheckBox" DockPanel.Dock="Right" HorizontalAlignment="Right"
+                          FontSize="16"
+                          Content="Nhớ tài khoản" />
+            </DockPanel>
+
+        </StackPanel>
+    </materialDesign:Card>
+</UserControl>

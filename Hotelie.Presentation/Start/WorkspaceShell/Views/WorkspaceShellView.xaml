@@ -1,0 +1,97 @@
+﻿<UserControl x:Class="Start.WorkspaceShell.Views.WorkspaceShellView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Hotelie.Presentation"
+             xmlns:commonConverters="clr-namespace:Hotelie.Presentation.Common.Converters"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="1000" Loaded="OnShellLoaded">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <commonConverters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <materialDesign:TransitioningContent
+        OpeningEffect="{materialDesign:TransitionEffect Kind=SlideInFromBottom}">
+        <materialDesign:Transitioner SelectedIndex="{Binding DisplayCode, Mode=OneWay}"
+                                     AutoApplyTransitionOrigins="True">
+
+            <materialDesign:TransitionerSlide>
+                <materialDesign:TransitionerSlide.BackwardWipe>
+                    <materialDesign:CircleWipe />
+                </materialDesign:TransitionerSlide.BackwardWipe>
+                <materialDesign:TransitionerSlide.ForwardWipe>
+                    <materialDesign:CircleWipe />
+                </materialDesign:TransitionerSlide.ForwardWipe>
+
+                <ContentControl cal:View.Model="{Binding WorkspaceRooms}" />
+            </materialDesign:TransitionerSlide>
+
+            <materialDesign:TransitionerSlide>
+                <materialDesign:TransitionerSlide.BackwardWipe>
+                    <materialDesign:CircleWipe />
+                </materialDesign:TransitionerSlide.BackwardWipe>
+                <materialDesign:TransitionerSlide.ForwardWipe>
+                    <materialDesign:CircleWipe />
+                </materialDesign:TransitionerSlide.ForwardWipe>
+                <ContentControl cal:View.Model="{Binding WorkspaceLeases}" />
+            </materialDesign:TransitionerSlide>
+
+            <materialDesign:TransitionerSlide>
+                <materialDesign:TransitionerSlide.BackwardWipe>
+                    <materialDesign:CircleWipe />
+                </materialDesign:TransitionerSlide.BackwardWipe>
+                <materialDesign:TransitionerSlide.ForwardWipe>
+                    <materialDesign:CircleWipe />
+                </materialDesign:TransitionerSlide.ForwardWipe>
+                <ContentControl cal:View.Model="{Binding WorkspaceBills}" />
+            </materialDesign:TransitionerSlide>
+
+
+            <materialDesign:TransitionerSlide>
+                <materialDesign:TransitionerSlide.BackwardWipe>
+                    <materialDesign:CircleWipe />
+                </materialDesign:TransitionerSlide.BackwardWipe>
+                <materialDesign:TransitionerSlide.ForwardWipe>
+                    <materialDesign:CircleWipe />
+                </materialDesign:TransitionerSlide.ForwardWipe>
+                <ContentControl cal:View.Model="{Binding WorkspaceReports}" />
+            </materialDesign:TransitionerSlide>
+
+            <materialDesign:TransitionerSlide>
+                <materialDesign:TransitionerSlide.BackwardWipe>
+                    <materialDesign:CircleWipe />
+                </materialDesign:TransitionerSlide.BackwardWipe>
+                <materialDesign:TransitionerSlide.ForwardWipe>
+                    <materialDesign:CircleWipe />
+                </materialDesign:TransitionerSlide.ForwardWipe>
+                <ContentControl cal:View.Model="{Binding ScreenChangeRules}" />
+            </materialDesign:TransitionerSlide>
+
+            <materialDesign:TransitionerSlide>
+                <materialDesign:TransitionerSlide.BackwardWipe>
+                    <materialDesign:CircleWipe />
+                </materialDesign:TransitionerSlide.BackwardWipe>
+                <materialDesign:TransitionerSlide.ForwardWipe>
+                    <materialDesign:CircleWipe />
+                </materialDesign:TransitionerSlide.ForwardWipe>
+                <ContentControl cal:View.Model="{Binding ScreenManageUsers}" />
+            </materialDesign:TransitionerSlide>
+        </materialDesign:Transitioner>
+
+    </materialDesign:TransitioningContent>
+
+
+</UserControl>

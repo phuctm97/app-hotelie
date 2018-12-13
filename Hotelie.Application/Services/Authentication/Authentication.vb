@@ -1,4 +1,6 @@
-﻿Imports Hotelie.Application.Services.Persistence
+Imports System.Data.Entity
+Imports Hotelie.Application.Services.Persistence
+Imports Hotelie.Application.Users.Queries
 
 Namespace Services.Authentication
     Public Class Authentication
@@ -9,6 +11,7 @@ Namespace Services.Authentication
         Public Const PasswordInvalidError As String = "Mật khẩu không chính xác."
 
         Private ReadOnly _userRepository As IUserRepository
+        Private ReadOnly _getUserPermissionsQuery As IGetUserPermissionsQuery
 
         Public Property LoggedAccount As Account Implements IAuthentication.LoggedAccount
 
@@ -21,7 +24,7 @@ Namespace Services.Authentication
         ''' <summary>
         '''     Login to Hotelie
         ''' </summary>
-        Public Function TryLogin(account As Account) As IEnumerable(Of String) Implements IAuthentication.TryLogin
+        Public Function TryLogin(username As String, password As String) As IEnumerable(Of String) Implements IAuthentication.TryLogin
             Dim errorLog = New List(Of String)
 
             ' Currently logged in
@@ -31,20 +34,29 @@ Namespace Services.Authentication
             End If
 
             ' Username is invalid
-            Dim user = _userRepository.Find(Function(p)(p.Id = account.Username)).FirstOrDefault()
+            Dim user = _userRepository.Find(Function(p)(p.Id = username)).FirstOrDefault()
             If (IsNothing(user))
                 errorLog.Add(UsernameInvalidError)
                 Return errorLog
             End If
 
             ' Password is invalid
-            If (user.Password <> account.Password)
+            If (user.Password <> password)
                 errorLog.Add(PasswordInvalidError)
                 Return errorLog
             End If
 
+            Dim account = New Account() With {.Username = username}
+            Dim userPermissions = _getUserPermissionsQuery.Execute(username)
+            account.CouldAddLease = userPermissions.CouldAddLease
+            account.CouldConfigRoom = userPermissions.CouldConfigRoom
+            account.CouldEditLease = userPermissions.CouldEditLease
+            account.CouldEditRules = userPermissions.CouldEditRule
+            account.CouldManageUsers = userPermissions.CouldManageUser
+            account.CouldRemoveLease = userPermissions.CouldRemoveLease
+            
             ' Logging in
-            LoggedAccount = New Account() With {.Username=account.Username,.Password=account.Password}
+            LoggedAccount = account
 
             Return errorLog
         End Function
@@ -56,9 +68,47 @@ Namespace Services.Authentication
             LoggedAccount = Nothing
         End Sub
 
-        Public Sub New(userRepository As IUserRepository)
+        Public Sub New(userRepository As IUserRepository, getUserPermissionsQuery As IGetUserPermissionsQuery)
             Logout()
             _userRepository = userRepository
+            _getUserPermissionsQuery = getUserPermissionsQuery
         End Sub
+
+        Public Async Function TryLoginAsync(username As String, password As String) As Task(Of IEnumerable(Of String)) Implements IAuthentication.TryLoginAsync
+            Dim errorLog = New List(Of String)
+
+            ' Currently logged in
+            If (LoggedIn)
+                errorLog.Add(AlreadyLoggedInError)
+                Return errorLog
+            End If
+
+            ' Username is invalid
+            Dim user = Await _userRepository.Find(Function(p)(p.Id = username)).FirstOrDefaultAsync()
+            If (IsNothing(user))
+                errorLog.Add(UsernameInvalidError)
+                Return errorLog
+            End If
+
+            ' Password is invalid
+            If (user.Password <> password)
+                errorLog.Add(PasswordInvalidError)
+                Return errorLog
+            End If
+
+            Dim account = New Account() With {.Username = username}
+            Dim userPermissions = Await _getUserPermissionsQuery.ExecuteAsync(username)
+            account.CouldAddLease = userPermissions.CouldAddLease
+            account.CouldConfigRoom = userPermissions.CouldConfigRoom
+            account.CouldEditLease = userPermissions.CouldEditLease
+            account.CouldEditRules = userPermissions.CouldEditRule
+            account.CouldManageUsers = userPermissions.CouldManageUser
+            account.CouldRemoveLease = userPermissions.CouldRemoveLease
+
+            ' Logging in
+            LoggedAccount = account
+
+            Return errorLog
+        End Function
     End Class
 End Namespace

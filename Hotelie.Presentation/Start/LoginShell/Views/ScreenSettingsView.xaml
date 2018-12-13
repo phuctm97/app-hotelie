@@ -1,0 +1,113 @@
+﻿<UserControl x:Class="Start.LoginShell.Views.ScreenSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Hotelie.Presentation"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="700" d:DesignWidth="1024">
+    <!--Resources-->
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PasswordBox.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <!--Content-->
+    <materialDesign:Card HorizontalAlignment="Center" VerticalAlignment="Center"
+                         Width="400" Height="Auto">
+        <StackPanel Orientation="Vertical">
+
+            <!--Title-->
+            <StackPanel Margin="0 48 0 32" Orientation="Horizontal">
+                <Rectangle Width="8" Fill="{DynamicResource PrimaryHueMidBrush}" />
+                <TextBlock Margin="32 8 8 8"
+                           FontSize="21"
+                           FontWeight="Bold"
+                           Foreground="{DynamicResource PrimaryHueMidBrush}"
+                           Text="THIẾT LẬP KẾT NỐI" />
+            </StackPanel>
+
+            <!--Server name-->
+            <TextBox x:Name="ServerTextBox"
+                     Margin="40 0 40 16"
+                     materialDesign:HintAssist.FloatingOffset="0, -24"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     FontSize="18"
+                     TextChanged="OnServerChanged"
+                     Text="{Binding InitialDataSource, Mode=OneWay}">
+                <materialDesign:HintAssist.Hint>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon VerticalAlignment="Center"
+                                                 Margin="0 0 4 0"
+                                                 Kind="Server" />
+                        <TextBlock VerticalAlignment="Center" Text="Máy chủ" />
+                    </StackPanel>
+                </materialDesign:HintAssist.Hint>
+            </TextBox>
+
+            <!--Database name-->
+            <TextBox x:Name="DatabaseTextBox"
+                     Margin="40 0 40 32"
+                     materialDesign:HintAssist.FloatingOffset="0, -24"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     FontSize="18"
+                     TextChanged="OnDatabaseChanged"
+                     Text="{Binding InitialCatalog, Mode=OneWay}">
+                <materialDesign:HintAssist.Hint>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon VerticalAlignment="Center"
+                                                 Margin="0 0 4 0"
+                                                 Kind="Database" />
+                        <TextBlock VerticalAlignment="Center" Text="Cơ sở dữ liệu" />
+                    </StackPanel>
+                </materialDesign:HintAssist.Hint>
+            </TextBox>
+
+            <!--Submit-->
+            <DockPanel Margin="40 0 40 32">
+                <!--Save-->
+                <Button DockPanel.Dock="Left" HorizontalAlignment="Left"
+                        Style="{DynamicResource MaterialDesignRaisedButton}"
+                        FontSize="16"
+                        Content="Lưu">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="ApplyConnection">
+                                <cal:Parameter Value="{Binding ElementName=ServerTextBox, Path=Text}" />
+                                <cal:Parameter Value="{Binding ElementName=DatabaseTextBox, Path=Text}" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+                <!--Test-->
+                <Button DockPanel.Dock="Right" HorizontalAlignment="Right"
+                        Style="{DynamicResource MaterialDesignToolButton}"
+                        FontSize="16"
+                        IsDefault="True"
+                        Content="Thử kết nối">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="TestConnection">
+                                <cal:Parameter Value="{Binding ElementName=ServerTextBox, Path=Text}" />
+                                <cal:Parameter Value="{Binding ElementName=DatabaseTextBox, Path=Text}" />
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+            </DockPanel>
+
+        </StackPanel>
+    </materialDesign:Card>
+
+</UserControl>

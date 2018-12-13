@@ -56,12 +56,12 @@ Partial Friend NotInheritable Class MySettings
     <Global.System.Configuration.UserScopedSettingAttribute(),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Configuration.DefaultSettingValueAttribute("")>  _
-    Public Property HotelieDatabaseConnectionString() As String
+    Public Property ConnectionDataSource() As String
         Get
-            Return CType(Me("HotelieDatabaseConnectionString"),String)
+            Return CType(Me("ConnectionDataSource"),String)
         End Get
         Set
-            Me("HotelieDatabaseConnectionString") = value
+            Me("ConnectionDataSource") = value
         End Set
     End Property
     
@@ -86,6 +86,18 @@ Partial Friend NotInheritable Class MySettings
         End Get
         Set
             Me("SavedPassword") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+    Public Property ConnectionCatalog() As String
+        Get
+            Return CType(Me("ConnectionCatalog"),String)
+        End Get
+        Set
+            Me("ConnectionCatalog") = value
         End Set
     End Property
 End Class

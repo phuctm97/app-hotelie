@@ -1,7 +1,12 @@
 ﻿Namespace Services.Authentication
-	Public Class Account
-		Public Property Username As String
+    Public Class Account
+        Property Username As String
+        Property CouldConfigRoom As Boolean
+        Property CouldAddLease As Boolean
+        Property CouldEditLease As Boolean
+        Property CouldRemoveLease As Boolean
+        Property CouldManageUsers As Boolean
+        Property CouldEditRules As Boolean
 
-		Public Property Password As String
-	End Class
-End Namespace
+    End Class
+End NameSpace

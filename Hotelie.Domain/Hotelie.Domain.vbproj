@@ -63,7 +63,8 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Leases\Bill.vb" />
+    <Compile Include="Bills\Bill.vb" />
+    <Compile Include="Bills\BillDetail.vb" />
     <Compile Include="Leases\CustomerCategory.vb" />
     <Compile Include="Leases\LeaseDetail.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -87,7 +88,7 @@
     <Compile Include="Rooms\Room.vb" />
     <Compile Include="Rooms\RoomCategory.vb" />
     <Compile Include="Users\User.vb" />
-    <Compile Include="Users\UserCategory.vb" />
+    <Compile Include="Users\UserPermission.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
