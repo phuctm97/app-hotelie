@@ -236,7 +236,7 @@
                                     Binding="{Binding Coefficient, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource DoubleToStringConverter}}"
                                     EditingElementStyle="{DynamicResource MaterialDesignDataGridTextColumnEditingStyle}">
                                     <DataGridTextColumn.Header>
-                                        <TextBlock Text="Hệ số" FontSize="20" FontWeight="Bold" />
+                                        <TextBlock Text="Hệ số phụ thu" FontSize="20" FontWeight="Bold" />
                                     </DataGridTextColumn.Header>
                                 </DataGridTextColumn>
                                 

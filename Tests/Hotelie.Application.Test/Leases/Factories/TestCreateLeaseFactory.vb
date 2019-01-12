@@ -43,8 +43,7 @@ Namespace Leases.Factories
 
             Dim roomCategory = New RoomCategory() With {.Id = "00001", .Name = "Annonymous", .Price = 200000}
             _databaseService.Context.Parameters.Add(New Parameter() _
-                                                       With {.Id = "00001", .MaximumCustomer = 4, .CustomerCoefficient = 0.5,
-                                                       .ExtraCoefficient = 0.25})
+                                                       With {.Id = "00001", .MaximumCustomer = 4, .ExtraCoefficient = 0.25})
             _roomRepository.AddRoomCategory(roomCategory)
             _databaseService.Context.SaveChanges()
 

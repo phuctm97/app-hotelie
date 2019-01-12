@@ -122,8 +122,7 @@ Namespace Migrations
                     {
                         .Id = c.String(nullable := False, maxLength := 5, fixedLength := true, unicode := false),
                         .MaximumCustomer = c.Int(nullable := False),
-                        .ExtraCoefficient = c.Double(nullable := False),
-                        .CustomerCoefficient = c.Double(nullable := False)
+                        .ExtraCoefficient = c.Double(nullable := False)
                     }) _
                 .PrimaryKey(Function(t) t.Id)
             

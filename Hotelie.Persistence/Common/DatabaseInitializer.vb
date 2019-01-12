@@ -23,8 +23,7 @@ Namespace Common
                 New Parameter() _
                                       With {.Id = "1",
                                       .MaximumCustomer = 3,
-                                      .CustomerCoefficient = 1.5,
-                                      .ExtraCoefficient = 1.5})
+                                      .ExtraCoefficient = 0.5})
 
             context.SaveChanges()
         End Sub
