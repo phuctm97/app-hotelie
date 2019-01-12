@@ -47,9 +47,9 @@ Namespace Rooms.ViewModels
 		End Sub
 
 		Public Sub Init()
-			'InitRoomCategories()
-			'InitValues()
-		End Sub
+            InitRoomCategories()
+            InitValues()
+        End Sub
 
 		Public Async Function InitAsync() As Task
 			Await InitRoomCategoriesAsync()
