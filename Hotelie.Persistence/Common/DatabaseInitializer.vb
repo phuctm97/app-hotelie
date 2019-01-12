@@ -53,22 +53,22 @@ Namespace Common
         Private Sub SeedRoomCategories(context As DatabaseContext)
             context.RoomCategories.Add(
                 New RoomCategory _
-                                          With {.Id = "NOR01", .Name = "Normal 1 for Single", .Price = 150000D})
+                                          With {.Id = "NOR01", .Name = "Phòng Đơn Thường 1", .Price = 150000D})
             context.RoomCategories.Add(
                 New RoomCategory _
-                                          With {.Id = "NOR02", .Name = "Normal 2 for Single", .Price = 200000D})
+                                          With {.Id = "NOR02", .Name = "Phòng Đơn Thường 2", .Price = 200000D})
             context.RoomCategories.Add(
                 New RoomCategory _
-                                          With {.Id = "NOR03", .Name = "Normal 1 for Couple", .Price = 250000D})
+                                          With {.Id = "NOR03", .Name = "Phòng Đôi Thường 1", .Price = 250000D})
             context.RoomCategories.Add(
                 New RoomCategory _
-                                          With {.Id = "NOR04", .Name = "Normal 2 for Couple", .Price = 300000D})
+                                          With {.Id = "NOR04", .Name = "Phòng Đôi Thường 2", .Price = 300000D})
             context.RoomCategories.Add(
                 New RoomCategory _
-                                          With {.Id = "VIP01", .Name = "V.I.P 1 for Single", .Price = 400000D})
+                                          With {.Id = "VIP01", .Name = "Phòng Đơn VIP 1", .Price = 400000D})
             context.RoomCategories.Add(
                 New RoomCategory _
-                                          With {.Id = "VIP02", .Name = "V.I.P 1 for Couple", .Price = 700000D})
+                                          With {.Id = "VIP02", .Name = "Phòng Đôi VIP 1", .Price = 700000D})
 
             context.SaveChanges()
         End Sub
@@ -76,27 +76,29 @@ Namespace Common
         Private Sub SeedRooms(context As DatabaseContext)
             Dim categories = context.RoomCategories.ToList()
 
-            context.Rooms.Add(New Room With {.Id = "RM101", .Name = "Floor 1 Room 1", .Category = categories(0)})
-            context.Rooms.Add(New Room With {.Id = "RM102", .Name = "Floor 1 Room 2", .Category = categories(1)})
-            context.Rooms.Add(New Room With {.Id = "RM103", .Name = "Floor 1 Room 3", .Category = categories(2)})
-            context.Rooms.Add(New Room With {.Id = "RM104", .Name = "Floor 1 Room 4", .Category = categories(3)})
-            context.Rooms.Add(New Room With {.Id = "RM105", .Name = "Floor 1 Room 5", .Category = categories(4)})
-            context.Rooms.Add(New Room With {.Id = "RM106", .Name = "Floor 1 Room 6", .Category = categories(5)})
-            context.Rooms.Add(New Room With {.Id = "RM201", .Name = "Floor 2 Room 1", .Category = categories(0)})
-            context.Rooms.Add(New Room With {.Id = "RM202", .Name = "Floor 2 Room 2", .Category = categories(1)})
-            context.Rooms.Add(New Room With {.Id = "RM203", .Name = "Floor 2 Room 3", .Category = categories(2)})
-            context.Rooms.Add(New Room With {.Id = "RM204", .Name = "Floor 2 Room 4", .Category = categories(3)})
-            context.Rooms.Add(New Room With {.Id = "RM205", .Name = "Floor 2 Room 5", .Category = categories(4)})
-            context.Rooms.Add(New Room With {.Id = "RM206", .Name = "Floor 2 Room 6", .Category = categories(5)})
+            context.Rooms.Add(New Room With {.Id = "RM101", .Name = "Phòng 101", .Category = categories(0)})
+            context.Rooms.Add(New Room With {.Id = "RM102", .Name = "Phòng 102", .Category = categories(1)})
+            context.Rooms.Add(New Room With {.Id = "RM103", .Name = "Phòng 103", .Category = categories(2)})
+            context.Rooms.Add(New Room With {.Id = "RM104", .Name = "Phòng 104", .Category = categories(3)})
+            context.Rooms.Add(New Room With {.Id = "RM105", .Name = "Phòng 105", .Category = categories(4)})
+            context.Rooms.Add(New Room With {.Id = "RM106", .Name = "Phòng 106", .Category = categories(5)})
+            context.Rooms.Add(New Room With {.Id = "RM201", .Name = "Phòng 201", .Category = categories(0)})
+            context.Rooms.Add(New Room With {.Id = "RM202", .Name = "Phòng 202", .Category = categories(1)})
+            context.Rooms.Add(New Room With {.Id = "RM203", .Name = "Phòng 203", .Category = categories(2)})
+            context.Rooms.Add(New Room With {.Id = "RM204", .Name = "Phòng 204", .Category = categories(3)})
+            context.Rooms.Add(New Room With {.Id = "RM205", .Name = "Phòng 205", .Category = categories(4)})
+            context.Rooms.Add(New Room With {.Id = "RM206", .Name = "Phòng 206", .Category = categories(5)})
 
             context.SaveChanges()
         End Sub
 
         Private Sub SeedCustomerCategories(context As DatabaseContext)
-            context.CustomerCategories.Add(New CustomerCategory() _
-                                              With {.Id = "CC001", .Name = "Citizen", .Coefficient = 1.0})
-            context.CustomerCategories.Add(New CustomerCategory() _
-                                              With {.Id = "CC002", .Name = "Foreigner", .Coefficient = 1.5})
+            context.CustomerCategories.Add(
+                New CustomerCategory() _
+                                              With {.Id = "CC001", .Name = "Nội địa", .Coefficient = 0})
+            context.CustomerCategories.Add(
+                New CustomerCategory() _
+                                              With {.Id = "CC002", .Name = "Ngoại quốc", .Coefficient = 0.5})
 
             context.SaveChanges()
         End Sub
