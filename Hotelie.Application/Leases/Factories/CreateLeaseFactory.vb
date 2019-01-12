@@ -108,9 +108,12 @@ Namespace Leases.Factories
                 Next
 
                 ' init lease coefficient
-                Dim coeff = 0
+                Dim coeff = 0.0
                 For Each leaseDetail As LeaseDetail In newLease.LeaseDetails
-                    If coeff<leaseDetail.CustomerCategory.Coefficient Then coeff = leaseDetail.CustomerCategory.Coefficient
+                    Dim leaseCustomerCoefficient = leaseDetail.CustomerCategory.Coefficient
+                    If coeff < leaseCustomerCoefficient Then
+                        coeff = leaseCustomerCoefficient
+                    End If
                 Next
                 newLease.CustomerCoefficient = coeff
 
@@ -212,9 +215,12 @@ Namespace Leases.Factories
                 Next
 
                 ' init lease coefficient
-                Dim coeff = 0
+                Dim coeff = 0.0
                 For Each leaseDetail As LeaseDetail In newLease.LeaseDetails
-                    If coeff<leaseDetail.CustomerCategory.Coefficient Then coeff = leaseDetail.CustomerCategory.Coefficient
+                    Dim leaseCustomerCoefficient = leaseDetail.CustomerCategory.Coefficient
+                    If coeff < leaseCustomerCoefficient Then
+                        coeff = leaseCustomerCoefficient
+                    End If
                 Next
                 newLease.CustomerCoefficient = coeff
 
