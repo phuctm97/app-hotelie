@@ -51,6 +51,7 @@ Namespace Leases.Factories
                 Dim newLease = New Lease() _
                         With {.Id = newId, .CheckinDate = checkinDate, .ExpectedCheckoutDate =expectedCheckoutDate}
                 newLease.CustomerCoefficient = 0
+                newLease.MaximumCustomer = rules.MaximumCustomer
                 newLease.ExtraCoefficient = rules.ExtraCoefficient
                 newLease.RoomPrice = room.Category.Price
 
@@ -158,6 +159,7 @@ Namespace Leases.Factories
                 Dim newLease = New Lease() _
                         With {.Id = newId, .CheckinDate = checkinDate, .ExpectedCheckoutDate =expectedCheckoutDate}
                 newLease.CustomerCoefficient = 0
+                newLease.MaximumCustomer = rules.MaximumCustomer
                 newLease.ExtraCoefficient = rules.ExtraCoefficient
                 newLease.RoomPrice = room.Category.Price
 

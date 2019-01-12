@@ -30,7 +30,10 @@ Namespace Leases
             [Property](Function(p)p.ExtraCoefficient).
                 IsOptional()
 
-            [Property](Function(p)p.CustomerCoefficient).
+            [Property](Function(p) p.CustomerCoefficient).
+                IsOptional()
+
+            [Property](Function(p) p.MaximumCustomer).
                 IsOptional()
 
             HasMany(Function(p)p.LeaseDetails).
