@@ -60,16 +60,22 @@ Namespace Leases.Models
 			End Get
 		End Property
 
-		Public ReadOnly Property CustomerCoefficient As Double Implements ILeaseModel.CustomerCoefficient
-			Get
-				Return _entity.CustomerCoefficient
-			End Get
-		End Property
+        Public ReadOnly Property CustomerCoefficient As Double Implements ILeaseModel.CustomerCoefficient
+            Get
+                Return _entity.CustomerCoefficient
+            End Get
+        End Property
 
-		Public ReadOnly Property ExtraCharge As Decimal Implements ILeaseModel.ExtraCharge
+        Public ReadOnly Property MaximunCustomer As Integer Implements ILeaseModel.MaximunCustomer
+            Get
+                Return _entity.MaximumCustomer
+            End Get
+        End Property
+
+        Public ReadOnly Property ExtraCharge As Decimal Implements ILeaseModel.ExtraCharge
 			Get
                 Dim extra = NumberOfUsedDays * RoomUnitPrice * CustomerCoefficient
-                If Details.Count >= 3 Then extra += NumberOfUsedDays * RoomUnitPrice * ExtraCoefficient
+                If Details.Count >= MaximunCustomer Then extra += NumberOfUsedDays * RoomUnitPrice * ExtraCoefficient
                 Return extra
             End Get
 		End Property
