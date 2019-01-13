@@ -29,7 +29,6 @@ Namespace Leases.Commands
 
                 Dim rules = _parameterRepository.GetRules()
 
-                lease.CustomerCoefficient = rules.CustomerCoefficient
                 lease.ExtraCoefficient = rules.ExtraCoefficient
                 lease.RoomPrice = room.Category.Price
                 lease.Room = room
@@ -50,7 +49,6 @@ Namespace Leases.Commands
                 Dim room = Await _roomRepository.GetOneAsync(roomId)
                 Dim rules = Await _parameterRepository.GetRulesAsync()
 
-                lease.CustomerCoefficient = rules.CustomerCoefficient
                 lease.ExtraCoefficient = rules.ExtraCoefficient
                 lease.RoomPrice = room.Category.Price
                 lease.Room = room

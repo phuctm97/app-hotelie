@@ -16,9 +16,11 @@
 
 		ReadOnly Property ExtraCoefficient As Double
 
-		ReadOnly Property CustomerCoefficient As Double
+        ReadOnly Property CustomerCoefficient As Double
 
-		ReadOnly Property ExtraCharge As Decimal
+        ReadOnly Property MaximunCustomer As Integer
+
+        ReadOnly Property ExtraCharge As Decimal
 
 		ReadOnly Property TotalExpense As Decimal
 

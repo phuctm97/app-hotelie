@@ -45,11 +45,9 @@
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -86,10 +84,10 @@
     <Compile Include="Leases\LeaseConfiguration.vb" />
     <Compile Include="Leases\LeaseDetailConfiguration.vb" />
     <Compile Include="Leases\LeaseRepository.vb" />
-    <Compile Include="Migrations\201706091606298_INITIAL.Designer.vb">
-      <DependentUpon>201706091606298_INITIAL.vb</DependentUpon>
+    <Compile Include="Migrations\201901121100557_Initial.Designer.vb">
+      <DependentUpon>201901121100557_Initial.vb</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201706091606298_INITIAL.vb" />
+    <Compile Include="Migrations\201901121100557_Initial.vb" />
     <Compile Include="Migrations\Configuration.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -118,8 +116,8 @@
     <Compile Include="Users\UserRepository.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201706091606298_INITIAL.resx">
-      <DependentUpon>201706091606298_INITIAL.vb</DependentUpon>
+    <EmbeddedResource Include="Migrations\201901121100557_Initial.resx">
+      <DependentUpon>201901121100557_Initial.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

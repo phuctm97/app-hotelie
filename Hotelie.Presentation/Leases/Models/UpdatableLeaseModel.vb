@@ -34,13 +34,19 @@ Namespace Leases.Models
 			End Get
 		End Property
 
-		Public ReadOnly Property CustomerCoefficient As Double Implements ILeaseModel.CustomerCoefficient
-			Get
-				Return _baseModel.CustomerCoefficient
-			End Get
-		End Property
+        Public ReadOnly Property CustomerCoefficient As Double Implements ILeaseModel.CustomerCoefficient
+            Get
+                Return _baseModel.CustomerCoefficient
+            End Get
+        End Property
 
-		Public ReadOnly Property Details As List(Of ILeaseDetailModel) Implements ILeaseModel.Details
+        Public ReadOnly Property MaximunCustomer As Integer Implements ILeaseModel.MaximunCustomer
+            Get
+                Return _baseModel.MaximunCustomer
+            End Get
+        End Property
+
+        Public ReadOnly Property Details As List(Of ILeaseDetailModel) Implements ILeaseModel.Details
 			Get
 				Return _baseModel.Details
 			End Get

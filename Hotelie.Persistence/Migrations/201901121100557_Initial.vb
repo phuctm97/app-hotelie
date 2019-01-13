@@ -3,7 +3,7 @@ Imports System.Data.Entity.Migrations
 Imports Microsoft.VisualBasic
 
 Namespace Migrations
-    Public Partial Class INITIAL
+    Public Partial Class Initial
         Inherits DbMigration
     
         Public Overrides Sub Up()
@@ -58,6 +58,7 @@ Namespace Migrations
                         .RoomPrice = c.Decimal(storeType := "money"),
                         .ExtraCoefficient = c.Double(),
                         .CustomerCoefficient = c.Double(),
+                        .MaximumCustomer = c.Int(),
                         .Paid = c.Byte(nullable := False),
                         .RoomId = c.String(nullable := False, maxLength := 5, fixedLength := true, unicode := false)
                     }) _
@@ -122,8 +123,7 @@ Namespace Migrations
                     {
                         .Id = c.String(nullable := False, maxLength := 5, fixedLength := true, unicode := false),
                         .MaximumCustomer = c.Int(nullable := False),
-                        .ExtraCoefficient = c.Double(nullable := False),
-                        .CustomerCoefficient = c.Double(nullable := False)
+                        .ExtraCoefficient = c.Double(nullable := False)
                     }) _
                 .PrimaryKey(Function(t) t.Id)
             

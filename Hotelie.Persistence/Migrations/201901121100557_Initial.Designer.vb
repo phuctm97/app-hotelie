@@ -6,14 +6,14 @@ Imports System.Resources
 
 Namespace Migrations
     <GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")>
-    Public NotInheritable Partial Class INITIAL
+    Public NotInheritable Partial Class Initial
         Implements IMigrationMetadata
     
-        Private ReadOnly Resources As New ResourceManager(GetType(INITIAL))
+        Private ReadOnly Resources As New ResourceManager(GetType(Initial))
         
         Private ReadOnly Property IMigrationMetadata_Id() As String Implements IMigrationMetadata.Id
             Get
-                Return "201706091606298_INITIAL"
+                Return "201901121100557_Initial"
             End Get
         End Property
         

@@ -50,7 +50,8 @@ Namespace Leases.Factories
                 Dim rules = _paramaterRepository.GetRules()
                 Dim newLease = New Lease() _
                         With {.Id = newId, .CheckinDate = checkinDate, .ExpectedCheckoutDate =expectedCheckoutDate}
-                newLease.CustomerCoefficient = rules.CustomerCoefficient
+                newLease.CustomerCoefficient = 0
+                newLease.MaximumCustomer = rules.MaximumCustomer
                 newLease.ExtraCoefficient = rules.ExtraCoefficient
                 newLease.RoomPrice = room.Category.Price
 
@@ -108,9 +109,12 @@ Namespace Leases.Factories
                 Next
 
                 ' init lease coefficient
-                Dim coeff = 0
+                Dim coeff = 0.0
                 For Each leaseDetail As LeaseDetail In newLease.LeaseDetails
-                    If coeff<leaseDetail.CustomerCategory.Coefficient Then coeff = leaseDetail.CustomerCategory.Coefficient
+                    Dim leaseCustomerCoefficient = leaseDetail.CustomerCategory.Coefficient
+                    If coeff < leaseCustomerCoefficient Then
+                        coeff = leaseCustomerCoefficient
+                    End If
                 Next
                 newLease.CustomerCoefficient = coeff
 
@@ -154,7 +158,8 @@ Namespace Leases.Factories
                 Dim rules = Await _paramaterRepository.GetRulesAsync()
                 Dim newLease = New Lease() _
                         With {.Id = newId, .CheckinDate = checkinDate, .ExpectedCheckoutDate =expectedCheckoutDate}
-                newLease.CustomerCoefficient = rules.CustomerCoefficient
+                newLease.CustomerCoefficient = 0
+                newLease.MaximumCustomer = rules.MaximumCustomer
                 newLease.ExtraCoefficient = rules.ExtraCoefficient
                 newLease.RoomPrice = room.Category.Price
 
@@ -212,9 +217,12 @@ Namespace Leases.Factories
                 Next
 
                 ' init lease coefficient
-                Dim coeff = 0
+                Dim coeff = 0.0
                 For Each leaseDetail As LeaseDetail In newLease.LeaseDetails
-                    If coeff<leaseDetail.CustomerCategory.Coefficient Then coeff = leaseDetail.CustomerCategory.Coefficient
+                    Dim leaseCustomerCoefficient = leaseDetail.CustomerCategory.Coefficient
+                    If coeff < leaseCustomerCoefficient Then
+                        coeff = leaseCustomerCoefficient
+                    End If
                 Next
                 newLease.CustomerCoefficient = coeff
 

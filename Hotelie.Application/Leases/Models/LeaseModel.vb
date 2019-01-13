@@ -38,8 +38,8 @@ Namespace Leases.Models
 
 		Public ReadOnly Property NumberOfUsedDays As Integer Implements ILeaseModel.NumberOfUsedDays
 			Get
-				Return Today.Subtract( CheckinDate ).TotalDays
-			End Get
+                Return CType(Today.Subtract(CheckinDate).TotalDays, Integer) + 1
+            End Get
 		End Property
 
 		Public ReadOnly Property ExpectedCheckoutDate As Date Implements ILeaseModel.ExpectedCheckoutDate
@@ -60,28 +60,31 @@ Namespace Leases.Models
 			End Get
 		End Property
 
-		Public ReadOnly Property CustomerCoefficient As Double Implements ILeaseModel.CustomerCoefficient
-			Get
-				Return _entity.CustomerCoefficient
-			End Get
-		End Property
+        Public ReadOnly Property CustomerCoefficient As Double Implements ILeaseModel.CustomerCoefficient
+            Get
+                Return _entity.CustomerCoefficient
+            End Get
+        End Property
 
-		Public ReadOnly Property ExtraCharge As Decimal Implements ILeaseModel.ExtraCharge
+        Public ReadOnly Property MaximunCustomer As Integer Implements ILeaseModel.MaximunCustomer
+            Get
+                Return _entity.MaximumCustomer
+            End Get
+        End Property
+
+        Public ReadOnly Property ExtraCharge As Decimal Implements ILeaseModel.ExtraCharge
 			Get
-				If Details.Count < 3 Then Return 0
-				Dim numberOfDays = CType(Today.Subtract( CheckinDate ).TotalDays, Integer)+1
-				Dim extraCharges = numberOfDays * RoomUnitPrice * ExtraCoefficient
-				Return extraCharges
-			End Get
+                Dim extra = NumberOfUsedDays * RoomUnitPrice * CustomerCoefficient
+                If Details.Count >= MaximunCustomer Then extra += NumberOfUsedDays * RoomUnitPrice * ExtraCoefficient
+                Return extra
+            End Get
 		End Property
 
 		Public ReadOnly Property TotalExpense As Decimal Implements ILeaseModel.TotalExpense
-			Get
-				Dim numberOfDays = CType(Today.Subtract( CheckinDate ).TotalDays, Integer) + 1
-				Dim expense = numberOfDays * RoomUnitPrice * (1 + CustomerCoefficient)
-				Return expense + ExtraCharge
-			End Get
-		End Property
+            Get
+                Return NumberOfUsedDays * RoomUnitPrice + ExtraCharge
+            End Get
+        End Property
 
 		Public ReadOnly Property Details As List(Of ILeaseDetailModel) Implements ILeaseModel.Details
 

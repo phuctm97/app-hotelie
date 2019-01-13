@@ -10,6 +10,7 @@ Namespace Leases
         Public Property RoomPrice As Decimal
         Public Property ExtraCoefficient As Double
         Public Property CustomerCoefficient As Double
+        Public Property MaximumCustomer As Integer
         Public Property LeaseDetails As List(Of LeaseDetail)
         Public Property Paid As Byte
 

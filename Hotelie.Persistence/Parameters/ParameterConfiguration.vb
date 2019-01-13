@@ -5,22 +5,19 @@ Namespace Parameters
     Public Class ParameterConfiguration
         Inherits EntityTypeConfiguration(Of Parameter)
 
-        Public Sub New ()
-            HasKey(Function(p)p.Id)
+        Public Sub New()
+            HasKey(Function(p) p.Id)
 
-            [Property](Function(p)p.Id).
+            [Property](Function(p) p.Id).
                 IsRequired().
-                IsUnicode( False ).
+                IsUnicode(False).
                 IsFixedLength().
                 HasMaxLength(5)
 
-            [Property](Function(p)p.MaximumCustomer).
+            [Property](Function(p) p.MaximumCustomer).
                 IsRequired()
 
-            [Property](Function(p)p.ExtraCoefficient).
-                IsRequired()
-
-            [Property](Function(p)p.CustomerCoefficient).
+            [Property](Function(p) p.ExtraCoefficient).
                 IsRequired()
 
         End Sub
