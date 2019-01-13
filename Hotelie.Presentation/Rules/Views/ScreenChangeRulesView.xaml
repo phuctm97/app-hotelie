@@ -113,15 +113,15 @@
 
                 <!--Rule 2-->
                 <StackPanel Orientation="Horizontal" Margin="16 24 16 0">
-                    <TextBlock Text="Khi có nhiều hơn" IsEnabled="False"
+                    <TextBlock Text="Khi đạt số khách tối đa (" IsEnabled="False"
                                VerticalAlignment="Center"
                                Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                FontSize="20" Margin="0 0 0 4" />
-                    <TextBlock Text="2" IsEnabled="False" FontWeight="Medium"
+                    <TextBlock Text="{Binding Path=Rule.RoomCapacity, Mode=OneWay}" IsEnabled="False" FontWeight="Medium"
                                VerticalAlignment="Center"
                                Foreground="{DynamicResource PrimaryHueDarkBrush}"
-                               FontSize="24" Margin="6 0 6 6" />
-                    <TextBlock Text="khách hàng trong phòng, phụ thu thêm" IsEnabled="False"
+                               FontSize="24" Margin="1 0 1 6" />
+                    <TextBlock Text=") trong phòng, phụ thu thêm" IsEnabled="False"
                                VerticalAlignment="Center"
                                Foreground="{DynamicResource PrimaryHueDarkBrush}"
                                FontSize="20" Margin="0 0 0 4" />
